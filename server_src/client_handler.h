@@ -7,7 +7,6 @@
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"
 
-#include "game.h"
 #include "server_protocol.h"
 
 class ClientHandler: public Thread {

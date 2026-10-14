@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "../common_src/protocol.h"
-#include "../common_src/protocol_dto.h"
 #include "../common_src/socket.h"
 
 class ServerProtocol {
@@ -18,13 +17,8 @@ private:
 public:
     explicit ServerProtocol(Socket&& socket);
 
-    std::optional<uint8_t> receive_operation();
-
-    JoinGameDto receive_join();
-    CreateGameDto receive_create();
-
-    void send_ret(uint8_t ret);
-    void send_game_list(const std::vector<GameListItemDto>& items);
+    void send_msg();
+    void receive_msg();
 
     void close();
 };

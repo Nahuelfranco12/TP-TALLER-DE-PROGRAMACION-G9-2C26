@@ -9,11 +9,11 @@
 
 #include "acceptor.h"
 
-Server::Server(const char* servname, Game& game):
-        servname(servname), game(game), acceptor(servname, game) {}
+Server::Server(const char* servname):
+        servname(servname), acceptor(servname) {}
 
 void Server::run() {
     acceptor.start();
 
-    while (std::cin.get() != END_OP) {}
+    // while (std::cin.get() != END_OP) {}
 }

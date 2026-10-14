@@ -24,7 +24,7 @@ void Acceptor::run() {
         try {
             Socket peer = skt.accept();
 
-            auto handler = std::make_unique<ClientHandler>(std::move(peer), game);
+            auto handler = std::make_unique<ClientHandler>(std::move(peer));
             handler->start();
 
             reap_dead();

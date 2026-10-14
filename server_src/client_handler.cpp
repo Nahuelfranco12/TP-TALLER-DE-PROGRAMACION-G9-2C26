@@ -15,17 +15,8 @@ ClientHandler::ClientHandler(Socket&& skt):
         protocol(std::move(skt)) {}
 
 void ClientHandler::run() {
-    while (should_keep_running()) {
-        std::optional<uint8_t> op = protocol.receive_operation();
-        if (!op)
-            break;
-
-        auto it = commands.find(static_cast<operations>(*op));
-        if (it != commands.end())
-            it->second();
-        else
-            throw std::runtime_error(UNKNOWN_OP_ERROR);
-    }
+    protocol.receive_msg();
+    protocol.send_msg();
 }
 
 ClientHandler::~ClientHandler() {

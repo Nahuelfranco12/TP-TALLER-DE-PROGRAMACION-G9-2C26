@@ -2,16 +2,14 @@
 #define SERVER_H_
 
 #include "acceptor.h"
-#include "game.h"
 
 class Server {
 private:
     const char* servname;
-    Game& game;
     Acceptor acceptor;
 
 public:
-    Server(const char* servname, Game& game);
+    Server(const char* servname);
 
     void run();
 };

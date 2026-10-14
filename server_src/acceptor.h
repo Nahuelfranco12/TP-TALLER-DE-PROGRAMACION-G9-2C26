@@ -8,7 +8,6 @@
 #include "../common_src/thread.h"
 
 #include "client_handler.h"
-#include "game.h"
 
 class Acceptor: public Thread {
 private:
@@ -19,7 +18,7 @@ private:
     void reap_dead();
 
 public:
-    Acceptor(const char* servname, Game& game);
+    Acceptor(const char* servname);
 
     void run() override;
 
