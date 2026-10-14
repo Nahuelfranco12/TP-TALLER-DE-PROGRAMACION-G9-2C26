@@ -1,0 +1,51 @@
+#include "acceptor.h"
+
+#include <iostream>
+#include <utility>
+
+#include <sys/socket.h>
+
+#include "../common_src/constants.h"
+
+Acceptor::Acceptor(const char* servname): skt(servname) {}
+
+void Acceptor::reap_dead() {
+    clients.remove_if([](const std::unique_ptr<ClientHandler>& c) {
+        if (!c->is_alive()) {
+            c->join();
+            return true;
+        }
+        return false;
+    });
+}
+
+void Acceptor::run() {
+    while (should_keep_running()) {
+        try {
+            Socket peer = skt.accept();
+
+            auto handler = std::make_unique<ClientHandler>(std::move(peer), game);
+            handler->start();
+
+            reap_dead();
+            clients.push_back(std::move(handler));
+        } catch (const std::exception& e) {
+            if (should_keep_running())
+                std::cerr << e.what() << STRING_BRK;
+            break;
+        }
+    }
+}
+
+Acceptor::~Acceptor() {
+    stop();
+
+    try {
+        skt.shutdown(SHUT_RDWR);
+    } catch (const std::exception&) {}
+    try {
+        skt.close();
+    } catch (const std::exception&) {}
+
+    join();
+}
