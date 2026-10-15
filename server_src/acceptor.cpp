@@ -11,11 +11,7 @@ Acceptor::Acceptor(const char* servname): skt(servname) {}
 
 void Acceptor::reap_dead() {
     clients.remove_if([](const std::unique_ptr<ClientHandler>& c) {
-        if (!c->is_alive()) {
-            c->join();
-            return true;
-        }
-        return false;
+        return c->is_dead();
     });
 }
 

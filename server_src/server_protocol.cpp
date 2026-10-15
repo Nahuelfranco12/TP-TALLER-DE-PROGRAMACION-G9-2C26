@@ -11,19 +11,22 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket): skt(std::move(socket)), protocol(skt) {}
 
-void ServerProtocol::send_msg() {
-    protocol.send_string("Chau Mundo");
+void ServerProtocol::send_msg(const std::string& msg) {
+    protocol.send_string(msg);
 }
-void ServerProtocol::receive_msg() {
-    std::string received_msg = protocol.receive_string();
-    std::cout << received_msg << STRING_BRK;
+std::string ServerProtocol::receive_msg() {
+    return protocol.receive_string();
 }
 
 
-void ServerProtocol::close() {
+void ServerProtocol::shutdown() {
     try {
         skt.shutdown(SHUT_RDWR);
     } catch (const std::exception&) {}
+}
+
+void ServerProtocol::close() {
+    shutdown();
     try {
         skt.close();
     } catch (const std::exception&) {}

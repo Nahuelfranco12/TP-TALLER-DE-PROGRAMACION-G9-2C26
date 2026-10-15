@@ -17,8 +17,10 @@ private:
 public:
     explicit ServerProtocol(Socket&& socket);
 
-    void send_msg();
-    void receive_msg();
+    void send_msg(const std::string& msg);
+    std::string receive_msg();
+
+    void shutdown();
 
     void close();
 };
