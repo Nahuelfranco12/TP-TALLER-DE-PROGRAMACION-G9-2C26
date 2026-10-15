@@ -16,7 +16,7 @@ void ServerProtocol::send_msg() {
 }
 void ServerProtocol::receive_msg() {
     std::string received_msg = protocol.receive_string();
-    std::cout << received_msg;
+    std::cout << received_msg << STRING_BRK;
 }
 
 

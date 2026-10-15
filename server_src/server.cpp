@@ -15,5 +15,5 @@ Server::Server(const char* servname):
 void Server::run() {
     acceptor.start();
 
-    // while (std::cin.get() != END_OP) {}
+    while (std::cin.get() != END_OP) {}
 }

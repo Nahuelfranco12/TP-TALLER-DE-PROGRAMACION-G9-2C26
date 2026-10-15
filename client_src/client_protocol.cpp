@@ -16,5 +16,5 @@ void ClientProtocol::send_msg() {
 
 void ClientProtocol::receive_msg() {
     std::string received_msg = protocol.receive_string();
-    std::cout << received_msg;
+    std::cout << received_msg << STRING_BRK;
 }
