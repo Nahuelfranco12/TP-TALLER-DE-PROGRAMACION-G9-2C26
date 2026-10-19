@@ -3,12 +3,9 @@
 ```mermaid
 classDiagram
 class Jugador{
-    - cama : Cama
     - monedas rand entre 0-100
-    - herramientas
     - inventario
     - zonaActual : Zona
-    - posicion : Posicion
 }
 
 class Herramienta {}
@@ -23,66 +20,48 @@ Herramienta <|-- Regadera
 Herramienta <|-- Pala
 Herramienta <|-- Espada
 
-Jugador <-- Pico
-Jugador <-- Regadera
-Jugador <-- Pala
-Jugador <-- Espada
+class Item {}
 
+class Animal {}
+
+class Vaca {}
+
+class Gallina {}
+
+Animal <|-- Vaca
+Animal <|-- Gallina
+
+class Semilla {}
+Item <|-- Semilla
+
+class ProductoDecoracion {}
+class Cofre {}
 class Cama {
     - jugadorDueño : Jugador
 
     - dormir()
 }
-
-Jugador <-- Cama
-
-class Item {
-
-}
-
-class Animal {
-
-}
-
-class Vaca {
-}
-
-class Gallina {
-}
-
-Animal <|-- Vaca
-Animal <|-- Gallina
-
-class Semilla {
-}
-
-class ProductoDecoracion {
-
-}
-
-class Cofre {}
-
 ProductoDecoracion <|-- Cofre
+ProductoDecoracion <|-- Cama
+Cama --> Jugador
 
-class Mineral {}
+class ItemMineral {}
 
 class Cultivo {}
+class CultivoCosechado {}
 
 class ProductoAnimal {}
-
-Item <|-- Semilla
-Item <|-- Mineral
+Item <|-- ItemMineral
 Item <|-- ProductoAnimal
+Item <|-- CultivoCosechado
 
 class Inventario {
     - list[list[item]]
     - list[Herramienta]
 }
-
-Inventario <-- Item
-Inventario <-- Herramienta
-
-Jugador <-- Inventario
+Inventario o-- Item
+Inventario o-- Herramienta
+Jugador *-- Inventario
 
 %% Revisar patron builder para Mineral y Enemigo
 class Mineral {
@@ -105,32 +84,18 @@ class Caverna {
 
 }
 
-class Nivel {
-    - list[Enemigo]
-    - list[Mineral]
+class Nivel {}
 
-}
-
-Caverna <-- Nivel
+Caverna *-- Nivel
 
 Nivel <-- Enemigo
 Nivel <-- Mineral
 
-class Granja {
-    - cultivos : list[Cultivo]
-    - animales : list[Animal]
-    - decoracion : list[ProductoDecoracion]
-}
-
-Granja <-- Cultivo
-Granja <-- Animal
-Granja <-- ProductoDecoracion
+class Granja {}
 
 class Pueblo {
     - mercado : Mercado
     - centro : CentroComunitario
-
-
 }
 
 class Mercado {
@@ -144,22 +109,21 @@ class CentroComunitario {
 
 class Set {}
 
-CentroComunitario <-- Set
+CentroComunitario *-- Set
 
 %% Marnie, Clint, Pierre, Robin
 class Comerciante {}
 
-Pueblo <-- Mercado
-Pueblo <-- CentroComunitario
+Pueblo *-- Mercado
+Pueblo *-- CentroComunitario
 
-Mercado <-- Comerciante
+Mercado o-- Comerciante
 
 class Mundo {
     - zonas : list[Zona]
-
     - jugadores : list[Jugador]
-
 }
+Mundo o-- Jugador
 
 class Zona {
     - sectores: Map<CoordSector, Sector>
@@ -167,16 +131,20 @@ class Zona {
     + obtenerSector(pos)
     + mover(entidad, destino)
 }
+Mundo *-- Zona
+Zona <|-- Granja
+Zona <|-- Pueblo
+Zona <|-- Nivel
+Jugador --> Zona
 
 class Sector {
     - coordenada : CoordSector
     - terreno : byte[][]
     - entidades : Map<Posicion, EntidadDeMapa>
-    - lock
+    %% - lock
 
-    + tick()
+    %% + tick()
 }
-
 Zona *-- Sector
 
 class TipoTerreno {
@@ -185,38 +153,29 @@ class TipoTerreno {
     - transitable
     - arable
 }
+Sector --> TipoTerreno
 
 class Posicion {
     - x : int
     - y : int
 }
 
-Sector --> TipoTerreno
-
-Mundo *-- Zona
-Mundo <-- Jugador
-
-Zona <|-- Granja
-Zona <|-- Pueblo
-Zona <|-- Nivel
-
-Jugador --> Posicion
-Jugador --> Zona
-
 class Puerta {
-    - posicion : Posicion
     - zonaDestino : Zona
     - posicionDestino : Posicion
 }
-Zona --> Puerta
 
 class EntidadDeMapa {
     - posicion : Posicion
 }
+Posicion <-- EntidadDeMapa
+Posicion <-- Puerta
 
 EntidadDeMapa <|-- Enemigo
 EntidadDeMapa <|-- Animal
 EntidadDeMapa <|-- Mineral
 EntidadDeMapa <|-- Cultivo
 EntidadDeMapa <|-- ProductoDecoracion
+EntidadDeMapa <|-- Puerta
+EntidadDeMapa <|-- Jugador
 ```
