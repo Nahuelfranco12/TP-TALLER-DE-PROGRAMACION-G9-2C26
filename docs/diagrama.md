@@ -126,7 +126,7 @@ class Mundo {
 Mundo o-- Jugador
 
 class Zona {
-    - sectores: Map<CoordSector, Sector>
+    - sectores: Map<Posicion, Sector>
 
     + obtenerSector(pos)
     + mover(entidad, destino)
@@ -138,7 +138,7 @@ Zona <|-- Nivel
 Jugador --> Zona
 
 class Sector {
-    - coordenada : CoordSector
+    - coordenada : Posicion
     - terreno : byte[][]
     - entidades : Map<Posicion, EntidadDeMapa>
     %% - lock
@@ -159,6 +159,7 @@ class Posicion {
     - x : int
     - y : int
 }
+Zona ..> Posicion
 
 class Puerta {
     - zonaDestino : Zona
