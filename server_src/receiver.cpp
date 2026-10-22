@@ -13,10 +13,6 @@ void Receiver::run() {
         while(should_keep_running()) {
             std::string msg = protocol.receive_msg();
             std::cout << msg << STRING_BRK;
-
-            if(!queue.try_push("Chau mundo")) {
-                break;
-            }
         }
     } catch (const ClosedQueue&) {
         
