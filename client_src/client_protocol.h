@@ -15,7 +15,8 @@ private:
 
 public:
     explicit ClientProtocol(const char* hostname, const char* servname);
-    void send_msg();
-    void receive_msg();
+    void send_msg(const std::string& msg);
+    std::string receive_msg();
+    void shutdown();
 };
 #endif  // CLIENT_PROTOCOL_H_

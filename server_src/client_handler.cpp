@@ -11,10 +11,6 @@
 #include "../common_src/constants.h"
 #include "../common_src/liberror.h"
 
-namespace {
-    constexpr unsigned int QUEUE_MAX_SIZE = 1000;
-}
-
 ClientHandler::ClientHandler(Socket&& skt):
         protocol(std::move(skt)),
         queue(QUEUE_MAX_SIZE),
