@@ -1,16 +1,37 @@
 #include "gameloop.h"
+#include <chrono>
+#include <thread>
+
 
 Gameloop::Gameloop(Queue<ClientCommand>& received_queue, ClientQueues& clients):
     received_queue(received_queue), clients(clients) {}
 
 void Gameloop::run() {
-    while(should_keep_running()) {
-        ClientCommand cmd;
-        while(received_queue.try_pop(cmd)) {
-            apply_cmd(cmd);
-        }
+    const std::chrono::milliseconds tickrate(1000 / TICKS_PER_SECOND);
+    auto time_1 = std::chrono::steady_clock::now();
+    try{
+        while(should_keep_running()) {
+            ClientCommand cmd;
+            while(received_queue.try_pop(cmd)) {
+                apply_cmd(cmd);
+            }
 
-        clients.send_to_all(make_world_state());
+            clients.send_to_all(make_world_state());
+
+            auto time_2 = std::chrono::steady_clock::now();
+            auto rest = tickrate - (time_2 - time_1);
+
+            if(rest < std::chrono::nanoseconds(0)) {
+                auto behind = -rest;
+                rest = tickrate - behind % tickrate;
+                time_1 += behind + rest;
+            }
+
+            std::this_thread::sleep_for(rest);
+            time_1 += tickrate;
+        }
+    } catch (const ClosedQueue&) {
+
     }
 }
 

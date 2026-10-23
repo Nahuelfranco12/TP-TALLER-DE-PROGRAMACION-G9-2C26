@@ -16,6 +16,8 @@
 #define START_X 10
 #define START_Y 10
 
+#define TICKS_PER_SECOND 30
+
 struct Position {
     int x;
     int y;
