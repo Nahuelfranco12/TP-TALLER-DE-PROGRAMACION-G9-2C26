@@ -6,9 +6,24 @@ class Jugador{
     - monedas rand entre 0-100
     - inventario
     - zonaActual : Zona
+
+    + mover(Posicion destino) : Posicion
+    %% + obtenerHerramienta(enum HerramientasDisponibles herramienta) : Herramienta
+    
+    %% Estos metodos interactuan con el inventario
+    + picar(Mineral& mineral)
+    + golpear(Enemigo& enemigo)
+    + cavar()
+    + regar(Cultivo& cultivo)
 }
 
 class Herramienta {}
+class Item {}
+
+class EspacioInventario {
+    - elemento : Item
+    - cantidad : int
+}
 
 class Pico {}
 class Regadera {}
@@ -20,14 +35,9 @@ Herramienta <|-- Regadera
 Herramienta <|-- Pala
 Herramienta <|-- Espada
 
-class Item {}
-
 class Animal {}
-
 class Vaca {}
-
 class Gallina {}
-
 Animal <|-- Vaca
 Animal <|-- Gallina
 
@@ -46,20 +56,22 @@ ProductoDecoracion <|-- Cama
 Cama --> Jugador
 
 class ItemMineral {}
-
 class Cultivo {}
 class CultivoCosechado {}
-
 class ProductoAnimal {}
 Item <|-- ItemMineral
 Item <|-- ProductoAnimal
 Item <|-- CultivoCosechado
 
 class Inventario {
-    - list[list[item]]
-    - list[Herramienta]
+    - items : list[EspacioInventario]
+    - herramientas : list[Herramienta]
+
+    + agregarItem(Item& item)
+    + agregarHerramienta(Herramienta& herramienta)
 }
-Inventario o-- Item
+Inventario o-- EspacioInventario
+EspacioInventario o-- Item
 Inventario o-- Herramienta
 Jugador *-- Inventario
 
@@ -81,7 +93,6 @@ class Enemigo {
 
 class Caverna {
     - list[Nivel]
-
 }
 
 class Nivel {}
@@ -139,27 +150,28 @@ Jugador --> Zona
 
 class Sector {
     - coordenada : Posicion
-    - terreno : byte[][]
-    - entidades : Map<Posicion, EntidadDeMapa>
-    %% - lock
-
-    %% + tick()
+    - casillas : Terreno[ALTO][ANCHO]
+    - entidades : Map[Posicion, EntidadDeMapa&]
 }
 Zona *-- Sector
 
-class TipoTerreno {
-    <<enum>>
-    - id
-    - transitable
-    - arable
+class Terreno {
+    - transitable : bool
+    - arable : bool
+    - textura : Textura
+
+    + esTransitable() : bool
+    + esArable() : bool
+    + obtenerTextura() : Textura
 }
-Sector --> TipoTerreno
+Sector --> Terreno
 
 class Posicion {
     - x : int
     - y : int
 }
 Zona ..> Posicion
+Sector ..> Posicion
 
 class Puerta {
     - zonaDestino : Zona
@@ -179,4 +191,6 @@ EntidadDeMapa <|-- Cultivo
 EntidadDeMapa <|-- ProductoDecoracion
 EntidadDeMapa <|-- Puerta
 EntidadDeMapa <|-- Jugador
+
+Sector --> EntidadDeMapa
 ```
