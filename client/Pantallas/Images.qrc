@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Pantallas/01-inicio_screen.png</file>
+        <file>Pantallas/03-unirse_partida_background.png</file>
+        <file>Images.qrc</file>
+        <file>Botones/Boton_normal.png</file>
+        <file>Botones/botton_apretado.png</file>
+        <file>Pantallas/02_pantalla_nueva_partida.jpg</file>
+        <file>fuentes/Stardew_Valley.otf</file>
+        <file>fuentes/Stardew_Valley.ttf</file>
+        <file>fuentes/Fonts Magazine.txt</file>
+    </qresource>
+</RCC>
