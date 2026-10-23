@@ -12,17 +12,19 @@
 class Acceptor: public Thread {
 private:
     Socket skt;
-
+    Queue<ClientCommand>& received_queue;
+    ClientQueues& client_queues;
     std::list<std::unique_ptr<ClientHandler>> clients;
+    int next_client_id = 0;
 
     void reap_dead();
 
 public:
-    Acceptor(const char* servname);
+    Acceptor(const char* servname, Queue<ClientCommand>& received_queue, ClientQueues& client_queues);
 
     void run() override;
 
     ~Acceptor() override;
 };
 
-#endif  // ACCEPTOR_H_
+#endif
