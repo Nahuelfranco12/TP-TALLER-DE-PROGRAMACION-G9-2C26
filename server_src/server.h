@@ -2,14 +2,17 @@
 #define SERVER_H_
 
 #include "acceptor.h"
+#include "gameloop.h"
 
 class Server {
 private:
-    const char* servname;
+    Queue<ClientCommand> received_queue;
+    ClientQueues client_queues;
+    Gameloop gameloop;
     Acceptor acceptor;
 
 public:
-    Server(const char* servname);
+    explicit Server(const char* servname);
 
     void run();
 };

@@ -10,10 +10,16 @@
 #include "acceptor.h"
 
 Server::Server(const char* servname):
-        servname(servname), acceptor(servname) {}
+        received_queue(QUEUE_MAX_SIZE), gameloop(received_queue, client_queues), acceptor(servname, received_queue, client_queues) {}
 
 void Server::run() {
+    gameloop.start();
     acceptor.start();
 
-    while (std::cin.get() != END_OP) {}
+    char character;
+    while (std::cin >> character && character != END_OP) {}
+
+    received_queue.close();
+    gameloop.stop();
+    gameloop.join();
 }
