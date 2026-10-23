@@ -1,8 +1,5 @@
 #include "client_handler.h"
 
-#include <cstdint>
-#include <iostream>
-#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -11,36 +8,36 @@
 #include "../common_src/constants.h"
 #include "../common_src/liberror.h"
 
-ClientHandler::ClientHandler(Socket&& skt):
+ClientHandler::ClientHandler(Socket&& skt, int client_id, Queue<ClientCommand>& received_queue, ClientQueues& clients):
+        client_id(client_id),
         protocol(std::move(skt)),
-        queue(QUEUE_MAX_SIZE),
-        receiver(protocol, queue),
-        sender(protocol, queue) {}
+        to_send_queue(QUEUE_MAX_SIZE),
+        received_queue(received_queue),
+        clients(clients),
+        receiver(protocol, received_queue, client_id),
+        sender(protocol, to_send_queue)
+        {}
 
 void ClientHandler::start() {
+    clients.add_client(client_id, to_send_queue);
+    received_queue.push(ClientCommand{client_id, CommandType::Join})
     receiver.start();
     sender.start();
 }
 
 bool ClientHandler::is_dead() {
-    return !receiver.is_alive() && !sender.is_alive();
+    return !receiver.is_alive();
 }
 
 
 
 ClientHandler::~ClientHandler() {
+    clients.remove(client_id);
     receiver.stop();
     sender.stop();
-
-    try{
-        queue.close();
-    } catch(const std::exception&) {
-
-    }
+    to_send_queue.close();
     protocol.shutdown();
-
     receiver.join();
     sender.join();
-    
     protocol.close();
 }

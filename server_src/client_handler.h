@@ -15,12 +15,15 @@
 
 class ClientHandler {
 private:
+    int client_id;
     ServerProtocol protocol;
-    Queue<std::string> queue;
-    Receiver receiver;
-    Sender sender;
+    Queue<WorldState> to_send_queue;
+    Queue<ClientCommand>& received_queue;
+    ClientQueues& clients;
+    ServerReceiver receiver;
+    ServerSender sender;
 public:
-    ClientHandler(Socket&& skt);
+    ClientHandler(Socket&& skt, int client_id, Queue<ClientCommand>& received_queue, ClientQueues& clients);
 
     void start();
 
