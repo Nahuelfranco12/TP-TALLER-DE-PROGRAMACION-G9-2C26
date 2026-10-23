@@ -9,5 +9,9 @@
         <file>fuentes/Stardew_Valley.otf</file>
         <file>fuentes/Stardew_Valley.ttf</file>
         <file>fuentes/Fonts Magazine.txt</file>
+        <file>Pantallas/02-nueva_partida_background.jpg</file>
+        <file>Pantallas/0232_pantalla_nueva_partida.jpg</file>
+        <file>cartel/cartel-datos.png</file>
+        <file>Pantallas/04_pantalla_unirse_partida.jpg</file>
     </qresource>
 </RCC>
