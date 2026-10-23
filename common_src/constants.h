@@ -12,5 +12,13 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define SOCKET_CLOSE_RECEIVE_ERROR "Error: Socket cerrado al recibir"
 #define SOCKET_CLOSE_SEND_ERROR "Error: Socket cerrado al enviar"
 
+#define DIR_UP 0;
+#define DIR_DOWN 1;
+#define DIR_LEFT 2;
+#define DIR_RIGHT 3;
+
+
+#define OP_MOVE  1
+#define OP_WORLD_STATE 2 
 
 #endif  // CONSTANTS_H_
