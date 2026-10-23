@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../common_src/constants.h"
+#include "../common_src/game_dtos.h"
 #include "../common_src/queue.h"
 #include "client_receiver.h"
 #include "client_sender.h"
@@ -12,13 +13,17 @@
 class Client {
 private:
     ClientProtocol protocol;
-    Queue<std::string> received_queue;
-    Queue<std::string> to_send_queue;
+    Queue<WorldState> received_queue;
+    Queue<MoveCommand> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
 
 public:
     explicit Client(const char* hostname, const char* servname);
+
+    void send_move(Direction direction);
+    bool try_get_latest_state(WorldState& state);
+    bool is_connected();
 
     void run();
 

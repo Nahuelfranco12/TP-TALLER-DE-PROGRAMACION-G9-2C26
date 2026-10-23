@@ -20,19 +20,50 @@ Client::Client(const char* hostname, const char* servname):
             sender.start();
         }
 
-
+// igual este run es de prueba, hay q sacarlo conectandolo con sdl
 void Client::run() {
     std::string line;
+    WorldState state;
+
     while(std::getline(std::cin, line) && line != "q") {
-        if(!receiver.is_alive()) {
+        if(!is_connected()) {
             break;
         }
-        to_send_queue.push(line);
+        
+        if(line == "w")
+            send_move(Direction::Up);
+        else if(line == "s")
+            send_move(Direction::Down);
+        else if(line == "a")
+            send_move(Direction::Left);
+        else if(line == "d")
+            send_move(Direction::Right);
 
-        std::string msg;
-        while(received_queue.try_pop(msg))
-            std::cout << msg << STRING_BRK;
+        if(try_get_latest_state(state)) {
+            for(const PlayerPosition& p : state.players) {
+                std::string mensaje = "Jugador " + std::to_string(p.id) + "en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
+                std::cout << mensaje;
+            }
+        }
     }
+}
+
+void Client::send_move(Direction direction) {
+    to_send_queue.try_push(MoveCommand{direction});
+}
+
+bool Client::try_get_latest_state(WorldState& state){
+    bool has_been_received = false;
+    WorldState next_state;
+    while(received_queue.try_pop(next_state)){
+        state = std::move(next_state);
+        has_been_received = true;
+    }
+    return has_been_received;
+}
+
+bool Client::is_connected() const {
+    return receiver.is_alive();
 }
 
 
