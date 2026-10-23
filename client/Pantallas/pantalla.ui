@@ -78,8 +78,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botRetomarPartida">
         <property name="geometry">
          <rect>
-          <x>630</x>
-          <y>230</y>
+          <x>780</x>
+          <y>220</y>
           <width>300</width>
           <height>80</height>
          </rect>
@@ -99,32 +99,6 @@ QPushButton:pressed {
         </property>
         <property name="text">
          <string>Retomar Partida</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="botEditorMapas">
-        <property name="geometry">
-         <rect>
-          <x>940</x>
-          <y>230</y>
-          <width>300</width>
-          <height>80</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
-    color: #f1b356; 
-    font-family: &quot;Stardew Valley&quot;;
-    font-size: 40px;
-    font-weight: bold;
-}
-QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
-    padding-top: 3px; 
-}</string>
-        </property>
-        <property name="text">
-         <string>Editor de mapas</string>
         </property>
        </widget>
       </widget>
