@@ -41,7 +41,7 @@ void Client::run() {
 
         if(try_get_latest_state(state)) {
             for(const PlayerPosition& p : state.players) {
-                std::string mensaje = "Jugador " + std::to_string(p.id) + "en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
+                std::string mensaje = "Jugador " + std::to_string(p.id) + " en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
                 std::cout << mensaje;
             }
         }

@@ -13,10 +13,10 @@ struct PlayerPosition {
     int id = 0;
     int x = 0;
     int y = 0;
-}
+};
 
 struct WorldState {
     std::vector<PlayerPosition> players;
-}
+};
 
 #endif

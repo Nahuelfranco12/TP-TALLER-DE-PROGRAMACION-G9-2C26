@@ -9,13 +9,6 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket): skt(std::move(socket)), protocol(skt) {}
 
-void ServerProtocol::send_msg(const std::string& msg) {
-    protocol.send_string(msg);
-}
-std::string ServerProtocol::receive_msg() {
-    return protocol.receive_string();
-}
-
 
 void ServerProtocol::shutdown() {
     try {

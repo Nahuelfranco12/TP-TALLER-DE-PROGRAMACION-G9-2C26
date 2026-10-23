@@ -5,8 +5,9 @@
 #include <map>
 #include <string>
 
-#include "sender.h"
-#include "receiver.h"
+#include "server_sender.h"
+#include "server_receiver.h"
+#include "client_queues.h"
 #include "../common_src/queue.h"
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"

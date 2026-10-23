@@ -5,13 +5,13 @@
 
 #include "../common_src/constants.h"
 
-ClientReceiver::ClientReceiver(ClientProtocol& protocol, Queue<std::string>& received_queue):
+ClientReceiver::ClientReceiver(ClientProtocol& protocol, Queue<WorldState>& received_queue):
     protocol(protocol), received_queue(received_queue) {}
 
 void ClientReceiver::run() {
     try {
         while(should_keep_running()) {
-            received_queue.try_push(protocol.receive_msg());
+            received_queue.try_push(protocol.receive_world_state());
         }
     } catch (const ClosedQueue&) {
         

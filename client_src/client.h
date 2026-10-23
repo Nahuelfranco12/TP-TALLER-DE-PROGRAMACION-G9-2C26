@@ -23,7 +23,7 @@ public:
 
     void send_move(Direction direction);
     bool try_get_latest_state(WorldState& state);
-    bool is_connected();
+    bool is_connected() const;
 
     void run();
 

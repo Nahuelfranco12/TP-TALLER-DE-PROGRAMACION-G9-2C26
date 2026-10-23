@@ -20,7 +20,7 @@ ClientHandler::ClientHandler(Socket&& skt, int client_id, Queue<ClientCommand>& 
 
 void ClientHandler::start() {
     clients.add_client(client_id, to_send_queue);
-    received_queue.push(ClientCommand{client_id, CommandType::Join})
+    received_queue.push(ClientCommand{client_id, CommandType::Join});
     receiver.start();
     sender.start();
 }
@@ -32,7 +32,7 @@ bool ClientHandler::is_dead() {
 
 
 ClientHandler::~ClientHandler() {
-    clients.remove(client_id);
+    clients.remove_client(client_id);
     receiver.stop();
     sender.stop();
     to_send_queue.close();
