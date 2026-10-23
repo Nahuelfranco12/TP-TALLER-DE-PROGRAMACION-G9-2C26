@@ -13,5 +13,10 @@
         <file>Pantallas/0232_pantalla_nueva_partida.jpg</file>
         <file>cartel/cartel-datos.png</file>
         <file>Pantallas/04_pantalla_unirse_partida.jpg</file>
+        <file>flechas/flecha_apretada_derecha.png</file>
+        <file>flechas/flecha_apretada_izquierda.png</file>
+        <file>flechas/flecha_normal_derecha.png</file>
+        <file>flechas/flecha_normal_izquierda.png</file>
+        <file>Pantallas/pantalla_retomar.jpg</file>
     </qresource>
 </RCC>
