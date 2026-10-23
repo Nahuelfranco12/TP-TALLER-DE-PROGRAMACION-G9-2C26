@@ -13,6 +13,7 @@ qt_add_executable(Pantallas
     pantalla.h
     pantalla.ui
     Images.qrc
+    partidas_estaticas.h partidas_estaticas.cpp
 )
 
 target_link_libraries(Pantallas

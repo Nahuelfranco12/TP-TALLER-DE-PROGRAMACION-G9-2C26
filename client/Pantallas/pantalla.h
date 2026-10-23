@@ -19,5 +19,6 @@ public:
 
 private:
     Ui::Pantalla *ui;
+    void cargarListaPartidas();
 };
 #endif // PANTALLA_H
