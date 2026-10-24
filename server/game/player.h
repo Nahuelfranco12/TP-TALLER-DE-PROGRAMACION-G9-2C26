@@ -4,12 +4,15 @@
 #include "position.h"
 #include "inventory.h"
 #include "mineral.h"
+#include "sector.h"
 
 class Player {
 private:
+    double life;
+    double energy;
     int coins;
     Inventory inventory;
-    Zone& actualZone;
+    Sector& actualSector;
 
 public:
     Position move(Position destination);
