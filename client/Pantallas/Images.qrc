@@ -18,6 +18,7 @@
         <file>assets/Pantallas/04_pantalla_unirse_partida.jpg</file>
         <file>assets/Pantallas/0232_pantalla_nueva_partida.jpg</file>
         <file>assets/Pantallas/pantalla_retomar.jpg</file>
+        <file>assets/Pantallas/fondo_noche.png</file>
     </qresource>
     <qresource prefix="/ropas">
         <file>assets/ropas/StardewValley_Character_Accessories.png</file>

@@ -111,10 +111,10 @@ QPushButton:pressed {
        <widget class="QLabel" name="cartelRP">
         <property name="geometry">
          <rect>
-          <x>-60</x>
-          <y>20</y>
-          <width>751</width>
-          <height>561</height>
+          <x>-20</x>
+          <y>-10</y>
+          <width>811</width>
+          <height>671</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -129,7 +129,7 @@ QPushButton:pressed {
        <widget class="QLabel" name="codigoPartidaRetomar">
         <property name="geometry">
          <rect>
-          <x>80</x>
+          <x>110</x>
           <y>110</y>
           <width>531</width>
           <height>111</height>
@@ -137,7 +137,8 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
-color: #f1b356; </string>
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>Partidas a unirte</string>
@@ -146,8 +147,8 @@ color: #f1b356; </string>
        <widget class="QPushButton" name="botJugarRP">
         <property name="geometry">
          <rect>
-          <x>350</x>
-          <y>440</y>
+          <x>450</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -172,8 +173,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botVolverRP">
         <property name="geometry">
          <rect>
-          <x>90</x>
-          <y>440</y>
+          <x>140</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -198,7 +199,7 @@ QPushButton:pressed {
        <widget class="QScrollArea" name="scrollAreaPartidas">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>130</x>
           <y>230</y>
           <width>491</width>
           <height>191</height>
@@ -234,7 +235,7 @@ QScrollArea &gt; QWidget &gt; QWidget {
       <widget class="QWidget" name="pageCustomizarPersonaje">
        <property name="styleSheet">
         <string notr="true">#pageCustomizarPersonaje { 
-    border-image: url(:/pantallas/assets/Pantallas/02-nueva_partida_background.jpg); 
+    border-image: url(:/pantallas/assets/Pantallas/fondo_noche.png); 
 }</string>
        </property>
        <widget class="QLabel" name="cartelCP">
@@ -671,8 +672,8 @@ QPushButton:pressed {
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>751</width>
-          <height>561</height>
+          <width>811</width>
+          <height>671</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -687,15 +688,16 @@ QPushButton:pressed {
        <widget class="QLabel" name="nuevaPartida">
         <property name="geometry">
          <rect>
-          <x>130</x>
+          <x>100</x>
           <y>100</y>
-          <width>411</width>
+          <width>541</width>
           <height>41</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
-color: #f1b356; </string>
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>NUEVA PARTIDA</string>
@@ -704,15 +706,16 @@ color: #f1b356; </string>
        <widget class="QLabel" name="nombrePartida">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>100</x>
           <y>190</y>
-          <width>251</width>
+          <width>291</width>
           <height>31</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
-color: #f1b356; </string>
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>NOMBRE DE LA PARTIDA</string>
@@ -721,7 +724,7 @@ color: #f1b356; </string>
        <widget class="QLineEdit" name="campoNOmbrePartida">
         <property name="geometry">
          <rect>
-          <x>360</x>
+          <x>390</x>
           <y>190</y>
           <width>221</width>
           <height>31</height>
@@ -746,15 +749,16 @@ QLineEdit:focus, QComboBox:focus {
        <widget class="QLabel" name="seleccionMundo">
         <property name="geometry">
          <rect>
-          <x>120</x>
+          <x>100</x>
           <y>240</y>
-          <width>211</width>
+          <width>291</width>
           <height>31</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
-color: #f1b356; </string>
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>SELECCIONAR MUNDO</string>
@@ -763,7 +767,7 @@ color: #f1b356; </string>
        <widget class="QComboBox" name="desplegableMundo">
         <property name="geometry">
          <rect>
-          <x>360</x>
+          <x>390</x>
           <y>240</y>
           <width>211</width>
           <height>26</height>
@@ -788,8 +792,8 @@ QLineEdit:focus, QComboBox:focus {
        <widget class="QPushButton" name="botVolver">
         <property name="geometry">
          <rect>
-          <x>120</x>
-          <y>320</y>
+          <x>140</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -814,8 +818,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botSiguiente">
         <property name="geometry">
          <rect>
-          <x>390</x>
-          <y>320</y>
+          <x>450</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -840,15 +844,16 @@ QPushButton:pressed {
        <widget class="QLabel" name="textoCustomizarNuevaPartida">
         <property name="geometry">
          <rect>
-          <x>200</x>
-          <y>400</y>
-          <width>551</width>
+          <x>100</x>
+          <y>330</y>
+          <width>541</width>
           <height>71</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
-color: white; </string>
+color: white; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>¡En la proxima pantalla vas a 
@@ -867,8 +872,8 @@ customizar tu personaje!</string>
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>751</width>
-          <height>561</height>
+          <width>811</width>
+          <height>671</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -883,15 +888,16 @@ customizar tu personaje!</string>
        <widget class="QLabel" name="codigoPartidaUnirse">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>80</y>
-          <width>531</width>
+          <x>110</x>
+          <y>100</y>
+          <width>541</width>
           <height>161</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
-color: #f1b356; </string>
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>CODIGO DE LA 
@@ -901,8 +907,8 @@ PARTIDA A UNIRTE</string>
        <widget class="QLineEdit" name="campoCodigoPartida">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>240</y>
+          <x>130</x>
+          <y>260</y>
           <width>481</width>
           <height>51</height>
          </rect>
@@ -929,8 +935,8 @@ QLineEdit:focus, QComboBox:focus {
        <widget class="QPushButton" name="botSiguienteUP">
         <property name="geometry">
          <rect>
-          <x>390</x>
-          <y>320</y>
+          <x>450</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -955,8 +961,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botVolverUP">
         <property name="geometry">
          <rect>
-          <x>120</x>
-          <y>320</y>
+          <x>140</x>
+          <y>490</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -978,18 +984,19 @@ QPushButton:pressed {
          <string>Volver</string>
         </property>
        </widget>
-       <widget class="QLabel" name="textoCustomizarUnirse">
+       <widget class="QLabel" name="textoCustomizarUnirsePartida">
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>400</y>
-          <width>551</width>
+          <x>100</x>
+          <y>330</y>
+          <width>541</width>
           <height>71</height>
          </rect>
         </property>
         <property name="styleSheet">
          <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
-color: white; </string>
+color: white; 
+qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>¡En la proxima pantalla vas a 
