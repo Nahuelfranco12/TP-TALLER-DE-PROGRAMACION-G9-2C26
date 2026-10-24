@@ -1,11 +1,14 @@
 
 @startuml Diagrama
 class Jugador{
-    - monedas rand entre 0-100
-    - inventario
-    - zonaActual : Zona
+    - energia : double
+    - vida : double
+    - monedas : int 
+    ' rand entre 0-100
+    - inventario : Inventario
+    - sectorActual : Sector&
 
-    + mover(Posicion destino) : Posicion
+    + mover(Posicion destino) : ResultadoMovimiento
     ' + obtenerHerramienta(enum HerramientasDisponibles herramienta) : Herramienta
     
     ' Estos metodos interactuan con el inventario
@@ -53,7 +56,9 @@ ProductoDecoracion <|-- Cofre
 ProductoDecoracion <|-- Cama
 Cama --> Jugador
 
-class ItemMineral {}
+class ItemMineral {
+    - precio : double
+}
 class Cultivo {}
 class CultivoCosechado {}
 class ProductoAnimal {}
@@ -62,8 +67,8 @@ Item <|-- ProductoAnimal
 Item <|-- CultivoCosechado
 
 class Inventario {
-    - items : list[EspacioInventario]
-    - herramientas : list[Herramienta]
+    - items : list<EspacioInventario>
+    - herramientas : list<Herramienta>
 
     + agregarItem(Item& item)
     + agregarHerramienta(Herramienta& herramienta)
@@ -77,7 +82,6 @@ Jugador *-- Inventario
 class Mineral {
     - frecuencia
     - tiempo
-    - precio
 
     + efectoAlPicar()
 }
@@ -90,15 +94,12 @@ class Enemigo {
 }
 
 class Caverna {
-    - list[Nivel]
+    - list<Nivel>
 }
 
 class Nivel {}
 
 Caverna *-- Nivel
-
-Nivel <-- Enemigo
-Nivel <-- Mineral
 
 class Granja {}
 
@@ -108,12 +109,12 @@ class Pueblo {
 }
 
 class Mercado {
-    - list[Comerciante]
+    - list<Comerciante>
 }
 
 ' %% Con varias habitaciones y objetivos
 class CentroComunitario {
-    - list[Set]
+    - list<Set>
 }
 
 class Set {}
@@ -129,52 +130,68 @@ Pueblo *-- CentroComunitario
 Mercado o-- Comerciante
 
 class Mundo {
-    - zonas : list[Zona]
-    - jugadores : list[Jugador]
+    - sectores : map<IdSector, Sector>
+    - jugadores : list<Jugador>
+
+    + transferir(EntidadDeMapa& e, IdSector destino, Posicion pos) : bool
 }
 Mundo o-- Jugador
 
-class Zona {
-    - sectores: Map<Posicion, Sector>
-
-    + obtenerSector(pos)
-    + mover(entidad, destino)
+enum IdSector {
+    GRANJA
+    PUEBLO
+    CAVERNA_NIVEL
 }
-Mundo *-- Zona
-Zona <|-- Granja
-Zona <|-- Pueblo
-Zona <|-- Nivel
-Jugador --> Zona
+Mundo --o IdSector
 
 class Sector {
-    - coordenada : Posicion
+    - id : IdSector
     - casillas : Terreno[ALTO][ANCHO]
-    - entidades : Map[Posicion, EntidadDeMapa&]
+    - entidades : Map<Posicion, EntidadDeMapa&>
+    - puertas : Map<Posicion, Puerta>
+
+    + mover(EntidadDeMapa& e, Posicion destino) : ResultadoMovimiento
+    + estaLibre(Posicion pos) : bool
+    + agregar(EntidadDeMapa& e, Posicion pos) : bool
+    + quitar(EntidadDeMapa& e)
 }
-Zona *-- Sector
+Sector *-- IdSector
+Mundo *-- Sector
+Sector o-- EntidadDeMapa
+Sector <|-- Granja
+Sector <|-- Pueblo
+Sector <|-- Nivel
+Jugador --> Sector : sectorActual
+
+enum TipoTerreno {
+    TIERRA
+    PASTO
+    PISO
+}
 
 class Terreno {
     - transitable : bool
     - arable : bool
-    - textura : Textura
+    - tipoTerreno : TipoTerreno
 
     + esTransitable() : bool
     + esArable() : bool
     + obtenerTextura() : Textura
 }
-Sector --> Terreno
+Terreno *-- TipoTerreno
+Sector ..> Terreno
 
 class Posicion {
     - x : int
     - y : int
 }
-Zona ..> Posicion
 Sector ..> Posicion
 
 class Puerta {
-    - zonaDestino : Zona
+    - idSectorDestino : IdSector
     - posicionDestino : Posicion
 }
+Sector *-- Puerta
 
 class EntidadDeMapa {
     - posicion : Posicion
@@ -190,5 +207,11 @@ EntidadDeMapa <|-- ProductoDecoracion
 EntidadDeMapa <|-- Puerta
 EntidadDeMapa <|-- Jugador
 
-Sector --> EntidadDeMapa
+class ResultadoMovimiento {
+    - exito : bool
+    - posicion : Posicion
+    - idSector : IdSector
+}
+Jugador --> ResultadoMovimiento
+Sector --> ResultadoMovimiento
 @enduml
