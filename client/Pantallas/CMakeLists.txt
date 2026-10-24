@@ -5,21 +5,29 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
 
 qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR})
 
+# 1. Ponemos las rutas exactas de cada archivo (CMake odia los asteriscos *)
 qt_add_executable(Pantallas
     WIN32 MACOSX_BUNDLE
     main.cpp
-    pantalla.cpp
-    pantalla.h
+    implementaciones/pantalla.cpp
+    headers/pantalla.h
     pantalla.ui
     Images.qrc
-    partidas_estaticas.h partidas_estaticas.cpp
+    headers/partidas_estaticas.h
+    implementaciones/partidas_estaticas.cpp
 )
 
 target_link_libraries(Pantallas
     PRIVATE
         Qt::Core
         Qt::Widgets
+)
+
+target_include_directories(Pantallas PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/implementaciones
 )
 
 install(TARGETS Pantallas

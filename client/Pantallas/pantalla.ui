@@ -20,7 +20,7 @@
       <widget class="QWidget" name="pageMenuPrincipal">
        <property name="styleSheet">
         <string notr="true">#pageMenuPrincipal { 
-    border-image: url(:/Pantallas/01-inicio_screen.png); 
+    border-image: url(:/pantallas/assets/Pantallas/01-inicio_screen.png); 
 }</string>
        </property>
        <widget class="QPushButton" name="botNuevaPartida">
@@ -34,14 +34,14 @@
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 40px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -60,14 +60,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 40px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -86,14 +86,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 40px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -105,7 +105,7 @@ QPushButton:pressed {
       <widget class="QWidget" name="pageRetomarPartida">
        <property name="styleSheet">
         <string notr="true">#pageRetomarPartida { 
-    border-image: url(:/Pantallas/pantalla_retomar.jpg); 
+    border-image: url(:/pantallas/assets/Pantallas/pantalla_retomar.jpg); 
 }</string>
        </property>
        <widget class="QLabel" name="cartelRP">
@@ -119,7 +119,7 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel#cartelRP{
-    border-image: url(:/cartel/cartel-datos.png);
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
 }</string>
         </property>
         <property name="text">
@@ -154,14 +154,14 @@ color: #f1b356; </string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -180,14 +180,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -234,7 +234,7 @@ QScrollArea &gt; QWidget &gt; QWidget {
       <widget class="QWidget" name="pageCustomizarPersonaje">
        <property name="styleSheet">
         <string notr="true">#pageCustomizarPersonaje { 
-    border-image: url(:/Pantallas/02-nueva_partida_background.jpg); 
+    border-image: url(:/pantallas/assets/Pantallas/02-nueva_partida_background.jpg); 
 }</string>
        </property>
        <widget class="QLabel" name="cartelCP">
@@ -248,7 +248,7 @@ QScrollArea &gt; QWidget &gt; QWidget {
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel#cartelCP{
-    border-image: url(:/cartel/cartel-datos.png);
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
 }</string>
         </property>
         <property name="text">
@@ -325,14 +325,14 @@ color: #f1b356; </string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -351,14 +351,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -449,14 +449,14 @@ qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_derecha.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_derecha.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -475,14 +475,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_derecha.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_derecha.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -501,14 +501,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_derecha.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_derecha.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -527,14 +527,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_derecha.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_derecha.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -553,14 +553,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_izquierda.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_izquierda.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -579,14 +579,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_izquierda.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_izquierda.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -605,14 +605,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_izquierda.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_izquierda.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -631,14 +631,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/flechas/flecha_normal_izquierda.png);
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/flechas/flecha_apretada_izquierda.png);
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -663,7 +663,7 @@ QPushButton:pressed {
       <widget class="QWidget" name="pageNuevaPartida">
        <property name="styleSheet">
         <string notr="true">#pageNuevaPartida { 
-    border-image: url(:/Pantallas/02-nueva_partida_background.jpg);
+    border-image: url(:/pantallas/assets/Pantallas/02-nueva_partida_background.jpg);
 }</string>
        </property>
        <widget class="QLabel" name="cartelNP">
@@ -677,7 +677,7 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel#cartelNP{
-    border-image: url(:/cartel/cartel-datos.png);
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
 }</string>
         </property>
         <property name="text">
@@ -796,14 +796,14 @@ QLineEdit:focus, QComboBox:focus {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -822,14 +822,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -859,7 +859,7 @@ customizar tu personaje!</string>
       <widget class="QWidget" name="pageUnirsePartida">
        <property name="styleSheet">
         <string notr="true">#pageUnirsePartida { 
-    border-image: url(:/Pantallas/04_pantalla_unirse_partida.jpg); 
+    border-image: url(:/pantallas/assets/Pantallas/04_pantalla_unirse_partida.jpg); 
 }</string>
        </property>
        <widget class="QLabel" name="cartelUP">
@@ -873,7 +873,7 @@ customizar tu personaje!</string>
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel#cartelUP{
-    border-image: url(:/cartel/cartel-datos.png);
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
 }</string>
         </property>
         <property name="text">
@@ -937,14 +937,14 @@ QLineEdit:focus, QComboBox:focus {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
@@ -963,14 +963,14 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    border-image: url(:/Botones/Boton_normal.png);
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
     color: #f1b356; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
 }
 QPushButton:pressed {
-	border-image: url(:/Botones/botton_apretado.png);
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
 }</string>
         </property>
