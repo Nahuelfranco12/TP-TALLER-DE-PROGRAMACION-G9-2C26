@@ -1,70 +1,66 @@
 #include "pantalla.h"
-#include "ui_pantalla.h"
-#include "partidas_estaticas.h" // Incluimos las partidas simuladas
+#include "partidas_estaticas.h"
 #include <QFontDatabase>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QFrame>
 
-static QWidget* pantallaOrigen = nullptr;
-
 Pantalla::Pantalla(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Pantalla)
+    , pantallaOrigen(nullptr)
 {
     ui->setupUi(this);
-
-    QFontDatabase::addApplicationFont(":/fuentes/Stardew_Valley.ttf");
-
+    configurarFuentes();
+    configurarNavegacion();
     ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
+}
 
-    connect(ui->botNuevaPartida, &QPushButton::clicked, this, [this]() {
-        ui->stackedWidget->setCurrentWidget(ui->pageNuevaPartida);
+Pantalla::~Pantalla()
+{
+    delete ui;
+}
+
+void Pantalla::configurarFuentes() {
+    QFontDatabase::addApplicationFont(":/fuentes/assets/Stardew_Valley.ttf");
+}
+
+void Pantalla::conectarBoton(QPushButton* boton, QWidget* destino, QWidget* nuevoOrigen, AccionExtra accion) {
+    connect(boton, &QPushButton::clicked, this, [this, destino, nuevoOrigen, accion]() {
+        if (nuevoOrigen != nullptr)
+            pantallaOrigen = nuevoOrigen;
+        if (destino != nullptr)
+            ui->stackedWidget->setCurrentWidget(destino);
+        if (accion != nullptr)
+            accion();
+    });
+}
+
+void Pantalla::configurarNavegacion() {
+    // esto es para pasar nomas, tipo boton de siguiente y eso, volver tambien
+    conectarBoton(ui->botNuevaPartida, ui->pageNuevaPartida);
+    conectarBoton(ui->botUnirsePartida, ui->pageUnirsePartida);
+    conectarBoton(ui->botVolver, ui->pageMenuPrincipal);
+    conectarBoton(ui->botVolverUP, ui->pageMenuPrincipal);
+    conectarBoton(ui->botVolverRP, ui->pageMenuPrincipal);
+
+    // aca no me interesa el origen asi que es nulo, el this es una anonima y hace uso de cargar
+    conectarBoton(ui->botRetomarPartida, ui->pageRetomarPartida, nullptr, [this]() {
+        cargarListaPartidas();
     });
 
-    connect(ui->botUnirsePartida, &QPushButton::clicked, this, [this]() {
-        ui->stackedWidget->setCurrentWidget(ui->pageUnirsePartida);
-    });
-
-
- connect(ui->botRetomarPartida, &QPushButton::clicked, this, [this]() {
-     ui->stackedWidget->setCurrentWidget(ui->pageRetomarPartida);
-    cargarListaPartidas();
- });
-
-    connect(ui->botVolver, &QPushButton::clicked, this, [this]() {
-        ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
-    });
-
-    connect(ui->botSiguiente, &QPushButton::clicked, this, [this]() {
-        pantallaOrigen = ui->pageNuevaPartida;
-        ui->stackedWidget->setCurrentWidget(ui->pageCustomizarPersonaje);
-    });
-
-    connect(ui->botVolverUP, &QPushButton::clicked, this, [this]() {
-        ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
-    });
-
-    connect(ui->botSiguienteUP, &QPushButton::clicked, this, [this]() {
-        pantallaOrigen = ui->pageUnirsePartida;
-        ui->stackedWidget->setCurrentWidget(ui->pageCustomizarPersonaje);
-    });
+    // esto lo hago para por ejemplo volver a la pantalla correcta
+    conectarBoton(ui->botSiguiente, ui->pageCustomizarPersonaje, ui->pageNuevaPartida);
+    conectarBoton(ui->botSiguienteUP, ui->pageCustomizarPersonaje, ui->pageUnirsePartida);
 
     connect(ui->botVolverPersonaje, &QPushButton::clicked, this, [this]() {
-        if (pantallaOrigen != nullptr) {
+        if (pantallaOrigen != nullptr)
             ui->stackedWidget->setCurrentWidget(pantallaOrigen);
-        } else {
+        else
             ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
-        }
     });
 
-    connect(ui->botVolverRP, &QPushButton::clicked, this, [this]() {
-        ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
-    });
-
-    connect(ui->botJugarRP, &QPushButton::clicked, this, [this]() {
-    });
 }
 
 void Pantalla::cargarListaPartidas() {
@@ -108,9 +104,4 @@ void Pantalla::cargarListaPartidas() {
 
         ui->scrollAreaWidgetContents->layout()->addWidget(tarjeta);
     }
-}
-
-Pantalla::~Pantalla()
-{
-    delete ui;
 }
