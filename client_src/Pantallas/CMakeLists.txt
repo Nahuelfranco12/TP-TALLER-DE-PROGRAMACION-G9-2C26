@@ -17,6 +17,23 @@ qt_add_executable(Pantallas
     Images.qrc
     headers/partidas_estaticas.h
     implementaciones/partidas_estaticas.cpp
+    headers/tarjeta_item.h
+    implementaciones/tarjeta_item.cpp
+    headers/navegador.h
+    implementaciones/navegador.cpp
+    headers/lista_seleccionable.h
+    implementaciones/lista_seleccionable.cpp
+    headers/controlador_pagina.h
+    headers/controlador_menu_principal.h
+    implementaciones/controlador_menu_principal.cpp
+    headers/controlador_nueva_partida.h
+    implementaciones/controlador_nueva_partida.cpp
+    headers/controlador_unirse_partida.h
+    implementaciones/controlador_unirse_partida.cpp
+    headers/controlador_retomar_partida.h
+    implementaciones/controlador_retomar_partida.cpp
+    headers/controlador_customizar_personaje.h
+    implementaciones/controlador_customizar_personaje.cpp
 )
 
 target_link_libraries(Pantallas

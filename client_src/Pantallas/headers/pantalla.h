@@ -2,12 +2,8 @@
 #define PANTALLA_H
 
 #include <QMainWindow>
-#include <QPushButton>
-#include <functional>
-#include "partidas_estaticas.h"
-#include "ui_pantalla.h"
 
-typedef std::function<void()> AccionExtra;
+namespace Ui { class Pantalla; }
 
 class Pantalla : public QMainWindow
 {
@@ -19,14 +15,5 @@ public:
 
 private:
     Ui::Pantalla *ui;
-    QWidget *pantallaOrigen;
-    QString partidaSeleccionada = "";
-    QFrame* tarjetaSeleccionada = nullptr;
-
-    void configurarFuentes();
-    void configurarNavegacion();
-    void cargarListaPartidas();
-    QFrame* crearTarjetaPartida(const PartidaGuardada& partida);
-    void conectarBoton(QPushButton* boton, QWidget* destino, QWidget* nuevoOrigen = nullptr, AccionExtra accion = nullptr);
 };
 #endif // PANTALLA_H

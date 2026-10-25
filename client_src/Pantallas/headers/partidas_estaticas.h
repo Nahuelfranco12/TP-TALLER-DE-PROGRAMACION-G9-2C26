@@ -4,6 +4,11 @@
 #include <QString>
 #include <QList>
 
+struct MundoMock {
+    QString nombreMundo;
+    QString rutaImagen;
+};
+
 struct PartidaGuardada {
     QString nombrePartida;
     QString nombrePersonaje;
@@ -12,5 +17,6 @@ struct PartidaGuardada {
 };
 
 QList<PartidaGuardada> obtenerPartidasDePrueba();
+QList<MundoMock> obtenerMundosDePrueba();
 
 #endif // PARTIDAS_ESTATICAS_H
