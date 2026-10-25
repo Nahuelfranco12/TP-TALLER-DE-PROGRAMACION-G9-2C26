@@ -2,27 +2,19 @@
 #define PANTALLA_H
 
 #include <QMainWindow>
-#include <QPushButton>
-#include <functional>
-#include "ui_pantalla.h"
 
-typedef std::function<void()> AccionExtra;
+namespace Ui {
+class Pantalla;
+}
 
-class Pantalla : public QMainWindow
-{
-    Q_OBJECT
+class Pantalla : public QMainWindow {
+  Q_OBJECT
 
 public:
-    explicit Pantalla(QWidget *parent = nullptr);
-    ~Pantalla() override;
+  explicit Pantalla(QWidget *parent = nullptr);
+  ~Pantalla() override;
 
 private:
-    Ui::Pantalla *ui;
-    QWidget *pantallaOrigen;
-
-    void configurarFuentes();
-    void configurarNavegacion();
-    void cargarListaPartidas();
-    void conectarBoton(QPushButton* boton, QWidget* destino, QWidget* nuevoOrigen = nullptr, AccionExtra accion = nullptr);
+  Ui::Pantalla *ui;
 };
 #endif // PANTALLA_H

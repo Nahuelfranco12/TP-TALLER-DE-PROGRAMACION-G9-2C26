@@ -707,7 +707,7 @@ qproperty-alignment: AlignCenter;</string>
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>190</y>
+          <y>170</y>
           <width>291</width>
           <height>31</height>
          </rect>
@@ -724,8 +724,8 @@ qproperty-alignment: AlignCenter;</string>
        <widget class="QLineEdit" name="campoNOmbrePartida">
         <property name="geometry">
          <rect>
-          <x>390</x>
-          <y>190</y>
+          <x>400</x>
+          <y>170</y>
           <width>221</width>
           <height>31</height>
          </rect>
@@ -750,8 +750,8 @@ QLineEdit:focus, QComboBox:focus {
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>240</y>
-          <width>291</width>
+          <y>210</y>
+          <width>541</width>
           <height>31</height>
          </rect>
         </property>
@@ -762,31 +762,6 @@ qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
          <string>SELECCIONAR MUNDO</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="desplegableMundo">
-        <property name="geometry">
-         <rect>
-          <x>390</x>
-          <y>240</y>
-          <width>211</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLineEdit, QComboBox {
-    background-color: #2b1a10; 
-    color: #f1b356; 
-    border: 2px solid #5c3a21; 
-    border-radius: 4px; 
-    padding: 2px 5px;
-    font-family: &quot;Stardew Valley&quot;;
-    font-size: 20px;
-}
-
-QLineEdit:focus, QComboBox:focus {
-    border: 2px solid #f1b356; 
-}</string>
         </property>
        </widget>
        <widget class="QPushButton" name="botVolver">
@@ -845,7 +820,7 @@ QPushButton:pressed {
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>330</y>
+          <y>400</y>
           <width>541</width>
           <height>71</height>
          </rect>
@@ -859,6 +834,41 @@ qproperty-alignment: AlignCenter;</string>
          <string>¡En la proxima pantalla vas a 
 customizar tu personaje!</string>
         </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollMapaNuevaPartida">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>260</y>
+          <width>541</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}</string>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>541</width>
+           <height>111</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="pageUnirsePartida">
