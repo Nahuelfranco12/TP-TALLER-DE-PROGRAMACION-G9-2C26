@@ -3,10 +3,10 @@
 QList<PartidaGuardada> obtenerPartidasDePrueba() {
     QList<PartidaGuardada> lista;
 
-    lista.append({"Granaj buen dia", "Leon", ":/ruta/a/tu/imagen_interrogacion.png", false});
-    lista.append({"se pelean los amigos", "Lisandro", ":/ruta/a/tu/imagen_interrogacion.png", true});
-    lista.append({"Aguante Boca", "Nahuel", ":/ruta/a/tu/imagen_interrogacion.png", true});
-    lista.append({"No se que mas poner", "Camila", ":/ruta/a/tu/imagen_interrogacion.png", true});
+    lista.append({"Granaj buen dia", "Leon", ":/pantallas/assets/Pantallas/01-inicio_screen.png", false});
+    lista.append({"se pelean los amigos", "Lisandro", ":/pantallas/assets/Pantallas/01-inicio_screen.png", true});
+    lista.append({"Aguante Boca", "Nahuel", ":/pantallas/assets/Pantallas/01-inicio_screen.png", true});
+    lista.append({"No se que mas poner", "Camila", ":/pantallas/assets/Pantallas/01-inicio_screen.png", true});
 
     return lista;
 }
