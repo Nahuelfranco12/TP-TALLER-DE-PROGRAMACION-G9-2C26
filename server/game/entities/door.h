@@ -3,8 +3,9 @@
 
 #include "../id_sector.h"
 #include "../position.h"
+#include "entity.h"
 
-class Door {
+class Door : public Entity {
 private:
     IdSector idDestineSector;
     Position destinePosition;

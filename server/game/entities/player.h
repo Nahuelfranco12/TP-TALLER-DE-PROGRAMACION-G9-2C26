@@ -1,20 +1,23 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "position.h"
-#include "inventory.h"
+#include "entity.h"
+#include "../position.h"
+#include "../inventory/inventory.h"
 #include "mineral.h"
 #include "sector.h"
 
-class Player {
+class Player : public Entity {
 private:
-    double life;
-    double energy;
+    double life = 100;
+    double energy = 100;
     int coins;
     Inventory inventory;
     Sector& actualSector;
 
 public:
+    Player();
+
     Position move(Position destination);
 
     /*

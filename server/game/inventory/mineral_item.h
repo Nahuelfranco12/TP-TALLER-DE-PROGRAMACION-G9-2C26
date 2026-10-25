@@ -5,9 +5,8 @@
 
 class MineralItem : public Item {
 private:
-    double price;
-
 public:
+    MineralItem(double price) : Item(price) {};
 };
 
 #endif MINERAL_ITEM_H_

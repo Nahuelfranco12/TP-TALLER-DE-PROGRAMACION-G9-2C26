@@ -1,7 +1,9 @@
 #ifndef MINERAL_H_
 #define MINERAL_H_
 
-class Mineral {
+#include "entity.h"
+
+class Mineral : public Entity {
 private:
     double spawnFrequency;
     double pickaxeTime;
