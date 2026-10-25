@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Pantalla</class>
+ <widget class="QMainWindow" name="Pantalla">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Pantalla</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <widget class="QWidget" name="pageMenuPrincipal">
+       <property name="styleSheet">
+        <string notr="true">#pageMenuPrincipal { 
+    border-image: url(:/pantallas/assets/Pantallas/01-inicio_screen.png); 
+}</string>
+       </property>
+       <widget class="QPushButton" name="botNuevaPartida">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>110</y>
+          <width>300</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Nueva Partida</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botUnirsePartida">
+        <property name="geometry">
+         <rect>
+          <x>940</x>
+          <y>110</y>
+          <width>300</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Unirse a partida</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botRetomarPartida">
+        <property name="geometry">
+         <rect>
+          <x>780</x>
+          <y>220</y>
+          <width>300</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Retomar Partida</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pageRetomarPartida">
+       <property name="styleSheet">
+        <string notr="true">#pageRetomarPartida { 
+    border-image: url(:/pantallas/assets/Pantallas/pantalla_retomar.jpg); 
+}</string>
+       </property>
+       <widget class="QLabel" name="cartelRP">
+        <property name="geometry">
+         <rect>
+          <x>-20</x>
+          <y>-10</y>
+          <width>811</width>
+          <height>671</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelRP{
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="codigoPartidaRetomar">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>110</y>
+          <width>531</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Partidas a unirte</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botJugarRP">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Jugar</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botVolverRP">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Volver</string>
+        </property>
+       </widget>
+       <widget class="QScrollArea" name="scrollAreaPartidas">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>230</y>
+          <width>491</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: transparent;
+}</string>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>491</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pageCustomizarPersonaje">
+       <property name="styleSheet">
+        <string notr="true">#pageCustomizarPersonaje { 
+    border-image: url(:/pantallas/assets/Pantallas/fondo_noche.png); 
+}</string>
+       </property>
+       <widget class="QLabel" name="cartelCP">
+        <property name="geometry">
+         <rect>
+          <x>-20</x>
+          <y>-10</y>
+          <width>811</width>
+          <height>671</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelCP{
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="personaje">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>110</y>
+          <width>281</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
+color: #f1b356; </string>
+        </property>
+        <property name="text">
+         <string>PERSONAJE</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="campoNOmbrePersonaje">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>190</y>
+          <width>221</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit, QComboBox {
+    background-color: #2b1a10; 
+    color: #f1b356; 
+    border: 2px solid #5c3a21; 
+    border-radius: 4px; 
+    padding: 2px 5px;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 20px;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #f1b356; 
+}</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="nombrePersonaje">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>190</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356; </string>
+        </property>
+        <property name="text">
+         <string>NOMBRE</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botJugar">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Jugar</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botVolverPersonaje">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Volver</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="elegirPantalon">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>240</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356;
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Pantalon</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="elegirRemera">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>290</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356;
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Remera</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="elegirGorro">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>340</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356;
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Gorro</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="elegirPelo">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>390</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356;
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>Pelo</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSigPantalon">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>240</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSigRemera">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>290</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSigGorro">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>340</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSigPelo">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>390</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_derecha.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_derecha.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botAntPantalon">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>240</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botAntRemera">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>290</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botAntGorro">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>340</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botAntPelo">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>390</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/flechas/assets/flechas/flecha_normal_izquierda.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/flechas/assets/flechas/flecha_apretada_izquierda.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="previewPersonaje">
+        <property name="geometry">
+         <rect>
+          <x>147</x>
+          <y>237</y>
+          <width>231</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pageNuevaPartida">
+       <property name="styleSheet">
+        <string notr="true">#pageNuevaPartida { 
+    border-image: url(:/pantallas/assets/Pantallas/02-nueva_partida_background.jpg);
+}</string>
+       </property>
+       <widget class="QLabel" name="cartelNP">
+        <property name="geometry">
+         <rect>
+          <x>-20</x>
+          <y>-10</y>
+          <width>811</width>
+          <height>671</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelNP{
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="nuevaPartida">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>100</y>
+          <width>541</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>NUEVA PARTIDA</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="nombrePartida">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>190</y>
+          <width>291</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>NOMBRE DE LA PARTIDA</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="campoNOmbrePartida">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>190</y>
+          <width>221</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit, QComboBox {
+    background-color: #2b1a10; 
+    color: #f1b356; 
+    border: 2px solid #5c3a21; 
+    border-radius: 4px; 
+    padding: 2px 5px;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 20px;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #f1b356; 
+}</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="seleccionMundo">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>240</y>
+          <width>291</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>SELECCIONAR MUNDO</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="desplegableMundo">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>240</y>
+          <width>211</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit, QComboBox {
+    background-color: #2b1a10; 
+    color: #f1b356; 
+    border: 2px solid #5c3a21; 
+    border-radius: 4px; 
+    padding: 2px 5px;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 20px;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #f1b356; 
+}</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botVolver">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Volver</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSiguiente">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Siguiente</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="textoCustomizarNuevaPartida">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>330</y>
+          <width>541</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: white; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>¡En la proxima pantalla vas a 
+customizar tu personaje!</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="pageUnirsePartida">
+       <property name="styleSheet">
+        <string notr="true">#pageUnirsePartida { 
+    border-image: url(:/pantallas/assets/Pantallas/04_pantalla_unirse_partida.jpg); 
+}</string>
+       </property>
+       <widget class="QLabel" name="cartelUP">
+        <property name="geometry">
+         <rect>
+          <x>-20</x>
+          <y>-10</y>
+          <width>811</width>
+          <height>671</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelUP{
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="codigoPartidaUnirse">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>100</y>
+          <width>541</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 50pt &quot;Stardew Valley&quot;;
+color: #f1b356; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>CODIGO DE LA 
+PARTIDA A UNIRTE</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="campoCodigoPartida">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>260</y>
+          <width>481</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit, QComboBox {
+    background-color: #2b1a10; 
+    color: #f1b356; 
+    border: 2px solid #5c3a21; 
+    border-radius: 4px; 
+    padding: 2px 5px;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 20px;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #f1b356; 
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botSiguienteUP">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Siguiente</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botVolverUP">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>490</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 25px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Volver</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="textoCustomizarUnirsePartida">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>330</y>
+          <width>541</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;Stardew Valley&quot;;
+color: white; 
+qproperty-alignment: AlignCenter;</string>
+        </property>
+        <property name="text">
+         <string>¡En la proxima pantalla vas a 
+customizar tu personaje!</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
