@@ -4,15 +4,15 @@
 #include "controlador_pagina.h"
 #include "lista_seleccionable.h"
 
-class ControladorRetomarPartida : public ControladorPagina
-{
+class ControladorRetomarPartida : public ControladorPagina {
 public:
-    ControladorRetomarPartida(Ui::Pantalla& ui, Navegador& navegador, QObject* parent = nullptr);
+  ControladorRetomarPartida(Ui::Pantalla &ui, Navegador &navegador,
+                            QObject *parent = nullptr);
 
 private:
-    ListaSeleccionable* partidas;
+  ListaSeleccionable *partidas;
 
-    void cargarPartidas();
+  void cargarPartidas();
 };
 
 #endif // CONTROLADOR_RETOMAR_PARTIDA_H

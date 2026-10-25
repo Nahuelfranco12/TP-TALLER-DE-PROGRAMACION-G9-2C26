@@ -3,10 +3,10 @@
 
 #include "controlador_pagina.h"
 
-class ControladorCustomizarPersonaje : public ControladorPagina
-{
+class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
-    ControladorCustomizarPersonaje(Ui::Pantalla& ui, Navegador& navegador, QObject* parent = nullptr);
+  ControladorCustomizarPersonaje(Ui::Pantalla &ui, Navegador &navegador,
+                                 QObject *parent = nullptr);
 };
 
 #endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H

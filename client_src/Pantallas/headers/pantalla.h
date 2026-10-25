@@ -3,17 +3,18 @@
 
 #include <QMainWindow>
 
-namespace Ui { class Pantalla; }
+namespace Ui {
+class Pantalla;
+}
 
-class Pantalla : public QMainWindow
-{
-    Q_OBJECT
+class Pantalla : public QMainWindow {
+  Q_OBJECT
 
 public:
-    explicit Pantalla(QWidget *parent = nullptr);
-    ~Pantalla() override;
+  explicit Pantalla(QWidget *parent = nullptr);
+  ~Pantalla() override;
 
 private:
-    Ui::Pantalla *ui;
+  Ui::Pantalla *ui;
 };
 #endif // PANTALLA_H

@@ -5,32 +5,31 @@
 #include <QString>
 
 struct DatosTarjeta {
-    QString id;
-    QString rutaImagen;
-    QString titulo;
-    QString subtitulo;
-    QString textoExtra;
-    QString textoBoton;
+  QString id;
+  QString rutaImagen;
+  QString titulo;
+  QString subtitulo;
+  QString textoExtra;
+  QString textoBoton;
 };
 
-class TarjetaItem : public QFrame
-{
-    Q_OBJECT
+class TarjetaItem : public QFrame {
+  Q_OBJECT
 
 public:
-    explicit TarjetaItem(const DatosTarjeta& datos, QWidget *parent = nullptr);
+  explicit TarjetaItem(const DatosTarjeta &datos, QWidget *parent = nullptr);
 
-    void setSeleccionada(bool estado);
-    QString getId() const;
+  void setSeleccionada(bool estado);
+  QString getId() const;
 
 signals:
-    void clickeada(TarjetaItem* tarjeta);
+  void clickeada(TarjetaItem *tarjeta);
 
 protected:
-    void mousePressEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent *event) override;
 
 private:
-    QString m_id;
+  QString m_id;
 };
 
 #endif // TARJETA_ITEM_H

@@ -4,16 +4,16 @@
 #include "controlador_pagina.h"
 #include "lista_seleccionable.h"
 
-class ControladorNuevaPartida : public ControladorPagina
-{
+class ControladorNuevaPartida : public ControladorPagina {
 public:
-    ControladorNuevaPartida(Ui::Pantalla& ui, Navegador& navegador, QObject* parent = nullptr);
+  ControladorNuevaPartida(Ui::Pantalla &ui, Navegador &navegador,
+                          QObject *parent = nullptr);
 
 private:
-    ListaSeleccionable* mundos;
+  ListaSeleccionable *mundos;
 
-    void cargarMundos();
-    void reiniciar();
+  void cargarMundos();
+  void reiniciar();
 };
 
 #endif // CONTROLADOR_NUEVA_PARTIDA_H
