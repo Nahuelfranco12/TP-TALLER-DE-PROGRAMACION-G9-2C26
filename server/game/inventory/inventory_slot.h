@@ -2,19 +2,22 @@
 #define INVENTORY_SLOT_H_
 
 #include <cstdlib>
+#include <memory>
 
-#include "item.h"
 #include "../game_constants.h"
+#include "item.h"
 
 class InventorySlot {
-    Item item;
-    size_t count = 0;
+private:
+    std::unique_ptr<Item> item;
+    size_t count;
+
 public:
-    InventorySlot(Item item) : item(item) {};
+    explicit InventorySlot(std::unique_ptr<Item> item) : item(std::move(item)), count(1) {}
 
     Item& getItem();
     size_t getCount();
-    bool addItem();
+    bool add();
 };
 
 #endif // INVENTORY_SLOT_H_
