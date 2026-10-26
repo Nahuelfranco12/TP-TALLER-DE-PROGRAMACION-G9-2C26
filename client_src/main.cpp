@@ -1,4 +1,4 @@
-#include "common/foo.h"
+#include "common_src/foo.h"
 
 #include <exception>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL2pp.hh>
 
-// using namespace SDL2pp;
+using namespace SDL2pp;
 
 int main() try {
   // Initialize SDL library
