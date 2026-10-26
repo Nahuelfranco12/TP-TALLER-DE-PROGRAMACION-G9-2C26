@@ -20,8 +20,7 @@ private:
 public:
     World(DaySpeed speed) : speed(speed) {};
 
-    bool addSector(IdSector id);
-    void addPlayer(Player player, IdSector idSector);
+    IdPlayer addPlayer(IdSector idSector);
 
     bool transfer(Entity& e, IdSector destine, Position pos);
 };
