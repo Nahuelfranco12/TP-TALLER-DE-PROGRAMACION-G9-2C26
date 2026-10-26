@@ -19,4 +19,10 @@ struct WorldState {
     std::vector<PlayerPosition> players;
 };
 
+struct MatchInfo {
+    std::string join_code;
+    std::string name;
+    int players = 0;
+}
+
 #endif

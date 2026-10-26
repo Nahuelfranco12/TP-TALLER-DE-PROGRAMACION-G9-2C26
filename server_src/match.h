@@ -23,6 +23,7 @@ class Match {
         void leave(int client_id);
         void send_command(const ClientCommand& cmd);
         const std::string& get_name() const;
+        int player_count();
 
         Match(const Match&) = delete;
         Match& operator=(const Match&) = delete;
