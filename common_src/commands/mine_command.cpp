@@ -1,6 +1,7 @@
 #include "mine_command.h"
-#include "../entities/mineral.h"
-#include "../world.h"
+
+#include "../../server_src/game/entities/mineral.h"
+#include "../../server_src/game/world.h"
 
 void MineCommand::execute(World& world) {
     Player* player = world.getPlayer(this->playerId);

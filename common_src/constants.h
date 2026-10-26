@@ -1,7 +1,6 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-
 constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define STRING_END '\0'
 #define STRING_BRK '\n'
