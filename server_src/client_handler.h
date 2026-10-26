@@ -19,12 +19,11 @@ private:
     int client_id;
     ServerProtocol protocol;
     Queue<WorldState> to_send_queue;
-    Queue<ClientCommand>& received_queue;
-    ClientQueues& clients;
+    Match& match;
     ServerReceiver receiver;
     ServerSender sender;
 public:
-    ClientHandler(Socket&& skt, int client_id, Queue<ClientCommand>& received_queue, ClientQueues& clients);
+    ClientHandler(Socket&& skt, int client_id, Match& match);
 
     void start();
 
