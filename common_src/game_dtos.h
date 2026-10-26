@@ -5,7 +5,7 @@
 
 enum class Direction { Up, Down, Left, Right};
 
-struct MoveCommand {
+struct MoveCmd {
     Direction direction = Direction::Up;
 };
 

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../common_src/constants.h"
+#include "./game/commands/move_command.h"
 #include "./game/commands/leave_command.h"
 
 ServerReceiver::ServerReceiver(ServerProtocol& protocol, Queue<Command*>& received_queue, int client_id):
@@ -12,8 +13,11 @@ ServerReceiver::ServerReceiver(ServerProtocol& protocol, Queue<Command*>& receiv
 void ServerReceiver::run() {
     try {
         while(should_keep_running()) {
-            MoveCommand move = protocol.receive_move();
-            received_queue.push(&move);
+            MoveCmd move = protocol.receive_move();
+
+            MoveCommand move_cmd = MoveCommand(client_id, move.direction);
+
+            received_queue.push(&move_cmd);
         }
     } catch (const ClosedQueue&) {
         return;

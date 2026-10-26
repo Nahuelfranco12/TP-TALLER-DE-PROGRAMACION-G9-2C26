@@ -21,7 +21,7 @@ public:
     std::string receive_msg();
     void shutdown();
 
-    void send_move_cmd(const MoveCommand& cmd);
+    void send_move_cmd(const MoveCmd& cmd);
 
     WorldState receive_world_state();
 };
