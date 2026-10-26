@@ -8,6 +8,8 @@ MoveResult Player::move(Position destination) {
 }
 
 void Player::mine(Mineral& mineral) {
+    if (!this->position.isAdjacentTo(mineral.position))
+        return;
     Tool* pickaxe = this->inventory.getTool(AvailableTools::PICKAXE);
     if (!pickaxe) return;
 
