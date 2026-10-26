@@ -3,16 +3,15 @@
 
 #include <cstddef>
 #include <map>
-#include <vector>
 #include <memory>
+#include <vector>
 
-#include "position.h"
-#include "terrain.h"
-#include "./entities/entity.h"
-#include "./entities/door.h"
 #include "id_sector.h"
 #include "move_result.h"
+#include "position.h"
 #include "terrain.h"
+#include "entities/door.h"
+#include "entities/entity.h"
 
 class Sector {
 private:
@@ -24,13 +23,21 @@ private:
     std::map<Position, Door> doors;
 
 public:
-    Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {};
+    Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {}
+
+    virtual ~Sector() = default;
 
     MoveResult move(Position origin, Position destine);
-    bool isEmpty(Position pos);
+    bool canMoveTo(Position pos) const;
+    bool isEmpty(Position pos) const;
     bool addEntity(std::unique_ptr<Entity> entity, Position pos);
     std::unique_ptr<Entity> removeEntity(Position pos);
-    Entity* getEntity(Position pos);
+    Entity* getEntity(Position pos) const;
+    Position findFreePosition() const;
+
+    IdSector getId() const { return id;     }
+    size_t getWidth() const { return width;  }
+    size_t getHeight() const { return height; }
 };
 
 #endif // SECTOR_H_
