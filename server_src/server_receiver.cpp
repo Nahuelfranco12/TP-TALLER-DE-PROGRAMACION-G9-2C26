@@ -31,8 +31,11 @@ void ServerReceiver::run() {
         }
 
         while(should_keep_running()) {
-            MoveCommand move = protocol.receive_move();
-            to_send_queue.push(&move);
+            MoveCmd move = protocol.receive_move();
+
+            MoveCommand move_cmd = MoveCommand(client_id, move.direction);
+
+            to_send_queue.push(&move_cmd);
         }
     } catch (const ClosedQueue&) {
         return;

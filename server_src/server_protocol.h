@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "./game/commands/move_command.h"
+#include "../common_src/game_dtos.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
 #include "../common_src/game_dtos.h"
