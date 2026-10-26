@@ -10,8 +10,10 @@ private:
     TerrainType terrainType;
 
 public:
+    Terrain(bool transitable, bool arable, TerrainType type) : transitable(transitable), arable(arable), terrainType(type) {};
+
     bool isTransitable();
-    bool esArable();
+    bool isArable();
     TerrainType getTerrainType();
 };
 

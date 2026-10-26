@@ -9,6 +9,8 @@ private:
     double pickaxeTime;
 
 public:
+    Mineral(size_t pos_x, size_t pos_y, double spawnFrequency, double pickaxeTime) : Entity(pos_x, pos_y), spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {};
+
     void pickaxeEffect();
 };
 

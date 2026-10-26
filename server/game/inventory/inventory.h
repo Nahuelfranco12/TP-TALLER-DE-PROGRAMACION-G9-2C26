@@ -12,6 +12,8 @@ private:
     std::list<Tool> tools;
 
 public:
+    Inventory() : tools() {};
+
     bool addItem(Item& item);
     bool addTool(Tool& tool);
 

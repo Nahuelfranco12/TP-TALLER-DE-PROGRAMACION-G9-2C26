@@ -6,7 +6,7 @@
 
 #include "id_sector.h"
 #include "sector.h"
-#include "player.h"
+#include "./entities/player.h"
 
 class World {
 private:
@@ -17,6 +17,9 @@ private:
 
 public:
     World();
+
+    void addSector(IdSector id);
+    void addPlayer(Player player);
 
     bool transfer(Entity& e, IdSector destine, Position pos);
 };

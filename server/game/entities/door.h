@@ -9,6 +9,9 @@ class Door : public Entity {
 private:
     IdSector idDestineSector;
     Position destinePosition;
+
+public:
+    Door(size_t pos_x, size_t pos_y, IdSector idDestineSector, Position destinePosition) : Entity(pos_x, pos_y), idDestineSector(idDestineSector), destinePosition(destinePosition) {};
 };
 
 #endif // DOOR_H_

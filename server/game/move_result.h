@@ -5,12 +5,12 @@
 #include "id_sector.h"
 
 class MoveResult {
-private:
+public:
     bool success;
-    Position postion;
+    Position position;
     IdSector idSector;
 
-public:
+    MoveResult(bool success, Position position, IdSector idSector) :  success(success), position(position), idSector(idSector) {};
 };
 
 #endif // MOVE_RESULT_H_
