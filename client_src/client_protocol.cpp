@@ -19,6 +19,7 @@ void ClientProtocol::shutdown() {
 
 void ClientProtocol::send_move_cmd(const MoveCmd& cmd){
     protocol.send_u8(OP_MOVE);
+    protocol.send_u8(playerId);
     protocol.send_u8(direction_to_byte(cmd.direction));
 }
 

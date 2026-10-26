@@ -13,12 +13,12 @@ class ServerReceiver: public Thread {
 private:
     ServerProtocol& protocol;
     Lobby& lobby;
-    Queue<WorldState>& to_send_queue;
+    Queue<Command*>& to_send_queue;
     int client_id;
     Match* match = nullptr;
 
 public:
-    ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id);
+    ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<Command*>& to_send_queue, int client_id);
 
     void run() override;
 };

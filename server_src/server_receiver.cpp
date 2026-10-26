@@ -7,7 +7,7 @@
 #include "./game/commands/move_command.h"
 #include "./game/commands/leave_command.h"
 
-ServerReceiver::ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id):
+ServerReceiver::ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<Command*>& to_send_queue, int client_id):
     protocol(protocol), lobby(lobby), to_send_queue(to_send_queue), client_id(client_id) {}
 
 void ServerReceiver::run() {
@@ -32,8 +32,7 @@ void ServerReceiver::run() {
 
         while(should_keep_running()) {
             MoveCommand move = protocol.receive_move();
-            match->push_command(ClientCommand{client_id, CommandType::Move, move.direction});
-            
+            to_send_queue.push(&move);
         }
     } catch (const ClosedQueue&) {
         return;
@@ -41,11 +40,8 @@ void ServerReceiver::run() {
         
     }
 
-    if(match != nullptr)
-        match->leave(client_id);
-
     try {
-        received_queue.push(&LeaveCommand(client_id));
+        to_send_queue.push(&LeaveCommand(client_id));
     } catch (const ClosedQueue&) {}
 
     protocol.shutdown();
