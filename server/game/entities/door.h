@@ -12,6 +12,9 @@ private:
 
 public:
     Door(size_t pos_x, size_t pos_y, IdSector idDestineSector, Position destinePosition) : Entity(pos_x, pos_y), idDestineSector(idDestineSector), destinePosition(destinePosition) {};
+
+    IdSector getIdDestineSector() const { return idDestineSector; }
+    Position getDestinePosition() const { return destinePosition; }
 };
 
 #endif // DOOR_H_
