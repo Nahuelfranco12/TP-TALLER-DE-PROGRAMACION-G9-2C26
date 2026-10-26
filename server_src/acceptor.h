@@ -9,6 +9,8 @@
 
 #include "./game/command.h"
 #include "lobby.h"
+#include "./game/command.h"
+
 #include "client_handler.h"
 
 class Acceptor: public Thread {
