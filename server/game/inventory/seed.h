@@ -4,9 +4,8 @@
 #include "item.h"
 
 class Seed : public Item {
-private:
 public:
-    Seed(double price) : Item(price) {};
+    explicit Seed(double price) : Item(price, ItemType::SEED) {}
 };
 
 #endif // SEED_H_

@@ -10,11 +10,11 @@ private:
     TerrainType terrainType;
 
 public:
-    Terrain(bool transitable, bool arable, TerrainType type) : transitable(transitable), arable(arable), terrainType(type) {};
+    Terrain(bool transitable, bool arable, TerrainType type) : transitable(transitable), arable(arable), terrainType(type) {}
 
-    bool isTransitable();
-    bool isArable();
-    TerrainType getTerrainType();
+    bool isTransitable() const;
+    bool isArable() const;
+    TerrainType getTerrainType() const;
 };
 
 #endif // TERRAIN_H_
