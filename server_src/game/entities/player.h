@@ -13,6 +13,7 @@ class Mineral; // forward declaration
 
 class Player : public Entity {
 private:
+    int id;
     double life;
     double energy;
     size_t coins;
@@ -20,7 +21,7 @@ private:
     Sector* actualSector;
 
 public:
-    Player(size_t pos_x, size_t pos_y, Sector* actualSector) : Entity(pos_x, pos_y), life(100), energy(100), coins(rand() % 100 + 1), inventory(), actualSector(actualSector) {}
+    Player(size_t pos_x, size_t pos_y, int id, Sector* actualSector) : Entity(pos_x, pos_y), id(id), life(100), energy(100), coins(rand() % 100 + 1), inventory(), actualSector(actualSector) {}
 
     MoveResult move(Position destination);
     void mine(Mineral& mineral);

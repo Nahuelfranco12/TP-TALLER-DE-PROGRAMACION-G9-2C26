@@ -7,9 +7,10 @@
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 
-#include "client_command.h"
-#include "client_queues.h"
+#include "./game/world.h"
+#include "./game/command.h"
 
+#include "client_queues.h"
 
 #define MAP_WIDTH 20
 #define MAP_HEIGHT 20
@@ -25,15 +26,13 @@ struct Position {
 
 class Gameloop: public Thread {
     private:
-        Queue<ClientCommand>& received_queue;
+        Queue<Command*>& received_queue;
         ClientQueues& clients;
-        std::map<int, Position> positions;
+        World world;
 
-        void apply_cmd(const ClientCommand& cmd);
-        void move(int client_id, Direction direction);
         WorldState make_world_state() const;
     public:
-        Gameloop(Queue<ClientCommand>& received_queue, ClientQueues& clients);
+        Gameloop(Queue<Command*>& received_queue, ClientQueues& clients, DaySpeed worldSpeed);
 
         void run() override;
 };

@@ -10,4 +10,6 @@
 #define PRICE_LAPIZLAZULI 40
 #define PRICE_COAL 10
 
+#define INVALID_PLAYER_ID -1
+
 #endif // GAME_CONSTANTS_H_

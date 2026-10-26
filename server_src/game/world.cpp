@@ -9,9 +9,10 @@ bool World::addSector(IdSector id, size_t width, size_t height) {
     return inserted;
 }
 
-IdPlayer World::addPlayer(IdSector idSector) {
+void World::addPlayer(int id, IdSector idSector) {
     auto sectorIt = this->sectors.find(idSector);
-    if (sectorIt == this->sectors.end()) return INVALID_PLAYER_ID;
+    if (sectorIt == this->sectors.end())
+        return;
 
     Sector& sector = sectorIt->second;
     Position startPos = sector.findFreePosition();
@@ -20,11 +21,9 @@ IdPlayer World::addPlayer(IdSector idSector) {
     Player* playerPtr = player.get();
 
     if (!sector.addEntity(std::move(player), startPos))
-        return INVALID_PLAYER_ID;
+        return;
 
-    IdPlayer id = this->nextPlayerId++;
     this->players.emplace(id, playerPtr);
-    return id;
 }
 
 bool World::spawnMineral(IdSector sectorId, Position pos,
@@ -59,9 +58,13 @@ bool World::transfer(Entity& /*e*/, IdSector /*destine*/, Position /*pos*/) {
     return false;
 }
 
-Player* World::getPlayer(IdPlayer id) {
+Player* World::getPlayer(int id) {
     auto it = this->players.find(id);
     return (it != this->players.end()) ? it->second : nullptr;
+}
+
+const std::map<int, Player*> World::getPlayers() {
+    return this->players;
 }
 
 Sector* World::getSector(IdSector id) {
