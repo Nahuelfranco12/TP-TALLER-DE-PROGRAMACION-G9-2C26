@@ -7,17 +7,15 @@
 #include "./game/commands/move_command.h"
 #include "./game/commands/leave_command.h"
 
-ServerReceiver::ServerReceiver(ServerProtocol& protocol, Queue<Command*>& received_queue, int client_id):
-    protocol(protocol), received_queue(received_queue), client_id(client_id) {}
+ServerReceiver::ServerReceiver(ServerProtocol& protocol, Match& match, int client_id):
+    protocol(protocol), match(match), client_id(client_id) {}
 
 void ServerReceiver::run() {
     try {
         while(should_keep_running()) {
-            MoveCmd move = protocol.receive_move();
-
-            MoveCommand move_cmd = MoveCommand(client_id, move.direction);
-
-            received_queue.push(&move_cmd);
+            MoveCommand move = protocol.receive_move();
+            match.push_command(ClientCommand{client_id, CommandType::Move, move.direction});
+            
         }
     } catch (const ClosedQueue&) {
         return;

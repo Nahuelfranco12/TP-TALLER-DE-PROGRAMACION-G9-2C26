@@ -7,9 +7,7 @@
 
 class Server {
 private:
-    Queue<Command*> received_queue;
-    ClientQueues client_queues;
-    Gameloop gameloop;
+    Match match;
     Acceptor acceptor;
 
 public:
