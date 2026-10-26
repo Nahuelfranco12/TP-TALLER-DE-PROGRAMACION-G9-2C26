@@ -31,6 +31,10 @@ const std::string& Match::get_name() const {
     return name;
 }
 
+int Match::player_count() {
+    return clients.size();
+}
+
 Match::~Match() {
     received_queue.close();
     gameloop.stop();

@@ -16,6 +16,7 @@ class ClientQueues {
         void add_client(int client_id, Queue<WorldState>& queue);
         void remove_client(int client_id);
         void send_to_all(const WorldState& state);
+        int size();
 
 };
 

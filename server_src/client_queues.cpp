@@ -18,3 +18,8 @@ void ClientQueues::send_to_all(const WorldState& msg){
         } catch (const ClosedQueue&) {}
     }
 }
+
+int ClientQueues::size() {
+    std::lock_guard<std::mutex> lock(mutex);
+    return static_cast<int>(queues.size());
+}
