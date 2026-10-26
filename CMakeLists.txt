@@ -30,7 +30,7 @@ add_library(taller_common STATIC)
 
 # add the source files that make the lib
 # HEY!! TODO XXX: add more subfolders here
-add_subdirectory(common/)
+add_subdirectory(common_src/)
 
 
 # set compiler warnings to the targets
@@ -110,7 +110,7 @@ if(TALLER_CLIENT)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(client)
+    add_subdirectory(client_src)
 
     set_project_warnings(taller_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
@@ -130,7 +130,7 @@ if(TALLER_SERVER)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(server)
+    add_subdirectory(server_src)
 
     set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
