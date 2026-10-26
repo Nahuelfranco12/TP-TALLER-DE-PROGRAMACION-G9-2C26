@@ -7,7 +7,7 @@
 
 #include "../common_src/constants.h"
 
-Acceptor::Acceptor(const char* servname, Queue<ClientCommand>& received_queue, ClientQueues& client_queues): 
+Acceptor::Acceptor(const char* servname, Queue<Command*>& received_queue, ClientQueues& client_queues): 
         skt(servname), received_queue(received_queue), client_queues(client_queues) {}
 
 void Acceptor::reap_dead() {

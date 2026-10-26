@@ -3,10 +3,11 @@
 
 #include "acceptor.h"
 #include "gameloop.h"
+#include "./game/command.h"
 
 class Server {
 private:
-    Queue<ClientCommand> received_queue;
+    Queue<Command*> received_queue;
     ClientQueues client_queues;
     Gameloop gameloop;
     Acceptor acceptor;

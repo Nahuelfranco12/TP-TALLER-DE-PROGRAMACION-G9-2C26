@@ -49,7 +49,7 @@ void Client::run() {
 }
 
 void Client::send_move(Direction direction) {
-    to_send_queue.try_push(MoveCommand{direction});
+    to_send_queue.try_push(MoveCmd{direction});
 }
 
 bool Client::try_get_latest_state(WorldState& state){
@@ -65,7 +65,6 @@ bool Client::try_get_latest_state(WorldState& state){
 bool Client::is_connected() const {
     return receiver.is_alive();
 }
-
 
 Client::~Client() {
     receiver.stop();

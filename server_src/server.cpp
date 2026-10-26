@@ -10,7 +10,7 @@
 #include "acceptor.h"
 
 Server::Server(const char* servname):
-        received_queue(QUEUE_MAX_SIZE), gameloop(received_queue, client_queues), acceptor(servname, received_queue, client_queues) {}
+        received_queue(QUEUE_MAX_SIZE), gameloop(received_queue, client_queues, DaySpeed::MEDIUM), acceptor(servname, received_queue, client_queues) {}
 
 void Server::run() {
     gameloop.start();

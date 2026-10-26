@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-ClientSender::ClientSender(ClientProtocol& protocol, Queue<MoveCommand>& to_send_queue):
+ClientSender::ClientSender(ClientProtocol& protocol, Queue<MoveCmd>& to_send_queue):
     protocol(protocol), to_send_queue(to_send_queue) {}
 
 void ClientSender::run() {

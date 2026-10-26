@@ -14,17 +14,19 @@
 
 #include "server_protocol.h"
 
+#include "./game/command.h"
+
 class ClientHandler {
 private:
     int client_id;
     ServerProtocol protocol;
     Queue<WorldState> to_send_queue;
-    Queue<ClientCommand>& received_queue;
+    Queue<Command*>& received_queue;
     ClientQueues& clients;
     ServerReceiver receiver;
     ServerSender sender;
 public:
-    ClientHandler(Socket&& skt, int client_id, Queue<ClientCommand>& received_queue, ClientQueues& clients);
+    ClientHandler(Socket&& skt, int client_id, Queue<Command*>& received_queue, ClientQueues& clients);
 
     void start();
 

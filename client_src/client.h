@@ -21,6 +21,7 @@ private:
 public:
     explicit Client(const char* hostname, const char* servname);
 
+    void send_join();
     void send_move(Direction direction);
     bool try_get_latest_state(WorldState& state);
     bool is_connected() const;

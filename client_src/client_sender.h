@@ -5,16 +5,17 @@
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+#include "../common_src/game_dtos.h"
 
 #include "client_protocol.h"
 
 class ClientSender: public Thread {
 private:
     ClientProtocol& protocol;
-    Queue<MoveCommand>& to_send_queue;
+    Queue<MoveCmd>& to_send_queue;
 
 public:
-    ClientSender(ClientProtocol& protocol, Queue<MoveCommand>& to_send_queue);
+    ClientSender(ClientProtocol& protocol, Queue<MoveCmd>& to_send_queue);
 
     void run() override;
 };
