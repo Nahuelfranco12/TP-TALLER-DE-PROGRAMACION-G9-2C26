@@ -5,10 +5,19 @@
 
 class Position {
 public:
-    const size_t x;
-    const size_t y;
+    size_t x;
+    size_t y;
 
     Position(size_t x, size_t y) : x(x), y(y) {};
+
+    bool operator<(const Position& other) const {
+        if (x != other.x) return x < other.x;
+        return y < other.y;
+    }
+
+    bool operator==(const Position& other) const {
+        return x == other.x && y == other.y;
+    }
 };
 
 #endif // POSITION_H_

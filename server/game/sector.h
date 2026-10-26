@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <map>
 #include <vector>
+#include <memory>
 
 #include "position.h"
 #include "terrain.h"
@@ -19,16 +20,17 @@ private:
     size_t height;
     IdSector id;
     std::vector<std::vector<Terrain>> tiles;
-    std::map<Position, Entity> entities;
+    std::map<Position, std::unique_ptr<Entity>> entities;
     std::map<Position, Door> doors;
 
 public:
-    Sector(size_t width, size_t height, IdSector id) : width(width), height(height), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))), id(id) {};
+    Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {};
 
-    MoveResult move(Entity& entity, Position origin, Position destine);
+    MoveResult move(Position origin, Position destine);
     bool isEmpty(Position pos);
-    bool addEntity(Entity& entity, Position pos);
-    void removeEntity(Position pos);
+    bool addEntity(std::unique_ptr<Entity> entity, Position pos);
+    std::unique_ptr<Entity> removeEntity(Position pos);
+    Entity* getEntity(Position pos);
 };
 
 #endif // SECTOR_H_
