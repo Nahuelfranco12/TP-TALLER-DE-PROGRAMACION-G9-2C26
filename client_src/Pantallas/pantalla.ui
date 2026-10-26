@@ -20,7 +20,7 @@
       <widget class="QWidget" name="pageMenuPrincipal">
        <property name="styleSheet">
         <string notr="true">#pageMenuPrincipal { 
-    border-image: url(:/pantallas/assets/Pantallas/01-inicio_screen.png); 
+    border-image: url(:/pantallas/assets/Pantallas/01-background_inicio.jpg); 
 }</string>
        </property>
        <widget class="QPushButton" name="botNuevaPartida">
@@ -99,6 +99,24 @@ QPushButton:pressed {
         </property>
         <property name="text">
          <string>Retomar Partida</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="cartelMP">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>70</y>
+          <width>511</width>
+          <height>301</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelMP{
+    border-image: url(:/cartel/assets/cartel/cartel_stardew_valley.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </widget>

@@ -19,6 +19,7 @@
         <file>assets/Pantallas/0232_pantalla_nueva_partida.jpg</file>
         <file>assets/Pantallas/pantalla_retomar.jpg</file>
         <file>assets/Pantallas/fondo_noche.png</file>
+        <file>assets/Pantallas/01-background_inicio.jpg</file>
     </qresource>
     <qresource prefix="/ropas">
         <file>assets/ropas/StardewValley_Character_Accessories.png</file>
@@ -30,6 +31,7 @@
     </qresource>
     <qresource prefix="/cartel">
         <file>assets/cartel/cartel-datos.png</file>
+        <file>assets/cartel/cartel_stardew_valley.png</file>
     </qresource>
     <qresource prefix="/fuentes">
         <file>assets/fuentes/Stardew_Valley.ttf</file>
