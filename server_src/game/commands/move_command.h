@@ -2,8 +2,8 @@
 #define MOVE_COMMAND_H_
 
 #include "../command.h"
-#include "../../server_src/game/position.h"
-#include "../game_dtos.h"
+#include "../position.h"
+#include "../../../common_src/game_dtos.h"
 
 class MoveCommand : public Command {
 private:

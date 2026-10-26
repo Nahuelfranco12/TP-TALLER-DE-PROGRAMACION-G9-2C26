@@ -23,14 +23,14 @@ void ServerProtocol::close() {
     } catch (const std::exception&) {}
 }
 
-
 MoveCommand ServerProtocol::receive_move() {
     uint8_t operation = protocol.receive_u8();
     if(operation != OP_MOVE)
         throw std::runtime_error("Mensaje inesperado");
 
+    uint8_t playerId = protocol.receive_u8();
     uint8_t direction_byte = protocol.receive_u8();
-    return MoveCommand{byte_to_direction(direction_byte)};
+    return MoveCommand(playerId, byte_to_direction(direction_byte));
 }
 
 void ServerProtocol::send_world_state(const WorldState& state) {

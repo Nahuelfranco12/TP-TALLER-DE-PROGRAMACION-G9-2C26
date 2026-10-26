@@ -2,9 +2,9 @@
 #define SPAWN_ANIMAL_COMMAND_H_
 
 #include "../command.h"
-#include "../../server_src/game/entities/animal.h"
-#include "../../server_src/game/id_sector.h"
-#include "../../server_src/game/position.h"
+#include "../entities/animal.h"
+#include "../id_sector.h"
+#include "../position.h"
 
 class SpawnAnimalCommand : public Command {
 private:

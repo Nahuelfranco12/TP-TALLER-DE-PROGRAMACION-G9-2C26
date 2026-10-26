@@ -2,7 +2,7 @@
 #define MINE_COMMAND_H_
 
 #include "../command.h"
-#include "../../server_src/game/position.h"
+#include "../position.h"
 
 class MineCommand : public Command {
 private:

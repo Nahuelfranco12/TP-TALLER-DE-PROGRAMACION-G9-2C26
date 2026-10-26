@@ -25,6 +25,7 @@ public:
     bool addSector(IdSector id, size_t width = 30, size_t height = 30);
     
     void addPlayer(int id, IdSector idSector);
+    void removePlayer(int id);
     
     bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type, double freq, MineralPickaxeTime pickaxeTime);
     bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);

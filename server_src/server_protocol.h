@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "../common_src/constants.h"
+#include "./game/commands/move_command.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
 #include "../common_src/game_dtos.h"
@@ -27,8 +27,6 @@ public:
     void shutdown();
 
     void close();
-
-
 };
 
 #endif  // SERVER_PROTOCOL_H_

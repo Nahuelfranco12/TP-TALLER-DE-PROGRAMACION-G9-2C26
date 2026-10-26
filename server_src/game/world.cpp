@@ -26,6 +26,10 @@ void World::addPlayer(int id, IdSector idSector) {
     this->players.emplace(id, playerPtr);
 }
 
+void World::removePlayer(int id) {
+    this->players.erase(id);
+}
+
 bool World::spawnMineral(IdSector sectorId, Position pos,
                          MineralTypes type, double freq,
                          MineralPickaxeTime pickaxeTime) {
@@ -63,7 +67,7 @@ Player* World::getPlayer(int id) {
     return (it != this->players.end()) ? it->second : nullptr;
 }
 
-const std::map<int, Player*> World::getPlayers() {
+const std::map<int, Player*> World::getPlayers() const {
     return this->players;
 }
 

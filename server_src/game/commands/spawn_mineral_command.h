@@ -2,9 +2,9 @@
 #define SPAWN_MINERAL_COMMAND_H_
 
 #include "../command.h"
-#include "../../server_src/game/id_sector.h"
-#include "../../server_src/game/mineral_types.h"
-#include "../../server_src/game/position.h"
+#include "../id_sector.h"
+#include "../mineral_types.h"
+#include "../position.h"
 
 class SpawnMineralCommand : public Command {
 private:
