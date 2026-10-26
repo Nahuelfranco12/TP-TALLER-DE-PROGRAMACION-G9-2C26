@@ -12,8 +12,7 @@
 class Acceptor: public Thread {
 private:
     Socket skt;
-    Queue<ClientCommand>& received_queue;
-    ClientQueues& client_queues;
+    Match& match;
     std::list<std::unique_ptr<ClientHandler>> clients;
     int next_client_id = 0;
 
