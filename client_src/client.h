@@ -14,7 +14,7 @@ class Client {
 private:
     ClientProtocol protocol;
     Queue<WorldState> received_queue;
-    Queue<MoveCommand> to_send_queue;
+    Queue<MoveCmd> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
 
