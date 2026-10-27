@@ -58,3 +58,29 @@ Direction ServerProtocol::byte_to_direction(uint8_t direction_byte) {
         
     }
 }
+
+LobbyRequest ServerProtocol::receive_lobby_request() {
+    uint8_t operation = protocol.receive_u8();
+    switch(operation) {
+        case OP_CREATE_MATCH:
+            return LobbyRequest{LobbyAction::Create, protocol.receive_string()};
+        case OP_LIST_MATCHES:
+            return LobbyRequest{LobbyAction::List, ""};
+        case OP_JOIN_MATCH:
+            return LobbyRequest{LobbyAction::Join, protocol.receive_string()};
+        default:
+            throw std::runtime_error("Mensaje inesperado");
+    }
+}
+
+void ServerProtocol::send_match_created(const std::string& code) {
+    protocol.send_u8(OP_CREATE_MATCH);
+    protocol.send_string(code);
+}
+
+void ServerProtocol::send_match_list(const std::vector<MatchInfo>& matches) {
+}
+
+void ServerProtocol::send_join_result(bool result){
+
+}

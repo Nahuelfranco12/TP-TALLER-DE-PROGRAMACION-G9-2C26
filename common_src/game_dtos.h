@@ -25,4 +25,11 @@ struct MatchInfo {
     int players = 0;
 }
 
+enum class LobbyAction { Create, List, Join };
+
+struct LobbyRequest {
+    LobbyAction action = LobbyAction::List;
+    std::string text;
+}
+
 #endif

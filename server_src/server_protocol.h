@@ -24,6 +24,13 @@ public:
     MoveCommand receive_move();
     void send_world_state(const WorldState& state);
 
+    void send_player_id(int id);
+
+    LobbyRequest receive_lobby_request();
+    void send_match_created(const std::string& code);
+    void send_match_list(const std::vector<MatchInfo>& matches);
+    void send_join_result(bool result);
+
     void shutdown();
 
     void close();
