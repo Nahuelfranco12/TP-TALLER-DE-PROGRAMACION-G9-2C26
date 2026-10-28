@@ -24,12 +24,7 @@ void ServerProtocol::close() {
 }
 
 MoveDto ServerProtocol::receive_move() {
-    uint8_t operation = protocol.receive_u8();
-    if(operation != OP_MOVE)
-        throw std::runtime_error("Mensaje inesperado");
-
-    uint8_t direction_byte = protocol.receive_u8();
-    return MoveDto{byte_to_direction(direction_byte)};
+    return MoveDto{byte_to_direction(protocol.receive_u8())};
 }
 
 void ServerProtocol::send_world_state(const WorldState& state) {
@@ -99,4 +94,8 @@ void ServerProtocol::send_join_result(bool result){
 void ServerProtocol::send_player_id(int id) {
     protocol.send_u8(OP_PLAYER_ID);
     protocol.send_u16(static_cast<uint16_t>(id));
+}
+
+uint8_t ServerProtocol::receive_operation() {
+    return protocol.receive_u8();
 }

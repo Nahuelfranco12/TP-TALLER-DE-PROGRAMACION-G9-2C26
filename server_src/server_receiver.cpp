@@ -4,8 +4,6 @@
 #include <iostream>
 
 #include "../common_src/constants.h"
-#include "./game/commands/move_command.h"
-#include "./game/commands/leave_command.h"
 
 ServerReceiver::ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id):
     protocol(protocol), lobby(lobby), to_send_queue(to_send_queue), client_id(client_id) {}
@@ -23,7 +21,7 @@ void ServerReceiver::run() {
             } else if (request.action == LobbyAction::Join) {
                 Match* found = lobby.find_match(request.text);
                 bool was_found = found != nullptr;
-                protocol.send_join_result(was_found); // WARNING: revisar porque se manda el resultado antes de unirse/repercutir en la logica.
+                protocol.send_join_result(was_found); // Se le avisa al cliente que se va a unir primero para que se prepare para recibir WorldStates
                 if(was_found) {
                     match = found;
                     match->join(client_id, to_send_queue);
@@ -35,27 +33,23 @@ void ServerReceiver::run() {
             // recibir peticion del cliente (del protocolo)
             // convertir a comando (con el factory)
             // pushear en el match (match->push_command(cmd))
-            uint8_t op = protocol.receive_operation();
+            int op = protocol.receive_operation();
             switch (op) {
                 case OP_MOVE:
+                    match->push_command(factory.create(client_id, protocol.receive_move()));
                     break;
+                default:
+                    throw std::runtime_error("Operación desconocida");
             }            
-            
-            // MoveDto move = protocol.receive_move();
-            // MoveCommand move_cmd = MoveCommand(client_id, move.direction);
-            // to_send_queue.push(&move_cmd);
-
-
         }
     } catch (const ClosedQueue&) {
-        return;
     } catch (const std::exception&) {
         
     }
 
-    try {
-        to_send_queue.push(&LeaveCommand(client_id));
-    } catch (const ClosedQueue&) {}
+    if(match != nullptr) {
+        match->leave(client_id);
+    }
 
     protocol.shutdown();
 }

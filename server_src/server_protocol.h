@@ -21,6 +21,8 @@ private:
 public:
     explicit ServerProtocol(Socket&& socket);
 
+    // recibe un número OP 
+    int receive_operation();
     MoveDto receive_move();
     void send_world_state(const WorldState& state);
 

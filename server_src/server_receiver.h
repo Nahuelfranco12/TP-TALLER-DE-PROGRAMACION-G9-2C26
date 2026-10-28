@@ -16,6 +16,7 @@ private:
     Queue<WorldState>& to_send_queue;
     int client_id;
     Match* match = nullptr;
+    CommandFactory factory;
 
 public:
     ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id);
