@@ -3,7 +3,7 @@
 #include <thread>
 
 
-Gameloop::Gameloop(Queue<Command*>& received_queue, ClientQueues& clients, DaySpeed worldSpeed):
+Gameloop::Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed):
     received_queue(received_queue), clients(clients), world(worldSpeed) {}
 
 void Gameloop::run() {

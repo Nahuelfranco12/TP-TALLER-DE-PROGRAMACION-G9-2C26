@@ -26,13 +26,13 @@ struct Position {
 
 class Gameloop: public Thread {
     private:
-        Queue<Command*>& received_queue;
+        Queue<std::unique_ptr<Command>>& received_queue;
         ClientQueues& clients;
         World world;
 
         WorldState make_world_state() const;
     public:
-        Gameloop(Queue<Command*>& received_queue, ClientQueues& clients, DaySpeed worldSpeed);
+        Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed);
 
         void run() override;
 };
