@@ -6,8 +6,12 @@
 
 enum class Direction { Up, Down, Left, Right};
 
-struct MoveCmd {
+struct MoveDto {
     Direction direction = Direction::Up;
+};
+
+struct MineDto {
+    // TODO
 };
 
 struct PlayerPosition {

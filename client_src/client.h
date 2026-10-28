@@ -15,7 +15,7 @@ private:
     ClientProtocol protocol;
     int my_id;
     Queue<WorldState> received_queue;
-    Queue<MoveCmd> to_send_queue;
+    Queue<MoveDto> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
     bool in_game = false;

@@ -12,10 +12,10 @@
 class ClientSender: public Thread {
 private:
     ClientProtocol& protocol;
-    Queue<MoveCmd>& to_send_queue;
+    Queue<MoveDto>& to_send_queue;
 
 public:
-    ClientSender(ClientProtocol& protocol, Queue<MoveCmd>& to_send_queue);
+    ClientSender(ClientProtocol& protocol, Queue<MoveDto>& to_send_queue);
 
     void run() override;
 };

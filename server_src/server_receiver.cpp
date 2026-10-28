@@ -31,7 +31,7 @@ void ServerReceiver::run() {
         }
 
         while(should_keep_running()) {
-            MoveCmd move = protocol.receive_move();
+            MoveDto move = protocol.receive_move();
 
             MoveCommand move_cmd = MoveCommand(client_id, move.direction);
 

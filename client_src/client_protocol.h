@@ -19,7 +19,7 @@ public:
     explicit ClientProtocol(const char* hostname, const char* servname);
     void shutdown();
 
-    void send_move_cmd(const MoveCmd& cmd);
+    void send_move_dto(const MoveDto& cmd);
 
     WorldState receive_world_state();
 

@@ -66,7 +66,7 @@ void Client::run() {
 }
 
 void Client::send_move(Direction direction) {
-    to_send_queue.try_push(MoveCmd{direction});
+    to_send_queue.try_push(MoveDto{direction});
 }
 
 bool Client::try_get_latest_state(WorldState& state){

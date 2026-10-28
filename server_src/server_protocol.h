@@ -21,7 +21,7 @@ private:
 public:
     explicit ServerProtocol(Socket&& socket);
 
-    MoveCmd receive_move();
+    MoveDto receive_move();
     void send_world_state(const WorldState& state);
 
     void send_player_id(int id);
