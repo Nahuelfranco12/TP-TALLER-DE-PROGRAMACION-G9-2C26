@@ -21,7 +21,7 @@ class Match {
 
         void join(int client_id, Queue<WorldState>& to_send_queue);
         void leave(int client_id);
-        void send_command(const ClientCommand& cmd);
+        void push_command(const ClientCommand& cmd);
         const std::string& get_name() const;
         int player_count();
 

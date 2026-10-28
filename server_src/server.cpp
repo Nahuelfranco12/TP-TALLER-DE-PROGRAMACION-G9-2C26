@@ -11,7 +11,7 @@
 #include "match.h"
 
 Server::Server(const char* servname):
-        acceptor(servname, match) {}
+        acceptor(servname,lobby) {}
 
 void Server::run() {
     acceptor.start();

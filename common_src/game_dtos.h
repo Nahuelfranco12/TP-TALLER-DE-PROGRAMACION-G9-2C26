@@ -2,6 +2,7 @@
 #define DTOS_H_
 
 #include <vector>
+#include <string>
 
 enum class Direction { Up, Down, Left, Right};
 
@@ -20,16 +21,16 @@ struct WorldState {
 };
 
 struct MatchInfo {
-    std::string join_code;
+    std::string code;
     std::string name;
     int players = 0;
-}
+};
 
 enum class LobbyAction { Create, List, Join };
 
 struct LobbyRequest {
     LobbyAction action = LobbyAction::List;
     std::string text;
-}
+};
 
 #endif

@@ -22,3 +22,5 @@ class Lobby {
         std::vector<MatchInfo> list_matches();
         Match* find_match(const std::string& code);
 };
+
+#endif

@@ -8,6 +8,7 @@
 #include "server_sender.h"
 #include "server_receiver.h"
 #include "client_queues.h"
+#include "lobby.h"
 #include "../common_src/queue.h"
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"
