@@ -5,16 +5,34 @@
 ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
                                                      Navegador &navegador,
                                                      QObject *parent)
-    : ControladorPagina(ui, navegador, parent),
-      partidas(new ListaSeleccionable(ui.scrollAreaWidgetContents, this)) {
-  connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
-    if (pagina == this->ui.pageRetomarPartida)
-      cargarPartidas();
-  });
+    : ControladorPagina(ui, navegador, parent) {
+
+  partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
+
+  cargarPartidas();
+
+  ui.botJugarRP->setEnabled(false);
+
+  // 4. Conectamos el botón Volver
   connect(ui.botVolverRP, &QPushButton::clicked, this, [this]() {
-    partidas->deseleccionar();
+    reiniciar();
     this->navegador.volver();
   });
+
+  // 5. Conectamos la validación a la lista de partidas
+  partidas->setAlSeleccionar([this]() { validarFormulario(); });
+
+  // 6. Conectamos el botón Siguiente para arrancar (o avanzar)
+  connect(ui.botJugarRP, &QPushButton::clicked, this, [this]() {
+    // Acá a futuro vas a agarrar el código de la partida y dárselo al protocolo
+    // Por ahora lo dejamos listo para avanzar a donde necesites
+  });
+}
+
+void ControladorRetomarPartida::validarFormulario() {
+  bool tienePartida = partidas->haySeleccion();
+
+  ui.botJugarRP->setEnabled(tienePartida);
 }
 
 void ControladorRetomarPartida::cargarPartidas() {
@@ -26,4 +44,9 @@ void ControladorRetomarPartida::cargarPartidas() {
                                  modo, "Seleccionar"});
   }
   partidas->cargar(tarjetas);
+}
+
+void ControladorRetomarPartida::reiniciar() {
+  partidas->deseleccionar();
+  validarFormulario();
 }

@@ -8,12 +8,12 @@ class ControladorNuevaPartida : public ControladorPagina {
 public:
   ControladorNuevaPartida(Ui::Pantalla &ui, Navegador &navegador,
                           QObject *parent = nullptr);
+  void reiniciar() override;
+  void validarFormulario() override;
 
 private:
   ListaSeleccionable *mundos;
-
   void cargarMundos();
-  void reiniciar();
 };
 
 #endif // CONTROLADOR_NUEVA_PARTIDA_H
