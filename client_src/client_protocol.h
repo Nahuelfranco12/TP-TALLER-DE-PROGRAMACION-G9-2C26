@@ -17,12 +17,19 @@ private:
     
 public:
     explicit ClientProtocol(const char* hostname, const char* servname);
-    void send_msg(const std::string& msg);
-    std::string receive_msg();
     void shutdown();
 
     void send_move_cmd(const MoveCommand& cmd);
 
     WorldState receive_world_state();
+
+    int receive_player_id();
+
+    void send_create_match(const std::string& name);
+    std::string receive_created_match();
+    void send_list_matches();
+    std::vector<MatchInfo> receive_match_list();
+    void send_join_match(const std::string& code);
+    bool receive_join_result();
 };
 #endif  // CLIENT_PROTOCOL_H_

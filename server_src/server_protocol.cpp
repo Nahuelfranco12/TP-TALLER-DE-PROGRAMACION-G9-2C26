@@ -79,8 +79,20 @@ void ServerProtocol::send_match_created(const std::string& code) {
 }
 
 void ServerProtocol::send_match_list(const std::vector<MatchInfo>& matches) {
+    protocol.send_u8(OP_LIST_MATCHES);
+    protocol.send_u16(static_cast<uint16_t>(matches.size()));
+    for(const MatchInfo& m : matches) {
+        protocol.send_string(m.code);
+        protocol.send_string(m.name);
+        protocol.send_u8(static_cast<uint8_t>(m.players));
+    }
 }
 
 void ServerProtocol::send_join_result(bool result){
-
+    protocol.send_u8(OP_JOIN_MATCH);
+    if(result) {
+        protocol.send_u8(JOIN_SUCCESS);
+    } else {
+        protocol.send_u8(JOIN_FAILURE);
+    }
 }

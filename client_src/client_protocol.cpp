@@ -11,14 +11,6 @@
 ClientProtocol::ClientProtocol(const char* hostname, const char* servname):
         skt(hostname, servname), protocol(skt) {}
 
-void ClientProtocol::send_msg(const std::string& msg) {
-    protocol.send_string(msg);
-}
-
-std::string ClientProtocol::receive_msg() {
-    return protocol.receive_string();
-}
-
 void ClientProtocol::shutdown() {
     try {
         skt.shutdown(SHUT_RDWR);
@@ -62,4 +54,52 @@ uint8_t ClientProtocol::direction_to_byte(Direction direction) {
         default:
             throw std::runtime_error("Dirección inválida");
     }
+}
+
+int ClientProtocol::receive_player_id() {
+    if (protocol.receive_u8() != OP_PLAYER_ID)
+        throw std::runtime_error("Mensaje inesperado");
+    return protocol.receive_u16();
+}
+
+void  ClientProtocol::send_create_match(const std::string& name) {
+    protocol.send_u8(OP_CREATE_MATCH);
+    protocol.send_string(name);
+}
+
+std::string ClientProtocol::receive_created_match() {
+    if (protocol.receive_u8() != OP_CREATE_MATCH)
+        throw std::runtime_error("Mensaje inesperado");
+    return protocol.receive_string();
+}
+
+void ClientProtocol::send_list_matches() {
+    protocol.send_u8(OP_LIST_MATCHES);
+}
+
+std::vector<MatchInfo> ClientProtocol::receive_match_list() {
+    if (protocol.receive_u8() != OP_LIST_MATCHES)
+        throw std::runtime_error("Mensaje inesperado");
+
+    std::vector<MatchInfo> matches;
+    int count = protocol.receive_u16();
+    for (int i = 0; i < count; i++) {
+        MatchInfo matchinfo;
+        matchinfo.code = protocol.receive_string();
+        matchinfo.name = protocol.receive_string();
+        matchinfo.players = protocol.receive_u8();
+        matches.push_back(matchinfo);
+    }
+    return matches;
+}
+
+void ClientProtocol::send_join_match(const std::string& code) {
+    protocol.send_u8(OP_JOIN_MATCH);
+    protocol.send_string(code);
+}
+
+bool ClientProtocol::receive_join_result() {
+    if (protocol.receive_u8() != OP_JOIN_MATCH)
+        throw std::runtime_error("Mensaje inesperado");
+    return protocol.receive_u8() == JOIN_OK;
 }
