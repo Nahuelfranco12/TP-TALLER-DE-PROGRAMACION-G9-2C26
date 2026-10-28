@@ -15,7 +15,7 @@ std::vector<MatchInfo> Lobby::list_matches() {
     return matches_info;
 
 }
-Match* Lobby::join_match(const std::string& code, int client_id, Queue<WorldState>& to_send_queue) {
+Match* Lobby::find_match(const std::string& code) {
     std::lock_guard<std::mutex> lock(mutex);
     auto map_iterator = matches.find(code);
     if(map_iterator == matches.end())

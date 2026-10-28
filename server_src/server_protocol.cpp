@@ -95,3 +95,8 @@ void ServerProtocol::send_join_result(bool result){
         protocol.send_u8(JOIN_FAILURE);
     }
 }
+
+void ServerProtocol::send_player_id(int id) {
+    protocol.send_u8(OP_PLAYER_ID);
+    protocol.send_u16(static_cast<uint16_t>(id));
+}

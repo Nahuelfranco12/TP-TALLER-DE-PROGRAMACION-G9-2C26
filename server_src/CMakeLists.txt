@@ -10,6 +10,8 @@ target_sources(taller_server
     server_protocol.cpp
     server_receiver.cpp
     server_sender.cpp
+    match.cpp
+    lobby.cpp
     PUBLIC
     # .h files
     acceptor.h
@@ -21,5 +23,7 @@ target_sources(taller_server
     server_protocol.h
     server_receiver.h
     server_sender.h
+    match.h
+    lobby.h
     )
     

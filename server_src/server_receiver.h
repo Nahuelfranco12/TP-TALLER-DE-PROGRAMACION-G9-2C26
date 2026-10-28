@@ -7,6 +7,7 @@
 #include "./game/command.h"
 #include "server_protocol.h"
 #include "match.h"
+#include "lobby.h"
 
 class ServerReceiver: public Thread {
 private:

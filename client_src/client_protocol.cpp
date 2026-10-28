@@ -100,5 +100,5 @@ void ClientProtocol::send_join_match(const std::string& code) {
 bool ClientProtocol::receive_join_result() {
     if (protocol.receive_u8() != OP_JOIN_MATCH)
         throw std::runtime_error("Mensaje inesperado");
-    return protocol.receive_u8() == JOIN_OK;
+    return protocol.receive_u8() == JOIN_SUCCESS;
 }

@@ -11,6 +11,7 @@
 
 Client::Client(const char* hostname, const char* servname):
         protocol(hostname, servname),
+        my_id(protocol.receive_player_id()),
         received_queue(QUEUE_MAX_SIZE),
         to_send_queue(QUEUE_MAX_SIZE),
         receiver(protocol, received_queue),
@@ -20,8 +21,27 @@ Client::Client(const char* hostname, const char* servname):
 // igual este run es de prueba, hay q sacarlo conectandolo con sdl
 void Client::run() {
     std::string line;
+
+    // TEST POR CONSOLA PARA LA PARTE DE QT (MENU)
+    while (!in_game && std::getline(std::cin, line)) {
+        if (line.rfind("c ", 0) == 0) {
+            std::cout << "Partida creada, código: " << create_match(line.substr(2)) << STRING_BRK;
+        } else if (line == "l") {
+            for (const MatchInfo& m : list_matches())
+                std::cout << m.code << " - " << m.name << " (" << m.players << " jugadores)"
+                          << STRING_BRK;
+        } else if (line.rfind("j ", 0) == 0) {
+            if (join_match(line.substr(2)))
+                std::cout << "Te uniste. Sos el jugador " << my_id << STRING_BRK;
+            else
+                std::cout << "No existe esa partida" << STRING_BRK;
+        } else if (line == "q") {
+            return;
+        }
+    }
     WorldState state;
 
+    // TEST POR CONSOLA DEL MOVIMIENTO DE LOS JUGADORES
     while(std::getline(std::cin, line) && line != "q") {
         if(!is_connected()) {
             break;
@@ -69,8 +89,10 @@ Client::~Client() {
     to_send_queue.close();
     received_queue.close();
     protocol.shutdown();
-    receiver.join();
-    sender.join();
+    if(in_game) {
+        receiver.join();
+        sender.join();
+    }
 }
 
 // comandos nuevos de menú (para qt)
@@ -80,7 +102,7 @@ std::string Client::create_match(const std::string& name) {
 }
 std::vector<MatchInfo> Client::list_matches() {
     protocol.send_list_matches();
-    return protocol.receive_match_created
+    return protocol.receive_match_list();
 }
 bool Client::join_match(const std::string& code) {
     protocol.send_join_match(code);

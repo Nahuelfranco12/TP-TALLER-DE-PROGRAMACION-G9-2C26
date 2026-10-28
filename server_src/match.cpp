@@ -4,7 +4,7 @@
 
 Match::Match(const std::string& name):
     name(name),
-    received_queue(QUEUE_MAX_SIZE);
+    received_queue(QUEUE_MAX_SIZE),
     gameloop(received_queue, clients) {
         gameloop.start();
     }

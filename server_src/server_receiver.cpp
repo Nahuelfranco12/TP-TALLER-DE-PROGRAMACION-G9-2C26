@@ -20,7 +20,7 @@ void ServerReceiver::run() {
             } else if (request.action == LobbyAction::List) {
                 protocol.send_match_list(lobby.list_matches());
             } else if (request.action == LobbyAction::Join) {
-                Match* found == lobby.find_match(request.text);
+                Match* found = lobby.find_match(request.text);
                 bool was_found = found != nullptr;
                 protocol.send_join_result(was_found);
                 if(was_found) {
@@ -29,12 +29,10 @@ void ServerReceiver::run() {
                 }
             }
         }
-    }
 
-    try {
         while(should_keep_running()) {
             MoveCommand move = protocol.receive_move();
-            match.push_command(ClientCommand{client_id, CommandType::Move, move.direction});
+            match->push_command(ClientCommand{client_id, CommandType::Move, move.direction});
             
         }
     } catch (const ClosedQueue&) {
