@@ -6,20 +6,20 @@
 
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"
-
+#include "lobby.h"
 #include "client_handler.h"
 
 class Acceptor: public Thread {
 private:
     Socket skt;
-    Match& match;
+    Lobby& lobby;
     std::list<std::unique_ptr<ClientHandler>> clients;
     int next_client_id = 0;
 
     void reap_dead();
 
 public:
-    Acceptor(const char* servname, Queue<ClientCommand>& received_queue, ClientQueues& client_queues);
+    Acceptor(const char* servname, Lobby& lobby);
 
     void run() override;
 

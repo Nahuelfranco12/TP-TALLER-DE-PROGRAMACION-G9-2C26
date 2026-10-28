@@ -11,7 +11,7 @@
 #include "match.h"
 
 Server::Server(const char* servname):
-        match("partida"), acceptor(servname, match) {}
+        acceptor(servname, match) {}
 
 void Server::run() {
     acceptor.start();

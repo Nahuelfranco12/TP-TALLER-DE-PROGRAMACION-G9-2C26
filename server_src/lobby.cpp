@@ -20,6 +20,5 @@ Match* Lobby::join_match(const std::string& code, int client_id, Queue<WorldStat
     auto map_iterator = matches.find(code);
     if(map_iterator == matches.end())
         return nullptr;
-    map_iterator->second->join(client_id, to_send_queue);
     return map_iterator->second.get();
 }

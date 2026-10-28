@@ -7,8 +7,8 @@
 
 #include "../common_src/constants.h"
 
-Acceptor::Acceptor(const char* servname, Match& match): 
-        skt(servname), match(match) {}
+Acceptor::Acceptor(const char* servname, Lobby& lobby): 
+        skt(servname), lobby(lobby) {}
 
 void Acceptor::reap_dead() {
     clients.remove_if([](const std::unique_ptr<ClientHandler>& c) {
@@ -21,7 +21,7 @@ void Acceptor::run() {
         try {
             Socket peer = skt.accept();
 
-            auto handler = std::make_unique<ClientHandler>(std::move(peer), next_client_id, match);
+            auto handler = std::make_unique<ClientHandler>(std::move(peer), next_client_id, lobby);
             next_client_id++;
             handler->start();
 
