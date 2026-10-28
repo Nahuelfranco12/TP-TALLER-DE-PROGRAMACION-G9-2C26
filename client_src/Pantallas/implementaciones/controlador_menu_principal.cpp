@@ -12,3 +12,6 @@ ControladorMenuPrincipal::ControladorMenuPrincipal(Ui::Pantalla &ui,
   connect(ui.botRetomarPartida, &QPushButton::clicked, this,
           [this]() { this->navegador.irA(this->ui.pageRetomarPartida); });
 }
+
+void ControladorMenuPrincipal::reiniciar() {}
+void ControladorMenuPrincipal::validarFormulario() {}

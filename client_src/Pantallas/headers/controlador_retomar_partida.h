@@ -8,10 +8,11 @@ class ControladorRetomarPartida : public ControladorPagina {
 public:
   ControladorRetomarPartida(Ui::Pantalla &ui, Navegador &navegador,
                             QObject *parent = nullptr);
+  void reiniciar() override;
+  void validarFormulario() override;
 
 private:
   ListaSeleccionable *partidas;
-
   void cargarPartidas();
 };
 
