@@ -4,6 +4,21 @@
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, QObject *parent)
     : ControladorPagina(ui, navegador, parent) {
-  connect(ui.botVolverPersonaje, &QPushButton::clicked, this,
-          [this]() { this->navegador.volver(); });
+  ui.botJugar->setEnabled(false);
+  connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {
+    reiniciar();
+    this->navegador.volver();
+  });
+  connect(ui.campoNombrePersonaje, &QLineEdit::textChanged, this,
+          [this]() { validarFormulario(); });
+}
+
+void ControladorCustomizarPersonaje::validarFormulario() {
+  bool tieneNombre = !ui.campoNombrePersonaje->text().trimmed().isEmpty();
+  ui.botJugar->setEnabled(tieneNombre);
+}
+
+void ControladorCustomizarPersonaje::reiniciar() {
+  ui.campoNombrePersonaje->clear();
+  validarFormulario();
 }

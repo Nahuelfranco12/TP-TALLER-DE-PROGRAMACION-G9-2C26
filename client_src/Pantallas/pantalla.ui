@@ -182,6 +182,10 @@ qproperty-alignment: AlignCenter;</string>
 QPushButton:pressed {
 	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
+}
+QPushButton:disabled {
+    border-image: url(:/botones/assets/Botones/Boton_bw.png); 
+    color: #8a8a8a;
 }</string>
         </property>
         <property name="text">
@@ -291,7 +295,7 @@ color: #f1b356; </string>
          <string>PERSONAJE</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="campoNOmbrePersonaje">
+       <widget class="QLineEdit" name="campoNombrePersonaje">
         <property name="geometry">
          <rect>
           <x>410</x>
@@ -353,6 +357,11 @@ color: #f1b356; </string>
 QPushButton:pressed {
 	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
+}
+
+QPushButton:disabled {
+    border-image: url(:/botones/assets/Botones/Boton_bw.png); 
+    color: #8a8a8a;
 }</string>
         </property>
         <property name="text">
@@ -828,6 +837,10 @@ QPushButton:pressed {
 QPushButton:pressed {
 	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
+}
+QPushButton:disabled {
+    border-image: url(:/botones/assets/Botones/Boton_bw.png); 
+    color: #8a8a8a;
 }</string>
         </property>
         <property name="text">
@@ -980,6 +993,10 @@ QLineEdit:focus, QComboBox:focus {
 QPushButton:pressed {
 	border-image: url(:/botones/assets/Botones/botton_apretado.png);
     padding-top: 3px; 
+}
+QPushButton:disabled {
+    border-image: url(:/botones/assets/Botones/Boton_bw.png); 
+    color: #8a8a8a;
 }</string>
         </property>
         <property name="text">

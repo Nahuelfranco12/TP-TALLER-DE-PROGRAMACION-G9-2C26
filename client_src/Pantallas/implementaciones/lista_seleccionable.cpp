@@ -40,8 +40,14 @@ void ListaSeleccionable::limpiar() {
   }
 }
 
+void ListaSeleccionable::setAlSeleccionar(std::function<void()> accion) {
+  accionAlSeleccionar = accion;
+}
+
 void ListaSeleccionable::seleccionar(TarjetaItem *tarjeta) {
   deseleccionar();
   tarjeta->setSeleccionada(true);
   tarjetaSeleccionada = tarjeta;
+  if (accionAlSeleccionar)
+    accionAlSeleccionar();
 }

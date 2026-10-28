@@ -18,9 +18,12 @@ public:
   bool haySeleccion() const;
   QString seleccionado() const;
 
+  void setAlSeleccionar(std::function<void()> accion);
+
 private:
   QWidget *contenedor;
   TarjetaItem *tarjetaSeleccionada = nullptr;
+  std::function<void()> accionAlSeleccionar = nullptr;
 
   void limpiar();
   void seleccionar(TarjetaItem *tarjeta);

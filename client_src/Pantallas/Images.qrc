@@ -3,6 +3,7 @@
         <file>Images.qrc</file>
         <file>assets/Botones/Boton_normal.png</file>
         <file>assets/Botones/botton_apretado.png</file>
+        <file>assets/Botones/Boton_bw.png</file>
     </qresource>
     <qresource prefix="/flechas">
         <file>assets/flechas/flecha_apretada_derecha.png</file>

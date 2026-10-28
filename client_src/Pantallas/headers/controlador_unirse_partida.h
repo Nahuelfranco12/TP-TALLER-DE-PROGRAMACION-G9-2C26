@@ -7,6 +7,8 @@ class ControladorUnirsePartida : public ControladorPagina {
 public:
   ControladorUnirsePartida(Ui::Pantalla &ui, Navegador &navegador,
                            QObject *parent = nullptr);
+  void reiniciar() override;
+  void validarFormulario() override;
 };
 
 #endif // CONTROLADOR_UNIRSE_PARTIDA_H
