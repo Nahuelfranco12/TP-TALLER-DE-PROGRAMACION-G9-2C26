@@ -15,10 +15,7 @@ Client::Client(const char* hostname, const char* servname):
         to_send_queue(QUEUE_MAX_SIZE),
         receiver(protocol, received_queue),
         sender(protocol, to_send_queue)
-        {
-            receiver.start();
-            sender.start();
-        }
+        {}
 
 // igual este run es de prueba, hay q sacarlo conectandolo con sdl
 void Client::run() {
@@ -76,3 +73,24 @@ Client::~Client() {
     receiver.join();
     sender.join();
 }
+
+// comandos nuevos de menú (para qt)
+std::string Client::create_match(const std::string& name) {
+    protocol.send_create_match(name);
+    return protocol.receive_created_match();
+}
+std::vector<MatchInfo> Client::list_matches() {
+    protocol.send_list_matches();
+    return protocol.receive_match_created
+}
+bool Client::join_match(const std::string& code) {
+    protocol.send_join_match(code);
+    bool client_could_join = protocol.receive_join_result();
+    if(client_could_join) {
+        receiver.start();
+        sender.start();
+        in_game = true;
+    }
+    return client_could_join;
+}
+
