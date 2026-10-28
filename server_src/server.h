@@ -7,7 +7,7 @@
 
 class Server {
 private:
-    Match match;
+    Lobby lobby;
     Acceptor acceptor;
 
 public:

@@ -8,17 +8,17 @@
 #include "../common_src/constants.h"
 #include "../common_src/liberror.h"
 
-ClientHandler::ClientHandler(Socket&& skt, int client_id, Match& match):
+ClientHandler::ClientHandler(Socket&& skt, int client_id, Lobby& lobby):
         client_id(client_id),
         protocol(std::move(skt)),
         to_send_queue(QUEUE_MAX_SIZE),
-        match(match),
+        lobby(lobby),
         receiver(protocol, received_queue, client_id),
         sender(protocol, to_send_queue)
         {}
 
 void ClientHandler::start() {
-    match.join(client_id, to_send_queue);
+    protocol.send_player_id(client_id);
     receiver.start();
     sender.start();
 }
@@ -28,12 +28,10 @@ bool ClientHandler::is_dead() {
 }
 
 ClientHandler::~ClientHandler() {
-    match.leave(client_id);
     receiver.stop();
     sender.stop();
     to_send_queue.close();
     protocol.shutdown();
     receiver.join();
     sender.join();
-    protocol.close();
 }

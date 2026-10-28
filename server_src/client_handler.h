@@ -21,11 +21,11 @@ private:
     int client_id;
     ServerProtocol protocol;
     Queue<WorldState> to_send_queue;
-    Match& match;
+    Lobby& lobby;
     ServerReceiver receiver;
     ServerSender sender;
 public:
-    ClientHandler(Socket&& skt, int client_id, Match& match);
+    ClientHandler(Socket&& skt, int client_id, Lobby& lobby);
 
     void start();
 

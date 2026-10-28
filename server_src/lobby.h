@@ -20,5 +20,5 @@ class Lobby {
     public:
         std::string create_match(const std::string& name);
         std::vector<MatchInfo> list_matches();
-        Match* join_match(const std::string& code, int client_id, Queue<WorldState>& to_send_queue);
+        Match* find_match(const std::string& code);
 };

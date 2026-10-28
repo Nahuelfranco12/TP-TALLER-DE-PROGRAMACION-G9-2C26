@@ -11,11 +11,13 @@
 class ServerReceiver: public Thread {
 private:
     ServerProtocol& protocol;
-    Match& match;
+    Lobby& lobby;
+    Queue<WorldState>& to_send_queue;
     int client_id;
+    Match* match = nullptr;
 
 public:
-    ServerReceiver(ServerProtocol& protocol, Match& match, int client_id);
+    ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id);
 
     void run() override;
 };
