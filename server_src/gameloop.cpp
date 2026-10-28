@@ -11,7 +11,7 @@ void Gameloop::run() {
     auto time_1 = std::chrono::steady_clock::now();
     try{
         while(should_keep_running()) {
-            Command* cmd;
+            std::unique_ptr<Command> cmd;
             while(received_queue.try_pop(cmd)) {
                 cmd->execute(this->world);
             }
