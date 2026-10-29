@@ -27,8 +27,8 @@ struct EntityState {
 
 struct ItemState {
     ItemType type;
-    uint8_t subtype; // MineralTypes casteado, 0 en caso contrario
-    uint8_t count;
+    int subtype; // MineralTypes casteado, 0 en caso contrario
+    int count;
 };
 
 struct ToolState {
@@ -52,7 +52,7 @@ struct PlayerState {
     Position position;
     double life;
     double energy;
-    size_t coins;
+    int coins;
     IdSector sector;
 
     PlayerOutfitState outfit;
@@ -62,15 +62,15 @@ struct PlayerState {
 
 struct SectorMapState {
     IdSector id;
-    size_t width;
-    size_t height;
+    int width;
+    int height;
     std::vector<std::vector<TerrainState>> tiles;
 };
 
 struct SectorState {
     IdSector id;
-    size_t width;
-    size_t height;
+    int width;
+    int height;
     std::vector<EntityState> entities;
 };
 
