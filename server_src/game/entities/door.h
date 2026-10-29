@@ -1,11 +1,10 @@
 #ifndef DOOR_H_
 #define DOOR_H_
 
+#include "../sector.h"
 #include "../game_constants.h"
 #include "../position.h"
 #include "entity.h"
-
-class Sector;
 
 class Door {
 private:

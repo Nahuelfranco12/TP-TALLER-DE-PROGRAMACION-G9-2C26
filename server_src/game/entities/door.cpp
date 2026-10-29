@@ -1,6 +1,7 @@
 #include "door.h"
 
 #include <utility>
+#include <memory>
 
 Position Door::moveEntity(std::unique_ptr<Entity> entity) {
     if (this->destineSector.canMoveTo(this->destinePosition)) {
