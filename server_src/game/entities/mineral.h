@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "../mineral_types.h"
+#include "../game_constants.h"
 #include "entity.h"
 
 class Mineral : public Entity {

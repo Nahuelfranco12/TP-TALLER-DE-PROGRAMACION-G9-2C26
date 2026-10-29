@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-#include "id_sector.h"
+#include "game_constants.h"
 #include "move_result.h"
 #include "position.h"
 #include "terrain.h"

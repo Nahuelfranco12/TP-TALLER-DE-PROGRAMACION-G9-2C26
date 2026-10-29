@@ -12,4 +12,9 @@
 
 #define INVALID_PLAYER_ID -1
 
+enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
+
+enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
+enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH  };
+
 #endif // GAME_CONSTANTS_H_

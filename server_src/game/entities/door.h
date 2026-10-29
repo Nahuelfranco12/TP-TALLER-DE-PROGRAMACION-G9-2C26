@@ -2,7 +2,7 @@
 #define DOOR_H_
 
 #include "../sector.h"
-#include "../id_sector.h"
+#include "../game_constants.h"
 #include "../position.h"
 #include "entity.h"
 

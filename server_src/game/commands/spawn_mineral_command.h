@@ -2,8 +2,7 @@
 #define SPAWN_MINERAL_COMMAND_H_
 
 #include "../command.h"
-#include "../id_sector.h"
-#include "../mineral_types.h"
+#include "../game_constants.h"
 #include "../position.h"
 
 class SpawnMineralCommand : public Command {

@@ -2,7 +2,7 @@
 #define LEAVE_COMMAND_H_
 
 #include "../command.h"
-#include "../id_sector.h"
+#include "../game_constants.h"
 
 class LeaveCommand : public Command {
 private:

@@ -4,8 +4,7 @@
 #include <map>
 #include <memory>
 
-#include "id_sector.h"
-#include "mineral_types.h"
+#include "game_constants.h"
 #include "position.h"
 #include "sector.h"
 #include "entities/animal.h"
