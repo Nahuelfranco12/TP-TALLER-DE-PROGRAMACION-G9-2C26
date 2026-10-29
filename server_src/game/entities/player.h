@@ -35,6 +35,12 @@ public:
     Inventory& getInventory() { return inventory; }
 
     PlayerState state() const;
+
+    EntityState entityState() const override {
+        EntityState state = Entity::entityState();
+        state.playerId = id;
+        return state;
+    }
 };
 
 #endif // PLAYER_H_

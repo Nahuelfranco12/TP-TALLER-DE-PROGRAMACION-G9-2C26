@@ -14,6 +14,12 @@ public:
     virtual ~Animal() = default;
 
     AnimalType getAnimalType() const { return animalType; }
+
+    EntityState entityState() const override {
+        EntityState state = Entity::entityState();
+        state.animalType = animalType;
+        return state;
+    }
 };
 
 #endif // ANIMAL_H_

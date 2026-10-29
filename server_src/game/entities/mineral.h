@@ -22,6 +22,12 @@ public:
 
     std::unique_ptr<Item> toItem() const;
     void pickaxeEffect();
+
+    EntityState entityState() const override {
+        EntityState state = Entity::entityState();
+        state.mineralType = this->mineralType;
+        return state;
+    }
 };
 
 #endif // MINERAL_H_

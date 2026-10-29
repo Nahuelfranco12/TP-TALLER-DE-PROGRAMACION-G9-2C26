@@ -23,3 +23,4 @@ void Player::mine(Mineral& mineral) {
 PlayerState Player::state() const {
     return PlayerState{this->id, this->position, this->life, this->energy, this->coins, this->actualSector->getId(), this->inventory.state()};
 }
+

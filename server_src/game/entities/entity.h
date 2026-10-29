@@ -9,11 +9,11 @@ private:
 public:
     Position position;
 
-    Entity(size_t pos_x, size_t pos_y, EntityTypes type) : position(pos_x, pos_y), type(type) {};
+    Entity(size_t pos_x, size_t pos_y, EntityTypes type) : position(pos_x, pos_y), entityType(entityType) {};
     virtual ~Entity() = default;
 
     void setPosition(Position newPosition) { this->position = newPosition; }
-    virtual EntityTypes getType() const { return this->type; };
+    virtual EntityTypes getType() const { return this->entityType; };
 
     virtual EntityState entityState() const {
         return EntityState{entityType, position, INVALID_PLAYER_ID};
