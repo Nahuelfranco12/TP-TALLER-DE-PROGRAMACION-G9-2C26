@@ -79,6 +79,10 @@ bool Client::try_get_latest_state(WorldState& state){
     return has_been_received;
 }
 
+int Client::get_my_id() const {
+    return my_id;
+}
+
 bool Client::is_connected() const {
     return receiver.is_alive();
 }

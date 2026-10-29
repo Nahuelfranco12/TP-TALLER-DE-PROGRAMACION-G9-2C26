@@ -27,6 +27,8 @@ public:
     bool try_get_latest_state(WorldState& state);
     bool is_connected() const;
 
+    int get_my_id() const;
+
     //Comandos para QT
     std::string create_match(const std::string& name);
     std::vector<MatchInfo> list_matches();
