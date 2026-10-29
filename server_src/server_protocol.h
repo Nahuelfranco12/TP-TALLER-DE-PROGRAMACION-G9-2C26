@@ -20,14 +20,18 @@ private:
 
 public:
     explicit ServerProtocol(Socket&& socket);
-
-    // recibe un número OP 
-    int receive_operation();
-    MoveDto receive_move();
-    void send_world_state(const WorldState& state);
-
     void send_player_id(int id);
 
+    // Recibe un número OP (Determina la acción indicada por el cliente)
+    int receive_operation();
+
+    // Protocolo de estado del mundo
+    void send_world_state(const WorldState& state);
+
+    // Protocolo de acciones
+    MoveDto receive_move();
+
+    // Protocolo de menú
     LobbyRequest receive_lobby_request();
     void send_match_created(const std::string& code);
     void send_match_list(const std::vector<MatchInfo>& matches);
