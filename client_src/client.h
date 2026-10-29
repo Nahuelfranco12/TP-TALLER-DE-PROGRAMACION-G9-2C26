@@ -2,10 +2,12 @@
 #define CLIENT_H_
 
 #include <string>
+#include <memory>
 
 #include "../common_src/constants.h"
 #include "../common_src/game_dtos.h"
 #include "../common_src/queue.h"
+#include "actions/client_action.h"
 #include "client_receiver.h"
 #include "client_sender.h"
 #include "client_protocol.h"
@@ -15,7 +17,7 @@ private:
     ClientProtocol protocol;
     int my_id;
     Queue<WorldState> received_queue;
-    Queue<MoveDto> to_send_queue;
+    Queue<std::unique_ptr<ClientAction>> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
     bool in_game = false;

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../common_src/constants.h"
+#include "actions/move_action.h"
 
 Client::Client(const char* hostname, const char* servname):
         protocol(hostname, servname),
@@ -65,9 +66,12 @@ void Client::run() {
     }
 }
 
+// Métodos de acciones
+
 void Client::send_move(Direction direction) {
-    to_send_queue.try_push(MoveDto{direction});
+    to_send_queue.try_push(std::make_unique<MoveAction>(direction));
 }
+
 
 bool Client::try_get_latest_state(WorldState& state){
     bool has_been_received = false;
@@ -95,7 +99,8 @@ Client::~Client() {
     }
 }
 
-// comandos nuevos de menú (para qt)
+// Métodos de menú (QT)
+
 std::string Client::create_match(const std::string& name) {
     protocol.send_create_match(name);
     return protocol.receive_created_match();

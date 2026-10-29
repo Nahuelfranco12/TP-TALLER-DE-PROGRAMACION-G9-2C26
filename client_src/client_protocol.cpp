@@ -17,9 +17,9 @@ void ClientProtocol::shutdown() {
     } catch (const std::exception&) {}
 }
 
-void ClientProtocol::send_move_dto(const MoveDto& cmd){
+void ClientProtocol::send_move_dto(const MoveDto& dto){
     protocol.send_u8(OP_MOVE);
-    protocol.send_u8(direction_to_byte(cmd.direction));
+    protocol.send_u8(direction_to_byte(dto.direction));
 }
 
 WorldState ClientProtocol::receive_world_state(){
