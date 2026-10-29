@@ -1,7 +1,7 @@
 #ifndef TOOL_H_
 #define TOOL_H_
 
-enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
+#include "../game_constants.h"
 
 class Tool {
 public:

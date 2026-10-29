@@ -2,8 +2,7 @@
 #define ANIMAL_H_
 
 #include "entity.h"
-
-enum class AnimalType { COW, CHICKEN };
+#include "../game_constants.h"
 
 class Animal : public Entity {
 private:
