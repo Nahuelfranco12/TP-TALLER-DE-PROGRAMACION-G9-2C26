@@ -78,7 +78,7 @@ Position Sector::findFreePosition() const {
 }
 
 SectorState Sector::state() const {
-    SectorState state{id, width, height {}};
+    SectorState state{id, width, height, {}};
     state.entities.reserve(entities.size());
     for (const auto& [pos, entity] : entities)
         state.entities.push_back(entity->entityState());
