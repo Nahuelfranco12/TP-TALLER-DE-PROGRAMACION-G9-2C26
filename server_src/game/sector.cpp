@@ -21,7 +21,7 @@ MoveResult Sector::move(Position origin, Position destine) {
         return MoveResult(true, destine, this->id);
     } else {
         // Si hay puerta se le pide a la puerta que mueva la entidad
-        Door door = this->doors.at(destine);
+        Door& door = *this->doors.at(destine);
         Position destinePos = door.moveEntity(std::move(entity));
         return MoveResult(true, destinePos, door.getIdDestineSector());
     }
@@ -75,4 +75,24 @@ Position Sector::findFreePosition() const {
                 return pos;
         }
     return Position(0, 0);
+}
+
+SectorState Sector::state() const {
+    SectorState state{id, {}};
+    state.entities.reserve(entities.size());
+    for (const auto& [pos, entity] : entities)
+        state.entities.push_back(entity->entityState());
+    return state;
+}
+
+SectorMapState Sector::mapState() const {
+    SectorMapState sectorState{id, width, height, {}};
+    sectorState.tiles.assign(width, std::vector<TerrainState>(height));
+    for (size_t x = 0; x < width; ++x)
+        for (size_t y = 0; y < height; ++y) {
+            const Terrain& terrain = tiles[x][y];
+            sectorState.tiles[x][y] = {terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable()};
+        }
+
+    return sectorState;
 }
