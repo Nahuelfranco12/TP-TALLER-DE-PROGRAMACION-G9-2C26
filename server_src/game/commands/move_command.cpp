@@ -7,16 +7,16 @@ void MoveCommand::execute(World& world) {
 
     Position destination(player->position.x, player->position.y);
     switch (this->direction) {
-        case Direction::Up:
+        case DirectionDto::Up:
             destination.y = player->position.y + 1;
             break;
-        case Direction::Down:
+        case DirectionDto::Down:
             destination.y = player->position.y - 1;
             break;
-        case Direction::Left:
+        case DirectionDto::Left:
             destination.x = player->position.x + 1;
             break;
-        case Direction::Right:
+        case DirectionDto::Right:
             destination.x = player->position.x - 1;
             break;
     }

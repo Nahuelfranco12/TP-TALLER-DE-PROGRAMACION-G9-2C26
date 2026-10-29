@@ -7,6 +7,7 @@
 
 #include "server_protocol.h"
 
+// TODO: revisar si la queue debe ser de WorldState o WorldStateDto
 class ServerSender: public Thread {
 private:
     ServerProtocol& protocol;

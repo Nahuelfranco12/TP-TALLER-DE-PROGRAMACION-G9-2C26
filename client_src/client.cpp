@@ -28,7 +28,7 @@ void Client::run() {
         if (line.rfind("c ", 0) == 0) {
             std::cout << "Partida creada, código: " << create_match(line.substr(2)) << STRING_BRK;
         } else if (line == "l") {
-            for (const MatchInfo& m : list_matches())
+            for (const MatchInfoDto& m : list_matches())
                 std::cout << m.code << " - " << m.name << " (" << m.players << " jugadores)"
                           << STRING_BRK;
         } else if (line.rfind("j ", 0) == 0) {
@@ -40,7 +40,7 @@ void Client::run() {
             return;
         }
     }
-    WorldState state;
+    WorldStateDto state;
 
     // TEST POR CONSOLA DEL MOVIMIENTO DE LOS JUGADORES
     while(std::getline(std::cin, line) && line != "q") {
@@ -49,16 +49,16 @@ void Client::run() {
         }
         
         if(line == "w")
-            send_move(Direction::Up);
+            send_move(DirectionDto::Up);
         else if(line == "s")
-            send_move(Direction::Down);
+            send_move(DirectionDto::Down);
         else if(line == "a")
-            send_move(Direction::Left);
+            send_move(DirectionDto::Left);
         else if(line == "d")
-            send_move(Direction::Right);
+            send_move(DirectionDto::Right);
 
         if(try_get_latest_state(state)) {
-            for(const PlayerPosition& p : state.players) {
+            for(const PlayerPositionDto& p : state.players) {
                 std::string mensaje = "Jugador " + std::to_string(p.id) + " en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
                 std::cout << mensaje;
             }
@@ -68,14 +68,14 @@ void Client::run() {
 
 // Métodos de acciones
 
-void Client::send_move(Direction direction) {
+void Client::send_move(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<MoveAction>(direction));
 }
 
 
-bool Client::try_get_latest_state(WorldState& state){
+bool Client::try_get_latest_state(WorldStateDto& state){
     bool has_been_received = false;
-    WorldState next_state;
+    WorldStateDto next_state;
     while(received_queue.try_pop(next_state)){
         state = std::move(next_state);
         has_been_received = true;

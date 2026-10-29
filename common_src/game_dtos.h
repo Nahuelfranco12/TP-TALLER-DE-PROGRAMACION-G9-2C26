@@ -4,17 +4,17 @@
 #include <list>
 #include <string>
 
-enum class Direction { Up, Down, Left, Right};
-enum class TerrainType { DIRT, GRASS, GROUND, DOOR }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar distinto)
-enum class SectorType { FARM, VILLAGE, CAVERN };
+enum class DirectionDto { Up, Down, Left, Right};
+enum class TerrainTypeDto { DIRT, GRASS, GROUND, DOOR }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar distinto)
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
 
 // TODO: revisar para que sea acorde a SDL
-enum class PlayerHats { COMMON_HAT, FARMER_HAT };
-enum class PlayerHairs { BLONDE, BROWN };
-enum class PlayerTShirts { BLACK, WHITE };
-enum class PlayerPants { JEANS, SHORTS, SKIRT };
+enum class PlayerHatsDto { COMMON_HAT, FARMER_HAT };
+enum class PlayerHairsDto { BLONDE, BROWN };
+enum class PlayerTShirtsDto { BLACK, WHITE };
+enum class PlayerPantsDto { JEANS, SHORTS, SKIRT };
 
-enum class ItemType {
+enum class ItemTypeDto {
     MINERAL_GOLD,
     MINERAL_IRON,
     MINERAL_LAPIZLAZULI,
@@ -25,7 +25,7 @@ enum class ItemType {
     CULTIVO, // TODO: los distintos tipo de cultivos + su rareza
 };
 
-enum class EntityType {
+enum class EntityTypeDto {
     COW,
     CHICKEN,
     SKELETON,
@@ -35,20 +35,20 @@ enum class EntityType {
 };
 
 struct MoveDto {
-    Direction direction = Direction::Up;
+    DirectionDto direction = DirectionDto::Up;
 };
 
 struct MineDto {
     // TODO
 };
 
-struct PlayerPosition {
+struct PlayerPositionDto {
     int id = 0;
     int x = 0;
     int y = 0;
 };
 
-struct GamePosition {
+struct GamePositionDto {
     size_t x = 0;
     size_t y = 0;
 };
@@ -62,10 +62,10 @@ struct TileDto {
 struct PlayerDto {
     size_t id;
 
-    PlayerHats hat;
-    PlayerHairs hair;
-    PlayerTShirts tshirt;
-    PlayerPants pants;
+    PlayerHatsDto hat;
+    PlayerHairsDto hair;
+    PlayerTShirtsDto tshirt;
+    PlayerPantsDto pants;
 
     std::map<int, InventoryDto> inventories;
 };
@@ -81,31 +81,32 @@ struct InventoryDto {
     std::list<InventorySlotDto> slots;
 };
 
-struct SectorState {
+struct SectorStateDto {
     size_t width;
     size_t height;
-    SectorType type;
+    SectorTypeDto type;
 
     std::list<std::list<TileDto>> sector;
-    std::map<GamePosition, PlayerDto> players;
-    std::map<GamePosition, EntityType> entities;
+    std::map<GamePositionDto, PlayerDto> players;
+    std::map<GamePositionDto, EntityTypeDto> entities;
 };
 
 // TODO: revisar para cuando se necesita mostrar el mapa completo
-struct WorldState {
+struct WorldStateDto {
     std::list<SectorState> world;
+    std::list<PlayerDto> players;
 };
 
-struct MatchInfo {
+struct MatchInfoDto {
     std::string code;
     std::string name;
     int players = 0;
 };
 
-enum class LobbyAction { Create, List, Join };
+enum class LobbyActionDto { Create, List, Join };
 
-struct LobbyRequest {
-    LobbyAction action = LobbyAction::List;
+struct LobbyRequestDto {
+    LobbyActionDto action = LobbyActionDto::List;
     std::string text;
 };
 

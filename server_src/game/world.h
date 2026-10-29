@@ -38,7 +38,7 @@ public:
 
     Sector* getSector(IdSector id);
 
-    WorldState state();
+    WorldState state() const;
     SectorMapState mapState(IdSector id) const;
 };
 

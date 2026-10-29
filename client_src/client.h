@@ -16,7 +16,7 @@ class Client {
 private:
     ClientProtocol protocol;
     int my_id;
-    Queue<WorldState> received_queue;
+    Queue<WorldStateDto> received_queue;
     Queue<std::unique_ptr<ClientAction>> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
@@ -26,13 +26,13 @@ public:
     explicit Client(const char* hostname, const char* servname);
 
     void send_join();
-    void send_move(Direction direction);
-    bool try_get_latest_state(WorldState& state);
+    void send_move(DirectionDto direction);
+    bool try_get_latest_state(WorldStateDto& state);
     bool is_connected() const;
 
     //Comandos para QT
     std::string create_match(const std::string& name);
-    std::vector<MatchInfo> list_matches();
+    std::vector<MatchInfoDto> list_matches();
     bool join_match(const std::string& code);
 
     void run();

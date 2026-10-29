@@ -19,7 +19,7 @@ class Lobby {
 
     public:
         std::string create_match(const std::string& name);
-        std::vector<MatchInfo> list_matches();
+        std::vector<MatchInfoDto> list_matches();
         Match* find_match(const std::string& code);
 };
 

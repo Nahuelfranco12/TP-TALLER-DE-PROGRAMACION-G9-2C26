@@ -27,6 +27,7 @@ MoveDto ServerProtocol::receive_move() {
     return MoveDto{byte_to_direction(protocol.receive_u8())};
 }
 
+// TODO: revisar
 void ServerProtocol::send_world_state(const WorldState& state) {
     protocol.send_u8(OP_WORLD_STATE);
     protocol.send_u16(static_cast<uint16_t>(state.players.size()));
@@ -37,31 +38,31 @@ void ServerProtocol::send_world_state(const WorldState& state) {
     }
 }
 
-Direction ServerProtocol::byte_to_direction(uint8_t direction_byte) {
+DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
     switch(direction_byte) {
         case DIR_UP:
-            return Direction::Up;
+            return DirectionDto::Up;
         case DIR_DOWN:
-            return Direction::Down;
+            return DirectionDto::Down;
         case DIR_LEFT:
-            return Direction::Left;
+            return DirectionDto::Left;
         case DIR_RIGHT:
-            return Direction::Right;
+            return DirectionDto::Right;
         default:
             throw std::runtime_error("Direccion inválida");
         
     }
 }
 
-LobbyRequest ServerProtocol::receive_lobby_request() {
+LobbyRequestDto ServerProtocol::receive_lobby_request() {
     uint8_t operation = protocol.receive_u8();
     switch(operation) {
         case OP_CREATE_MATCH:
-            return LobbyRequest{LobbyAction::Create, protocol.receive_string()};
+            return LobbyRequestDto{LobbyActionDto::Create, protocol.receive_string()};
         case OP_LIST_MATCHES:
-            return LobbyRequest{LobbyAction::List, ""};
+            return LobbyRequestDto{LobbyActionDto::List, ""};
         case OP_JOIN_MATCH:
-            return LobbyRequest{LobbyAction::Join, protocol.receive_string()};
+            return LobbyRequestDto{LobbyActionDto::Join, protocol.receive_string()};
         default:
             throw std::runtime_error("Mensaje inesperado");
     }
@@ -72,10 +73,10 @@ void ServerProtocol::send_match_created(const std::string& code) {
     protocol.send_string(code);
 }
 
-void ServerProtocol::send_match_list(const std::vector<MatchInfo>& matches) {
+void ServerProtocol::send_match_list(const std::vector<MatchInfoDto>& matches) {
     protocol.send_u8(OP_LIST_MATCHES);
     protocol.send_u16(static_cast<uint16_t>(matches.size()));
-    for(const MatchInfo& m : matches) {
+    for(const MatchInfoDto& m : matches) {
         protocol.send_string(m.code);
         protocol.send_string(m.name);
         protocol.send_u8(static_cast<uint8_t>(m.players));

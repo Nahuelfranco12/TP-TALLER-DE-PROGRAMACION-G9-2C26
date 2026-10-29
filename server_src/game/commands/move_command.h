@@ -8,10 +8,10 @@
 class MoveCommand : public Command {
 private:
     int playerId;
-    Direction direction;
+    DirectionDto direction;
 
 public:
-    MoveCommand(int playerId, Direction direction) : playerId(playerId), direction(direction) {}
+    MoveCommand(int playerId, DirectionDto direction) : playerId(playerId), direction(direction) {}
 
     void execute(World& world) override;
 };

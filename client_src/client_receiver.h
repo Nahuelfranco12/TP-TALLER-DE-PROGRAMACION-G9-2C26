@@ -12,10 +12,10 @@
 class ClientReceiver: public Thread {
 private:
     ClientProtocol& protocol;
-    Queue<WorldState>& received_queue;
+    Queue<WorldStateDto>& received_queue;
 
 public:
-    ClientReceiver(ClientProtocol& protocol, Queue<WorldState>& queue);
+    ClientReceiver(ClientProtocol& protocol, Queue<WorldStateDto>& queue);
 
     void run() override;
 };

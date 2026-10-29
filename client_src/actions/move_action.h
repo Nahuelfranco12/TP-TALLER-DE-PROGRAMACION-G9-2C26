@@ -9,7 +9,7 @@ private:
     MoveDto dto;
 
 public:
-    explicit MoveAction(Direction direction);
+    explicit MoveAction(DirectionDto direction);
     void send_by(ClientProtocol& protocol) const override;
 };
 

@@ -9,21 +9,21 @@
 #include "../common_src/game_dtos.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
-#include "../common_src/game_dtos.h"
+#include "./game/world_state.h"
 
 class ServerProtocol {
 private:
     Socket skt;
     Protocol protocol;
 
-    Direction byte_to_direction(uint8_t direction_byte);
+    DirectionDto byte_to_direction(uint8_t direction_byte);
 
 public:
     explicit ServerProtocol(Socket&& socket);
     void send_player_id(int id);
 
     // Recibe un número OP (Determina la acción indicada por el cliente)
-    int receive_operation();
+    uint8_t receive_operation();
 
     // Protocolo de estado del mundo
     void send_world_state(const WorldState& state);
@@ -32,9 +32,9 @@ public:
     MoveDto receive_move();
 
     // Protocolo de menú
-    LobbyRequest receive_lobby_request();
+    LobbyRequestDto receive_lobby_request();
     void send_match_created(const std::string& code);
-    void send_match_list(const std::vector<MatchInfo>& matches);
+    void send_match_list(const std::vector<MatchInfoDto>& matches);
     void send_join_result(bool result);
 
     void shutdown();

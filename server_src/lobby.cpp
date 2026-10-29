@@ -6,11 +6,11 @@ std::string Lobby::create_match(const std::string& name) {
     matches[code] = std::make_unique<Match>(name);
     return code;
 }
-std::vector<MatchInfo> Lobby::list_matches() {
+std::vector<MatchInfoDto> Lobby::list_matches() {
     std::lock_guard<std::mutex> lock(mutex);
-    std::vector<MatchInfo> matches_info;
+    std::vector<MatchInfoDto> matches_info;
     for(const auto& [code, match] : matches) {
-        matches_info.push_back(MatchInfo{code, match->get_name(), match->player_count()});
+        matches_info.push_back(MatchInfoDto{code, match->get_name(), match->player_count()});
     }
     return matches_info;
 

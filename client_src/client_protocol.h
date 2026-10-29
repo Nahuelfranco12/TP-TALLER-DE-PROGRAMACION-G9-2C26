@@ -13,14 +13,14 @@ class ClientProtocol {
 private:
     Socket skt;
     Protocol protocol;
-    uint8_t direction_to_byte(Direction direction);
+    uint8_t direction_to_byte(DirectionDto direction);
     
 public:
     explicit ClientProtocol(const char* hostname, const char* servname);
     int receive_player_id();
     
     // Protocolo de estado del mundo
-    WorldState receive_world_state();
+    WorldStateDto receive_world_state();
 
     // Protocolo de acciones del jugador
     void send_move_dto(const MoveDto& dto);
@@ -30,7 +30,7 @@ public:
     void send_list_matches();
     void send_join_match(const std::string& code);
     std::string receive_created_match();
-    std::vector<MatchInfo> receive_match_list();
+    std::vector<MatchInfoDto> receive_match_list();
     bool receive_join_result();
 
     void shutdown();

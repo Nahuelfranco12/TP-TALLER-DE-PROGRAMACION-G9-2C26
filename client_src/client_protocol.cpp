@@ -22,15 +22,15 @@ void ClientProtocol::send_move_dto(const MoveDto& dto){
     protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-WorldState ClientProtocol::receive_world_state(){
+WorldStateDto ClientProtocol::receive_world_state(){
     uint8_t operation = protocol.receive_u8();
     if (operation != OP_WORLD_STATE)
         throw std::runtime_error("Mensaje inesperado");
 
-    WorldState state;
+    WorldStateDto state;
     int player_count = protocol.receive_u16();
     for (int i = 0; i < player_count; i++) {
-        PlayerPosition p;
+        PlayerPositionDto p;
         p.id = protocol.receive_u16();
         p.x = protocol.receive_u16();
         p.y = protocol.receive_u16();
@@ -40,15 +40,15 @@ WorldState ClientProtocol::receive_world_state(){
 }
 
 
-uint8_t ClientProtocol::direction_to_byte(Direction direction) {
+uint8_t ClientProtocol::direction_to_byte(DirectionDto direction) {
     switch(direction) {
-        case Direction::Up:
+        case DirectionDto::Up:
             return DIR_UP;
-        case Direction::Down:
+        case DirectionDto::Down:
             return DIR_DOWN;
-        case Direction::Left:
+        case DirectionDto::Left:
             return DIR_LEFT;
-        case Direction::Right:
+        case DirectionDto::Right:
             return DIR_RIGHT;
         default:
             throw std::runtime_error("Dirección inválida");
@@ -76,14 +76,14 @@ void ClientProtocol::send_list_matches() {
     protocol.send_u8(OP_LIST_MATCHES);
 }
 
-std::vector<MatchInfo> ClientProtocol::receive_match_list() {
+std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
     if (protocol.receive_u8() != OP_LIST_MATCHES)
         throw std::runtime_error("Mensaje inesperado");
 
-    std::vector<MatchInfo> matches;
+    std::vector<MatchInfoDto> matches;
     int count = protocol.receive_u16();
     for (int i = 0; i < count; i++) {
-        MatchInfo matchinfo;
+        MatchInfoDto matchinfo;
         matchinfo.code = protocol.receive_string();
         matchinfo.name = protocol.receive_string();
         matchinfo.players = protocol.receive_u8();

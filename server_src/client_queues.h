@@ -10,12 +10,12 @@
 class ClientQueues {
     private:
         std::mutex mutex;
-        std::map<int, Queue<WorldState>*> queues;
+        std::map<int, Queue<WorldStateDto>*> queues;
 
     public:
-        void add_client(int client_id, Queue<WorldState>& queue);
+        void add_client(int client_id, Queue<WorldStateDto>& queue);
         void remove_client(int client_id);
-        void send_to_all(const WorldState& state);
+        void send_to_all(const WorldStateDto& state);
         int size();
 
 };

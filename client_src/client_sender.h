@@ -16,7 +16,7 @@ private:
     Queue<std::unique_ptr<ClientAction>>& to_send_queue;
 
 public:
-    ClientSender(ClientProtocol& protocol, Queue<std::unique_prt<ClientAction>>& to_send_queue);
+    ClientSender(ClientProtocol& protocol, Queue<std::unique_ptr<ClientAction>>& to_send_queue);
 
     void run() override;
 };

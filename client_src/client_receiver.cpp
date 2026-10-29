@@ -5,7 +5,7 @@
 
 #include "../common_src/constants.h"
 
-ClientReceiver::ClientReceiver(ClientProtocol& protocol, Queue<WorldState>& received_queue):
+ClientReceiver::ClientReceiver(ClientProtocol& protocol, Queue<WorldStateDto>& received_queue):
     protocol(protocol), received_queue(received_queue) {}
 
 void ClientReceiver::run() {
