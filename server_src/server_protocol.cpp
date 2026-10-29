@@ -9,6 +9,46 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket): skt(std::move(socket)), protocol(skt) {}
 
+void ServerProtocol::send_player(const PlayerState& player) {
+    protocol.send_u16(static_cast<uint16_t>(player.id));
+    send_position(player.position);
+    protocol.send_u16(static_cast<uint16_t>(player.life));
+    protocol.send_u16(static_cast<uint16_t>(player.energy));
+    protocol.send_u16(static_cast<uint16_t>(player.coins));
+    protocol.send_u16(static_cast<uint16_t>(player.sector));
+    send_inventory(player.inventory);
+}
+
+void ServerProtocol::send_inventory(const InventoryState& inventory) {
+    protocol.send_u16(static_cast<uint16_t>(inventory.items.size()));
+    for (const ItemState& item : inventory.items) {
+        protocol.send_16();
+    }
+}
+
+void ServerProtocol::send_sector(const SectorState& sector) {
+    protocol.send_u8(static_cast<uint8_t>(sector.id));
+    protocol.send_u16(static_cast<uint16_t>(sector.width));
+    protocol.send_u16(static_cast<uint16_t>(sector.height));
+
+    protocol.send_u16(static_cast<uint16_t>(sector.entities.size()));
+    for (const EntityState& entity : sector.entities) {
+        send_entity(entity);
+    }
+}
+
+void ServerProtocol::send_entity(const EntityState& entity) {
+    protocol.send_u8(static_cast<uint8_t>(entity.type));
+    send_position(entity.position);
+    protocol.send_u16(static_cast<uint16_t>(entity.playerId));
+    protocol.send_u8(static_cast<uint8_t>(entity.mineralType));
+    protocol.send_u8(static_cast<uint8_t>(entity.animalType));
+}
+
+void ServerProtocol::send_position(const Position& position) {
+    protocol.send_u16(static_cast<uint16_t>(position.x));
+    protocol.send_u16(static_cast<uint16_t>(position.y));
+}
 
 void ServerProtocol::shutdown() {
     try {
@@ -30,11 +70,15 @@ MoveDto ServerProtocol::receive_move() {
 // TODO: revisar
 void ServerProtocol::send_world_state(const WorldState& state) {
     protocol.send_u8(OP_WORLD_STATE);
+
     protocol.send_u16(static_cast<uint16_t>(state.players.size()));
-    for(const PlayerPosition& p : state.players) {
-        protocol.send_u16(static_cast<uint16_t>(p.id));
-        protocol.send_u16(static_cast<uint16_t>(p.x));
-        protocol.send_u16(static_cast<uint16_t>(p.y));
+    for (const PlayerState& player : state.players) {
+        send_player(player);
+    }
+
+    protocol.send_u16(static_cast<uint16_t>(state.sectors.size()));
+    for (const SectorState& sector : state.sectors) {
+        send_sector(sector);
     }
 }
 

@@ -17,6 +17,11 @@ private:
     Protocol protocol;
 
     DirectionDto byte_to_direction(uint8_t direction_byte);
+    void send_player(const PlayerState& player);
+    void send_inventory(const InventoryState& inventory);
+    void send_sector(const SectorState& sector);
+    void send_entity(const EntityState& entity);
+    void send_position(const Position& position);
 
 public:
     explicit ServerProtocol(Socket&& socket);
