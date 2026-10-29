@@ -26,3 +26,9 @@ std::unique_ptr<Item> Mineral::toItem() const {
 void Mineral::pickaxeEffect() {
     // TODO: implementar (spawn de enemigos, perder el material)
 }
+
+EntityState Mineral::entityState() const override {
+    EntityState state = Entity::entityState();
+    state.mineralType = this->mineralType;
+    return state;
+}
