@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "../game_constants.h"
-#include "../world_state.h"
+#include "../../world_state.h"
 #include "inventory_slot.h"
 #include "tool.h"
 

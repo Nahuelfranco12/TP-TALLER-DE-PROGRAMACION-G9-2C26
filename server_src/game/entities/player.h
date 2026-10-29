@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <memory>
 
-#include "../world_state.h"
+#include "../../world_state.h"
 #include "../inventory/inventory.h"
 #include "../move_result.h"
 #include "entity.h"

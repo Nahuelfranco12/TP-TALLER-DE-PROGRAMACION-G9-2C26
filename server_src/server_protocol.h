@@ -9,7 +9,7 @@
 #include "../common_src/game_dtos.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
-#include "./game/world_state.h"
+#include "world_state.h"
 
 class ServerProtocol {
 private:

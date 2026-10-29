@@ -2,7 +2,11 @@
 #define DTOS_H_
 
 #include <list>
+#include <vector>
+#include <map>
 #include <string>
+#include <cstddef>
+#include <cstdint>
 
 enum class DirectionDto { Up, Down, Left, Right};
 enum class TerrainTypeDto { DIRT, GRASS, GROUND, DOOR }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar distinto)
@@ -25,11 +29,18 @@ enum class ItemTypeDto {
     CULTIVO, // TODO: los distintos tipo de cultivos + su rareza
 };
 
+enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
+
 enum class EntityTypeDto {
+    PLAYER,
     COW,
     CHICKEN,
     SKELETON,
-    
+    MINERAL_GOLD,
+    MINERAL_IRON,
+    MINERAL_LAPIZLAZULI,
+    MINERAL_COAL,
+
     // TODO: resto de enemigos
     // TODO: NPCs del pueblo
 };
@@ -42,6 +53,7 @@ struct MineDto {
     // TODO
 };
 
+// TODO: ver de eliminarlo
 struct PlayerPositionDto {
     int id = 0;
     int x = 0;
@@ -51,12 +63,27 @@ struct PlayerPositionDto {
 struct GamePositionDto {
     size_t x = 0;
     size_t y = 0;
+
+    bool operator<(const GamePositionDto& o) const {
+        return x != o.x ? x < o.x : y < o.y;
+    }
 };
 
 struct TileDto {
+    TerrainTypeDto type;
     bool transitable;
     bool arable;
-    TerrainType type;
+};
+
+struct InventorySlotDto {
+    size_t count;
+    ItemTypeDto item;
+};
+
+struct InventoryDto {
+    size_t ownerId;
+
+    std::list<InventorySlotDto> slots;
 };
 
 struct PlayerDto {
@@ -67,33 +94,22 @@ struct PlayerDto {
     PlayerTShirtsDto tshirt;
     PlayerPantsDto pants;
 
-    std::map<int, InventoryDto> inventories;
-};
-
-struct InventorySlotDto {
-    size_t count;
-    ItemType item;
-};
-
-struct InventoryDto {
-    size_t ownerId;
-
-    std::list<InventorySlotDto> slots;
+    std::list<InventoryDto> inventory;
 };
 
 struct SectorStateDto {
+    SectorTypeDto type;
     size_t width;
     size_t height;
-    SectorTypeDto type;
 
-    std::list<std::list<TileDto>> sector;
+    std::vector<std::vector<TileDto>> sector;
     std::map<GamePositionDto, PlayerDto> players;
     std::map<GamePositionDto, EntityTypeDto> entities;
 };
 
 // TODO: revisar para cuando se necesita mostrar el mapa completo
 struct WorldStateDto {
-    std::list<SectorState> world;
+    std::list<SectorStateDto> world;
     std::list<PlayerDto> players;
 };
 

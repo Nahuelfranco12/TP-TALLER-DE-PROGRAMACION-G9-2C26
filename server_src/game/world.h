@@ -7,9 +7,9 @@
 #include "game_constants.h"
 #include "position.h"
 #include "sector.h"
-#include "entities/animal.h"
-#include "entities/player.h"
-#include "world_state.h"
+#include "./entities/animal.h"
+#include "./entities/player.h"
+#include "../world_state.h"
 
 enum DaySpeed { SLOW, MEDIUM, FAST };
 
