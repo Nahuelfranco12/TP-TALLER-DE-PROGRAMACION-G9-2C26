@@ -6,15 +6,20 @@
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed):
     received_queue(received_queue), clients(clients), world(worldSpeed) {}
 
+
+void Gameloop::process_commands() {
+    std::unique_ptr<Command> cmd;
+    while(received_queue.try_pop(cmd)) {
+        cmd->execute(this->world);
+    }
+}
+
 void Gameloop::run() {
     const std::chrono::milliseconds tickrate(1000 / TICKS_PER_SECOND);
     auto time_1 = std::chrono::steady_clock::now();
     try{
         while(should_keep_running()) {
-            std::unique_ptr<Command> cmd;
-            while(received_queue.try_pop(cmd)) {
-                cmd->execute(this->world);
-            }
+            process_commands();
             clients.send_to_all(make_world_state());
 
             auto time_2 = std::chrono::steady_clock::now();
@@ -36,9 +41,6 @@ void Gameloop::run() {
 
 WorldState Gameloop::make_world_state() const {
     WorldState state;
-    const std::map<int, Player*> players = world.getPlayers();
-
-    for (const auto& [idPlayer, player] : players)
-        state.players.push_back(PlayerPosition{idPlayer, player->position.x, player->position.y});
+    // TODO
     return state;
 }
