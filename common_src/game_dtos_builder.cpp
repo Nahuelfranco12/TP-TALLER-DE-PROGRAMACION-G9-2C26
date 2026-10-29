@@ -86,3 +86,72 @@ TerrainTypeDto GameDtosBuilder::toDto(TerrainType terrain) {
     }
     throw std::logic_error("TerrainType sin DTO");
 }
+
+
+std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState& state, int clientId, const SectorMapState* map) {
+    std::map<int, const PlayerState*> byId;
+    for (const PlayerState& playerState : state.players)
+        byId[playerState.id] = &playerState;
+
+    auto actualPlayerIt = byId.find(clientId);
+    if (actualPlayerIt == byId.end())
+        return std::nullopt;
+    const PlayerState& actualPlayer = *actualPlayerIt->second;
+
+    SectorStateDto sectorDto;
+    sectorDto.type = toDto(actualPlayer.sector);
+
+    for (const SectorState& sectorState : state.sectors) {
+        if (sectorState.id == actualPlayer.sector) {
+            sectorDto.width = sectorState.width;
+            sectorDto.height = sectorState.height;
+
+            for (const EntityState& e : sectorState.entities) {
+                GamePositionDto pos{e.position.x, e.position.y};
+
+                if (e.type == EntityTypes::PLAYER) {
+                    auto it = byId.find(e.playerId);
+                    if (it != byId.end()) {
+                        const PlayerState& playerState = *it->second;
+
+                        PlayerDto playerDto{};
+                        playerDto.id = playerState.id;
+
+                        // TODO: modificar cuando se tengan los outfit en el juego
+                        playerDto.hat = PlayerHatsDto::COMMON_HAT;
+                        playerDto.hair = PlayerHairsDto::BLONDE;
+                        playerDto.tshirt = PlayerTShirtsDto::BLACK;
+                        playerDto.pants = PlayerPantsDto::JEANS;
+
+                        if (playerState.id == clientId) {
+                            playerDto.life = static_cast<uint8_t>(playerState.life);
+                            playerDto.energy = static_cast<uint8_t>(playerState.energy);
+                            playerDto.coins = static_cast<uint32_t>(playerState.coins);
+
+                            InventoryDto inv;
+                            inv.ownerId = playerState.id;
+                            for (const ItemState& i : playerState.inventory.items)
+                                inv.slots.push_back({i.count, toDto(i)});
+                            for (const ToolState& t : playerState.inventory.tools)
+                                inv.tools.push_back(toDto(t.type));
+                            playerDto.inventory.push_back(std::move(inv));
+                        }
+                        sectorDto.players[pos] = std::move(playerDto);
+                    }
+                } else if (auto type = toDto(e)) {
+                    sectorDto.entities[pos] = *type;
+                }
+            }
+        }
+    }
+
+    if (map) {
+        sectorDto.sector.assign(map->width, std::vector<TileDto>(map->height));
+        for (size_t x = 0; x < map->width; ++x)
+            for (size_t y = 0; y < map->height; ++y) {
+                const TerrainState& t = map->tiles[x][y];
+                sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
+            }
+    }
+    return sectorDto;
+}
