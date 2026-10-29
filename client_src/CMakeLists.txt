@@ -12,6 +12,7 @@ target_sources(taller_client
     client_protocol.cpp
     client_receiver.cpp
     client_sender.cpp
+    caverna.cpp
     PUBLIC
     # .h files
     client.h
@@ -25,5 +26,6 @@ target_sources(taller_client
     client_protocol.h
     client_receiver.h
     client_sender.h
+    caverna.h
     )
     

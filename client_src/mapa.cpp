@@ -9,8 +9,6 @@ namespace {
     const int TILE_SHEET = 16;
     const int TILE = TILE_SHEET * ESCALA;
 
-    const char BORDE = ',';
-
     int tile_de_pixel(int pixel) {
         int tile = pixel / TILE;
         if (pixel < 0 && pixel % TILE != 0) {
@@ -18,20 +16,35 @@ namespace {
         }
         return tile;
     }
+
+    const char* archivo_tileset(TipoMapa tipo) {
+        if (tipo == MAPA_GRANJA) {
+            return "assets/mapas/ground_01_16x16.png";
+        }
+        return "assets/mapas/Dungeon_Tileset.png";
+    }
 }
 
-Mapa::Mapa(Renderer& renderer, int ancho, int alto, unsigned int semilla) : suelo(renderer, "assets/mapas/ground_01_16x16.png") {
+Mapa::Mapa(Renderer& renderer, TipoMapa tipo, int ancho, int alto, unsigned int semilla) 
+    : suelo(renderer, archivo_tileset(tipo)),
+    borde(',') {
+    if (tipo == MAPA_GRANJA) {
+        generar_granja(ancho, alto, semilla);
+    } else if (tipo == MAPA_CAVERNA) {
+        generar_caverna(ancho, alto, semilla);
+    }
+}
 
-    // Pasto claro
-    filas.assign(alto, std::string(ancho, '.'));
+void Mapa::generar_granja(int ancho, int alto, unsigned int semilla) {
+    borde = ',';
 
-    // Generar un mapa aleatorio de árboles y piedras
+    filas.assign(alto, std::string(ancho, ','));
+
     std::mt19937 azar(semilla);
     std::uniform_int_distribution<int> columna_al_azar(0, ancho - 1);
     std::uniform_int_distribution<int> fila_al_azar(0, alto - 1);
     std::uniform_int_distribution<int> radio_al_azar(1, 3);
 
-    // Manchas redondas de pasto oscuro
     const int CANTIDAD_MANCHAS = ancho * alto / 25;
     for (int i = 0; i < CANTIDAD_MANCHAS; ++i) {
         int centro_x = columna_al_azar(azar);
@@ -47,7 +60,26 @@ Mapa::Mapa(Renderer& renderer, int ancho, int alto, unsigned int semilla) : suel
                 }
             }
         }
-    }    
+    }
+}
+
+void Mapa::generar_caverna(int ancho, int alto, unsigned int semilla) {
+    borde = '#';
+
+    filas.assign(alto, std::string(ancho, 'p'));
+
+    std::mt19937 azar(semilla);
+    std::uniform_int_distribution<int> dado(0, 9);
+    for (int y = 0; y < alto; ++y) {
+        for (int x = 0; x < ancho; ++x) {
+            int numero = dado(azar);
+            if (numero == 0) filas[y][x] = 'q';
+            if (numero == 1) filas[y][x] = 'r';
+        }
+    }
+
+    filas[0] = std::string(ancho, 'w');
+    filas[1][ancho / 2] = 'e';
 }
 
 int Mapa::obtener_ancho() const {
@@ -63,7 +95,7 @@ int Mapa::obtener_alto() const {
 
 char Mapa::tile_en(int x, int y) const {
     if (x < 0 || y < 0 || x >= obtener_ancho() || y >= obtener_alto()) {
-        return BORDE;
+        return borde;
     }
     return filas[y][x];
 }
@@ -71,10 +103,15 @@ char Mapa::tile_en(int x, int y) const {
 void Mapa::dibujar_tile(Renderer& renderer, char tipo, int x, int y) {
     int columna = 4;
     int fila = 9;
+    if (tipo == '#') {columna = 8; fila = 7;}
     if (tipo == ',') {columna = 1; fila = 9;}
     if (tipo == 'T') {columna = 1; fila = 4;}
     if (tipo == 'X') {columna = 4; fila = 4;}
-    if (tipo == 'B') {columna = 0; fila = 12;}
+    if (tipo == 'p') {columna = 6; fila = 1;}
+    if (tipo == 'q') {columna = 7; fila = 0;}
+    if (tipo == 'r') {columna = 9; fila = 2;}
+    if (tipo == 'w') {columna = 2; fila = 0;}
+    if (tipo == 'e') {columna = 9; fila = 3;}
 
     Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);
     Rect destino(x, y, TILE, TILE);
