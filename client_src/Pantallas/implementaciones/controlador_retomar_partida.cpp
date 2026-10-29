@@ -13,20 +13,12 @@ ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
 
   ui.botJugarRP->setEnabled(false);
 
-  // 4. Conectamos el botón Volver
   connect(ui.botVolverRP, &QPushButton::clicked, this, [this]() {
     reiniciar();
     this->navegador.volver();
   });
 
-  // 5. Conectamos la validación a la lista de partidas
   partidas->setAlSeleccionar([this]() { validarFormulario(); });
-
-  // 6. Conectamos el botón Siguiente para arrancar (o avanzar)
-  connect(ui.botJugarRP, &QPushButton::clicked, this, [this]() {
-    // Acá a futuro vas a agarrar el código de la partida y dárselo al protocolo
-    // Por ahora lo dejamos listo para avanzar a donde necesites
-  });
 }
 
 void ControladorRetomarPartida::validarFormulario() {
