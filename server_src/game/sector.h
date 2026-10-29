@@ -28,10 +28,16 @@ public:
     virtual ~Sector() = default;
 
     MoveResult move(Position origin, Position destine);
+    
     bool canMoveTo(Position pos) const;
     bool isEmpty(Position pos) const;
+
     bool addEntity(std::unique_ptr<Entity> entity, Position pos);
     std::unique_ptr<Entity> removeEntity(Position pos);
+
+    bool addDoor(std::unique_ptr<Door> door, Position pos);
+    // std::unique_ptr<Door> removeDoor(Position pos);
+
     Entity* getEntity(Position pos) const;
     Position findFreePosition() const;
 

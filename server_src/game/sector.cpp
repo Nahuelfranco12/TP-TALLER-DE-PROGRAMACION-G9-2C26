@@ -1,24 +1,30 @@
 #include "sector.h"
 
+#include <utility>
+
 MoveResult Sector::move(Position origin, Position destine) {
     if (!canMoveTo(destine)) {
         auto it = this->entities.find(origin);
         Position current = (it != this->entities.end()) ? it->second->position : origin;
         return MoveResult(false, current, this->id);
     }
-
     auto it = this->entities.find(origin);
     if (it == this->entities.end())
         return MoveResult(false, origin, this->id);
-
     std::unique_ptr<Entity> entity = std::move(it->second);
     this->entities.erase(it);
 
-    entity->setPosition(destine);
-    this->entities.emplace(destine, std::move(entity));
-
-    // TODO: revisar el caso en que haya puerta
-    return MoveResult(true, destine, this->id);
+    if (this->doors.find(destine) == this->doors.end()) {
+        // Si no hay puerta mueve directo
+        entity->setPosition(destine);
+        this->entities.emplace(destine, std::move(entity));
+        return MoveResult(true, destine, this->id);
+    } else {
+        // Si hay puerta se le pide a la puerta que mueva la entidad
+        Door door = this->doors.at(destine);
+        Position destinePos = door.moveEntity(std::move(entity));
+        return MoveResult(true, destinePos, door.getIdDestineSector());
+    }
 }
 
 bool Sector::canMoveTo(Position pos) const {
@@ -34,9 +40,16 @@ bool Sector::isEmpty(Position pos) const {
 }
 
 bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
-    if (!isEmpty(pos)) return false;
+    if (!isEmpty(pos))
+        return false;
+    
     entity->setPosition(pos);
     auto [it, inserted] = this->entities.try_emplace(pos, std::move(entity));
+    return inserted;
+}
+
+bool Sector::addDoor(std::unique_ptr<Door> door, Position pos) {
+    auto [it, inserted] = this->doors.try_emplace(pos, std::move(door));
     return inserted;
 }
 
