@@ -23,7 +23,7 @@ enum class ItemTypeDto {
     MINERAL_IRON,
     MINERAL_LAPIZLAZULI,
     MINERAL_COAL,
-    MINERAL_SEED,
+    SEED,
     CHICKEN_EGG,
     COW_MILK,
     CULTIVO, // TODO: los distintos tipo de cultivos + su rareza
@@ -84,6 +84,7 @@ struct InventoryDto {
     size_t ownerId;
 
     std::list<InventorySlotDto> slots;
+    std::list<ToolTypeDto> tools;
 };
 
 struct PlayerDto {
@@ -93,6 +94,10 @@ struct PlayerDto {
     PlayerHairsDto hair;
     PlayerTShirtsDto tshirt;
     PlayerPantsDto pants;
+
+    double life;
+    double energy;
+    size_t coins;
 
     std::list<InventoryDto> inventory;
 };

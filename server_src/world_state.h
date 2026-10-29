@@ -60,6 +60,8 @@ struct SectorMapState {
 
 struct SectorState {
     IdSector id;
+    size_t width;
+    size_t height;
     std::vector<EntityState> entities;
 };
 
