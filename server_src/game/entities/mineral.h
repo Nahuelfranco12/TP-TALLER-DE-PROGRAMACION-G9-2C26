@@ -8,15 +8,15 @@
 
 class Mineral : public Entity {
 private:
-    MineralTypes type;
+    MineralTypes mineralType;
 
     double spawnFrequency;
     MineralPickaxeTime pickaxeTime;
 
 public:
-    Mineral(size_t pos_x, size_t pos_y, MineralTypes type, double spawnFrequency, MineralPickaxeTime pickaxeTime) : Entity(pos_x, pos_y), type(type), spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
+    Mineral(size_t pos_x, size_t pos_y, MineralTypes mineralType, double spawnFrequency, MineralPickaxeTime pickaxeTime) : Entity(pos_x, pos_y, EntityTypes::MINERAL), mineralType(mineralType), spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
 
-    MineralTypes getMineralType() const { return type; }
+    MineralTypes getMineralType() const { return mineralType; }
     double getSpawnFrequency() const { return spawnFrequency; }
     MineralPickaxeTime getPickaxeTime() const { return pickaxeTime; }
 

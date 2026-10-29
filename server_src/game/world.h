@@ -9,6 +9,7 @@
 #include "sector.h"
 #include "entities/animal.h"
 #include "entities/player.h"
+#include "world_state.h"
 
 enum DaySpeed { SLOW, MEDIUM, FAST };
 
@@ -36,6 +37,9 @@ public:
     const std::map<int, Player*> getPlayers() const;
 
     Sector* getSector(IdSector id);
+
+    WorldState state();
+    SectorMapState mapState(IdSector id) const;
 };
 
 #endif // WORLD_H_

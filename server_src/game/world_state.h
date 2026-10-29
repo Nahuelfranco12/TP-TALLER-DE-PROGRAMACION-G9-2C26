@@ -41,7 +41,7 @@ struct InventoryState {
 };
 
 struct PlayerState {
-    size_t id;
+    int id;
     Position position;
     double life;
     double energy;

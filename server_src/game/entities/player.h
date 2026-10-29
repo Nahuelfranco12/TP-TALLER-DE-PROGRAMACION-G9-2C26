@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <memory>
 
+#include "../world_state.h"
 #include "../inventory/inventory.h"
 #include "../move_result.h"
 #include "entity.h"
@@ -21,7 +22,7 @@ private:
     Sector* actualSector;
 
 public:
-    Player(size_t pos_x, size_t pos_y, int id, Sector* actualSector) : Entity(pos_x, pos_y), id(id), life(100), energy(100), coins(rand() % 100 + 1), inventory(), actualSector(actualSector) {}
+    Player(size_t pos_x, size_t pos_y, int id, Sector* actualSector) : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), life(100), energy(100), coins(rand() % 100 + 1), inventory(), actualSector(actualSector) {}
 
     MoveResult move(Position destination);
     void mine(Mineral& mineral);
@@ -32,6 +33,8 @@ public:
     double getEnergy() const { return energy; }
     size_t getCoins() const { return coins; }
     Inventory& getInventory() { return inventory; }
+
+    PlayerState state() const;
 };
 
 #endif // PLAYER_H_

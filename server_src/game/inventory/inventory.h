@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "../game_constants.h"
+#include "../world_state.h"
 #include "inventory_slot.h"
 #include "tool.h"
 
@@ -19,6 +20,8 @@ public:
     bool addItem(std::unique_ptr<Item> item);
     bool addTool(std::unique_ptr<Tool> tool);
     Tool* getTool(AvailableTools type);
+
+    InventoryState state() const;
 };
 
 #endif // INVENTORY_H_

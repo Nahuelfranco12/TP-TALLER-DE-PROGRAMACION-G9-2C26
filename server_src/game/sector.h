@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "game_constants.h"
+#include "world_state.h"
 #include "move_result.h"
 #include "position.h"
 #include "terrain.h"
@@ -44,6 +45,10 @@ public:
     IdSector getId() const { return id;     }
     size_t getWidth() const { return width;  }
     size_t getHeight() const { return height; }
+    const Terrain& getTerrain(Position pos) const { return tiles[pos.x][pos.y]; }
+
+    SectorState state() const;
+    SectorMapState mapState() const;
 };
 
 #endif // SECTOR_H_
