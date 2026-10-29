@@ -42,9 +42,11 @@ public:
   // Avanza la animación de caminar
   void animar(long vueltas);
 
-  // Dónde está (en tiles)
-  int obtener_tile_x() const;
-  int obtener_tile_y() const;
+    // Dónde está (en tiles)
+    int obtener_tile_x() const;
+    int obtener_tile_y() const;
+
+    Direccion obtener_direccion() const;
 
   // Dibuja el granjero (capas)
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y);

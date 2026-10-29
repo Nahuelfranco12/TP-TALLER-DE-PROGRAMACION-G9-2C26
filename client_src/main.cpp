@@ -2,6 +2,7 @@
 #include "client.h"
 #include "common_src/game_dtos.h"
 #include "granja.h"
+#include "caverna.h"
 #include "interfaz.h"
 #include "mapa.h"
 #include "pantalla.h"
@@ -76,16 +77,15 @@ int main(int argc, char *argv[]) try {
   // El granjero: carga sus texturas, su ropa y su posición
   Personaje personaje(renderer);
 
-  const DatosPersonaje &elegido = servicio.personajeElegido();
-  personaje.vestir(
-      SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
-      PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
+	Mapa mapa_granja(renderer, MAPA_GRANJA, 20, 20, 42);
+	Mapa mapa_caverna(renderer, MAPA_CAVERNA, 20, 20, 7);
 
-  // Suelo
-  Mapa mapa(renderer, 20, 20, 42);
+	// Cass y animales
+	Granja granja(renderer);
 
-  // Cass y animales
-  Granja granja(renderer);
+	Caverna caverna(renderer);
+
+	bool en_caverna = false;
 
   const int TILE = 64;
 
@@ -137,9 +137,38 @@ int main(int argc, char *argv[]) try {
         audio.bajar_volumen_pasos();
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
-        audio.subir_volumen_pasos();
-      }
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
+				audio.subir_volumen_pasos();
+			}
+
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
+				en_caverna = !en_caverna;
+				if (en_caverna) {
+					audio.poner_musica_caverna();
+				} else {
+					audio.poner_musica_granja();
+				}
+			}
+
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && en_caverna) {
+				int frente_x = personaje.obtener_tile_x();
+				int frente_y = personaje.obtener_tile_y();
+				switch (personaje.obtener_direccion()) {
+					case ARRIBA:
+						frente_y--;
+						break;
+					case ABAJO:
+						frente_y++;
+						break;
+					case IZQUIERDA:
+						frente_x--;
+						break;
+					case DERECHA:
+						frente_x++;
+						break;
+				}
+				caverna.picar(frente_x, frente_y);
+			}
 
       // Cambiar de prenda
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
@@ -232,11 +261,15 @@ int main(int argc, char *argv[]) try {
         personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
     int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
-    renderer.Clear();
-    mapa.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                 window.GetHeight());
+		renderer.Clear();
 
-    granja.dibujar(renderer, camara_x, camara_y);
+		if (en_caverna) {
+			mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+			caverna.dibujar(renderer, camara_x, camara_y);
+		} else {
+			mapa_granja.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+			granja.dibujar(renderer, camara_x, camara_y);
+		}
 
     // Primero los demás jugadores, después el propio para que quede encima
     for (auto &par : otros)

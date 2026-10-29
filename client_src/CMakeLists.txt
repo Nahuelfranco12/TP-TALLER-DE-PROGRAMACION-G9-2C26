@@ -12,6 +12,7 @@ target_sources(taller_client
     client_protocol.cpp
     client_receiver.cpp
     client_sender.cpp
+    caverna.cpp
     servicio_lobby_red.cpp
     Pantallas/pantalla.ui
     Pantallas/Images.qrc
@@ -40,6 +41,7 @@ target_sources(taller_client
     client_protocol.h
     client_receiver.h
     client_sender.h
+    caverna.h
     servicio_lobby_red.h
     Pantallas/headers/pantalla.h
     Pantallas/headers/partidas_estaticas.h
