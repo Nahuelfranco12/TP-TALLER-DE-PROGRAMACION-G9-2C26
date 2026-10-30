@@ -16,7 +16,7 @@ class Client {
 private:
     ClientProtocol protocol;
     int my_id;
-    Queue<WorldStateDto> received_queue;
+    Queue<SectorStateDto> received_queue;
     Queue<std::unique_ptr<ClientAction>> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
@@ -27,7 +27,7 @@ public:
 
     void send_join();
     void send_move(DirectionDto direction);
-    bool try_get_latest_state(WorldStateDto& state);
+    bool try_get_latest_state(SectorStateDto& state);
     bool is_connected() const;
 
     //Comandos para QT

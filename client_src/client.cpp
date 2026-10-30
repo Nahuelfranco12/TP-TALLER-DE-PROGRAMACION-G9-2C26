@@ -73,11 +73,10 @@ void Client::send_move(DirectionDto direction) {
 }
 
 
-bool Client::try_get_latest_state(WorldStateDto& state){
+bool Client::try_get_latest_state(SectorStateDto& state){
     bool has_been_received = false;
-    WorldStateDto next_state;
+    SectorStateDto next_state;
     while(received_queue.try_pop(next_state)){
-        state = std::move(next_state);
         has_been_received = true;
     }
     return has_been_received;
