@@ -38,7 +38,7 @@ Mapa::Mapa(Renderer& renderer, TipoMapa tipo, int ancho, int alto, unsigned int 
 void Mapa::generar_granja(int ancho, int alto, unsigned int semilla) {
     borde = ',';
 
-    filas.assign(alto, std::string(ancho, ','));
+    filas.assign(alto, std::string(ancho, '.'));
 
     std::mt19937 azar(semilla);
     std::uniform_int_distribution<int> columna_al_azar(0, ancho - 1);
@@ -93,6 +93,10 @@ int Mapa::obtener_alto() const {
     return static_cast<int>(filas.size());
 }
 
+bool Mapa::es_escalera(int x, int y) const {
+    return tile_en(x, y) == 'e';
+}
+
 char Mapa::tile_en(int x, int y) const {
     if (x < 0 || y < 0 || x >= obtener_ancho() || y >= obtener_alto()) {
         return borde;
@@ -100,7 +104,7 @@ char Mapa::tile_en(int x, int y) const {
     return filas[y][x];
 }
 
-void Mapa::dibujar_tile(Renderer& renderer, char tipo, int x, int y) {
+void Mapa::dibujar_tile(Renderer& renderer, char tipo, int x, int y, int lado) {
     int columna = 4;
     int fila = 9;
     if (tipo == '#') {columna = 8; fila = 7;}
@@ -114,7 +118,7 @@ void Mapa::dibujar_tile(Renderer& renderer, char tipo, int x, int y) {
     if (tipo == 'e') {columna = 9; fila = 3;}
 
     Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);
-    Rect destino(x, y, TILE, TILE);
+    Rect destino(x, y, lado, lado);
     renderer.Copy(suelo, origen, destino);
 }
 
@@ -128,7 +132,17 @@ void Mapa::dibujar(Renderer& renderer, int camara_x, int camara_y, int ancho_ven
         for (int columna = primera_columna; columna <= ultima_columna; ++columna) {
             int x = columna * TILE - camara_x;
             int y = fila * TILE - camara_y;
-            dibujar_tile(renderer, tile_en(columna, fila), x, y);
+            dibujar_tile(renderer, tile_en(columna, fila), x, y, TILE);
+        }
+    }
+}
+
+void Mapa::dibujar_completo(Renderer& renderer, int origen_x, int origen_y, int lado) {
+    for (int fila = 0; fila < obtener_alto(); fila++) {
+        for (int columna = 0; columna < obtener_ancho(); columna++) {
+            int x = origen_x + columna * lado;
+            int y = origen_y + fila * lado;
+            dibujar_tile(renderer, filas[fila][columna], x, y, lado);
         }
     }
 }

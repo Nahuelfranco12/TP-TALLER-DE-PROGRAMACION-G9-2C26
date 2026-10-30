@@ -8,6 +8,7 @@
 #include "granja.h"
 #include "caverna.h"
 
+#include <algorithm>
 #include <iostream>
 #include <exception>
 #include <string>
@@ -69,6 +70,10 @@ int main(int argc, char* argv[]) try {
 
 	bool en_caverna = false;
 
+	bool viendo_mapa = false;
+
+	WorldState ultimo_estado;
+
 	const int TILE = 64;
 		
 	// Todo el sonido (música, pasos y volúmenes) está en la clase Audio
@@ -97,9 +102,9 @@ int main(int argc, char* argv[]) try {
 				corriendo = false;
 			}
 
-			// M cambia música
+			// M abre y cierra mapa
 			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
-				audio.cambiar_musica();
+				viendo_mapa = !viendo_mapa;
 			}
 
 			// Bajar y subir musica
@@ -145,6 +150,7 @@ int main(int argc, char* argv[]) try {
 						frente_x++;
 						break;
 				}
+				personaje.picar();
 				caverna.picar(frente_x, frente_y);
 			}
 
@@ -197,10 +203,21 @@ int main(int argc, char* argv[]) try {
 		// Respuesta del servidor
 		WorldState state;
 		if (client.try_get_latest_state(state)) {
+			ultimo_estado = state;
 			for (const PlayerPosition& jugador : state.players) {
 				if (jugador.id == client.get_my_id()) {
 					if (personaje.aplicar(jugador.x, jugador.y)) {
 						audio.reproducir_paso();
+
+						int x = personaje.obtener_tile_x();
+						int y = personaje.obtener_tile_y();
+						if (!en_caverna && granja.es_entrada_mina(x, y)) {
+							en_caverna = true;
+							audio.poner_musica_caverna();
+						} else if (en_caverna && mapa_caverna.es_escalera(x, y)) {
+							en_caverna = false;
+							audio.poner_musica_granja();
+						}
 					}
 				}
 			}
@@ -232,6 +249,41 @@ int main(int argc, char* argv[]) try {
 
 		// Granjero
 		personaje.dibujar(renderer, camara_x, camara_y);
+
+		// Mapa completo (M)
+		if (viendo_mapa) {
+			const int MARGEN = 40;
+			const int SEPARACION = 30;
+
+			int ancho_total = mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
+			int alto_maximo = std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
+			int lado_ancho = (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
+			int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
+			int lado = std::min(lado_ancho, lado_alto);
+
+			int ancho_dibujo = lado * ancho_total + SEPARACION;
+			int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
+			int origen_caverna_x = origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
+			int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
+
+			//Fondo oscuro
+			renderer.SetDrawColor(20, 20, 20, 255);
+			renderer.Clear();
+
+			mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
+			granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
+			mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
+			caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
+
+			// Figurita de cada jugador
+			for (const PlayerPosition& jugador : ultimo_estado.players) {
+				int origen_x = origen_granja_x;
+				if (jugador.id != client.get_my_id() && en_caverna) {
+					origen_x = origen_caverna_x;
+				}
+				personaje.dibujar_quieto(renderer, jugador.x, jugador.y, -origen_x, -origen_y, lado);
+			}
+		}
 
 		interfaz.dibujar(renderer, audio);
 

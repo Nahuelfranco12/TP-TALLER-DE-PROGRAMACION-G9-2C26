@@ -3,8 +3,6 @@
 using namespace SDL2pp;
 
 namespace {
-    const int TILE = 64;
-
     const int MINERAL_ANCHO = 32;
     const int MINERAL_ALTO = 28;
     const int GOLPES_PARA_ROMPER = 3;
@@ -35,12 +33,12 @@ bool Caverna::picar(int tile_x, int tile_y) {
     return false;
 }
 
-void Caverna::dibujar(Renderer& renderer, int camara_x, int camara_y) {
+void Caverna::dibujar(Renderer& renderer, int camara_x, int camara_y, int lado) {
     for (const Mineral& mineral : lista_minerales) {
         Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ALTO, MINERAL_ANCHO, MINERAL_ALTO);
-        int x = mineral.tile_x * TILE - camara_x;
-        int y = mineral.tile_y * TILE - camara_y;
-        Rect destino(x, y, TILE, MINERAL_ALTO * 2);
+        int x = mineral.tile_x * lado - camara_x;
+        int y = mineral.tile_y * lado - camara_y;
+        Rect destino(x, y, lado, MINERAL_ALTO * lado / MINERAL_ANCHO);
         renderer.Copy(minerales, origen, destino);
     }
 }

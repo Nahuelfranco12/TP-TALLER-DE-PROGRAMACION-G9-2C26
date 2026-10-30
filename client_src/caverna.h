@@ -23,7 +23,7 @@ public:
 
     bool picar(int tile_x, int tile_y);
 
-    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y);
+    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y, int lado = 64);
 };
 
 #endif
