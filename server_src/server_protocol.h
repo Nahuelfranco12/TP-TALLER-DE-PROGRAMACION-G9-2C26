@@ -17,11 +17,10 @@ private:
     Protocol protocol;
 
     DirectionDto byte_to_direction(uint8_t direction_byte);
-    void send_player(const PlayerState& player);
-    void send_inventory(const InventoryState& inventory);
-    void send_sector(const SectorState& sector);
-    void send_entity(const EntityState& entity);
-    void send_position(const Position& position);
+    void send_tiles(const std::vector<std::vector<TileDto>>& tiles);
+    void send_player(const PlayerDto& player);
+    void send_inventory(const InventoryDto& inventory);
+    void send_position(const GamePositionDto& position);
 
 public:
     explicit ServerProtocol(Socket&& socket);
@@ -29,9 +28,6 @@ public:
 
     // Recibe un número OP (Determina la acción indicada por el cliente)
     uint8_t receive_operation();
-
-    // Protocolo de estado del mundo
-    void send_world_state(const WorldState& state);
 
     // Protocolo de acciones
     MoveDto receive_move();
@@ -42,6 +38,7 @@ public:
     void send_match_list(const std::vector<MatchInfoDto>& matches);
     void send_join_result(bool result);
 
+    void send_sector_state(const SectorStateDto& state);
     void shutdown();
 
     void close();
