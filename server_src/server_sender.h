@@ -12,6 +12,8 @@ class ServerSender: public Thread {
 private:
     ServerProtocol& protocol;
     Queue<WorldState>& to_send_queue;
+    int client_id;
+    GameDtosBuilder builder;
 
 public:
     ServerSender(ServerProtocol& protocol, Queue<WorldState>& to_send_queue);

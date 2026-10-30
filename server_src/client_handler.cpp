@@ -14,7 +14,7 @@ ClientHandler::ClientHandler(Socket&& skt, int client_id, Lobby& lobby):
         to_send_queue(QUEUE_MAX_SIZE),
         lobby(lobby),
         receiver(protocol, lobby, to_send_queue, client_id),
-        sender(protocol, to_send_queue)
+        sender(protocol, to_send_queue, client_id)
         {}
 
 void ClientHandler::start() {
