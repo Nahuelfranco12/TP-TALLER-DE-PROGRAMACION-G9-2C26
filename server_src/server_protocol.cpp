@@ -9,7 +9,7 @@
 
 ServerProtocol::ServerProtocol(Socket&& socket): skt(std::move(socket)), protocol(skt) {}
 
-void send_sector_state(const SectorStateDto& state) {
+void ServerProtocol::send_sector_state(const SectorStateDto& state) {
     protocol.send_u8(OP_WORLD_STATE);
 
     protocol.send_u8(static_cast<uint8_t>(state.type));
@@ -31,7 +31,7 @@ void send_sector_state(const SectorStateDto& state) {
     }
 }
 
-void send_tiles(const std::vector<std::vector<TileDto>>& tiles) {
+void ServerProtocol::send_tiles(const std::vector<std::vector<TileDto>>& tiles) {
     int columns = tiles.size();
     int rows = columns > 0 ? tiles[0].size() : 0;
 
@@ -48,7 +48,7 @@ void send_tiles(const std::vector<std::vector<TileDto>>& tiles) {
     }
 }
 
-void send_player(const PlayerDto& player) {
+void ServerProtocol::send_player(const PlayerDto& player) {
     protocol.send_u16(static_cast<uint16_t>(player.id));
 
     protocol.send_u8(static_cast<uint8_t>(player.hat));
@@ -66,7 +66,7 @@ void send_player(const PlayerDto& player) {
     }
 }
 
-void send_inventory(const InventoryDto& inventory) {
+void ServerProtocol::send_inventory(const InventoryDto& inventory) {
     protocol.send_u16(static_cast<uint16_t>(inventory.ownerId));
 
     protocol.send_u16(static_cast<uint16_t>(inventory.slots.size()));

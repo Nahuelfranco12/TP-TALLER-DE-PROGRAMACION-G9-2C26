@@ -2,14 +2,12 @@
 #define SERVER_PROTOCOL_H_
 
 #include <cstdint>
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "../common_src/game_dtos.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
-#include "world_state.h"
 
 class ServerProtocol {
 private:

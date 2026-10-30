@@ -40,7 +40,7 @@ void Client::run() {
             return;
         }
     }
-    WorldStateDto state;
+    SectorStateDto state;
 
     // TEST POR CONSOLA DEL MOVIMIENTO DE LOS JUGADORES
     while(std::getline(std::cin, line) && line != "q") {
@@ -79,6 +79,10 @@ bool Client::try_get_latest_state(SectorStateDto& state){
     while(received_queue.try_pop(next_state)){
         has_been_received = true;
     }
+
+    if(has_been_received) {
+        state = std::move(next_state);
+    }
     return has_been_received;
 }
 
@@ -104,7 +108,7 @@ std::string Client::create_match(const std::string& name) {
     protocol.send_create_match(name);
     return protocol.receive_created_match();
 }
-std::vector<MatchInfo> Client::list_matches() {
+std::vector<MatchInfoDto> Client::list_matches() {
     protocol.send_list_matches();
     return protocol.receive_match_list();
 }
