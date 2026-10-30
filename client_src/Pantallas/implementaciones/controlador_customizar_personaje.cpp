@@ -1,4 +1,5 @@
 #include "controlador_customizar_personaje.h"
+#include "constantes.h"
 #include "ui_pantalla.h"
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
@@ -37,10 +38,10 @@ void ControladorCustomizarPersonaje::inicializarListas() {
   opcionesPantalon = {{1, 1}, {1, 25}, {1, 61}, {1, 73}};
   opcionesRemera = {{1, 10}, {5, 4}, {9, 5}, {5, 12}, {25, 9}};
 
-  hojaPelo.load(":/ropas/assets/ropas/StardewValley_Character_Hairstyles.png");
-  hojaGorro.load(":/ropas/assets/ropas/StardewValley_Character_Hats.png");
-  hojaPantalon.load(":/ropas/assets/ropas/StardewValley_Character_Pants.png");
-  hojaRemera.load(":/ropas/assets/ropas/StardewValley_Character_Shirts.png");
+  hojaPelo.load(TIPOS_PELO);
+  hojaGorro.load(TIPOS_GORRO);
+  hojaPantalon.load(TIPOS_PANTALON);
+  hojaRemera.load(TIPOS_REMERA);
 }
 
 void ControladorCustomizarPersonaje::cambiarOpcion(int &indiceActual,
@@ -52,62 +53,75 @@ void ControladorCustomizarPersonaje::cambiarOpcion(int &indiceActual,
 }
 
 void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
-  connect(ui.botAntGorro, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indiceGorro, opcionesGorro.size(), -1); });
-  connect(ui.botSigGorro, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indiceGorro, opcionesGorro.size(), 1); });
+  connect(ui.botAntGorro, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indiceGorro, opcionesGorro.size(), DIRECCION_ANTERIOR);
+  });
+  connect(ui.botSigGorro, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indiceGorro, opcionesGorro.size(), DIRECCION_SIGUIENTE);
+  });
 
-  connect(ui.botAntPelo, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indicePelo, opcionesPelo.size(), -1); });
-  connect(ui.botSigPelo, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indicePelo, opcionesPelo.size(), 1); });
+  connect(ui.botAntPelo, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indicePelo, opcionesPelo.size(), DIRECCION_ANTERIOR);
+  });
+  connect(ui.botSigPelo, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indicePelo, opcionesPelo.size(), DIRECCION_SIGUIENTE);
+  });
 
-  connect(ui.botAntRemera, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indiceRemera, opcionesRemera.size(), -1); });
-  connect(ui.botSigRemera, &QPushButton::clicked, this,
-          [this]() { cambiarOpcion(indiceRemera, opcionesRemera.size(), 1); });
+  connect(ui.botAntRemera, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indiceRemera, opcionesRemera.size(), DIRECCION_ANTERIOR);
+  });
+  connect(ui.botSigRemera, &QPushButton::clicked, this, [this]() {
+    cambiarOpcion(indiceRemera, opcionesRemera.size(), DIRECCION_SIGUIENTE);
+  });
 
   connect(ui.botAntPantalon, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePantalon, opcionesPantalon.size(), -1);
+    cambiarOpcion(indicePantalon, opcionesPantalon.size(), DIRECCION_ANTERIOR);
   });
   connect(ui.botSigPantalon, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePantalon, opcionesPantalon.size(), 1);
+    cambiarOpcion(indicePantalon, opcionesPantalon.size(), DIRECCION_SIGUIENTE);
   });
 }
 
 void ControladorCustomizarPersonaje::actualizarPrevisualizacion() {
-#define ESCALA_REMERA 5
-#define ESCALA_PELO 3
 
-#define ESCALA_GORRO 3
-#define ESCALA_PANTALON 5
-
-  int xGorro = (opcionesGorro[indiceGorro].columna - 1) * 20;
-  int yGorro = (opcionesGorro[indiceGorro].fila - 1) * 20;
+  int xGorro =
+      (opcionesGorro[indiceGorro].columna - BASE_COORDENADAS) * ANCHO_GORRO;
+  int yGorro =
+      (opcionesGorro[indiceGorro].fila - BASE_COORDENADAS) * ALTO_GORRO;
   QPixmap spriteGorro =
-      hojaGorro.copy(xGorro, yGorro, 20, 20)
-          .scaled(20 * ESCALA_GORRO, 20 * ESCALA_GORRO, Qt::KeepAspectRatio,
-                  Qt::FastTransformation);
-
-  int xPelo = (opcionesPelo[indicePelo].columna - 1) * 16;
-  int yPelo = (opcionesPelo[indicePelo].fila - 1) * 32;
-  QPixmap spritePelo = hojaPelo.copy(xPelo, yPelo, 16, 16)
-                           .scaled(16 * ESCALA_PELO, 16 * ESCALA_PELO,
-                                   Qt::KeepAspectRatio, Qt::FastTransformation);
-
-  int xRemera = (opcionesRemera[indiceRemera].columna - 1) * 8;
-  int yRemera = (opcionesRemera[indiceRemera].fila - 1) * 8;
-  QPixmap spriteRemera =
-      hojaRemera.copy(xRemera, yRemera, 8, 8)
-          .scaled(8 * ESCALA_REMERA, 8 * ESCALA_REMERA, Qt::KeepAspectRatio,
-                  Qt::FastTransformation);
-
-  int xPantalon = (opcionesPantalon[indicePantalon].columna - 1) * 16;
-  int yPantalon = (opcionesPantalon[indicePantalon].fila - 1) * 32;
-  QPixmap spritePantalon =
-      hojaPantalon.copy(xPantalon, yPantalon + 16, 16, 16)
-          .scaled(16 * ESCALA_PANTALON, 16 * ESCALA_PANTALON,
+      hojaGorro.copy(xGorro, yGorro, ANCHO_GORRO, ALTO_GORRO)
+          .scaled(ANCHO_GORRO * ESCALA_GORRO, ALTO_GORRO * ESCALA_GORRO,
                   Qt::KeepAspectRatio, Qt::FastTransformation);
+
+  int xPelo =
+      (opcionesPelo[indicePelo].columna - BASE_COORDENADAS) * ANCHO_PELO;
+  int yPelo = (opcionesPelo[indicePelo].fila - BASE_COORDENADAS) * ALTO_PELO;
+  QPixmap spritePelo =
+      hojaPelo.copy(xPelo, yPelo, ANCHO_PELO, ALTO_RECORTE_PELO)
+          .scaled(ANCHO_PELO * ESCALA_PELO, ALTO_RECORTE_PELO * ESCALA_PELO,
+                  Qt::KeepAspectRatio, Qt::FastTransformation);
+
+  int xRemera =
+      (opcionesRemera[indiceRemera].columna - BASE_COORDENADAS) * ANCHO_REMERA;
+  int yRemera =
+      (opcionesRemera[indiceRemera].fila - BASE_COORDENADAS) * ALTO_REMERA;
+  QPixmap spriteRemera =
+      hojaRemera.copy(xRemera, yRemera, ANCHO_REMERA, ALTO_REMERA)
+          .scaled(ANCHO_REMERA * ESCALA_REMERA, ALTO_REMERA * ESCALA_REMERA,
+                  Qt::KeepAspectRatio, Qt::FastTransformation);
+
+  int xPantalon =
+      (opcionesPantalon[indicePantalon].columna - BASE_COORDENADAS) *
+      ANCHO_PANTALON;
+  int yPantalon = (opcionesPantalon[indicePantalon].fila - BASE_COORDENADAS) *
+                  ALTO_PANTALON;
+  QPixmap spritePantalon =
+      hojaPantalon
+          .copy(xPantalon, yPantalon + OFFSET_Y_PANTALON, ANCHO_PANTALON,
+                ALTO_RECORTE_PANTALON)
+          .scaled(ANCHO_PANTALON * ESCALA_PANTALON,
+                  ALTO_PANTALON * ESCALA_PANTALON, Qt::KeepAspectRatio,
+                  Qt::FastTransformation);
   ui.mostrarGorro->setPixmap(spriteGorro);
   ui.mostrarPelo->setPixmap(spritePelo);
   ui.mostrarRemera->setPixmap(spriteRemera);

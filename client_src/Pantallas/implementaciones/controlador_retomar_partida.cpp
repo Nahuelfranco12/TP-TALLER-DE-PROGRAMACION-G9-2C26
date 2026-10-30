@@ -1,4 +1,5 @@
 #include "controlador_retomar_partida.h"
+#include "constantes.h"
 #include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
@@ -30,10 +31,11 @@ void ControladorRetomarPartida::validarFormulario() {
 void ControladorRetomarPartida::cargarPartidas() {
   QList<DatosTarjeta> tarjetas;
   for (const PartidaGuardada &partida : obtenerPartidasDePrueba()) {
-    QString modo = partida.esMultiplayer ? "Multiplayer" : "Singleplayer";
+    QString modo =
+        partida.esMultiplayer ? TEXTO_MULTIPLAYER : TEXTO_SINGLEPLAYER;
     tarjetas.append(DatosTarjeta{partida.nombrePartida, partida.rutaImagen,
                                  partida.nombrePartida, partida.nombrePersonaje,
-                                 modo, "Seleccionar"});
+                                 modo, TEXTO_SELECCIONAR});
   }
   partidas->cargar(tarjetas);
 }

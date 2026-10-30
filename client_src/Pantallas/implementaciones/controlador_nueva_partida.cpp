@@ -1,4 +1,5 @@
 #include "controlador_nueva_partida.h"
+#include "constantes.h"
 #include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
@@ -37,7 +38,7 @@ void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : obtenerMundosDePrueba())
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, mundo.rutaImagen,
-                                 mundo.nombreMundo, "", "", "Elegir Mapa"});
+                                 mundo.nombreMundo, "", "", ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }
 

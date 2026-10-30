@@ -34,6 +34,7 @@ qt_add_executable(Pantallas
     implementaciones/controlador_retomar_partida.cpp
     headers/controlador_customizar_personaje.h
     implementaciones/controlador_customizar_personaje.cpp
+    headers/constantes.h
 )
 
 target_link_libraries(Pantallas
