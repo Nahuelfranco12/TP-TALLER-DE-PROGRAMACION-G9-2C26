@@ -15,12 +15,16 @@ private:
     Protocol protocol;
     uint8_t direction_to_byte(DirectionDto direction);
     
+    std::vector<std::vector<TileDto>> receive_tiles();
+    PlayerDto receive_player();
+    InventoryDto receive_inventory();
+    GamePositionDto receive_position();
+    
 public:
     explicit ClientProtocol(const char* hostname, const char* servname);
     int receive_player_id();
     
-    // Protocolo de estado del mundo
-    WorldStateDto receive_world_state();
+    SectorStateDto receive_sector_state();
 
     // Protocolo de acciones del jugador
     void send_move_dto(const MoveDto& dto);

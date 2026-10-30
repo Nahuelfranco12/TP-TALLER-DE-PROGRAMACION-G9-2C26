@@ -22,23 +22,6 @@ void ClientProtocol::send_move_dto(const MoveDto& dto){
     protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-WorldStateDto ClientProtocol::receive_world_state(){
-    uint8_t operation = protocol.receive_u8();
-    if (operation != OP_WORLD_STATE)
-        throw std::runtime_error("Mensaje inesperado");
-
-    WorldStateDto state;
-    int player_count = protocol.receive_u16();
-    for (int i = 0; i < player_count; i++) {
-        PlayerPositionDto p;
-        p.id = protocol.receive_u16();
-        p.x = protocol.receive_u16();
-        p.y = protocol.receive_u16();
-        state.players.push_back(p);
-    }
-    return state;
-}
-
 
 uint8_t ClientProtocol::direction_to_byte(DirectionDto direction) {
     switch(direction) {
@@ -102,3 +85,90 @@ bool ClientProtocol::receive_join_result() {
         throw std::runtime_error("Mensaje inesperado");
     return protocol.receive_u8() == JOIN_SUCCESS;
 }
+
+SectorStateDto ClientProtocol::receive_sector_state() {
+    if (protocol.receive_u8() != OP_WORLD_STATE)
+        throw std::runtime_error("Mensaje inesperado"); // este chequeo lo pongo x las dudas, lo podemos sacar mas adelante
+
+    SectorStateDto state;
+    state.type = static_cast<SectorTypeDto>(protocol.receive_u8());
+    state.width = protocol.receive_u16();
+    state.height = protocol.receive_u16();
+
+    state.sector = receive_tiles();
+    int player_count = protocol.receive_u16();
+    for (int i = 0; i < player_count; i++) {
+        GamePositionDto position = receive_position();
+        state.players[position] = receive_player();
+    }
+    int entity_count = protocol.receive_u16();
+    for (int i = 0; i < entity_count; i++) {
+        GamePositionDto position = receive_position();
+        state.entities[position] = static_cast<EntityTypeDto>(protocol.receive_u8());
+    }
+
+    return state;
+}
+
+std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
+    int columns = protocol.receive_u16();
+    int rows = protocol.receive_u16();
+
+    std::vector<std::vector<TileDto>> tiles(columns, std::vector<TileDto>(rows));
+    for (int x = 0; x < columns; x++) {
+        for (int y = 0; y < rows; y++) {
+            TileDto& tile = tiles[x][y];
+            tile.type = static_cast<TerrainTypeDto>(protocol.receive_u8());
+            tile.transitable = protocol.receive_u8() == 1;
+            tile.arable = protocol.receive_u8() == 1;
+        }
+    }
+    return tiles;
+}
+
+PlayerDto ClientProtocol::receive_player() {
+    PlayerDto player;
+    player.id = protocol.receive_u16();
+
+    player.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
+    player.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
+    player.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
+    player.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
+
+    player.life = protocol.receive_u16();
+    player.energy = protocol.receive_u16();
+    player.coins = protocol.receive_u16();
+
+    int inventory_count = protocol.receive_u8();
+    for (int i = 0; i < inventory_count; i++) {
+        player.inventory.push_back(receive_inventory());
+    }
+    return player;
+}
+
+InventoryDto ClientProtocol::receive_inventory() {
+    InventoryDto inventory;
+    inventory.ownerId = protocol.receive_u16();
+
+    int slot_count = protocol.receive_u16();
+    for (int i = 0; i < slot_count; i++) {
+        InventorySlotDto slot;
+        slot.count = protocol.receive_u16();
+        slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
+        inventory.slots.push_back(slot);
+    }
+
+    int tool_count = protocol.receive_u16();
+    for (int i = 0; i < tool_count; i++) {
+        inventory.tools.push_back(static_cast<ToolTypeDto>(protocol.receive_u8()));
+    }
+    return inventory;
+}
+
+GamePositionDto ClientProtocol::receive_position() {
+    GamePositionDto position;
+    position.x = protocol.receive_u16();
+    position.y = protocol.receive_u16();
+    return position;
+}
+
