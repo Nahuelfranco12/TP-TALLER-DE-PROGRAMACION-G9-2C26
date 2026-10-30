@@ -33,4 +33,9 @@ enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
 
 // enum class CrowTypes {  }; // TODO: tipos de cultivo
 
+enum class PlayerHats { HAT_DEFAULT };
+enum class PlayerHairs { BLONDE, CURLY };
+enum class PlayerShirts { TSHIRT_DEFAULT };
+enum class PlayerPants { PANTS_DEFAULT };
+
 #endif // GAME_CONSTANTS_H_

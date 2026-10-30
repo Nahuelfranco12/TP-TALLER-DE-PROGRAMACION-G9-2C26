@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <memory>
 
+#include "../game_constants.h"
+#include "player_outfit.h"
 #include "../../world_state.h"
 #include "../inventory/inventory.h"
 #include "../move_result.h"
@@ -18,11 +20,18 @@ private:
     double life;
     double energy;
     size_t coins;
+    PlayerOutfit outfit;
+
     Inventory inventory;
     Sector* actualSector;
 
+
+
 public:
-    Player(size_t pos_x, size_t pos_y, int id, Sector* actualSector) : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), life(100), energy(100), coins(rand() % 100 + 1), inventory(), actualSector(actualSector) {}
+    Player(size_t pos_x, size_t pos_y, int id, Sector* actualSector, PlayerOutfit outfit) :
+        Entity(pos_x, pos_y, EntityTypes::PLAYER),
+        id(id), life(100), energy(100), coins(rand() % 100 + 1), 
+        outfit(outfit), inventory(), actualSector(actualSector) {};
 
     MoveResult move(Position destination);
     void mine(Mineral& mineral);

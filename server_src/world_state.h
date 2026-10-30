@@ -40,6 +40,13 @@ struct InventoryState {
     std::vector<ToolState> tools;
 };
 
+struct PlayerOutfitState {
+    PlayerHats hat;
+    PlayerHairs hairs;
+    PlayerShirts tshirt;
+    PlayerPants pants;
+};
+
 struct PlayerState {
     int id;
     Position position;
@@ -47,6 +54,8 @@ struct PlayerState {
     double energy;
     size_t coins;
     IdSector sector;
+
+    PlayerOutfitState outfit;
 
     InventoryState inventory;
 };

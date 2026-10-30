@@ -9,7 +9,7 @@ bool World::addSector(IdSector id, size_t width, size_t height) {
     return inserted;
 }
 
-void World::addPlayer(int id, IdSector idSector) {
+void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
     auto sectorIt = this->sectors.find(idSector);
     if (sectorIt == this->sectors.end())
         return;
@@ -17,7 +17,7 @@ void World::addPlayer(int id, IdSector idSector) {
     Sector& sector = sectorIt->second;
     Position startPos = sector.findFreePosition();
 
-    auto player = std::make_unique<Player>(startPos.x, startPos.y, id, &sector);
+    auto player = std::make_unique<Player>(startPos.x, startPos.y, id, &sector, outfit);
     Player* playerPtr = player.get();
 
     if (!sector.addEntity(std::move(player), startPos))
