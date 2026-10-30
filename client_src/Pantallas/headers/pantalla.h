@@ -1,6 +1,7 @@
 #ifndef PANTALLA_H
 #define PANTALLA_H
 
+#include "datos_partida.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -16,5 +17,6 @@ public:
 
 private:
   Ui::Pantalla *ui;
+  DatosPartida datosPartida;
 };
 #endif // PANTALLA_H

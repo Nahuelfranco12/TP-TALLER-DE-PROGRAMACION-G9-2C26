@@ -3,6 +3,7 @@
 
 #include "constantes.h"
 #include "controlador_pagina.h"
+#include "datos_partida.h"
 #include <QList>
 #include <QPixmap>
 
@@ -14,6 +15,7 @@ struct CoordenadaSprite {
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
   ControladorCustomizarPersonaje(Ui::Pantalla &ui, Navegador &navegador,
+                                 DatosPartida &datosPartida,
                                  QObject *parent = nullptr);
   void reiniciar() override;
   void validarFormulario() override;
@@ -39,6 +41,7 @@ private:
   void conectarBotonesFlechas();
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
+  DatosPartida &datosPartida;
 };
 
 #endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
