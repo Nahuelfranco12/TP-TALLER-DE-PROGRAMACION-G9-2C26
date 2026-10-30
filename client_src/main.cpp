@@ -10,8 +10,8 @@
 #include "servicio_lobby_red.h"
 #include "tasa_constante.h"
 
-#include <QApplication>
-#include <QFontDatabase>
+#include <algorithm>
+#include <iostream>
 #include <exception>
 #include <iostream>
 #include <map>
@@ -87,7 +87,14 @@ int main(int argc, char *argv[]) try {
 
 	bool en_caverna = false;
 
-  const int TILE = 64;
+	bool viendo_mapa = false;
+
+	WorldState ultimo_estado;
+
+	const int TILE = 64;
+		
+	// Todo el sonido (música, pasos y volúmenes) está en la clase Audio
+	Audio audio;
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
@@ -100,16 +107,10 @@ int main(int argc, char *argv[]) try {
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
 
-  // Se repite hasta  que el usuario cierre la ventana
-  bool corriendo = true;
-  while (corriendo) {
-    // Proceso eventos
-    SDL_Event evento;
-    while (SDL_PollEvent(&evento)) {
-      if (evento.type == SDL_MOUSEBUTTONDOWN &&
-          evento.button.button == SDL_BUTTON_LEFT) {
-        interfaz.click(evento.button.x, evento.button.y, audio);
-      }
+			// M abre y cierra mapa
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
+				viendo_mapa = !viendo_mapa;
+			}
 
       if (evento.type == SDL_QUIT) {
         corriendo = false;
@@ -167,6 +168,7 @@ int main(int argc, char *argv[]) try {
 						frente_x++;
 						break;
 				}
+				personaje.picar();
 				caverna.picar(frente_x, frente_y);
 			}
 
@@ -216,33 +218,28 @@ int main(int argc, char *argv[]) try {
       }
     }
 
-    // Respuesta del servidor
-    SectorStateDto state;
-    if (client.try_get_latest_state(state)) {
-      std::set<size_t> presentes;
-      const size_t mi_id = static_cast<size_t>(client.get_my_id());
-      // players es un mapa: posición -> jugador
-      for (const auto &[posicion, jugador] : state.players) {
-        const int x = static_cast<int>(posicion.x);
-        const int y = static_cast<int>(posicion.y);
-        if (jugador.id == mi_id) {
-          if (personaje.aplicar(x, y)) {
-            audio.reproducir_paso();
-          }
-          continue;
-        }
-        presentes.insert(jugador.id);
-        std::unique_ptr<Personaje> &otro = otros[jugador.id];
-        if (!otro) {
-          otro = std::make_unique<Personaje>(renderer); // recién llegado
-        }
-        otro->aplicar(x, y);
-      }
-      // Los que ya no vienen en el estado se fueron de la partida
-      std::erase_if(otros, [&presentes](const auto &par) {
-        return !presentes.contains(par.first);
-      });
-    }
+		// Respuesta del servidor
+		WorldState state;
+		if (client.try_get_latest_state(state)) {
+			ultimo_estado = state;
+			for (const PlayerPosition& jugador : state.players) {
+				if (jugador.id == client.get_my_id()) {
+					if (personaje.aplicar(jugador.x, jugador.y)) {
+						audio.reproducir_paso();
+
+						int x = personaje.obtener_tile_x();
+						int y = personaje.obtener_tile_y();
+						if (!en_caverna && granja.es_entrada_mina(x, y)) {
+							en_caverna = true;
+							audio.poner_musica_caverna();
+						} else if (en_caverna && mapa_caverna.es_escalera(x, y)) {
+							en_caverna = false;
+							audio.poner_musica_granja();
+						}
+					}
+				}
+			}
+		}
 
     // Si se cortó la conexión, se cierra el juego
     if (!client.is_connected()) {
@@ -276,7 +273,42 @@ int main(int argc, char *argv[]) try {
       par.second->dibujar(renderer, camara_x, camara_y);
     personaje.dibujar(renderer, camara_x, camara_y);
 
-    interfaz.dibujar(renderer, audio);
+		// Mapa completo (M)
+		if (viendo_mapa) {
+			const int MARGEN = 40;
+			const int SEPARACION = 30;
+
+			int ancho_total = mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
+			int alto_maximo = std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
+			int lado_ancho = (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
+			int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
+			int lado = std::min(lado_ancho, lado_alto);
+
+			int ancho_dibujo = lado * ancho_total + SEPARACION;
+			int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
+			int origen_caverna_x = origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
+			int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
+
+			//Fondo oscuro
+			renderer.SetDrawColor(20, 20, 20, 255);
+			renderer.Clear();
+
+			mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
+			granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
+			mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
+			caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
+
+			// Figurita de cada jugador
+			for (const PlayerPosition& jugador : ultimo_estado.players) {
+				int origen_x = origen_granja_x;
+				if (jugador.id != client.get_my_id() && en_caverna) {
+					origen_x = origen_caverna_x;
+				}
+				personaje.dibujar_quieto(renderer, jugador.x, jugador.y, -origen_x, -origen_y, lado);
+			}
+		}
+
+		interfaz.dibujar(renderer, audio);
 
     renderer.Present();
 
