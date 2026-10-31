@@ -1,11 +1,16 @@
 #include "controlador_retomar_partida.h"
+#include "constantes.h"
+#include "datos_partida.h"
 #include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
+#include <QDebug>
+
 ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
                                                      Navegador &navegador,
+                                                     DatosPartida &datosPartida,
                                                      QObject *parent)
-    : ControladorPagina(ui, navegador, parent) {
+    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
 
   partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
 
@@ -14,14 +19,23 @@ ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
   ui.botJugarRP->setEnabled(false);
 
   connect(ui.botVolverRP, &QPushButton::clicked, this, [this]() {
-    reiniciar();
+    limpiarPagina();
     this->navegador.volver();
   });
 
-  partidas->setAlSeleccionar([this]() { validarFormulario(); });
+  partidas->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
+
+  connect(ui.botJugarRP, &QPushButton::clicked, this, [this]() {
+    this->datosPartida.modo = ModoPartida::Retomar;
+    this->datosPartida.idRetomarPartida = partidas->seleccionado();
+
+    // Temporal: hasta que esté el protocolo
+    qDebug() << "Modo:" << static_cast<int>(this->datosPartida.modo)
+             << "| Partida guardada:" << this->datosPartida.idRetomarPartida;
+  });
 }
 
-void ControladorRetomarPartida::validarFormulario() {
+void ControladorRetomarPartida::actualizarBotonAvanzar() {
   bool tienePartida = partidas->haySeleccion();
 
   ui.botJugarRP->setEnabled(tienePartida);
@@ -30,15 +44,17 @@ void ControladorRetomarPartida::validarFormulario() {
 void ControladorRetomarPartida::cargarPartidas() {
   QList<DatosTarjeta> tarjetas;
   for (const PartidaGuardada &partida : obtenerPartidasDePrueba()) {
-    QString modo = partida.esMultiplayer ? "Multiplayer" : "Singleplayer";
+    QString modo =
+        partida.esMultiplayer ? TEXTO_MULTIPLAYER : TEXTO_SINGLEPLAYER;
     tarjetas.append(DatosTarjeta{partida.nombrePartida, partida.rutaImagen,
                                  partida.nombrePartida, partida.nombrePersonaje,
-                                 modo, "Seleccionar"});
+                                 modo, TEXTO_SELECCIONAR});
   }
   partidas->cargar(tarjetas);
 }
 
-void ControladorRetomarPartida::reiniciar() {
+void ControladorRetomarPartida::limpiarPagina() {
   partidas->deseleccionar();
-  validarFormulario();
+  actualizarBotonAvanzar();
+  datosPartida = DatosPartida{};
 }

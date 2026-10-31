@@ -1,11 +1,13 @@
 #include "controlador_nueva_partida.h"
+#include "constantes.h"
 #include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
 ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
                                                  Navegador &navegador,
+                                                 DatosPartida &datosPartida,
                                                  QObject *parent)
-    : ControladorPagina(ui, navegador, parent) {
+    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
 
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 
@@ -14,20 +16,25 @@ ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
   ui.botSiguiente->setEnabled(false);
 
   connect(ui.botVolver, &QPushButton::clicked, this, [this]() {
-    reiniciar();
+    limpiarPagina();
     this->navegador.volver();
   });
 
   connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
-          [this]() { validarFormulario(); });
+          [this]() { actualizarBotonAvanzar(); });
 
-  mundos->setAlSeleccionar([this]() { validarFormulario(); });
+  mundos->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
 
-  connect(ui.botSiguiente, &QPushButton::clicked, this,
-          [this]() { this->navegador.irA(this->ui.pageCustomizarPersonaje); });
+  connect(ui.botSiguiente, &QPushButton::clicked, this, [this]() {
+    this->datosPartida.modo = ModoPartida::Nueva;
+    this->datosPartida.nombrePartida =
+        this->ui.campoNOmbrePartida->text().trimmed();
+    this->datosPartida.idMundo = mundos->seleccionado();
+    this->navegador.irA(this->ui.pageCustomizarPersonaje);
+  });
 }
 
-void ControladorNuevaPartida::validarFormulario() {
+void ControladorNuevaPartida::actualizarBotonAvanzar() {
   bool tieneNombre = !ui.campoNOmbrePartida->text().trimmed().isEmpty();
   bool tieneMundo = mundos->haySeleccion();
   ui.botSiguiente->setEnabled(tieneNombre && tieneMundo);
@@ -37,12 +44,13 @@ void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : obtenerMundosDePrueba())
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, mundo.rutaImagen,
-                                 mundo.nombreMundo, "", "", "Elegir Mapa"});
+                                 mundo.nombreMundo, "", "", ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }
 
-void ControladorNuevaPartida::reiniciar() {
+void ControladorNuevaPartida::limpiarPagina() {
   mundos->deseleccionar();
   ui.campoNOmbrePartida->clear();
-  validarFormulario();
+  actualizarBotonAvanzar();
+  datosPartida = DatosPartida{};
 }

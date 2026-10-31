@@ -1,7 +1,9 @@
 #ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
 #define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
 
+#include "constantes.h"
 #include "controlador_pagina.h"
+#include "datos_partida.h"
 #include <QList>
 #include <QPixmap>
 
@@ -13,20 +15,12 @@ struct CoordenadaSprite {
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
   ControladorCustomizarPersonaje(Ui::Pantalla &ui, Navegador &navegador,
+                                 DatosPartida &datosPartida,
                                  QObject *parent = nullptr);
-  void reiniciar() override;
-  void validarFormulario() override;
+  void limpiarPagina() override;
+  void actualizarBotonAvanzar() override;
 
 private:
-#define ANCHO_GORRO 20
-#define ALTO_GORRO 20
-#define ANCHO_PELO 16
-#define ALTO_PELO 32
-#define ANCHO_REMERA 8
-#define ALTO_REMERA 8
-#define ANCHO_PANTALON 16
-#define ALTO_PANTALON 32
-
   QList<CoordenadaSprite> opcionesPelo;
   QList<CoordenadaSprite> opcionesGorro;
   QList<CoordenadaSprite> opcionesPantalon;
@@ -47,6 +41,7 @@ private:
   void conectarBotonesFlechas();
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
+  DatosPartida &datosPartida;
 };
 
 #endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
