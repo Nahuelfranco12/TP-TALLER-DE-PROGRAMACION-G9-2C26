@@ -20,17 +20,19 @@ Caverna::Caverna(Renderer& renderer) : minerales(renderer, "assets/caverna/ore.p
 }
 
 bool Caverna::picar(int tile_x, int tile_y) {
-    for (size_t i = 0; i < lista_minerales.size(); ++i) {
+    for (size_t i = 0; i < lista_minerales.size(); i++) {
         Mineral& mineral = lista_minerales[i];
         if (mineral.tile_x == tile_x && mineral.tile_y == tile_y) {
             mineral.golpes++;
             if (mineral.golpes >= GOLPES_PARA_ROMPER) {
+                int tipo = mineral.tipo;
                 lista_minerales.erase(lista_minerales.begin() + static_cast<long>(i));
+                return tipo;
             }
-            return true;
+            return -1;
         }
     }
-    return false;
+    return -1;
 }
 
 void Caverna::dibujar(Renderer& renderer, int camara_x, int camara_y, int lado) {
