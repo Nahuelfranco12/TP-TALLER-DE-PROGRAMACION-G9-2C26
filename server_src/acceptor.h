@@ -6,11 +6,7 @@
 
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"
-
-#include "./game/command.h"
 #include "lobby.h"
-#include "./game/command.h"
-
 #include "client_handler.h"
 
 class Acceptor: public Thread {

@@ -131,4 +131,17 @@ struct LobbyRequestDto {
     std::string text;
 };
 
+struct MatchInfo {
+    std::string code;
+    std::string name;
+    int players = 0;
+};
+
+enum class LobbyAction { Create, List, Join };
+
+struct LobbyRequest {
+    LobbyAction action = LobbyAction::List;
+    std::string text;
+};
+
 #endif

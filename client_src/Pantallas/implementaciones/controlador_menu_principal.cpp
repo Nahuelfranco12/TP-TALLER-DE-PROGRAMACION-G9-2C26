@@ -13,5 +13,5 @@ ControladorMenuPrincipal::ControladorMenuPrincipal(Ui::Pantalla &ui,
           [this]() { this->navegador.irA(this->ui.pageRetomarPartida); });
 }
 
-void ControladorMenuPrincipal::reiniciar() {}
-void ControladorMenuPrincipal::validarFormulario() {}
+void ControladorMenuPrincipal::limpiarPagina() {}
+void ControladorMenuPrincipal::actualizarBotonAvanzar() {}

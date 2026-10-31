@@ -5,7 +5,8 @@
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-  QFontDatabase::addApplicationFont(":/fuentes/assets/Stardew_Valley.ttf");
+  QFontDatabase::addApplicationFont(
+      ":/fuentes/assets/fuentes/Stardew_Valley.otf");
   Pantalla w;
   w.show();
   return QApplication::exec();

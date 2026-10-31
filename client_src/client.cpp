@@ -86,6 +86,10 @@ bool Client::try_get_latest_state(SectorStateDto& state){
     return has_been_received;
 }
 
+int Client::get_my_id() const {
+    return my_id;
+}
+
 bool Client::is_connected() const {
     return receiver.is_alive();
 }

@@ -14,10 +14,10 @@ Pantalla::Pantalla(QWidget *parent)
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
   new ControladorMenuPrincipal(*ui, *navegador, this);
-  new ControladorNuevaPartida(*ui, *navegador, this);
-  new ControladorUnirsePartida(*ui, *navegador, this);
-  new ControladorRetomarPartida(*ui, *navegador, this);
-  new ControladorCustomizarPersonaje(*ui, *navegador, this);
+  new ControladorNuevaPartida(*ui, *navegador, datosPartida, this);
+  new ControladorUnirsePartida(*ui, *navegador, datosPartida, this);
+  new ControladorRetomarPartida(*ui, *navegador, datosPartida, this);
+  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, this);
 }
 
 Pantalla::~Pantalla() { delete ui; }
