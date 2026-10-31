@@ -86,11 +86,18 @@ void Personaje::cambiar_color_pelo() {
 	pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1], COLORES[color_pelo][2]);
 }
 
+void Personaje::vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon, int nueva_remera) {
+	sombrero = nuevo_sombrero;
+	pelo = nuevo_pelo;
+	pantalon = nuevo_pantalon;
+	remera = nueva_remera;
+}
+
 bool Personaje::aplicar(int nuevo_x, int nuevo_y) {
 	if (nuevo_x == tile_x && nuevo_y == tile_y) {
 		return false;
 	}
-	
+
 	if (nuevo_x > tile_x) {
 		mirando = DERECHA;
 	} else if (nuevo_x < tile_x) {

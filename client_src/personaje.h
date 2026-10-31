@@ -38,7 +38,7 @@ public:
 
     // POne al personaje donde dice el servidor (true si se movió)
     bool aplicar(int nuevo_x, int nuevo_y);
-    
+
     // Avanza la animación de caminar
     void animar(long vueltas);
 
@@ -56,6 +56,7 @@ public:
     void cambiar_sombrero();
     void cambiar_color_pantalon();
     void cambiar_color_pelo();
+    void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon, int nueva_remera);
 };
 
 #endif

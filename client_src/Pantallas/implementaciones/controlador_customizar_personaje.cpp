@@ -1,13 +1,13 @@
 #include "controlador_customizar_personaje.h"
 #include "constantes.h"
 #include "ui_pantalla.h"
-#include <QDebug>
+//#include <QDebug>
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
-    const DibujarPersonaje &dibujar, QObject *parent)
+    const DibujarPersonaje &dibujar, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ui, navegador, parent), dibujar(dibujar),
-      datosPartida(datosPartida) {
+    datosPartida(datosPartida), servicio(servicio) {
   ui.botJugar->setEnabled(false);
   connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -86,13 +86,8 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
   });
   connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
     this->datosPartida.personaje = personajeElegido();
-    const DatosPersonaje &p = this->datosPartida.personaje;
-
-    qDebug() << "Modo:" << static_cast<int>(datosPartida.modo)
-             << "| Código:" << datosPartida.codigoUnirsePartida
-             << "| Partida:" << datosPartida.nombrePartida
-             << "| Mundo:" << datosPartida.idMundo << "| Personaje:" << p.nombre
-             << p.gorro << p.pelo << p.remera << p.pantalon;
+    //const DatosPersonaje &p = this->datosPartida.personaje;
+    intentarJugar(servicio, this->datosPartida, this->ui.botJugar);
   });
 }
 

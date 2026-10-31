@@ -10,7 +10,7 @@ class ControladorRetomarPartida : public ControladorPagina {
 public:
   ControladorRetomarPartida(Ui::Pantalla &ui, Navegador &navegador,
                             DatosPartida &datosPartida,
-                            const DibujarPersonaje &dibujante,
+                            const DibujarPersonaje &dibujante, ServicioLobby &servicio,
                             QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
@@ -19,6 +19,7 @@ private:
   ListaSeleccionable *partidas;
   DatosPartida &datosPartida;
   const DibujarPersonaje &dibujante;
+  ServicioLobby &servicio;
   void cargarPartidas();
 };
 

@@ -10,7 +10,7 @@ class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
   ControladorCustomizarPersonaje(Ui::Pantalla &ui, Navegador &navegador,
                                  DatosPartida &datosPartida,
-                                 const DibujarPersonaje &dibujar,
+                                 const DibujarPersonaje &dibujar, ServicioLobby &servicio,
                                  QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
@@ -23,12 +23,13 @@ private:
 
   DatosPersonaje personajeElegido() const;
 
-  void inicializarListas();
+  //void inicializarListas();
   void conectarBotonesFlechas();
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
   const DibujarPersonaje &dibujar;
   DatosPartida &datosPartida;
+  ServicioLobby &servicio;
 };
 
 #endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H

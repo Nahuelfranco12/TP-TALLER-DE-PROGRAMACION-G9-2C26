@@ -3,6 +3,7 @@
 
 #include "datos_partida.h"
 #include "dibujar_personaje.h"
+#include "servicio_lobby.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -13,7 +14,7 @@ class Pantalla : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit Pantalla(QWidget *parent = nullptr);
+  explicit Pantalla(ServicioLobby &servicio, QWidget *parent = nullptr);
   ~Pantalla() override;
 
 private:

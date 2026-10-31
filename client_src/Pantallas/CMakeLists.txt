@@ -40,6 +40,7 @@ qt_add_executable(Pantallas
     headers/datos_partida.h
     headers/dibujar_personaje.h
     implementaciones/dibujar_personaje.cpp
+    headers/servicio_lobby.h
 )
 
 target_link_libraries(Pantallas

@@ -6,10 +6,17 @@
 #include "common_src/game_dtos.h"
 #include "mapa.h"
 #include "granja.h"
+#include "pantalla.h"
+#include "servicio_lobby_red.h"
 
 #include <iostream>
 #include <exception>
 #include <string>
+#include <QApplication>
+#include <QFontDatabase>
+#include <map>
+#include <memory>
+#include <set>
 
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL.h>
@@ -17,27 +24,34 @@
 
 using namespace SDL2pp;
 
+namespace {
+const int SOMBREROS_SDL[] = {45, 4, 40, 61, 121, 99};
+const int PELOS_SDL[] = {9, 10, 33, 69, 21, 27};
+const int PANTALONES_SDL[] = {0, 2, 5, 6};
+const int REMERAS_SDL[] = {9, 19, 36, 27, 104};
+
+void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
+	QApplication app(argc, argv);
+	QFontDatabase::addApplicationFont(":/fuentes/assets/fuentes/Stardew_Valley.otf");
+	Pantalla pantalla(servicio);
+	pantalla.show();
+	QApplication::exec();
+}
+}
+
 int main(int argc, char* argv[]) try {
 
-	if (argc != 3 && argc != 4) {
-		std::cerr << "Uso: " << argv[0] << " <host> <puerto> [codigo de partida]" << std::endl;
+	if (argc != 3) {
+		std::cerr << "Uso: " << argv[0] << " <host> <puerto>" << std::endl;
 		return 1;
 	}
 
 	Client client(argv[1], argv[2]);
+	ServicioLobbyRed servicio(client);
 
-	// Lobby
-	std::string codigo;
-	if (argc == 4) {
-		codigo = argv[3];
-	} else {
-		codigo = client.create_match("Granja");
-		std::cout << "Partida creada. Código para unirse: " << codigo << std::endl;
-	}
-	if (!client.join_match(codigo)) {
-		std::cerr << "No existe la partida con código " << codigo << std::endl; 
-		return 1;
-	}
+	mostrarLobby(argc, argv, servicio);
+	if (!servicio.estaEnPartida())
+		return 0;  // cerró el lobby sin entrar a ninguna partida
 
 	// Initialize SDL library
 	SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -47,7 +61,7 @@ int main(int argc, char* argv[]) try {
 	SDLTTF ttf;
 
 	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	Window window("SDL2pp demo",
+	Window window("Stardew Valley - Partida " + servicio.codigo(),
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			640, 480,
 			SDL_WINDOW_RESIZABLE);
@@ -58,6 +72,10 @@ int main(int argc, char* argv[]) try {
 	// El granjero: carga sus texturas, su ropa y su posición
 	Personaje personaje(renderer);
 
+	const DatosPersonaje &elegido = servicio.personajeElegido();
+	personaje.vestir(SOMBREROS_SDL[elegido.gorro], PELOS_SDL[elegido.pelo],
+	                 PANTALONES_SDL[elegido.pantalon], REMERAS_SDL[elegido.remera]);
+
 	// Suelo
 	Mapa mapa(renderer, 20, 20, 42);
 
@@ -65,7 +83,7 @@ int main(int argc, char* argv[]) try {
 	Granja granja(renderer);
 
 	const int TILE = 64;
-		
+
 	// Todo el sonido (música, pasos y volúmenes) está en la clase Audio
 	Audio audio;
 
@@ -73,6 +91,7 @@ int main(int argc, char* argv[]) try {
 
 	TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
 	long vueltas = 1;
+	std::map<int, std::unique_ptr<Personaje>> otros;
 
 	// Se repite hasta  que el usuario cierre la ventana
 	bool corriendo = true;
@@ -163,13 +182,24 @@ int main(int argc, char* argv[]) try {
 		// Respuesta del servidor
 		WorldState state;
 		if (client.try_get_latest_state(state)) {
+			std::set<int> presentes;
 			for (const PlayerPosition& jugador : state.players) {
 				if (jugador.id == client.get_my_id()) {
 					if (personaje.aplicar(jugador.x, jugador.y)) {
 						audio.reproducir_paso();
 					}
+					continue;
 				}
+				presentes.insert(jugador.id);
+				std::unique_ptr<Personaje>& otro = otros[jugador.id];
+				if (!otro) {
+					otro = std::make_unique<Personaje>(renderer);
+				}
+				otro->aplicar(jugador.x, jugador.y);
 			}
+			std::erase_if(otros, [&presentes](const auto& par) {
+				return !presentes.contains(par.first);
+			});
 		}
 
 		// Si se cortó la conexión, se cierra el juego
@@ -179,6 +209,9 @@ int main(int argc, char* argv[]) try {
 		}
 
 		personaje.animar(vueltas);
+		for (auto& par : otros)
+			par.second->animar(vueltas);
+
 
 		granja.animar(vueltas);
 
@@ -193,6 +226,8 @@ int main(int argc, char* argv[]) try {
 
 		// Granjero
 		personaje.dibujar(renderer, camara_x, camara_y);
+		for (auto& par : otros)
+			par.second->dibujar(renderer, camara_x, camara_y);
 
 		interfaz.dibujar(renderer, audio);
 

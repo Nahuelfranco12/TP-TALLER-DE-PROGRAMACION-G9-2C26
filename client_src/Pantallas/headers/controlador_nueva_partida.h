@@ -8,7 +8,7 @@
 class ControladorNuevaPartida : public ControladorPagina {
 public:
   ControladorNuevaPartida(Ui::Pantalla &ui, Navegador &navegador,
-                          DatosPartida &datosPartida,
+                          DatosPartida &datosPartida, ServicioLobby &servicio,
                           QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
@@ -16,6 +16,7 @@ public:
 private:
   ListaSeleccionable *mundos;
   DatosPartida &datosPartida;
+  ServicioLobby &servicio;
   void cargarMundos();
 };
 
