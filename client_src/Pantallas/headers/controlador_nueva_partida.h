@@ -2,7 +2,7 @@
 #define CONTROLADOR_NUEVA_PARTIDA_H
 
 #include "controlador_pagina.h"
-#include "datos_partida.h"
+#include "dtos_pantallas.h"
 #include "lista_seleccionable.h"
 
 class ControladorNuevaPartida : public ControladorPagina {

@@ -2,19 +2,19 @@
 
 #include <stdexcept>
 
-ClientSender::ClientSender(ClientProtocol& protocol, Queue<MoveCommand>& to_send_queue):
-    protocol(protocol), to_send_queue(to_send_queue) {}
+ClientSender::ClientSender(ClientProtocol &protocol,
+                           Queue<MoveCommand> &to_send_queue)
+    : protocol(protocol), to_send_queue(to_send_queue) {}
 
 void ClientSender::run() {
-    try {
-        while(should_keep_running()) {
-            protocol.send_move_cmd(to_send_queue.pop());
-        }
-    } catch (const ClosedQueue&) {
-        
-    } catch (const std::exception&) {
-        
+  try {
+    while (should_keep_running()) {
+      protocol.send_move_cmd(to_send_queue.pop());
     }
+  } catch (const ClosedQueue &) {
 
-    protocol.shutdown();
+  } catch (const std::exception &) {
+  }
+
+  protocol.shutdown();
 }

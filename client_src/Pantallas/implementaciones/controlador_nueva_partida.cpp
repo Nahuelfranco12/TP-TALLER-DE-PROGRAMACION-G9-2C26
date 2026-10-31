@@ -4,9 +4,11 @@
 
 ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
                                                  Navegador &navegador,
-                                                 DatosPartida &datosPartida, ServicioLobby &servicio,
+                                                 DatosPartida &datosPartida,
+                                                 ServicioLobby &servicio,
                                                  QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida), servicio(servicio) {
+    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
+      servicio(servicio) {
 
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 

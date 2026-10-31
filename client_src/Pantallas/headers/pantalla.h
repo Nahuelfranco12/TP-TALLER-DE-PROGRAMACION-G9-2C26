@@ -1,8 +1,8 @@
 #ifndef PANTALLA_H
 #define PANTALLA_H
 
-#include "datos_partida.h"
 #include "dibujar_personaje.h"
+#include "dtos_pantallas.h"
 #include "servicio_lobby.h"
 #include <QMainWindow>
 

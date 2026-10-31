@@ -3,10 +3,10 @@
 #include <exception>
 
 namespace {
-	const char *ERROR_CODIGO = "No existe una partida con ese código.";
-	const char *ERROR_NO_DISPONIBLE = "Esta opción todavía no está disponible.";
-	const char *ERROR_CONEXION = "Se perdió la conexión con el servidor: ";
-}
+const char *ERROR_CODIGO = "No existe una partida con ese código.";
+const char *ERROR_NO_DISPONIBLE = "Esta opción todavía no está disponible.";
+const char *ERROR_CONEXION = "Se perdió la conexión con el servidor: ";
+} // namespace
 
 ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 

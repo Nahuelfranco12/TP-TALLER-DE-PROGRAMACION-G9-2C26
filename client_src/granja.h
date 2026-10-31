@@ -7,51 +7,55 @@
 
 class Granja {
 private:
-    struct Casa {
-        int tile_x;
-        int tile_y;
-        int modelo;
-    };
+  struct Casa {
+    int tile_x;
+    int tile_y;
+    int modelo;
+  };
 
-    enum TipoAnimal {VACA, GALLINA};
+  enum TipoAnimal { VACA, GALLINA };
 
-    enum TipoCultivo {FRUTILLA, CEBOLLA_DE_VERDEO, PAPA, CALABAZA};
+  enum TipoCultivo { FRUTILLA, CEBOLLA_DE_VERDEO, PAPA, CALABAZA };
 
-    struct Animal {
-        TipoAnimal tipo;
-        int tile_x;
-        int tile_y;
-        bool mira_a_la_izquierda;
-    };
+  struct Animal {
+    TipoAnimal tipo;
+    int tile_x;
+    int tile_y;
+    bool mira_a_la_izquierda;
+  };
 
-    struct Cultivo {
-        TipoCultivo tipo;
-        int tile_x;
-        int tile_y;
-        int etapa;
-    };
+  struct Cultivo {
+    TipoCultivo tipo;
+    int tile_x;
+    int tile_y;
+    int etapa;
+  };
 
-    SDL2pp::Texture casas;
-    SDL2pp::Texture vaca;
-    SDL2pp::Texture gallina;
-    SDL2pp::Texture cultivos;
-    SDL2pp::Texture suelo;
+  SDL2pp::Texture casas;
+  SDL2pp::Texture vaca;
+  SDL2pp::Texture gallina;
+  SDL2pp::Texture cultivos;
+  SDL2pp::Texture suelo;
 
-    std::vector<Casa> lista_casas;
-    std::vector<Animal> lista_animales;
-    std::vector<Cultivo> lista_cultivos;
+  std::vector<Casa> lista_casas;
+  std::vector<Animal> lista_animales;
+  std::vector<Cultivo> lista_cultivos;
 
-    long vueltas;
+  long vueltas;
 
-    void dibujar_casa(SDL2pp::Renderer& renderer, const Casa& casa, int camara_x, int camara_y);
-    void dibujar_cultivo(SDL2pp::Renderer& renderer, const Cultivo& cultivo, int camara_x, int camara_y);
-    void dibujar_animal(SDL2pp::Renderer& renderer, const Animal& animal, int camara_x, int camara_y);
+  void dibujar_casa(SDL2pp::Renderer &renderer, const Casa &casa, int camara_x,
+                    int camara_y);
+  void dibujar_cultivo(SDL2pp::Renderer &renderer, const Cultivo &cultivo,
+                       int camara_x, int camara_y);
+  void dibujar_animal(SDL2pp::Renderer &renderer, const Animal &animal,
+                      int camara_x, int camara_y);
+
 public:
-    explicit Granja(SDL2pp::Renderer& renderer);
+  explicit Granja(SDL2pp::Renderer &renderer);
 
-    void animar(long vueltas_pasadas);
+  void animar(long vueltas_pasadas);
 
-    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y);
+  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y);
 };
 
 #endif

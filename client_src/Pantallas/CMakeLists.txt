@@ -37,7 +37,7 @@ qt_add_executable(Pantallas
     headers/controlador_customizar_personaje.h
     implementaciones/controlador_customizar_personaje.cpp
     headers/constantes.h
-    headers/datos_partida.h
+    headers/dtos_pantallas.h
     headers/dibujar_personaje.h
     implementaciones/dibujar_personaje.cpp
     headers/servicio_lobby.h

@@ -8,15 +8,15 @@
 
 #include "client_protocol.h"
 
-class ClientSender: public Thread {
+class ClientSender : public Thread {
 private:
-    ClientProtocol& protocol;
-    Queue<MoveCommand>& to_send_queue;
+  ClientProtocol &protocol;
+  Queue<MoveCommand> &to_send_queue;
 
 public:
-    ClientSender(ClientProtocol& protocol, Queue<MoveCommand>& to_send_queue);
+  ClientSender(ClientProtocol &protocol, Queue<MoveCommand> &to_send_queue);
 
-    void run() override;
+  void run() override;
 };
 
-#endif 
+#endif

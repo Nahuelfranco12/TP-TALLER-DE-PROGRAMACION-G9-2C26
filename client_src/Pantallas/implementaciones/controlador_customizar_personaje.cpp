@@ -7,7 +7,7 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
     const DibujarPersonaje &dibujar, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ui, navegador, parent), dibujar(dibujar),
-    datosPartida(datosPartida), servicio(servicio) {
+      datosPartida(datosPartida), servicio(servicio) {
   ui.botJugar->setEnabled(false);
   connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -86,7 +86,7 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
   });
   connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
     this->datosPartida.personaje = personajeElegido();
-    //const DatosPersonaje &p = this->datosPartida.personaje;
+    // const DatosPersonaje &p = this->datosPartida.personaje;
     intentarJugar(servicio, this->datosPartida, this->ui.botJugar);
   });
 }

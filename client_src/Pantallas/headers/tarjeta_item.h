@@ -5,14 +5,7 @@
 #include <QPixmap>
 #include <QString>
 
-struct DatosTarjeta {
-  QString id;
-  QPixmap imagen;
-  QString titulo;
-  QString subtitulo;
-  QString textoExtra;
-  QString textoBoton;
-};
+#include "dtos_pantallas.h"
 
 class TarjetaItem : public QFrame {
   Q_OBJECT

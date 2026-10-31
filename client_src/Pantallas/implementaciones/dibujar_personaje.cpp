@@ -54,20 +54,20 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
   pintor.drawPixmap(cuerpo, hojaCuerpo.copy(0, 0, ANCHO_CUERPO, ALTO_CUERPO));
   pintor.drawPixmap(
       cuerpo,
-      colorear(recortarCelda(hojaPantalon, pantalones[personaje.pantalon],
+      colorear(recortarCelda(hojaPantalon, pantalones[personaje.ropa.pantalon],
                              ANCHO_PANTALON, ALTO_PANTALON),
                COLOR_PANTALON));
   pintor.drawPixmap(cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
-                    recortarCelda(hojaRemera, remeras[personaje.remera],
+                    recortarCelda(hojaRemera, remeras[personaje.ropa.remera],
                                   ANCHO_REMERA, ALTO_REMERA));
   pintor.drawPixmap(cuerpo,
                     hojaCuerpo.copy(X_BRAZOS, 0, ANCHO_CUERPO, ALTO_CUERPO));
   pintor.drawPixmap(cuerpo,
-                    colorear(recortarCelda(hojaPelo, pelos[personaje.pelo],
+                    colorear(recortarCelda(hojaPelo, pelos[personaje.ropa.pelo],
                                            ANCHO_PELO, ALTO_PELO),
                              COLOR_PELO));
   pintor.drawPixmap(QPoint(0, 0),
-                    recortarCelda(hojaGorro, gorros[personaje.gorro],
+                    recortarCelda(hojaGorro, gorros[personaje.ropa.gorro],
                                   ANCHO_GORRO, ALTO_GORRO));
   pintor.end();
 

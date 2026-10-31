@@ -22,16 +22,17 @@ public:
 protected:
   Ui::Pantalla &ui;
   Navegador &navegador;
-  void intentarJugar(ServicioLobby &servicio, const DatosPartida &datos, QPushButton *botonJugar){
-      botonJugar->setEnabled(false);
-      ResultadoLobby resultado = servicio.jugar(datos);
-      if (resultado.ok) {
-          QApplication::quit();
-          return;
-      }
-      QMessageBox::warning(botonJugar->window(), "No se pudo entrar",
-                           resultado.mensajeError);
-      actualizarBotonAvanzar();
+  void intentarJugar(ServicioLobby &servicio, const DatosPartida &datos,
+                     QPushButton *botonJugar) {
+    botonJugar->setEnabled(false);
+    ResultadoLobby resultado = servicio.jugar(datos);
+    if (resultado.ok) {
+      QApplication::quit();
+      return;
+    }
+    QMessageBox::warning(botonJugar->window(), "No se pudo entrar",
+                         resultado.mensajeError);
+    actualizarBotonAvanzar();
   }
 };
 

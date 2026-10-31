@@ -52,7 +52,7 @@ target_sources(taller_client
     Pantallas/headers/controlador_retomar_partida.h
     Pantallas/headers/controlador_customizar_personaje.h
     Pantallas/headers/constantes.h
-    Pantallas/headers/datos_partida.h
+    Pantallas/headers/dtos_pantallas.h
     Pantallas/headers/dibujar_personaje.h
     Pantallas/headers/servicio_lobby.h
     )

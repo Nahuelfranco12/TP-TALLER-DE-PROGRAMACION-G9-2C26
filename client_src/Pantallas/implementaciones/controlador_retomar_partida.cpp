@@ -1,6 +1,6 @@
 #include "controlador_retomar_partida.h"
 #include "constantes.h"
-#include "datos_partida.h"
+#include "dtos_pantallas.h"
 //#include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
@@ -10,7 +10,7 @@ ControladorRetomarPartida::ControladorRetomarPartida(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
     const DibujarPersonaje &dibujante, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
-    dibujante(dibujante), servicio(servicio) {
+      dibujante(dibujante), servicio(servicio) {
 
   partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
 

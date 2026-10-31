@@ -16,9 +16,10 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
   new ControladorMenuPrincipal(*ui, *navegador, this);
   new ControladorNuevaPartida(*ui, *navegador, datosPartida, servicio, this);
   new ControladorUnirsePartida(*ui, *navegador, datosPartida, this);
-  new ControladorRetomarPartida(*ui, *navegador, datosPartida, dibujante, servicio, this);
-  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, dibujante, servicio,
-                                     this);
+  new ControladorRetomarPartida(*ui, *navegador, datosPartida, dibujante,
+                                servicio, this);
+  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, dibujante,
+                                     servicio, this);
 }
 
 Pantalla::~Pantalla() { delete ui; }

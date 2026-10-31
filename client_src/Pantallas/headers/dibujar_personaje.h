@@ -1,7 +1,7 @@
 #ifndef DIBUJAR_PERSONAJE_H
 #define DIBUJAR_PERSONAJE_H
 
-#include "datos_partida.h"
+#include "dtos_pantallas.h"
 #include <QList>
 #include <QPixmap>
 
