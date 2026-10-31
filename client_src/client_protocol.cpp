@@ -22,7 +22,6 @@ void ClientProtocol::send_move_dto(const MoveDto& dto){
     protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-
 uint8_t ClientProtocol::direction_to_byte(DirectionDto direction) {
     switch(direction) {
         case DirectionDto::Up:
@@ -36,6 +35,11 @@ uint8_t ClientProtocol::direction_to_byte(DirectionDto direction) {
         default:
             throw std::runtime_error("Dirección inválida");
     }
+}
+
+void ClientProtocol::send_select_tool(const ToolTypeDto& dto) {
+    protocol.send_u8(OP_SELECT_TOOL);
+    protocol.send_u8();
 }
 
 int ClientProtocol::receive_player_id() {
