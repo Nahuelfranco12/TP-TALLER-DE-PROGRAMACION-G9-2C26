@@ -1,42 +1,41 @@
 <RCC>
     <qresource prefix="/botones">
-        <file>Images.qrc</file>
-        <file>assets/Botones/Boton_normal.png</file>
-        <file>assets/Botones/botton_apretado.png</file>
-        <file>assets/Botones/Boton_bw.png</file>
+        <file alias="assets/Botones/Boton_normal.png">../../assets/Botones/Boton_normal.png</file>
+        <file alias="assets/Botones/botton_apretado.png">../../assets/Botones/botton_apretado.png</file>
+        <file alias="assets/Botones/Boton_bw.png">../../assets/Botones/Boton_bw.png</file>
     </qresource>
     <qresource prefix="/flechas">
-        <file>assets/flechas/flecha_apretada_derecha.png</file>
-        <file>assets/flechas/flecha_apretada_izquierda.png</file>
-        <file>assets/flechas/flecha_normal_derecha.png</file>
-        <file>assets/flechas/flecha_normal_izquierda.png</file>
+        <file alias="assets/flechas/flecha_apretada_derecha.png">../../assets/flechas/flecha_apretada_derecha.png</file>
+        <file alias="assets/flechas/flecha_apretada_izquierda.png">../../assets/flechas/flecha_apretada_izquierda.png</file>
+        <file alias="assets/flechas/flecha_normal_derecha.png">../../assets/flechas/flecha_normal_derecha.png</file>
+        <file alias="assets/flechas/flecha_normal_izquierda.png">../../assets/flechas/flecha_normal_izquierda.png</file>
     </qresource>
     <qresource prefix="/pantallas">
-        <file>assets/Pantallas/01-inicio_screen.png</file>
-        <file>assets/Pantallas/02_pantalla_nueva_partida.jpg</file>
-        <file>assets/Pantallas/02-nueva_partida_background.jpg</file>
-        <file>assets/Pantallas/03-unirse_partida_background.png</file>
-        <file>assets/Pantallas/04_pantalla_unirse_partida.jpg</file>
-        <file>assets/Pantallas/0232_pantalla_nueva_partida.jpg</file>
-        <file>assets/Pantallas/pantalla_retomar.jpg</file>
-        <file>assets/Pantallas/fondo_noche.png</file>
-        <file>assets/Pantallas/01-background_inicio.jpg</file>
+        <file alias="assets/Pantallas/01-inicio_screen.png">../../assets/Pantallas/01-inicio_screen.png</file>
+        <file alias="assets/Pantallas/02_pantalla_nueva_partida.jpg">../../assets/Pantallas/02_pantalla_nueva_partida.jpg</file>
+        <file alias="assets/Pantallas/02-nueva_partida_background.jpg">../../assets/Pantallas/02-nueva_partida_background.jpg</file>
+        <file alias="assets/Pantallas/03-unirse_partida_background.png">../../assets/Pantallas/03-unirse_partida_background.png</file>
+        <file alias="assets/Pantallas/04_pantalla_unirse_partida.jpg">../../assets/Pantallas/04_pantalla_unirse_partida.jpg</file>
+        <file alias="assets/Pantallas/0232_pantalla_nueva_partida.jpg">../../assets/Pantallas/0232_pantalla_nueva_partida.jpg</file>
+        <file alias="assets/Pantallas/pantalla_retomar.jpg">../../assets/Pantallas/pantalla_retomar.jpg</file>
+        <file alias="assets/Pantallas/fondo_noche.png">../../assets/Pantallas/fondo_noche.png</file>
+        <file alias="assets/Pantallas/01-background_inicio.jpg">../../assets/Pantallas/01-background_inicio.jpg</file>
     </qresource>
     <qresource prefix="/ropas">
-        <file>assets/ropas/StardewValley_Character_Accessories.png</file>
-        <file>assets/ropas/StardewValley_Character_Farmer Base.png</file>
-        <file>assets/ropas/StardewValley_Character_Hairstyles.png</file>
-        <file>assets/ropas/StardewValley_Character_Hats.png</file>
-        <file>assets/ropas/StardewValley_Character_Pants.png</file>
-        <file>assets/ropas/StardewValley_Character_Shirts.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Accessories.png">../../assets/ropas/StardewValley_Character_Accessories.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Farmer Base.png">../../assets/ropas/StardewValley_Character_Farmer Base.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Hairstyles.png">../../assets/ropas/StardewValley_Character_Hairstyles.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Hats.png">../../assets/ropas/StardewValley_Character_Hats.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Pants.png">../../assets/ropas/StardewValley_Character_Pants.png</file>
+        <file alias="assets/ropas/StardewValley_Character_Shirts.png">../../assets/ropas/StardewValley_Character_Shirts.png</file>
     </qresource>
     <qresource prefix="/cartel">
-        <file>assets/cartel/cartel-datos.png</file>
-        <file>assets/cartel/cartel_stardew_valley.png</file>
+        <file alias="assets/cartel/cartel-datos.png">../../assets/cartel/cartel-datos.png</file>
+        <file alias="assets/cartel/cartel_stardew_valley.png">../../assets/cartel/cartel_stardew_valley.png</file>
     </qresource>
     <qresource prefix="/fuentes">
-        <file>assets/fuentes/Stardew_Valley.ttf</file>
-        <file>assets/fuentes/Fonts Magazine.txt</file>
-        <file>assets/fuentes/Stardew_Valley.otf</file>
+        <file alias="assets/fuentes/Stardew_Valley.ttf">../../assets/fuentes/Stardew_Valley.ttf</file>
+        <file alias="assets/fuentes/Fonts Magazine.txt">../../assets/fuentes/Fonts Magazine.txt</file>
+        <file alias="assets/fuentes/Stardew_Valley.otf">../../assets/fuentes/Stardew_Valley.otf</file>
     </qresource>
 </RCC>
