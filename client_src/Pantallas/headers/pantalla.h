@@ -2,6 +2,7 @@
 #define PANTALLA_H
 
 #include "datos_partida.h"
+#include "dibujar_personaje.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -18,5 +19,6 @@ public:
 private:
   Ui::Pantalla *ui;
   DatosPartida datosPartida;
+  DibujarPersonaje dibujante;
 };
 #endif // PANTALLA_H

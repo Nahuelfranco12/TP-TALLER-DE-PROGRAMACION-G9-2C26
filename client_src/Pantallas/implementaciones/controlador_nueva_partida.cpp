@@ -43,7 +43,7 @@ void ControladorNuevaPartida::actualizarBotonAvanzar() {
 void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : obtenerMundosDePrueba())
-    tarjetas.append(DatosTarjeta{mundo.nombreMundo, mundo.rutaImagen,
+    tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(mundo.rutaImagen),
                                  mundo.nombreMundo, "", "", ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }

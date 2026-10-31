@@ -159,7 +159,7 @@ color: #f1b356;
 qproperty-alignment: AlignCenter;</string>
         </property>
         <property name="text">
-         <string>Partidas a unirte</string>
+         <string>Retomar Partida</string>
         </property>
        </widget>
        <widget class="QPushButton" name="botJugarRP">
@@ -1104,17 +1104,6 @@ customizar tu personaje!</string>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

@@ -1,6 +1,7 @@
 #ifndef PARTIDAS_ESTATICAS_H
 #define PARTIDAS_ESTATICAS_H
 
+#include "datos_partida.h"
 #include <QList>
 #include <QString>
 
@@ -10,10 +11,10 @@ struct MundoMock {
 };
 
 struct PartidaGuardada {
+  QString id;
   QString nombrePartida;
-  QString nombrePersonaje;
-  QString rutaImagen;
-  bool esMultiplayer = 0;
+  DatosPersonaje personaje;
+  bool esMultiplayer = false;
 };
 
 QList<PartidaGuardada> obtenerPartidasDePrueba();

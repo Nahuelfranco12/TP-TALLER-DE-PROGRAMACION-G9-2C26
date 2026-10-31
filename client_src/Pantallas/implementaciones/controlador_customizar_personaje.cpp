@@ -35,8 +35,9 @@ QPixmap recortarSprite(const QPixmap &hoja, const CoordenadaSprite &coord,
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
-    QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
+    const DibujarPersonaje &dibujar, QObject *parent)
+    : ControladorPagina(ui, navegador, parent), dibujar(dibujar),
+      datosPartida(datosPartida) {
   ui.botJugar->setEnabled(false);
   connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -66,11 +67,6 @@ void ControladorCustomizarPersonaje::limpiarPagina() {
 }
 
 void ControladorCustomizarPersonaje::inicializarListas() {
-  opcionesPelo = {{1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, {5, 12}};
-  opcionesGorro = {{13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, {33, 4}};
-  opcionesPantalon = {{1, 1}, {1, 25}, {1, 61}, {1, 73}};
-  opcionesRemera = {{1, 10}, {5, 4}, {9, 5}, {5, 12}, {25, 9}};
-
   hojaPelo.load(TIPOS_PELO);
   hojaGorro.load(TIPOS_GORRO);
   hojaPantalon.load(TIPOS_PANTALON);
@@ -87,31 +83,39 @@ void ControladorCustomizarPersonaje::cambiarOpcion(int &indiceActual,
 
 void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
   connect(ui.botAntGorro, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indiceGorro, opcionesGorro.size(), DIRECCION_ANTERIOR);
+    cambiarOpcion(indiceGorro, dibujar.opcionesGorro().size(),
+                  DIRECCION_ANTERIOR);
   });
   connect(ui.botSigGorro, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indiceGorro, opcionesGorro.size(), DIRECCION_SIGUIENTE);
+    cambiarOpcion(indiceGorro, dibujar.opcionesGorro().size(),
+                  DIRECCION_SIGUIENTE);
   });
 
   connect(ui.botAntPelo, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePelo, opcionesPelo.size(), DIRECCION_ANTERIOR);
+    cambiarOpcion(indicePelo, dibujar.opcionesPelo().size(),
+                  DIRECCION_ANTERIOR);
   });
   connect(ui.botSigPelo, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePelo, opcionesPelo.size(), DIRECCION_SIGUIENTE);
+    cambiarOpcion(indicePelo, dibujar.opcionesPelo().size(),
+                  DIRECCION_SIGUIENTE);
   });
 
   connect(ui.botAntRemera, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indiceRemera, opcionesRemera.size(), DIRECCION_ANTERIOR);
+    cambiarOpcion(indiceRemera, dibujar.opcionesRemera().size(),
+                  DIRECCION_ANTERIOR);
   });
   connect(ui.botSigRemera, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indiceRemera, opcionesRemera.size(), DIRECCION_SIGUIENTE);
+    cambiarOpcion(indiceRemera, dibujar.opcionesRemera().size(),
+                  DIRECCION_SIGUIENTE);
   });
 
   connect(ui.botAntPantalon, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePantalon, opcionesPantalon.size(), DIRECCION_ANTERIOR);
+    cambiarOpcion(indicePantalon, dibujar.opcionesPantalon().size(),
+                  DIRECCION_ANTERIOR);
   });
   connect(ui.botSigPantalon, &QPushButton::clicked, this, [this]() {
-    cambiarOpcion(indicePantalon, opcionesPantalon.size(), DIRECCION_SIGUIENTE);
+    cambiarOpcion(indicePantalon, dibujar.opcionesPantalon().size(),
+                  DIRECCION_SIGUIENTE);
   });
   connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
     DatosPersonaje &p = this->datosPartida.personaje;
@@ -130,12 +134,13 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
 }
 
 void ControladorCustomizarPersonaje::actualizarPrevisualizacion() {
-  ui.mostrarGorro->setPixmap(
-      recortarSprite(hojaGorro, opcionesGorro[indiceGorro], MEDIDAS_GORRO));
-  ui.mostrarPelo->setPixmap(
-      recortarSprite(hojaPelo, opcionesPelo[indicePelo], MEDIDAS_PELO));
-  ui.mostrarRemera->setPixmap(
-      recortarSprite(hojaRemera, opcionesRemera[indiceRemera], MEDIDAS_REMERA));
-  ui.mostrarPantalon->setPixmap(recortarSprite(
-      hojaPantalon, opcionesPantalon[indicePantalon], MEDIDAS_PANTALON));
+  ui.mostrarGorro->setPixmap(recortarSprite(
+      hojaGorro, dibujar.opcionesGorro()[indiceGorro], MEDIDAS_GORRO));
+  ui.mostrarPelo->setPixmap(recortarSprite(
+      hojaPelo, dibujar.opcionesPelo()[indicePelo], MEDIDAS_PELO));
+  ui.mostrarRemera->setPixmap(recortarSprite(
+      hojaRemera, dibujar.opcionesRemera()[indiceRemera], MEDIDAS_REMERA));
+  ui.mostrarPantalon->setPixmap(
+      recortarSprite(hojaPantalon, dibujar.opcionesPantalon()[indicePantalon],
+                     MEDIDAS_PANTALON));
 }

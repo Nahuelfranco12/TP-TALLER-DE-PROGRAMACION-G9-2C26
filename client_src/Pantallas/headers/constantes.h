@@ -33,6 +33,20 @@
 #define TIPOS_PANTALON ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
 #define TIPOS_REMERA ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
 
+#define TIPOS_CUERPO                                                           \
+  ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
+
+#define ANCHO_CUERPO 16
+#define ALTO_CUERPO 32
+#define X_BRAZOS 96
+#define ANCHO_LIENZO 20
+#define ALTO_LIENZO 36
+#define X_CUERPO_EN_LIENZO 2
+#define Y_CUERPO_EN_LIENZO 4
+#define X_REMERA_EN_CUERPO 4
+#define Y_REMERA_EN_CUERPO 15
+#define ESCALA_TARJETA 4
+
 // LOS USO EN CONTROLADOR NUEVA PARTIDA
 #define ELEGIR_MAPA "Elegir Mapa"
 

@@ -6,11 +6,11 @@
 
 #include <QDebug>
 
-ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
-                                                     Navegador &navegador,
-                                                     DatosPartida &datosPartida,
-                                                     QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
+ControladorRetomarPartida::ControladorRetomarPartida(
+    Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
+    const DibujarPersonaje &dibujante, QObject *parent)
+    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
+      dibujante(dibujante) {
 
   partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
 
@@ -29,7 +29,6 @@ ControladorRetomarPartida::ControladorRetomarPartida(Ui::Pantalla &ui,
     this->datosPartida.modo = ModoPartida::Retomar;
     this->datosPartida.idRetomarPartida = partidas->seleccionado();
 
-    // Temporal: hasta que esté el protocolo
     qDebug() << "Modo:" << static_cast<int>(this->datosPartida.modo)
              << "| Partida guardada:" << this->datosPartida.idRetomarPartida;
   });
@@ -46,9 +45,10 @@ void ControladorRetomarPartida::cargarPartidas() {
   for (const PartidaGuardada &partida : obtenerPartidasDePrueba()) {
     QString modo =
         partida.esMultiplayer ? TEXTO_MULTIPLAYER : TEXTO_SINGLEPLAYER;
-    tarjetas.append(DatosTarjeta{partida.nombrePartida, partida.rutaImagen,
-                                 partida.nombrePartida, partida.nombrePersonaje,
-                                 modo, TEXTO_SELECCIONAR});
+    tarjetas.append(DatosTarjeta{
+        partida.id, dibujante.dibujar(partida.personaje, ESCALA_TARJETA),
+        partida.nombrePartida, partida.personaje.nombre, modo,
+        TEXTO_SELECCIONAR});
   }
   partidas->cargar(tarjetas);
 }
