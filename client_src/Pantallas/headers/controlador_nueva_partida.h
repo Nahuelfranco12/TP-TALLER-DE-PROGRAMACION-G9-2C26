@@ -10,8 +10,8 @@ public:
   ControladorNuevaPartida(Ui::Pantalla &ui, Navegador &navegador,
                           DatosPartida &datosPartida,
                           QObject *parent = nullptr);
-  void reiniciar() override;
-  void validarFormulario() override;
+  void limpiarPagina() override;
+  void actualizarBotonAvanzar() override;
 
 private:
   ListaSeleccionable *mundos;

@@ -3,6 +3,8 @@
 
 #include <QString>
 
+enum class ModoPartida { Ninguno, Nueva, Unirse, Retomar };
+
 struct DatosPersonaje {
   QString nombre;
   int gorro = 0;
@@ -12,8 +14,11 @@ struct DatosPersonaje {
 };
 
 struct DatosPartida {
+  ModoPartida modo = ModoPartida::Ninguno;
   QString nombrePartida;
   QString idMundo;
+  QString codigoUnirsePartida;
+  QString idRetomarPartida;
   DatosPersonaje personaje;
 };
 

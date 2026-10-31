@@ -12,8 +12,8 @@ class ControladorPagina : public QObject {
 public:
   ControladorPagina(Ui::Pantalla &ui, Navegador &navegador, QObject *parent)
       : QObject(parent), ui(ui), navegador(navegador) {}
-  virtual void reiniciar() = 0;
-  virtual void validarFormulario() = 0;
+  virtual void limpiarPagina() = 0;
+  virtual void actualizarBotonAvanzar() = 0;
 
 protected:
   Ui::Pantalla &ui;

@@ -16,16 +16,17 @@ ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
   ui.botSiguiente->setEnabled(false);
 
   connect(ui.botVolver, &QPushButton::clicked, this, [this]() {
-    reiniciar();
+    limpiarPagina();
     this->navegador.volver();
   });
 
   connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
-          [this]() { validarFormulario(); });
+          [this]() { actualizarBotonAvanzar(); });
 
-  mundos->setAlSeleccionar([this]() { validarFormulario(); });
+  mundos->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
 
   connect(ui.botSiguiente, &QPushButton::clicked, this, [this]() {
+    this->datosPartida.modo = ModoPartida::Nueva;
     this->datosPartida.nombrePartida =
         this->ui.campoNOmbrePartida->text().trimmed();
     this->datosPartida.idMundo = mundos->seleccionado();
@@ -33,7 +34,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
   });
 }
 
-void ControladorNuevaPartida::validarFormulario() {
+void ControladorNuevaPartida::actualizarBotonAvanzar() {
   bool tieneNombre = !ui.campoNOmbrePartida->text().trimmed().isEmpty();
   bool tieneMundo = mundos->haySeleccion();
   ui.botSiguiente->setEnabled(tieneNombre && tieneMundo);
@@ -47,9 +48,9 @@ void ControladorNuevaPartida::cargarMundos() {
   mundos->cargar(tarjetas);
 }
 
-void ControladorNuevaPartida::reiniciar() {
+void ControladorNuevaPartida::limpiarPagina() {
   mundos->deseleccionar();
   ui.campoNOmbrePartida->clear();
-  validarFormulario();
+  actualizarBotonAvanzar();
   datosPartida = DatosPartida{};
 }

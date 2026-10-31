@@ -39,29 +39,29 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
   ui.botJugar->setEnabled(false);
   connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {
-    reiniciar();
+    limpiarPagina();
     this->navegador.volver();
   });
   connect(ui.campoNombrePersonaje, &QLineEdit::textChanged, this,
-          [this]() { validarFormulario(); });
+          [this]() { actualizarBotonAvanzar(); });
   inicializarListas();
   conectarBotonesFlechas();
   actualizarPrevisualizacion();
 }
 
-void ControladorCustomizarPersonaje::validarFormulario() {
+void ControladorCustomizarPersonaje::actualizarBotonAvanzar() {
   bool tieneNombre = !ui.campoNombrePersonaje->text().trimmed().isEmpty();
   ui.botJugar->setEnabled(tieneNombre);
 }
 
-void ControladorCustomizarPersonaje::reiniciar() {
+void ControladorCustomizarPersonaje::limpiarPagina() {
   ui.campoNombrePersonaje->clear();
   indicePelo = 0;
   indiceGorro = 0;
   indicePantalon = 0;
   indiceRemera = 0;
   actualizarPrevisualizacion();
-  validarFormulario();
+  actualizarBotonAvanzar();
   datosPartida.personaje = DatosPersonaje{};
 }
 
@@ -121,7 +121,9 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
     p.remera = indiceRemera;
     p.pantalon = indicePantalon;
 
-    qDebug() << "Partida:" << datosPartida.nombrePartida
+    qDebug() << "Modo:" << static_cast<int>(datosPartida.modo)
+             << "| Código:" << datosPartida.codigoUnirsePartida
+             << "| Partida:" << datosPartida.nombrePartida
              << "| Mundo:" << datosPartida.idMundo << "| Personaje:" << p.nombre
              << p.gorro << p.pelo << p.remera << p.pantalon;
   });
