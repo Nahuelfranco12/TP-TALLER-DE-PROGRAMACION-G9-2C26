@@ -2,16 +2,16 @@
 #define MOVE_COMMAND_H_
 
 #include "../command.h"
-#include "../id_player.h"
 #include "../position.h"
+#include "../../../common_src/game_dtos.h"
 
 class MoveCommand : public Command {
 private:
-    IdPlayer playerId;
-    Position destination;
+    int playerId;
+    DirectionDto direction;
 
 public:
-    MoveCommand(IdPlayer playerId, Position destination) : playerId(playerId), destination(destination) {}
+    MoveCommand(int playerId, DirectionDto direction) : playerId(playerId), direction(direction) {}
 
     void execute(World& world) override;
 };

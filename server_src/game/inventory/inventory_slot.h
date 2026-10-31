@@ -15,8 +15,8 @@ private:
 public:
     explicit InventorySlot(std::unique_ptr<Item> item) : item(std::move(item)), count(1) {}
 
-    Item& getItem();
-    size_t getCount();
+    Item& getItem() const;
+    size_t getCount() const;
     bool add();
 };
 

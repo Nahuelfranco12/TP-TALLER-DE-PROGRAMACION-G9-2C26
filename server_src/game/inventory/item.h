@@ -1,13 +1,7 @@
 #ifndef ITEM_H_
 #define ITEM_H_
 
-enum class ItemType {
-    MINERAL,
-    SEED,
-    DECORATION_PRODUCT,
-    CROP,
-    ANIMAL_PRODUCT
-};
+#include "../game_constants.h"
 
 class Item {
 private:

@@ -2,10 +2,12 @@
 #define CLIENT_H_
 
 #include <string>
+#include <memory>
 
 #include "../common_src/constants.h"
 #include "../common_src/game_dtos.h"
 #include "../common_src/queue.h"
+#include "actions/client_action.h"
 #include "client_receiver.h"
 #include "client_sender.h"
 #include "client_protocol.h"
@@ -14,8 +16,8 @@ class Client {
 private:
     ClientProtocol protocol;
     int my_id;
-    Queue<WorldState> received_queue;
-    Queue<MoveCommand> to_send_queue;
+    Queue<SectorStateDto> received_queue;
+    Queue<std::unique_ptr<ClientAction>> to_send_queue;
     ClientReceiver receiver;
     ClientSender sender;
     bool in_game = false;
@@ -23,15 +25,14 @@ private:
 public:
     explicit Client(const char* hostname, const char* servname);
 
-    void send_move(Direction direction);
-    bool try_get_latest_state(WorldState& state);
+    void send_join();
+    void send_move(DirectionDto direction);
+    bool try_get_latest_state(SectorStateDto& state);
     bool is_connected() const;
-
-    int get_my_id() const;
 
     //Comandos para QT
     std::string create_match(const std::string& name);
-    std::vector<MatchInfo> list_matches();
+    std::vector<MatchInfoDto> list_matches();
     bool join_match(const std::string& code);
 
     void run();

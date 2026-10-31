@@ -1,7 +1,6 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-
 constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define STRING_END '\0'
 #define STRING_BRK '\n'
@@ -24,6 +23,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_CREATE_MATCH 4
 #define OP_LIST_MATCHES 5
 #define OP_JOIN_MATCH 6
+#define OP_SELECT_TOOL 7
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../common_src/constants.h"
+#include "actions/move_action.h"
 
 Client::Client(const char* hostname, const char* servname):
         protocol(hostname, servname),
@@ -27,7 +28,7 @@ void Client::run() {
         if (line.rfind("c ", 0) == 0) {
             std::cout << "Partida creada, código: " << create_match(line.substr(2)) << STRING_BRK;
         } else if (line == "l") {
-            for (const MatchInfo& m : list_matches())
+            for (const MatchInfoDto& m : list_matches())
                 std::cout << m.code << " - " << m.name << " (" << m.players << " jugadores)"
                           << STRING_BRK;
         } else if (line.rfind("j ", 0) == 0) {
@@ -39,7 +40,7 @@ void Client::run() {
             return;
         }
     }
-    WorldState state;
+    SectorStateDto state;
 
     // TEST POR CONSOLA DEL MOVIMIENTO DE LOS JUGADORES
     while(std::getline(std::cin, line) && line != "q") {
@@ -48,16 +49,16 @@ void Client::run() {
         }
         
         if(line == "w")
-            send_move(Direction::Up);
+            send_move(DirectionDto::Up);
         else if(line == "s")
-            send_move(Direction::Down);
+            send_move(DirectionDto::Down);
         else if(line == "a")
-            send_move(Direction::Left);
+            send_move(DirectionDto::Left);
         else if(line == "d")
-            send_move(Direction::Right);
+            send_move(DirectionDto::Right);
 
         if(try_get_latest_state(state)) {
-            for(const PlayerPosition& p : state.players) {
+            for(const PlayerPositionDto& p : state.players) {
                 std::string mensaje = "Jugador " + std::to_string(p.id) + " en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
                 std::cout << mensaje;
             }
@@ -65,16 +66,22 @@ void Client::run() {
     }
 }
 
-void Client::send_move(Direction direction) {
-    to_send_queue.try_push(MoveCommand{direction});
+// Métodos de acciones
+
+void Client::send_move(DirectionDto direction) {
+    to_send_queue.try_push(std::make_unique<MoveAction>(direction));
 }
 
-bool Client::try_get_latest_state(WorldState& state){
+
+bool Client::try_get_latest_state(SectorStateDto& state){
     bool has_been_received = false;
-    WorldState next_state;
+    SectorStateDto next_state;
     while(received_queue.try_pop(next_state)){
-        state = std::move(next_state);
         has_been_received = true;
+    }
+
+    if(has_been_received) {
+        state = std::move(next_state);
     }
     return has_been_received;
 }
@@ -86,7 +93,6 @@ int Client::get_my_id() const {
 bool Client::is_connected() const {
     return receiver.is_alive();
 }
-
 
 Client::~Client() {
     receiver.stop();
@@ -100,12 +106,13 @@ Client::~Client() {
     }
 }
 
-// comandos nuevos de menú (para qt)
+// Métodos de menú (QT)
+
 std::string Client::create_match(const std::string& name) {
     protocol.send_create_match(name);
     return protocol.receive_created_match();
 }
-std::vector<MatchInfo> Client::list_matches() {
+std::vector<MatchInfoDto> Client::list_matches() {
     protocol.send_list_matches();
     return protocol.receive_match_list();
 }

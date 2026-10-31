@@ -2,13 +2,14 @@
 
 #include <stdexcept>
 
-ClientSender::ClientSender(ClientProtocol& protocol, Queue<MoveCommand>& to_send_queue):
+ClientSender::ClientSender(ClientProtocol& protocol, Queue<std::unique_ptr<ClientAction>>& to_send_queue):
     protocol(protocol), to_send_queue(to_send_queue) {}
 
 void ClientSender::run() {
     try {
         while(should_keep_running()) {
-            protocol.send_move_cmd(to_send_queue.pop());
+            std::unique_ptr<ClientAction> action = to_send_queue.pop();
+            action->send_by(protocol);
         }
     } catch (const ClosedQueue&) {
         

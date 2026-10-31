@@ -10,4 +10,32 @@
 #define PRICE_LAPIZLAZULI 40
 #define PRICE_COAL 10
 
+#define INVALID_PLAYER_ID -1
+
+enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
+
+enum class AnimalType { COW, CHICKEN };
+
+enum class ItemType {
+    MINERAL,
+    SEED,
+    DECORATION_PRODUCT,
+    CROP,
+    ANIMAL_PRODUCT
+};
+
+enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
+
+enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
+enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH  };
+
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
+
+// enum class CrowTypes {  }; // TODO: tipos de cultivo
+
+enum class PlayerHats { HAT_DEFAULT };
+enum class PlayerHairs { BLONDE, CURLY };
+enum class PlayerShirts { TSHIRT_DEFAULT };
+enum class PlayerPants { PANTS_DEFAULT };
+
 #endif // GAME_CONSTANTS_H_

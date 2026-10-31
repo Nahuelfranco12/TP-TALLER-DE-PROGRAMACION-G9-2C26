@@ -40,6 +40,12 @@ void ControladorNuevaPartida::actualizarBotonAvanzar() {
   ui.botSiguiente->setEnabled(tieneNombre && tieneMundo);
 }
 
+void ControladorNuevaPartida::validarFormulario() {
+  bool tieneNombre = !ui.campoNOmbrePartida->text().trimmed().isEmpty();
+  bool tieneMundo = mundos->haySeleccion();
+  ui.botSiguiente->setEnabled(tieneNombre && tieneMundo);
+}
+
 void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : obtenerMundosDePrueba())

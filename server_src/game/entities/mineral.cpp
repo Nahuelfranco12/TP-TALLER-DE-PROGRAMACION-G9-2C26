@@ -6,7 +6,7 @@
 
 std::unique_ptr<Item> Mineral::toItem() const {
     double price = 0;
-    switch (this->type) {
+    switch (this->mineralType) {
         case MineralTypes::GOLD:
             price = PRICE_GOLD;
             break;
@@ -20,7 +20,7 @@ std::unique_ptr<Item> Mineral::toItem() const {
             price = PRICE_COAL;
             break;
     }
-    return std::make_unique<MineralItem>(price, this->type);
+    return std::make_unique<MineralItem>(price, this->mineralType);
 }
 
 void Mineral::pickaxeEffect() {
