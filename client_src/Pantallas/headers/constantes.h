@@ -14,10 +14,7 @@
 #define ALTO_PANTALON 32
 
 // estas son para escalar los sprites y que se vean bien
-#define ESCALA_REMERA 5
-#define ESCALA_PELO 3
-#define ESCALA_GORRO 3
-#define ESCALA_PANTALON 5
+#define ESCALA_PREVISUALIZACION 6
 
 // esto es para el recorte y que ocupen bien los tamaños
 #define ALTO_RECORTE_PELO 16

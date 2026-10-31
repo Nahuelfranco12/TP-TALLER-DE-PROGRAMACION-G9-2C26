@@ -3,36 +3,6 @@
 #include "ui_pantalla.h"
 #include <QDebug>
 
-namespace {
-struct MedidasSprite {
-  int anchoCelda;
-  int altoCelda;
-  int anchoRecorte;
-  int altoRecorte;
-  int offsetY;
-  int escala;
-};
-
-const MedidasSprite MEDIDAS_GORRO{ANCHO_GORRO, ALTO_GORRO, ANCHO_GORRO,
-                                  ALTO_GORRO,  0,          ESCALA_GORRO};
-const MedidasSprite MEDIDAS_PELO{ANCHO_PELO,        ALTO_PELO, ANCHO_PELO,
-                                 ALTO_RECORTE_PELO, 0,         ESCALA_PELO};
-const MedidasSprite MEDIDAS_REMERA{ANCHO_REMERA, ALTO_REMERA, ANCHO_REMERA,
-                                   ALTO_REMERA,  0,           ESCALA_REMERA};
-const MedidasSprite MEDIDAS_PANTALON{ANCHO_PANTALON,    ALTO_PANTALON,
-                                     ANCHO_PANTALON,    ALTO_RECORTE_PANTALON,
-                                     OFFSET_Y_PANTALON, ESCALA_PANTALON};
-
-QPixmap recortarSprite(const QPixmap &hoja, const CoordenadaSprite &coord,
-                       const MedidasSprite &m) {
-  int x = (coord.columna - BASE_COORDENADAS) * m.anchoCelda;
-  int y = (coord.fila - BASE_COORDENADAS) * m.altoCelda + m.offsetY;
-  return hoja.copy(x, y, m.anchoRecorte, m.altoRecorte)
-      .scaled(m.anchoRecorte * m.escala, m.altoRecorte * m.escala,
-              Qt::KeepAspectRatio, Qt::FastTransformation);
-}
-} // namespace
-
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
     const DibujarPersonaje &dibujar, QObject *parent)
@@ -45,7 +15,6 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
   });
   connect(ui.campoNombrePersonaje, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
-  inicializarListas();
   conectarBotonesFlechas();
   actualizarPrevisualizacion();
 }
@@ -66,19 +35,17 @@ void ControladorCustomizarPersonaje::limpiarPagina() {
   datosPartida.personaje = DatosPersonaje{};
 }
 
-void ControladorCustomizarPersonaje::inicializarListas() {
-  hojaPelo.load(TIPOS_PELO);
-  hojaGorro.load(TIPOS_GORRO);
-  hojaPantalon.load(TIPOS_PANTALON);
-  hojaRemera.load(TIPOS_REMERA);
-}
-
 void ControladorCustomizarPersonaje::cambiarOpcion(int &indiceActual,
                                                    int cantidadOpciones,
                                                    int direccion) {
   indiceActual =
       (indiceActual + direccion + cantidadOpciones) % cantidadOpciones;
   actualizarPrevisualizacion();
+}
+
+DatosPersonaje ControladorCustomizarPersonaje::personajeElegido() const {
+  return DatosPersonaje{ui.campoNombrePersonaje->text().trimmed(), indiceGorro,
+                        indicePelo, indicePantalon, indiceRemera};
 }
 
 void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
@@ -118,12 +85,8 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
                   DIRECCION_SIGUIENTE);
   });
   connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
-    DatosPersonaje &p = this->datosPartida.personaje;
-    p.nombre = this->ui.campoNombrePersonaje->text().trimmed();
-    p.gorro = indiceGorro;
-    p.pelo = indicePelo;
-    p.remera = indiceRemera;
-    p.pantalon = indicePantalon;
+    this->datosPartida.personaje = personajeElegido();
+    const DatosPersonaje &p = this->datosPartida.personaje;
 
     qDebug() << "Modo:" << static_cast<int>(datosPartida.modo)
              << "| Código:" << datosPartida.codigoUnirsePartida
@@ -134,13 +97,6 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
 }
 
 void ControladorCustomizarPersonaje::actualizarPrevisualizacion() {
-  ui.mostrarGorro->setPixmap(recortarSprite(
-      hojaGorro, dibujar.opcionesGorro()[indiceGorro], MEDIDAS_GORRO));
-  ui.mostrarPelo->setPixmap(recortarSprite(
-      hojaPelo, dibujar.opcionesPelo()[indicePelo], MEDIDAS_PELO));
-  ui.mostrarRemera->setPixmap(recortarSprite(
-      hojaRemera, dibujar.opcionesRemera()[indiceRemera], MEDIDAS_REMERA));
-  ui.mostrarPantalon->setPixmap(
-      recortarSprite(hojaPantalon, dibujar.opcionesPantalon()[indicePantalon],
-                     MEDIDAS_PANTALON));
+  ui.mostrarPersonaje->setPixmap(
+      dibujar.dibujar(personajeElegido(), ESCALA_PREVISUALIZACION));
 }

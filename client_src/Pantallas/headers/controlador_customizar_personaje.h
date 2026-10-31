@@ -5,7 +5,6 @@
 #include "datos_partida.h"
 #include "dibujar_personaje.h"
 #include <QList>
-#include <QPixmap>
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
@@ -22,10 +21,7 @@ private:
   int indicePantalon = 0;
   int indiceRemera = 0;
 
-  QPixmap hojaPelo;
-  QPixmap hojaGorro;
-  QPixmap hojaPantalon;
-  QPixmap hojaRemera;
+  DatosPersonaje personajeElegido() const;
 
   void inicializarListas();
   void conectarBotonesFlechas();
