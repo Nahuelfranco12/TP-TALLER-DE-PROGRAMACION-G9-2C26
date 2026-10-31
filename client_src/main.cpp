@@ -3,12 +3,6 @@
 #include "common_src/game_dtos.h"
 #include "granja.h"
 #include "caverna.h"
-#include "interfaz.h"
-#include "mapa.h"
-#include "pantalla.h"
-#include "personaje.h"
-#include "servicio_lobby_red.h"
-#include "tasa_constante.h"
 
 #include <algorithm>
 #include <iostream>
@@ -99,17 +93,19 @@ int main(int argc, char *argv[]) try {
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
 
-  Interfaz interfaz(renderer);
+	Interfaz interfaz(renderer);
 
   TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
   long vueltas = 1;
 
-  // Los demás jugadores de la partida, por id
-  std::map<size_t, std::unique_ptr<Personaje>> otros;
-
-			// M abre y cierra mapa
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
-				viendo_mapa = !viendo_mapa;
+	// Se repite hasta  que el usuario cierre la ventana
+	bool corriendo = true;
+	while (corriendo) {
+		// Proceso eventos
+		SDL_Event evento;
+		while (SDL_PollEvent(&evento)) {
+			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+				interfaz.click(evento.button.x, evento.button.y, audio);
 			}
 
       if (evento.type == SDL_QUIT) {
@@ -125,21 +121,21 @@ int main(int argc, char *argv[]) try {
         audio.cambiar_musica();
       }
 
-      // Bajar y subir musica
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_1) {
-        audio.bajar_volumen_musica();
-      }
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_2) {
-        audio.subir_volumen_musica();
-      }
+			// Bajar y subir musica
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_1) {
+				audio.bajar_volumen_musica();
+			}
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_2) {
+				audio.subir_volumen_musica();
+			}
 
-      // Bajar y subir pasos
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_3) {
-        audio.bajar_volumen_pasos();
-      }
+			// Bajar y subir pasos
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_3) {
+				audio.bajar_volumen_pasos();
+			}
 
 			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
-				audio.subir_volumen_pasos();
+				inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
 			}
 
 			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
@@ -168,8 +164,15 @@ int main(int argc, char *argv[]) try {
 						frente_x++;
 						break;
 				}
-				personaje.picar();
-				caverna.picar(frente_x, frente_y);
+				if (inventario.tengo_en_la_mano(PICO)) {
+					personaje.picar();
+					int roto = caverna.picar(frente_x, frente_y);
+
+					if (roto == 0) inventario.agregar(ITEM_HIERRO, 1);
+					if (roto == 1) inventario.agregar(ITEM_CARBON, 1);
+					if (roto == 2) inventario.agregar(ITEM_LAPISLAZULI, 1);
+					if (roto == 3) inventario.agregar(ITEM_ORO, 1);
+				}
 			}
 
       // Cambiar de prenda
@@ -309,6 +312,10 @@ int main(int argc, char *argv[]) try {
 		}
 
 		interfaz.dibujar(renderer, audio);
+
+		if (!viendo_mapa) {
+			inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());
+		}
 
     renderer.Present();
 
