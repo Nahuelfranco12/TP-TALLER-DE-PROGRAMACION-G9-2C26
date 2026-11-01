@@ -62,6 +62,7 @@ int main(int argc, char* argv[]) try {
 	// El granjero: carga sus texturas, su ropa y su posición
 	Personaje personaje(renderer);
 
+	// Mapas
 	Mapa mapa_granja(renderer, MAPA_GRANJA, 20, 20, 42);
 	Mapa mapa_caverna(renderer, MAPA_CAVERNA, 20, 20, 7);
 	
