@@ -1,13 +1,14 @@
 #include "controlador_nueva_partida.h"
 #include "constantes.h"
-#include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
 ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
                                                  Navegador &navegador,
                                                  DatosPartida &datosPartida,
+                                                 ServicioLobby &servicio,
                                                  QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
+    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
+      servicio(servicio) {
 
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 
@@ -48,8 +49,8 @@ void ControladorNuevaPartida::validarFormulario() {
 
 void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : obtenerMundosDePrueba())
-    tarjetas.append(DatosTarjeta{mundo.nombreMundo, mundo.rutaImagen,
+  for (const MundoMock &mundo : servicio.mundos())
+    tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(mundo.rutaImagen),
                                  mundo.nombreMundo, "", "", ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }

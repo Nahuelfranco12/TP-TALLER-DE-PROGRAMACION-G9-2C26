@@ -2,7 +2,7 @@
 #define CONTROLADOR_UNIRSE_PARTIDA_H
 
 #include "controlador_pagina.h"
-#include "datos_partida.h"
+#include "dtos_pantallas.h"
 
 class ControladorUnirsePartida : public ControladorPagina {
 public:

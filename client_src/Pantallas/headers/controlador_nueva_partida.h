@@ -2,13 +2,13 @@
 #define CONTROLADOR_NUEVA_PARTIDA_H
 
 #include "controlador_pagina.h"
-#include "datos_partida.h"
+#include "dtos_pantallas.h"
 #include "lista_seleccionable.h"
 
 class ControladorNuevaPartida : public ControladorPagina {
 public:
   ControladorNuevaPartida(Ui::Pantalla &ui, Navegador &navegador,
-                          DatosPartida &datosPartida,
+                          DatosPartida &datosPartida, ServicioLobby &servicio,
                           QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
@@ -16,6 +16,7 @@ public:
 private:
   ListaSeleccionable *mundos;
   DatosPartida &datosPartida;
+  ServicioLobby &servicio;
   void cargarMundos();
 };
 

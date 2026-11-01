@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "../common_src/game_dtos.h"
 #include "../common_src/protocol.h"
 #include "../common_src/socket.h"
-#include "../common_src/game_dtos.h"
 
 class ClientProtocol {
 private:
@@ -40,4 +40,4 @@ public:
 
     void shutdown();
 };
-#endif  // CLIENT_PROTOCOL_H_
+#endif // CLIENT_PROTOCOL_H_

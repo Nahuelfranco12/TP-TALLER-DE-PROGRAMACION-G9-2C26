@@ -40,8 +40,7 @@ TarjetaItem::TarjetaItem(const DatosTarjeta &datos, QWidget *parent)
 
   QLabel *labelImagen = new QLabel(this);
   labelImagen->setPixmap(
-      QPixmap(datos.rutaImagen)
-          .scaled(TAMANIO_IMAGEN, TAMANIO_IMAGEN, Qt::KeepAspectRatio));
+      datos.imagen.scaled(TAMANIO_IMAGEN, TAMANIO_IMAGEN, Qt::KeepAspectRatio));
   labelImagen->setFixedSize(TAMANIO_IMAGEN, TAMANIO_IMAGEN);
   labelImagen->setStyleSheet("border: none;");
   layoutPrincipal->addWidget(labelImagen);

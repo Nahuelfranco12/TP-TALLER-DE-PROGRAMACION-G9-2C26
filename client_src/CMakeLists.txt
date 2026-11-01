@@ -12,6 +12,20 @@ target_sources(taller_client
     client_protocol.cpp
     client_receiver.cpp
     client_sender.cpp
+    servicio_lobby_red.cpp
+    Pantallas/pantalla.ui
+    Pantallas/Images.qrc
+    Pantallas/implementaciones/pantalla.cpp
+    Pantallas/implementaciones/partidas_estaticas.cpp
+    Pantallas/implementaciones/tarjeta_item.cpp
+    Pantallas/implementaciones/navegador.cpp
+    Pantallas/implementaciones/lista_seleccionable.cpp
+    Pantallas/implementaciones/controlador_menu_principal.cpp
+    Pantallas/implementaciones/controlador_nueva_partida.cpp
+    Pantallas/implementaciones/controlador_unirse_partida.cpp
+    Pantallas/implementaciones/controlador_retomar_partida.cpp
+    Pantallas/implementaciones/controlador_customizar_personaje.cpp
+    Pantallas/implementaciones/dibujar_personaje.cpp
     PUBLIC
     # .h files
     client.h
@@ -25,5 +39,20 @@ target_sources(taller_client
     client_protocol.h
     client_receiver.h
     client_sender.h
+    servicio_lobby_red.h
+    Pantallas/headers/pantalla.h
+    Pantallas/headers/partidas_estaticas.h
+    Pantallas/headers/tarjeta_item.h
+    Pantallas/headers/navegador.h
+    Pantallas/headers/lista_seleccionable.h
+    Pantallas/headers/controlador_pagina.h
+    Pantallas/headers/controlador_menu_principal.h
+    Pantallas/headers/controlador_nueva_partida.h
+    Pantallas/headers/controlador_unirse_partida.h
+    Pantallas/headers/controlador_retomar_partida.h
+    Pantallas/headers/controlador_customizar_personaje.h
+    Pantallas/headers/constantes.h
+    Pantallas/headers/dtos_pantallas.h
+    Pantallas/headers/dibujar_personaje.h
+    Pantallas/headers/servicio_lobby.h
     )
-    

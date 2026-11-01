@@ -2,16 +2,10 @@
 #define TARJETA_ITEM_H
 
 #include <QFrame>
+#include <QPixmap>
 #include <QString>
 
-struct DatosTarjeta {
-  QString id;
-  QString rutaImagen;
-  QString titulo;
-  QString subtitulo;
-  QString textoExtra;
-  QString textoBoton;
-};
+#include "dtos_pantallas.h"
 
 class TarjetaItem : public QFrame {
   Q_OBJECT

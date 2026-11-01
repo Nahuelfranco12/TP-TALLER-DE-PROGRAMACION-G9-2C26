@@ -1,211 +1,249 @@
 #include "audio.h"
-#include "personaje.h"
-#include "tasa_constante.h"
 #include "client.h"
-#include "interfaz.h"
 #include "common_src/game_dtos.h"
-#include "mapa.h"
 #include "granja.h"
+#include "interfaz.h"
+#include "mapa.h"
+#include "pantalla.h"
+#include "personaje.h"
+#include "servicio_lobby_red.h"
+#include "tasa_constante.h"
 
-#include <iostream>
+#include <QApplication>
+#include <QFontDatabase>
 #include <exception>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <set>
 #include <string>
 
-#include <SDL2pp/SDL2pp.hh>
 #include <SDL.h>
+#include <SDL2pp/SDL2pp.hh>
 #include <SDL_image.h>
 
 using namespace SDL2pp;
 
-int main(int argc, char* argv[]) try {
+namespace {
+const int SOMBREROS_SDL[] = {45, 4, 40, 61, 121, 99};
+const int PELOS_SDL[] = {9, 10, 33, 69, 21, 27};
+const int PANTALONES_SDL[] = {0, 2, 5, 6};
+const int REMERAS_SDL[] = {9, 19, 36, 27, 104};
 
-	if (argc != 3 && argc != 4) {
-		std::cerr << "Uso: " << argv[0] << " <host> <puerto> [codigo de partida]" << std::endl;
-		return 1;
-	}
+void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
+  QApplication app(argc, argv);
+  QFontDatabase::addApplicationFont(
+      ":/fuentes/assets/fuentes/Stardew_Valley.otf");
+  Pantalla pantalla(servicio);
+  pantalla.show();
+  QApplication::exec();
+}
+} // namespace
 
-	Client client(argv[1], argv[2]);
+int main(int argc, char *argv[]) try {
 
-	// Lobby
-	std::string codigo;
-	if (argc == 4) {
-		codigo = argv[3];
-	} else {
-		codigo = client.create_match("Granja");
-		std::cout << "Partida creada. Código para unirse: " << codigo << std::endl;
-	}
-	if (!client.join_match(codigo)) {
-		std::cerr << "No existe la partida con código " << codigo << std::endl; 
-		return 1;
-	}
+  if (argc != 3) {
+    std::cerr << "Uso: " << argv[0] << " <host> <puerto>" << std::endl;
+    return 1;
+  }
 
-	// Initialize SDL library
-	SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+  Client client(argv[1], argv[2]);
+  ServicioLobbyRed servicio(client);
 
-	SDLImage image(IMG_INIT_PNG);
+  mostrarLobby(argc, argv, servicio);
+  if (!servicio.estaEnPartida())
+    return 0; // cerró el lobby sin entrar a ninguna partida
 
-	SDLTTF ttf;
+  // Initialize SDL library
+  SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
-	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	Window window("SDL2pp demo",
-			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			640, 480,
-			SDL_WINDOW_RESIZABLE);
+  SDLImage image(IMG_INIT_PNG);
 
-	// Create accelerated video renderer with default driver
-	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+  SDLTTF ttf;
 
-	// El granjero: carga sus texturas, su ropa y su posición
-	Personaje personaje(renderer);
+  // Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
+  Window window("Stardew Valley - Partida " + servicio.codigo(),
+                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
+                SDL_WINDOW_RESIZABLE);
 
-	// Suelo
-	Mapa mapa(renderer, 20, 20, 42);
+  // Create accelerated video renderer with default driver
+  Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	// Cass y animales
-	Granja granja(renderer);
+  // El granjero: carga sus texturas, su ropa y su posición
+  Personaje personaje(renderer);
 
-	const int TILE = 64;
-		
-	// Todo el sonido (música, pasos y volúmenes) está en la clase Audio
-	Audio audio;
+  const DatosPersonaje &elegido = servicio.personajeElegido();
+  personaje.vestir(
+      SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
+      PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
-	Interfaz interfaz(renderer);
+  // Suelo
+  Mapa mapa(renderer, 20, 20, 42);
 
-	TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
-	long vueltas = 1;
+  // Cass y animales
+  Granja granja(renderer);
 
-	// Se repite hasta  que el usuario cierre la ventana
-	bool corriendo = true;
-	while (corriendo) {
-		// Proceso eventos
-		SDL_Event evento;
-		while (SDL_PollEvent(&evento)) {
-			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				interfaz.click(evento.button.x, evento.button.y, audio);
-			}
+  const int TILE = 64;
 
-			if (evento.type == SDL_QUIT) {
-				corriendo = false;
-			}
-			// Si el usuario presiona ESC, se cierra la ventana
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_ESCAPE) {
-				corriendo = false;
-			}
+  // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
+  Audio audio;
 
-			// M cambia música
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
-				audio.cambiar_musica();
-			}
+  Interfaz interfaz(renderer);
 
-			// Bajar y subir musica
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_1) {
-				audio.bajar_volumen_musica();
-			}
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_2) {
-				audio.subir_volumen_musica();
-			}
+  TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
+  long vueltas = 1;
+  std::map<int, std::unique_ptr<Personaje>> otros;
 
-			// Bajar y subir pasos
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_3) {
-				audio.bajar_volumen_pasos();
-			}
+  // Se repite hasta  que el usuario cierre la ventana
+  bool corriendo = true;
+  while (corriendo) {
+    // Proceso eventos
+    SDL_Event evento;
+    while (SDL_PollEvent(&evento)) {
+      if (evento.type == SDL_MOUSEBUTTONDOWN &&
+          evento.button.button == SDL_BUTTON_LEFT) {
+        interfaz.click(evento.button.x, evento.button.y, audio);
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
-				audio.subir_volumen_pasos();
-			}
+      if (evento.type == SDL_QUIT) {
+        corriendo = false;
+      }
+      // Si el usuario presiona ESC, se cierra la ventana
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_ESCAPE) {
+        corriendo = false;
+      }
 
-			// Cambiar de prenda
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
-				personaje.cambiar_pantalon();
-			}
+      // M cambia música
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
+        audio.cambiar_musica();
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_r) {
-				personaje.cambiar_remera();
-			}
+      // Bajar y subir musica
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_1) {
+        audio.bajar_volumen_musica();
+      }
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_2) {
+        audio.subir_volumen_musica();
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c) {
-				personaje.cambiar_pelo();
-			}
+      // Bajar y subir pasos
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_3) {
+        audio.bajar_volumen_pasos();
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_h) {
-				personaje.cambiar_sombrero();
-			}
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
+        audio.subir_volumen_pasos();
+      }
 
-			// Cambiar color (O pantalon, V pelo)
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_o) {
-				personaje.cambiar_color_pantalon();
-			}
+      // Cambiar de prenda
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
+        personaje.cambiar_pantalon();
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_v) {
-				personaje.cambiar_color_pelo();
-			}
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_r) {
+        personaje.cambiar_remera();
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
-				switch (evento.key.keysym.sym) {
-					case SDLK_UP:
-						client.send_move(Direction::Up);
-						break;
-					case SDLK_DOWN:
-						client.send_move(Direction::Down);
-						break;
-					case SDLK_LEFT:
-						client.send_move(Direction::Left);
-						break;
-					case SDLK_RIGHT:
-						client.send_move(Direction::Right);
-						break;
-					default:
-						break;
-				}
-			}
-		}
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c) {
+        personaje.cambiar_pelo();
+      }
 
-		// Respuesta del servidor
-		WorldState state;
-		if (client.try_get_latest_state(state)) {
-			for (const PlayerPosition& jugador : state.players) {
-				if (jugador.id == client.get_my_id()) {
-					if (personaje.aplicar(jugador.x, jugador.y)) {
-						audio.reproducir_paso();
-					}
-				}
-			}
-		}
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_h) {
+        personaje.cambiar_sombrero();
+      }
 
-		// Si se cortó la conexión, se cierra el juego
-		if (!client.is_connected()) {
-			std::cerr << "Se perdió la conexión con el servidor." << STRING_BRK;
-			corriendo = false;
-		}
+      // Cambiar color (O pantalon, V pelo)
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_o) {
+        personaje.cambiar_color_pantalon();
+      }
 
-		personaje.animar(vueltas);
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_v) {
+        personaje.cambiar_color_pelo();
+      }
 
-		granja.animar(vueltas);
+      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
+        switch (evento.key.keysym.sym) {
+        case SDLK_UP:
+          client.send_move(Direction::Up);
+          break;
+        case SDLK_DOWN:
+          client.send_move(Direction::Down);
+          break;
+        case SDLK_LEFT:
+          client.send_move(Direction::Left);
+          break;
+        case SDLK_RIGHT:
+          client.send_move(Direction::Right);
+          break;
+        default:
+          break;
+        }
+      }
+    }
 
-		// Cámara centrada en el personaje así nunca se sale de la pantalla
-		int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
-		int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
+    // Respuesta del servidor
+    WorldState state;
+    if (client.try_get_latest_state(state)) {
+      std::set<int> presentes;
+      for (const PlayerPosition &jugador : state.players) {
+        if (jugador.id == client.get_my_id()) {
+          if (personaje.aplicar(jugador.x, jugador.y)) {
+            audio.reproducir_paso();
+          }
+          continue;
+        }
+        presentes.insert(jugador.id);
+        std::unique_ptr<Personaje> &otro = otros[jugador.id];
+        if (!otro) {
+          otro = std::make_unique<Personaje>(renderer);
+        }
+        otro->aplicar(jugador.x, jugador.y);
+      }
+      std::erase_if(otros, [&presentes](const auto &par) {
+        return !presentes.contains(par.first);
+      });
+    }
 
-		renderer.Clear();
-		mapa.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+    // Si se cortó la conexión, se cierra el juego
+    if (!client.is_connected()) {
+      std::cerr << "Se perdió la conexión con el servidor." << STRING_BRK;
+      corriendo = false;
+    }
 
-		granja.dibujar(renderer, camara_x, camara_y);
+    personaje.animar(vueltas);
+    for (auto &par : otros)
+      par.second->animar(vueltas);
 
-		// Granjero
-		personaje.dibujar(renderer, camara_x, camara_y);
+    granja.animar(vueltas);
 
-		interfaz.dibujar(renderer, audio);
+    // Cámara centrada en el personaje así nunca se sale de la pantalla
+    int camara_x =
+        personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
+    int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
-		renderer.Present();
+    renderer.Clear();
+    mapa.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                 window.GetHeight());
 
-		// esperar al próximo casillero de 16 ms. si me pasé, se saltean vueltas
-		vueltas = tasa.esperar();
-	}
+    granja.dibujar(renderer, camara_x, camara_y);
 
-	// Here all resources are automatically released and library deinitialized
-	return 0;
-} catch (std::exception& e) {
-	// If case of error, print it and exit with error
-	std::cerr << e.what() << std::endl;
-	return 1;
+    // Granjero
+    personaje.dibujar(renderer, camara_x, camara_y);
+    for (auto &par : otros)
+      par.second->dibujar(renderer, camara_x, camara_y);
+
+    interfaz.dibujar(renderer, audio);
+
+    renderer.Present();
+
+    // esperar al próximo casillero de 16 ms. si me pasé, se saltean vueltas
+    vueltas = tasa.esperar();
+  }
+
+  // Here all resources are automatically released and library deinitialized
+  return 0;
+} catch (std::exception &e) {
+  // If case of error, print it and exit with error
+  std::cerr << e.what() << std::endl;
+  return 1;
 }

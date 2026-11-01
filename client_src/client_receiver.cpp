@@ -1,7 +1,7 @@
 #include "client_receiver.h"
 
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 #include "../common_src/constants.h"
 
@@ -19,4 +19,5 @@ void ClientReceiver::run() {
     } catch (const std::exception&) {
         
     }
+  }
 }

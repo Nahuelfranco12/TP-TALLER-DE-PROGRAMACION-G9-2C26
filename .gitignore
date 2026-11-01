@@ -2,3 +2,4 @@ build/
 build-qt/
 client_src/build/
 client_src/.qtcreator
+.qtcreator
