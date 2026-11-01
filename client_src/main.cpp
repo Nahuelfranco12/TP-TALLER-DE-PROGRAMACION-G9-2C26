@@ -5,6 +5,7 @@
 #include "interfaz.h"
 #include "common_src/game_dtos.h"
 #include "mapa.h"
+#include "alrededores.h"
 #include "granja.h"
 #include "caverna.h"
 #include "inventario.h"
@@ -63,8 +64,10 @@ int main(int argc, char* argv[]) try {
 
 	Mapa mapa_granja(renderer, MAPA_GRANJA, 20, 20, 42);
 	Mapa mapa_caverna(renderer, MAPA_CAVERNA, 20, 20, 7);
+	
+	Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
 
-	// Cass y animales
+	// Casas y animales
 	Granja granja(renderer);
 
 	Caverna caverna(renderer);
@@ -113,7 +116,7 @@ int main(int argc, char* argv[]) try {
 			}
 
 			// 1 a 4 elegir herramienta
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_4) {
+			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 && evento.key.keysym.sym <= SDLK_4) {
 				inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
 			}
 
@@ -245,6 +248,7 @@ int main(int argc, char* argv[]) try {
 		} else {
 			mapa_granja.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
 			granja.dibujar(renderer, camara_x, camara_y);
+			alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
 		}
 
 		// Granjero
@@ -278,7 +282,7 @@ int main(int argc, char* argv[]) try {
 			// Figurita de cada jugador
 			for (const PlayerPosition& jugador : ultimo_estado.players) {
 				int origen_x = origen_granja_x;
-				if (jugador.id != client.get_my_id() && en_caverna) {
+				if (jugador.id == client.get_my_id() && en_caverna) {
 					origen_x = origen_caverna_x;
 				}
 				personaje.dibujar_quieto(renderer, jugador.x, jugador.y, -origen_x, -origen_y, lado);

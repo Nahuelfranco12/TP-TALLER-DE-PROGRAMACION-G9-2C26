@@ -14,6 +14,11 @@ private:
     std::vector<std::string> filas;
     char borde;
 
+    TipoMapa tipo;
+
+    std::vector<std::string> pasto_afuera;
+    int margen;
+
     void generar_granja(int ancho, int alto, unsigned int semilla);
     void generar_caverna(int ancho, int alto, unsigned int semilla);
 
@@ -29,6 +34,7 @@ public:
     bool es_escalera(int x, int y) const;
 
     void dibujar_completo(SDL2pp::Renderer& renderer, int origen_x, int origen_y, int lado);
-    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y, int ancho_ventana, int alto_ventana);};
+    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y, int ancho_ventana, int alto_ventana);
+};
 
 #endif
