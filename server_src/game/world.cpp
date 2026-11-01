@@ -9,22 +9,25 @@ bool World::addSector(IdSector id, size_t width, size_t height) {
     return inserted;
 }
 
-IdPlayer World::addPlayer(IdSector idSector) {
+void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
     auto sectorIt = this->sectors.find(idSector);
-    if (sectorIt == this->sectors.end()) return INVALID_PLAYER_ID;
+    if (sectorIt == this->sectors.end())
+        return;
 
     Sector& sector = sectorIt->second;
     Position startPos = sector.findFreePosition();
 
-    auto player = std::make_unique<Player>(startPos.x, startPos.y, &sector);
+    auto player = std::make_unique<Player>(startPos.x, startPos.y, id, &sector, outfit);
     Player* playerPtr = player.get();
 
     if (!sector.addEntity(std::move(player), startPos))
-        return INVALID_PLAYER_ID;
+        return;
 
-    IdPlayer id = this->nextPlayerId++;
     this->players.emplace(id, playerPtr);
-    return id;
+}
+
+void World::removePlayer(int id) {
+    this->players.erase(id);
 }
 
 bool World::spawnMineral(IdSector sectorId, Position pos,
@@ -59,12 +62,30 @@ bool World::transfer(Entity& /*e*/, IdSector /*destine*/, Position /*pos*/) {
     return false;
 }
 
-Player* World::getPlayer(IdPlayer id) {
+Player* World::getPlayer(int id) {
     auto it = this->players.find(id);
     return (it != this->players.end()) ? it->second : nullptr;
+}
+
+const std::map<int, Player*> World::getPlayers() const {
+    return this->players;
 }
 
 Sector* World::getSector(IdSector id) {
     auto it = this->sectors.find(id);
     return (it != this->sectors.end()) ? &it->second : nullptr;
+}
+
+WorldState World::state() const {
+    WorldState state;
+    state.sectors.reserve(sectors.size());
+    for (const auto& [id, sector] : sectors)
+        state.sectors.push_back(sector.state());
+    for (const auto& [id, player] : players)
+        state.players.push_back(player->state());
+    return state;
+}
+
+SectorMapState World::mapState(IdSector id) const {
+    return sectors.at(id).mapState();
 }

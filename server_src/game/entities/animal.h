@@ -2,19 +2,24 @@
 #define ANIMAL_H_
 
 #include "entity.h"
-
-enum class AnimalType { COW, CHICKEN };
+#include "../game_constants.h"
 
 class Animal : public Entity {
 private:
     AnimalType animalType;
 
 public:
-    Animal(size_t pos_x, size_t pos_y, AnimalType animalType) : Entity(pos_x, pos_y), animalType(animalType) {}
+    Animal(size_t pos_x, size_t pos_y, AnimalType animalType) : Entity(pos_x, pos_y, EntityTypes::ANIMAL), animalType(animalType) {}
 
     virtual ~Animal() = default;
 
     AnimalType getAnimalType() const { return animalType; }
+
+    EntityState entityState() const override {
+        EntityState state = Entity::entityState();
+        state.animalType = animalType;
+        return state;
+    }
 };
 
 #endif // ANIMAL_H_

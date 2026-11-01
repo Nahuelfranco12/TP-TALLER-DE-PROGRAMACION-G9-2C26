@@ -6,7 +6,8 @@
 #include <memory>
 #include <vector>
 
-#include "id_sector.h"
+#include "game_constants.h"
+#include "../world_state.h"
 #include "move_result.h"
 #include "position.h"
 #include "terrain.h"
@@ -20,7 +21,7 @@ private:
     IdSector id;
     std::vector<std::vector<Terrain>> tiles;
     std::map<Position, std::unique_ptr<Entity>> entities;
-    std::map<Position, Door> doors;
+    std::map<Position, std::unique_ptr<Door>> doors;
 
 public:
     Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {}
@@ -28,16 +29,26 @@ public:
     virtual ~Sector() = default;
 
     MoveResult move(Position origin, Position destine);
+    
     bool canMoveTo(Position pos) const;
     bool isEmpty(Position pos) const;
+
     bool addEntity(std::unique_ptr<Entity> entity, Position pos);
     std::unique_ptr<Entity> removeEntity(Position pos);
+
+    bool addDoor(std::unique_ptr<Door> door, Position pos);
+    // std::unique_ptr<Door> removeDoor(Position pos);
+
     Entity* getEntity(Position pos) const;
     Position findFreePosition() const;
 
     IdSector getId() const { return id;     }
     size_t getWidth() const { return width;  }
     size_t getHeight() const { return height; }
+    const Terrain& getTerrain(Position pos) const { return tiles[pos.x][pos.y]; }
+
+    SectorState state() const;
+    SectorMapState mapState() const;
 };
 
 #endif // SECTOR_H_

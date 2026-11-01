@@ -2,16 +2,15 @@
 #define SPAWN_MINERAL_COMMAND_H_
 
 #include "../command.h"
-#include "../id_sector.h"
-#include "../mineral_types.h"
+#include "../game_constants.h"
 #include "../position.h"
 
 class SpawnMineralCommand : public Command {
 private:
-    IdSector           sectorId;
-    Position           position;
-    MineralTypes       mineralType;
-    double             spawnFrequency;
+    IdSector sectorId;
+    Position position;
+    MineralTypes mineralType;
+    double spawnFrequency;
     MineralPickaxeTime pickaxeTime;
 
 public:

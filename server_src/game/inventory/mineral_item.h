@@ -1,7 +1,7 @@
 #ifndef MINERAL_ITEM_H_
 #define MINERAL_ITEM_H_
 
-#include "../mineral_types.h"
+#include "../game_constants.h"
 #include "item.h"
 
 class MineralItem : public Item {

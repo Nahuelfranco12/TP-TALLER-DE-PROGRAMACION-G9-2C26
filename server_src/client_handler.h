@@ -15,6 +15,8 @@
 
 #include "server_protocol.h"
 
+#include "./game/command.h"
+
 class ClientHandler {
 private:
     int client_id;

@@ -10,6 +10,7 @@ ServerReceiver::ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<Wor
 
 void ServerReceiver::run() {
     try {
+        // Logica para Unirse a partida.
         while(should_keep_running() && match == nullptr) {
             LobbyRequest request = protocol.receive_lobby_request();
 
@@ -20,26 +21,35 @@ void ServerReceiver::run() {
             } else if (request.action == LobbyAction::Join) {
                 Match* found = lobby.find_match(request.text);
                 bool was_found = found != nullptr;
-                protocol.send_join_result(was_found);
+                protocol.send_join_result(was_found); // Se le avisa al cliente que se va a unir primero para que se prepare para recibir WorldStates
                 if(was_found) {
-                    found->join(client_id, to_send_queue);
                     match = found;
+                    match->join(client_id, to_send_queue);
                 }
             }
         }
 
         while(should_keep_running()) {
-            MoveCommand move = protocol.receive_move();
-            match->push_command(ClientCommand{client_id, CommandType::Move, move.direction});
-            
+            // recibir peticion del cliente (del protocolo)
+            // convertir a comando (con el factory)
+            // pushear en el match (match->push_command(cmd))
+            int op = protocol.receive_operation();
+            switch (op) {
+                case OP_MOVE:
+                    match->push_command(factory.create(client_id, protocol.receive_move()));
+                    break;
+                default:
+                    throw std::runtime_error("Operación desconocida");
+            }            
         }
     } catch (const ClosedQueue&) {
-        return;
     } catch (const std::exception&) {
         
     }
 
-    if(match != nullptr)
+    if(match != nullptr) {
         match->leave(client_id);
+    }
+
     protocol.shutdown();
 }

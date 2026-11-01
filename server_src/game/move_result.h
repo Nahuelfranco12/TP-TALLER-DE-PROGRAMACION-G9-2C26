@@ -2,7 +2,7 @@
 #define MOVE_RESULT_H_
 
 #include "position.h"
-#include "id_sector.h"
+#include "game_constants.h"
 
 class MoveResult {
 public:

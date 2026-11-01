@@ -3,6 +3,7 @@
 
 #include "acceptor.h"
 #include "gameloop.h"
+#include "./game/command.h"
 
 class Server {
 private:

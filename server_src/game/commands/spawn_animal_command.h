@@ -3,7 +3,7 @@
 
 #include "../command.h"
 #include "../entities/animal.h"
-#include "../id_sector.h"
+#include "../game_constants.h"
 #include "../position.h"
 
 class SpawnAnimalCommand : public Command {

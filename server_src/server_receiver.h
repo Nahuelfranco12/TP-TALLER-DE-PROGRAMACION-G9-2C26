@@ -4,6 +4,7 @@
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 
+#include "./game/command.h"
 #include "server_protocol.h"
 #include "match.h"
 #include "lobby.h"
@@ -15,6 +16,7 @@ private:
     Queue<WorldState>& to_send_queue;
     int client_id;
     Match* match = nullptr;
+    CommandFactory factory;
 
 public:
     ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id);

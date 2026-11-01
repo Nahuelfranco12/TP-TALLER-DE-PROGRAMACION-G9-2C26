@@ -5,14 +5,15 @@
 #include "../common_src/game_dtos.h"
 #include "../common_src/queue.h"
 
-#include "client_command.h"
+#include "./game/commands/join_command.h"
+#include "./game/commands/leave_command.h"
 #include "client_queues.h"
 #include "gameloop.h"
 
 class Match {
     private:
         std::string name;
-        Queue<ClientCommand> received_queue;
+        Queue<std::unique_ptr<Command>> received_queue;
         ClientQueues clients;
         Gameloop gameloop;
     
@@ -21,7 +22,7 @@ class Match {
 
         void join(int client_id, Queue<WorldState>& to_send_queue);
         void leave(int client_id);
-        void push_command(const ClientCommand& cmd);
+        void push_command(std::unique_ptr<Command> cmd);
         const std::string& get_name() const;
         int player_count();
 
