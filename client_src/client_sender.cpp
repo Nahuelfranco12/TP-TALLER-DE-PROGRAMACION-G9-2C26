@@ -16,6 +16,7 @@ void ClientSender::run() {
     } catch (const std::exception&) {
         
     }
+  }
 
-    protocol.shutdown();
+  protocol.shutdown();
 }

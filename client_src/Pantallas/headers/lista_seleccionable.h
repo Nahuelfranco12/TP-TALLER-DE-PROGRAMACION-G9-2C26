@@ -5,6 +5,7 @@
 #include <QList>
 #include <QObject>
 #include <QWidget>
+#include <functional>
 
 class ListaSeleccionable : public QObject {
   Q_OBJECT

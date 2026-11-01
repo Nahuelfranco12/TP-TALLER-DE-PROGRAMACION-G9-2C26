@@ -10,7 +10,6 @@
 #include "actions/client_action.h"
 #include "client_receiver.h"
 #include "client_sender.h"
-#include "client_protocol.h"
 
 class Client {
 private:
@@ -23,7 +22,7 @@ private:
     bool in_game = false;
 
 public:
-    explicit Client(const char* hostname, const char* servname);
+  explicit Client(const char *hostname, const char *servname);
 
     void send_join();
     void send_move(DirectionDto direction);
@@ -35,9 +34,9 @@ public:
     std::vector<MatchInfoDto> list_matches();
     bool join_match(const std::string& code);
 
-    void run();
+  void run();
 
-    ~Client();
+  ~Client();
 };
 
-#endif  // CLIENT_H_
+#endif // CLIENT_H_

@@ -10,7 +10,7 @@
 #include "actions/client_action.h"
 #include "client_protocol.h"
 
-class ClientSender: public Thread {
+class ClientSender : public Thread {
 private:
     ClientProtocol& protocol;
     Queue<std::unique_ptr<ClientAction>>& to_send_queue;
@@ -18,7 +18,7 @@ private:
 public:
     ClientSender(ClientProtocol& protocol, Queue<std::unique_ptr<ClientAction>>& to_send_queue);
 
-    void run() override;
+  void run() override;
 };
 
-#endif 
+#endif

@@ -10,18 +10,14 @@
 #include "../common_src/constants.h"
 #include "actions/move_action.h"
 
-Client::Client(const char* hostname, const char* servname):
-        protocol(hostname, servname),
-        my_id(protocol.receive_player_id()),
-        received_queue(QUEUE_MAX_SIZE),
-        to_send_queue(QUEUE_MAX_SIZE),
-        receiver(protocol, received_queue),
-        sender(protocol, to_send_queue)
-        {}
+Client::Client(const char *hostname, const char *servname)
+    : protocol(hostname, servname), my_id(protocol.receive_player_id()),
+      received_queue(QUEUE_MAX_SIZE), to_send_queue(QUEUE_MAX_SIZE),
+      receiver(protocol, received_queue), sender(protocol, to_send_queue) {}
 
 // igual este run es de prueba, hay q sacarlo conectandolo con sdl
 void Client::run() {
-    std::string line;
+  std::string line;
 
     // TEST POR CONSOLA PARA LA PARTE DE QT (MENU)
     while (!in_game && std::getline(std::cin, line)) {
@@ -64,7 +60,6 @@ void Client::run() {
             }
         }
     }
-}
 
 // Métodos de acciones
 
@@ -86,24 +81,30 @@ bool Client::try_get_latest_state(SectorStateDto& state){
     return has_been_received;
 }
 
-int Client::get_my_id() const {
-    return my_id;
+void Client::send_move(Direction direction) {
+  to_send_queue.try_push(MoveCommand{direction});
 }
 
-bool Client::is_connected() const {
-    return receiver.is_alive();
+bool Client::try_get_latest_state(WorldState &state) {
+  bool has_been_received = false;
+  WorldState next_state;
+  while (received_queue.try_pop(next_state)) {
+    state = std::move(next_state);
+    has_been_received = true;
+  }
+  return has_been_received;
 }
 
 Client::~Client() {
-    receiver.stop();
-    sender.stop();
-    to_send_queue.close();
-    received_queue.close();
-    protocol.shutdown();
-    if(in_game) {
-        receiver.join();
-        sender.join();
-    }
+  receiver.stop();
+  sender.stop();
+  to_send_queue.close();
+  received_queue.close();
+  protocol.shutdown();
+  if (in_game) {
+    receiver.join();
+    sender.join();
+  }
 }
 
 // Métodos de menú (QT)
@@ -116,14 +117,13 @@ std::vector<MatchInfoDto> Client::list_matches() {
     protocol.send_list_matches();
     return protocol.receive_match_list();
 }
-bool Client::join_match(const std::string& code) {
-    protocol.send_join_match(code);
-    bool client_could_join = protocol.receive_join_result();
-    if(client_could_join) {
-        receiver.start();
-        sender.start();
-        in_game = true;
-    }
-    return client_could_join;
+bool Client::join_match(const std::string &code) {
+  protocol.send_join_match(code);
+  bool client_could_join = protocol.receive_join_result();
+  if (client_could_join) {
+    receiver.start();
+    sender.start();
+    in_game = true;
+  }
+  return client_could_join;
 }
-

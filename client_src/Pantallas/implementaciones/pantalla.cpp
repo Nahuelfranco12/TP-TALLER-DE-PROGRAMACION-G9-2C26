@@ -7,17 +7,19 @@
 #include "navegador.h"
 #include "ui_pantalla.h"
 
-Pantalla::Pantalla(QWidget *parent)
+Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Pantalla) {
   ui->setupUi(this);
   ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
   new ControladorMenuPrincipal(*ui, *navegador, this);
-  new ControladorNuevaPartida(*ui, *navegador, datosPartida, this);
+  new ControladorNuevaPartida(*ui, *navegador, datosPartida, servicio, this);
   new ControladorUnirsePartida(*ui, *navegador, datosPartida, this);
-  new ControladorRetomarPartida(*ui, *navegador, datosPartida, this);
-  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, this);
+  new ControladorRetomarPartida(*ui, *navegador, datosPartida, dibujante,
+                                servicio, this);
+  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, dibujante,
+                                     servicio, this);
 }
 
 Pantalla::~Pantalla() { delete ui; }
