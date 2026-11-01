@@ -12,11 +12,10 @@ void ClientSender::run() {
             action->send_by(protocol);
         }
     } catch (const ClosedQueue&) {
-        
+
     } catch (const std::exception&) {
-        
+
     }
-  }
 
   protocol.shutdown();
 }

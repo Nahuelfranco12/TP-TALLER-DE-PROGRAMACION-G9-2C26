@@ -40,7 +40,7 @@ uint8_t ClientProtocol::direction_to_byte(DirectionDto direction) {
 
 void ClientProtocol::send_select_tool(const ToolTypeDto& dto) {
     protocol.send_u8(OP_SELECT_TOOL);
-    protocol.send_u8();
+    protocol.send_u8(static_cast<uint8_t>(dto));
 }
 
 int ClientProtocol::receive_player_id() {
@@ -174,4 +174,3 @@ GamePositionDto ClientProtocol::receive_position() {
     position.y = protocol.receive_u16();
     return position;
 }
-

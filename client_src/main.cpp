@@ -92,7 +92,9 @@ int main(int argc, char *argv[]) try {
 
   TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
   long vueltas = 1;
-  std::map<int, std::unique_ptr<Personaje>> otros;
+
+  // Los demás jugadores de la partida, por id
+  std::map<size_t, std::unique_ptr<Personaje>> otros;
 
   // Se repite hasta  que el usuario cierre la ventana
   bool corriendo = true;
@@ -164,16 +166,16 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
         switch (evento.key.keysym.sym) {
         case SDLK_UP:
-          client.send_move(Direction::Up);
+          client.send_move(DirectionDto::Up);
           break;
         case SDLK_DOWN:
-          client.send_move(Direction::Down);
+          client.send_move(DirectionDto::Down);
           break;
         case SDLK_LEFT:
-          client.send_move(Direction::Left);
+          client.send_move(DirectionDto::Left);
           break;
         case SDLK_RIGHT:
-          client.send_move(Direction::Right);
+          client.send_move(DirectionDto::Right);
           break;
         default:
           break;
@@ -182,12 +184,16 @@ int main(int argc, char *argv[]) try {
     }
 
     // Respuesta del servidor
-    WorldState state;
+    SectorStateDto state;
     if (client.try_get_latest_state(state)) {
-      std::set<int> presentes;
-      for (const PlayerPosition &jugador : state.players) {
-        if (jugador.id == client.get_my_id()) {
-          if (personaje.aplicar(jugador.x, jugador.y)) {
+      std::set<size_t> presentes;
+      const size_t mi_id = static_cast<size_t>(client.get_my_id());
+      // players es un mapa: posición -> jugador
+      for (const auto &[posicion, jugador] : state.players) {
+        const int x = static_cast<int>(posicion.x);
+        const int y = static_cast<int>(posicion.y);
+        if (jugador.id == mi_id) {
+          if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
           }
           continue;
@@ -195,10 +201,11 @@ int main(int argc, char *argv[]) try {
         presentes.insert(jugador.id);
         std::unique_ptr<Personaje> &otro = otros[jugador.id];
         if (!otro) {
-          otro = std::make_unique<Personaje>(renderer);
+          otro = std::make_unique<Personaje>(renderer); // recién llegado
         }
-        otro->aplicar(jugador.x, jugador.y);
+        otro->aplicar(x, y);
       }
+      // Los que ya no vienen en el estado se fueron de la partida
       std::erase_if(otros, [&presentes](const auto &par) {
         return !presentes.contains(par.first);
       });
@@ -227,10 +234,10 @@ int main(int argc, char *argv[]) try {
 
     granja.dibujar(renderer, camara_x, camara_y);
 
-    // Granjero
-    personaje.dibujar(renderer, camara_x, camara_y);
+    // Primero los demás jugadores, después el propio para que quede encima
     for (auto &par : otros)
       par.second->dibujar(renderer, camara_x, camara_y);
+    personaje.dibujar(renderer, camara_x, camara_y);
 
     interfaz.dibujar(renderer, audio);
 
