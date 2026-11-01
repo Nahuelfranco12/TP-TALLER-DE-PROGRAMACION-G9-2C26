@@ -37,7 +37,7 @@ bool Caverna::picar(int tile_x, int tile_y) {
 
 void Caverna::dibujar(Renderer& renderer, int camara_x, int camara_y, int lado) {
     for (const Mineral& mineral : lista_minerales) {
-        Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ALTO, MINERAL_ANCHO, MINERAL_ALTO);
+        Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ANCHO, MINERAL_ANCHO, MINERAL_ALTO);
         int x = mineral.tile_x * lado - camara_x;
         int y = mineral.tile_y * lado - camara_y;
         Rect destino(x, y, lado, MINERAL_ALTO * lado / MINERAL_ANCHO);
