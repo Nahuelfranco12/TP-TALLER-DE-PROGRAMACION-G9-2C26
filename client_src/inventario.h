@@ -6,7 +6,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 enum TipoItem {ITEM_ORO, ITEM_HIERRO, ITEM_LAPISLAZULI, ITEM_CARBON, ITEM_SEMILLA, ITEM_HUEVO, ITEM_LECHE, ITEM_CULTIVO};
-enum Herramienta {PICO, PALA, HACHA};
+enum Herramienta {PICO, REGADERA, PALA, ESPADA};
 
 class Inventario {
 private:

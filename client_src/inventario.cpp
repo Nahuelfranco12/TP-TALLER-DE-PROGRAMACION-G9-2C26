@@ -29,10 +29,11 @@ Inventario::Inventario(Renderer& renderer)
     }
 
     iconos_herramienta.emplace_back(renderer, "assets/inventario/pickaxe.png");
+    iconos_herramienta.emplace_back(renderer, "assets/inventario/basket.png");
     iconos_herramienta.emplace_back(renderer, "assets/inventario/shovel.png");
-    iconos_herramienta.emplace_back(renderer, "assets/inventario/axe.png");
+    iconos_herramienta.emplace_back(renderer, "assets/inventario/sword.png");
 
-    herramientas = {PICO, PALA, HACHA};
+    herramientas = {PICO, REGADERA, PALA, ESPADA};
     agregar(ITEM_SEMILLA, 10);
     agregar(ITEM_HUEVO, 2);
     agregar(ITEM_LECHE, 1);
