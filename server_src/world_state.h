@@ -27,7 +27,7 @@ struct EntityState {
 
 struct ItemState {
     ItemType type;
-    int subtype; // MineralTypes casteado, 0 en caso contrario
+    int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso contrario
     int count;
 };
 
