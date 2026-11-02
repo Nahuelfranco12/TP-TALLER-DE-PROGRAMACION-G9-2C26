@@ -9,6 +9,8 @@ public:
 
   explicit Tool(AvailableTools toolType) : toolType(toolType) {}
   virtual ~Tool() = default;
+
+  // virtual void use();
 };
 
 #endif // TOOL_H_

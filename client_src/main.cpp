@@ -51,7 +51,6 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
 } // namespace
 
 int main(int argc, char *argv[]) try {
-
   if (argc != 3) {
     std::cerr << "Uso: " << argv[0] << " <host> <puerto>" << std::endl;
     return 1;
@@ -66,9 +65,7 @@ int main(int argc, char *argv[]) try {
 
   // Initialize SDL library
   SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-
   SDLImage image(IMG_INIT_PNG);
-
   SDLTTF ttf;
 
   // Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
@@ -81,7 +78,6 @@ int main(int argc, char *argv[]) try {
 
   // El granjero: carga sus texturas, su ropa y su posición
   Personaje personaje(renderer);
-
   const DatosPersonaje &elegido = servicio.personajeElegido();
   personaje.vestir(
       SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
