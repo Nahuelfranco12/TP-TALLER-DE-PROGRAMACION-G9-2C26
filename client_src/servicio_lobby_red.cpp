@@ -1,6 +1,7 @@
 #include "servicio_lobby_red.h"
 
 #include <exception>
+#include <QString>
 
 namespace {
 const char *ERROR_CODIGO = "No existe una partida con ese código.";
@@ -22,6 +23,10 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     switch (datos.modo) {
     case ModoPartida::Nueva:
       codigo = client.create_match(datos.nombrePartida.toStdString());
+
+      PlayerOutfitDto outfit{datos.personaje.ropa.gorro, datos.personaje.ropa.pelo, datos.personaje.ropa.remera, datos.personaje.ropa.pantalon};
+
+      client.join_match(codigo, "", outfit);
       break;
     case ModoPartida::Unirse:
       codigo = datos.codigoUnirsePartida.toStdString();
