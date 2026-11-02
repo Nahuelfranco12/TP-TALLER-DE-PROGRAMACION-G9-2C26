@@ -8,6 +8,8 @@ Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
     : received_queue(received_queue), clients(clients), world(worldSpeed) {
   // TODO: revisar, esta hardcodeado a un unico sector
   this->world.addSector(IdSector::FARM);
+  this->world.addSector(IdSector::CAVERN_LEVEL);
+  this->world.addSector(IdSector::VILLAGE);
 }
 
 void Gameloop::process_commands() {
