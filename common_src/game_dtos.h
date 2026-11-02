@@ -61,8 +61,8 @@ struct PlayerPositionDto {
 };
 
 struct GamePositionDto {
-    size_t x = 0;
-    size_t y = 0;
+    int x = 0;
+    int y = 0;
 
     bool operator<(const GamePositionDto& o) const {
         return x != o.x ? x < o.x : y < o.y;
@@ -76,7 +76,7 @@ struct TileDto {
 };
 
 struct InventorySlotDto {
-    size_t count;
+    int count;
     ItemTypeDto item;
 };
 

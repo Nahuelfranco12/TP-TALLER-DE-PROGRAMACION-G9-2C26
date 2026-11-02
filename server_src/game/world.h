@@ -11,7 +11,6 @@
 #include "./entities/player.h"
 #include "../world_state.h"
 
-enum DaySpeed { SLOW, MEDIUM, FAST };
 
 class World {
 private:

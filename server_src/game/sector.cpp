@@ -68,8 +68,8 @@ Entity* Sector::getEntity(Position pos) const {
 }
 
 Position Sector::findFreePosition() const {
-    for (size_t x = 0; x < this->width; x++)
-        for (size_t y = 0; y < this->height; y++) {
+    for (int x = 0; x < this->width; x++)
+        for (int y = 0; y < this->height; y++) {
             Position pos(x, y);
             if (this->entities.find(pos) == this->entities.end())
                 return pos;
@@ -88,8 +88,8 @@ SectorState Sector::state() const {
 SectorMapState Sector::mapState() const {
     SectorMapState sectorState{id, width, height, {}};
     sectorState.tiles.assign(width, std::vector<TerrainState>(height));
-    for (size_t x = 0; x < width; ++x)
-        for (size_t y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x)
+        for (int y = 0; y < height; ++y) {
             const Terrain& terrain = tiles[x][y];
             sectorState.tiles[x][y] = {terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable()};
         }

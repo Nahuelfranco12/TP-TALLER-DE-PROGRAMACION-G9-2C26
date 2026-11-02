@@ -17,7 +17,7 @@ Client::Client(const char *hostname, const char *servname)
 
 // igual este run es de prueba, hay q sacarlo conectandolo con sdl
 void Client::run() {
-  std::string line;
+    std::string line;
 
     // TEST POR CONSOLA PARA LA PARTE DE QT (MENU)
     while (!in_game && std::getline(std::cin, line)) {
@@ -43,7 +43,7 @@ void Client::run() {
         if(!is_connected()) {
             break;
         }
-        
+
         if(line == "w")
             send_move(DirectionDto::Up);
         else if(line == "s")
@@ -54,19 +54,22 @@ void Client::run() {
             send_move(DirectionDto::Right);
 
         if(try_get_latest_state(state)) {
-            for(const PlayerPositionDto& p : state.players) {
-                std::string mensaje = "Jugador " + std::to_string(p.id) + " en: " + std::to_string(p.x) + ", " + std::to_string(p.y) + STRING_BRK;
+            // players es un mapa: posición -> jugador
+            for (const auto& [posicion, jugador] : state.players) {
+                std::string mensaje = "Jugador " + std::to_string(jugador.id) + " en: " +
+                                      std::to_string(posicion.x) + ", " +
+                                      std::to_string(posicion.y) + STRING_BRK;
                 std::cout << mensaje;
             }
         }
     }
+}
 
 // Métodos de acciones
 
 void Client::send_move(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<MoveAction>(direction));
 }
-
 
 bool Client::try_get_latest_state(SectorStateDto& state){
     bool has_been_received = false;
@@ -81,30 +84,24 @@ bool Client::try_get_latest_state(SectorStateDto& state){
     return has_been_received;
 }
 
-void Client::send_move(Direction direction) {
-  to_send_queue.try_push(MoveCommand{direction});
+bool Client::is_connected() const {
+    return receiver.is_alive();
 }
 
-bool Client::try_get_latest_state(WorldState &state) {
-  bool has_been_received = false;
-  WorldState next_state;
-  while (received_queue.try_pop(next_state)) {
-    state = std::move(next_state);
-    has_been_received = true;
-  }
-  return has_been_received;
+int Client::get_my_id() const {
+    return my_id;
 }
 
 Client::~Client() {
-  receiver.stop();
-  sender.stop();
-  to_send_queue.close();
-  received_queue.close();
-  protocol.shutdown();
-  if (in_game) {
-    receiver.join();
-    sender.join();
-  }
+    receiver.stop();
+    sender.stop();
+    to_send_queue.close();
+    received_queue.close();
+    protocol.shutdown();
+    if (in_game) {
+        receiver.join();
+        sender.join();
+    }
 }
 
 // Métodos de menú (QT)
@@ -113,17 +110,19 @@ std::string Client::create_match(const std::string& name) {
     protocol.send_create_match(name);
     return protocol.receive_created_match();
 }
+
 std::vector<MatchInfoDto> Client::list_matches() {
     protocol.send_list_matches();
     return protocol.receive_match_list();
 }
+
 bool Client::join_match(const std::string &code) {
-  protocol.send_join_match(code);
-  bool client_could_join = protocol.receive_join_result();
-  if (client_could_join) {
-    receiver.start();
-    sender.start();
-    in_game = true;
-  }
-  return client_could_join;
+    protocol.send_join_match(code);
+    bool client_could_join = protocol.receive_join_result();
+    if (client_could_join) {
+        receiver.start();
+        sender.start();
+        in_game = true;
+    }
+    return client_could_join;
 }

@@ -31,13 +31,3 @@ void ControladorUnirsePartida::limpiarPagina() {
   actualizarBotonAvanzar();
   datosPartida = DatosPartida{};
 }
-
-void ControladorUnirsePartida::validarFormulario() {
-  bool tieneCodigo = !ui.campoCodigoPartida->text().trimmed().isEmpty();
-  ui.botSiguienteUP->setEnabled(tieneCodigo);
-}
-
-void ControladorUnirsePartida::reiniciar() {
-  ui.campoCodigoPartida->clear();
-  validarFormulario();
-}

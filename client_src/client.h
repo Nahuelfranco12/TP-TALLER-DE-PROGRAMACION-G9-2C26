@@ -28,6 +28,7 @@ public:
     void send_move(DirectionDto direction);
     bool try_get_latest_state(SectorStateDto& state);
     bool is_connected() const;
+    int get_my_id() const;
 
     //Comandos para QT
     std::string create_match(const std::string& name);

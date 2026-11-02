@@ -19,10 +19,6 @@
 
 #define TICKS_PER_SECOND 30
 
-struct Position {
-    int x;
-    int y;
-};
 
 class Gameloop: public Thread {
     private:

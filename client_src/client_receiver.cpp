@@ -15,9 +15,8 @@ void ClientReceiver::run() {
             received_queue.try_push(state);
         }
     } catch (const ClosedQueue&) {
-        
+
     } catch (const std::exception&) {
-        
+
     }
   }
-}

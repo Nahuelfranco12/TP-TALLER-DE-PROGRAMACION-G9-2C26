@@ -26,6 +26,7 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_retomar_partida.cpp
     Pantallas/implementaciones/controlador_customizar_personaje.cpp
     Pantallas/implementaciones/dibujar_personaje.cpp
+    actions/move_action.cpp
     PUBLIC
     # .h files
     client.h
@@ -55,4 +56,6 @@ target_sources(taller_client
     Pantallas/headers/dtos_pantallas.h
     Pantallas/headers/dibujar_personaje.h
     Pantallas/headers/servicio_lobby.h
+    actions/client_action.h
+    actions/move_action.h
     )

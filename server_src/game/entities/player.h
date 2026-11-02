@@ -19,7 +19,7 @@ private:
     int id;
     double life;
     double energy;
-    size_t coins;
+    int coins;
     PlayerOutfit outfit;
 
     Inventory inventory;

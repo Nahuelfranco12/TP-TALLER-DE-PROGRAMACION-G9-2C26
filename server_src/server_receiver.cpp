@@ -12,13 +12,13 @@ void ServerReceiver::run() {
     try {
         // Logica para Unirse a partida.
         while(should_keep_running() && match == nullptr) {
-            LobbyRequest request = protocol.receive_lobby_request();
+            LobbyRequestDto request = protocol.receive_lobby_request();
 
-            if(request.action == LobbyAction::Create) {
+            if(request.action == LobbyActionDto::Create) {
                 protocol.send_match_created(lobby.create_match(request.text));
-            } else if (request.action == LobbyAction::List) {
+            } else if (request.action == LobbyActionDto::List) {
                 protocol.send_match_list(lobby.list_matches());
-            } else if (request.action == LobbyAction::Join) {
+            } else if (request.action == LobbyActionDto::Join) {
                 Match* found = lobby.find_match(request.text);
                 bool was_found = found != nullptr;
                 protocol.send_join_result(was_found); // Se le avisa al cliente que se va a unir primero para que se prepare para recibir WorldStates
