@@ -91,20 +91,17 @@ int main(int argc, char *argv[]) try {
 
   // Casas y animales
   Granja granja(renderer);
-
 	Caverna caverna(renderer);
 
+  const int TILE = 64;
 	bool en_caverna = false;
-
 	bool viendo_mapa = false;
 
-	SectorStateDto ultimo_estado;
-
-  const int TILE = 64;
+  SectorStateDto farm, village, cavern;
+  
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
-
   Interfaz interfaz(renderer);
 
 	Inventario inventario(renderer);
