@@ -78,9 +78,27 @@ std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
     return matches;
 }
 
-void ClientProtocol::send_join_match(const std::string &code) {
+void ClientProtocol::send_join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit) {
   protocol.send_u8(OP_JOIN_MATCH);
   protocol.send_string(code);
+  protocol.send_string(player_name);
+  send_outfit(outfit);
+}
+
+void ClientProtocol::send_outfit(const PlayerOutfitDto& outfit) {
+    protocol.send_u8(static_cast<uint8_t>(outfit.hat));
+    protocol.send_u8(static_cast<uint8_t>(outfit.hair));
+    protocol.send_u8(static_cast<uint8_t>(outfit.tshirt));
+    protocol.send_u8(static_cast<uint8_t>(outfit.pants));
+}
+
+PlayerOutfitDto ClientProtocol::receive_outfit() {
+    PlayerOutfitDto outfit;
+    outfit.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
+    outfit.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
+    outfit.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
+    outfit.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
+    return outfit;
 }
 
 bool ClientProtocol::receive_join_result() {
@@ -133,10 +151,7 @@ PlayerDto ClientProtocol::receive_player() {
     PlayerDto player;
     player.id = protocol.receive_u16();
 
-    player.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
-    player.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
-    player.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
-    player.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
+    player.outfit = receive_outfit();
 
     player.life = protocol.receive_u16();
     player.energy = protocol.receive_u16();

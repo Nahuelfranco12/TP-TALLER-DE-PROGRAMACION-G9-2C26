@@ -20,6 +20,9 @@ private:
     void send_inventory(const InventoryDto& inventory);
     void send_position(const GamePositionDto& position);
 
+    PlayerOutfitDto receive_outfit();
+    void send_outfit(const PlayerOutfitDto& outfit);
+
 public:
     explicit ServerProtocol(Socket&& socket);
     void send_player_id(int id);

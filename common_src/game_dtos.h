@@ -13,10 +13,17 @@ enum class TerrainTypeDto { DIRT, GRASS, GROUND, DOOR }; // TODO: en principio p
 enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
 
 // TODO: revisar para que sea acorde a SDL
-enum class PlayerHatsDto { COMMON_HAT, FARMER_HAT };
-enum class PlayerHairsDto { BLONDE, BROWN };
-enum class PlayerTShirtsDto { BLACK, WHITE };
-enum class PlayerPantsDto { JEANS, SHORTS, SKIRT };
+enum PlayerHatsDto { CAP_HAT, FARMER_HAT, LEAF_HAT, CHEF_HAT, CROWN_HAT, BOWTIE_HAT }; // 6
+enum PlayerHairsDto { CURLY_HAIR, STRAIGHT_HAIR, STRAIGHT_SHORT_HAIR, CURLY_SHORT_HAIR, AFRO_HAIR, EMO_HAIR}; // 6
+enum PlayerTShirtsDto { BLUE_SHIRT, WHITE_SHIRT, PINK_SHIRT, PURPLE_SHIRT, GREE_SHIRT }; // 5
+enum PlayerPantsDto { JEANS_PANTS, SKIRT_PANTS, FARMER_PANTS, FARMER_SHORT_PANTS }; // 4
+
+struct PlayerOutfitDto {
+    PlayerHatsDto hat;
+    PlayerHairsDto hair;
+    PlayerTShirtsDto tshirt;
+    PlayerPantsDto pants;
+};
 
 enum class ItemTypeDto {
     MINERAL_GOLD,
@@ -90,10 +97,7 @@ struct InventoryDto {
 struct PlayerDto {
     size_t id;
 
-    PlayerHatsDto hat;
-    PlayerHairsDto hair;
-    PlayerTShirtsDto tshirt;
-    PlayerPantsDto pants;
+    PlayerOutfitDto outfit;
 
     double life;
     double energy;
@@ -128,7 +132,14 @@ enum class LobbyActionDto { Create, List, Join };
 
 struct LobbyRequestDto {
     LobbyActionDto action = LobbyActionDto::List;
-    std::string text;
+
+    // Atributos para Creacion de Partida
+    std::string match_name;
+    
+    // Atributos para Unirse a partida
+    std::string code;
+    std::string player_name;
+    PlayerOutfitDto player_outfit;
 };
 
 struct MatchInfo {

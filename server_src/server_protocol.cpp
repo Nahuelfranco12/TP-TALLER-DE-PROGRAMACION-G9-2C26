@@ -51,10 +51,7 @@ void ServerProtocol::send_tiles(const std::vector<std::vector<TileDto>>& tiles) 
 void ServerProtocol::send_player(const PlayerDto& player) {
     protocol.send_u16(static_cast<uint16_t>(player.id));
 
-    protocol.send_u8(static_cast<uint8_t>(player.hat));
-    protocol.send_u8(static_cast<uint8_t>(player.hair));
-    protocol.send_u8(static_cast<uint8_t>(player.tshirt));
-    protocol.send_u8(static_cast<uint8_t>(player.pants));
+    send_outfit(player.outfit);
 
     protocol.send_u16(static_cast<uint16_t>(player.life));
     protocol.send_u16(static_cast<uint16_t>(player.energy));
@@ -121,16 +118,27 @@ DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
 
 LobbyRequestDto ServerProtocol::receive_lobby_request() {
     uint8_t operation = protocol.receive_u8();
+
+    LobbyRequestDto request;
+    
     switch(operation) {
         case OP_CREATE_MATCH:
-            return LobbyRequestDto{LobbyActionDto::Create, protocol.receive_string()};
+            request.action = LobbyActionDto::Create;
+            request.match_name = protocol.receive_string();
+            break;
         case OP_LIST_MATCHES:
-            return LobbyRequestDto{LobbyActionDto::List, ""};
+            request.action = LobbyActionDto::List;
+            break;
         case OP_JOIN_MATCH:
-            return LobbyRequestDto{LobbyActionDto::Join, protocol.receive_string()};
+            request.action = LobbyActionDto::Join;
+            request.code = protocol.receive_string();
+            request.player_name = protocol.receive_string();
+            request.player_outfit = receive_outfit();
+            break;
         default:
             throw std::runtime_error("Mensaje inesperado");
     }
+    return request;
 }
 
 void ServerProtocol::send_match_created(const std::string& code) {
@@ -164,4 +172,20 @@ void ServerProtocol::send_player_id(int id) {
 
 uint8_t ServerProtocol::receive_operation() {
     return protocol.receive_u8();
+}
+
+PlayerOutfitDto ServerProtocol::receive_outfit() {
+    PlayerOutfitDto outfit;
+    outfit.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
+    outfit.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
+    outfit.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
+    outfit.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
+    return outfit;
+}
+
+void ServerProtocol::send_outfit(const PlayerOutfitDto& outfit) {
+    protocol.send_u8(static_cast<uint8_t>(outfit.hat));
+    protocol.send_u8(static_cast<uint8_t>(outfit.hair));
+    protocol.send_u8(static_cast<uint8_t>(outfit.tshirt));
+    protocol.send_u8(static_cast<uint8_t>(outfit.pants));
 }

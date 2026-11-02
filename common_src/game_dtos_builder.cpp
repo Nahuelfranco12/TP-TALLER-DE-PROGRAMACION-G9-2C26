@@ -117,11 +117,6 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState& state, in
                         PlayerDto playerDto{};
                         playerDto.id = playerState.id;
 
-                        // TODO: modificar cuando se tengan los outfit en el juego
-                        playerDto.hat = PlayerHatsDto::COMMON_HAT;
-                        playerDto.hair = PlayerHairsDto::BLONDE;
-                        playerDto.tshirt = PlayerTShirtsDto::BLACK;
-                        playerDto.pants = PlayerPantsDto::JEANS;
 
                         if (playerState.id == clientId) {
                             playerDto.life = static_cast<uint8_t>(playerState.life);

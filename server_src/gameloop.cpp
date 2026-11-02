@@ -4,7 +4,10 @@
 
 
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed):
-    received_queue(received_queue), clients(clients), world(worldSpeed) {}
+    received_queue(received_queue), clients(clients), world(worldSpeed) {
+        // TODO: revisar, esta hardcodeado a un unico sector
+        this->world.addSector(IdSector::FARM);
+}
 
 
 void Gameloop::process_commands() {
@@ -40,7 +43,5 @@ void Gameloop::run() {
 }
 
 WorldState Gameloop::make_world_state() const {
-    WorldState state;
-    // TODO
-    return state;
+    return world.state();
 }

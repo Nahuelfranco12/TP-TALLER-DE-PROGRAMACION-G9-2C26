@@ -1,6 +1,7 @@
 #include "servicio_lobby_red.h"
 
 #include <exception>
+#include <QString>
 
 namespace {
 const char *ERROR_CODIGO = "No existe una partida con ese código.";
@@ -30,8 +31,8 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     case ModoPartida::Ninguno:
       return ResultadoLobby{false, "", ERROR_NO_DISPONIBLE};
     }
-
-    if (!client.join_match(codigo))
+    PlayerOutfitDto outfit{static_cast<PlayerHatsDto>(datos.personaje.ropa.gorro), static_cast<PlayerHairsDto>(datos.personaje.ropa.pelo), static_cast<PlayerTShirtsDto>(datos.personaje.ropa.remera), static_cast<PlayerPantsDto>(datos.personaje.ropa.pantalon)};
+    if (!client.join_match(codigo, datos.personaje.nombre.toStdString(), outfit))
       return ResultadoLobby{false, "", ERROR_CODIGO};
 
     enPartida = true;
