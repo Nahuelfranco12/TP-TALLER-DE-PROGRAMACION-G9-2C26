@@ -10,6 +10,7 @@
 
 #include "../common_src/constants.h"
 #include "actions/move_action.h"
+#include "actions/select_tool_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -71,6 +72,10 @@ void Client::run() {
 
 void Client::send_move(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<MoveAction>(direction));
+}
+
+void Client::send_select_tool(ToolTypeDto tool) {
+    to_send_queue.try_push(std::make_unique<SelectToolAction>(tool));
 }
 
 bool Client::try_get_latest_state(SectorStateDto &state) {

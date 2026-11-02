@@ -104,6 +104,10 @@ MoveDto ServerProtocol::receive_move() {
   return MoveDto{byte_to_direction(protocol.receive_u8())};
 }
 
+ToolTypeDto ServerProtocol::receive_select_tool() {
+    return static_cast<ToolTypeDto>(protocol.receive_u8());
+}
+
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
   switch (direction_byte) {
   case DIR_UP:

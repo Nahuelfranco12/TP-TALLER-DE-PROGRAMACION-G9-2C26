@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) try {
 
 			// 1 a 4 elegir herramienta
 			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 && evento.key.keysym.sym <= SDLK_4) {
-        int numero = evento.key.keysym.sym - SDLK_1
+        int numero = evento.key.keysym.sym - SDLK_1;
 				inventario.seleccionar(numero);
         client.send_select_tool(static_cast<ToolTypeDto>(numero));
 			}

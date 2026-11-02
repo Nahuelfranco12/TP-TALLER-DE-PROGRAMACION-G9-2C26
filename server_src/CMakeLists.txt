@@ -25,6 +25,7 @@ target_sources(taller_server
     game/inventory/inventory.cpp
     game/commands/move_command.cpp
     game/commands/join_command.cpp
+    game/commands/select_tool_command.cpp
     game/commands/leave_command.cpp
     game/commands/spawn_mineral_command.cpp
     game/commands/mine_command.cpp
@@ -61,6 +62,7 @@ target_sources(taller_server
     game/inventory/item.h
     game/commands/move_command.h
     game/commands/join_command.h
+    game/commands/select_tool_command.h
     game/commands/leave_command.h
     game/commands/spawn_mineral_command.h
     game/commands/mine_command.h
