@@ -88,7 +88,7 @@ struct MoveDto {
 };
 
 struct MineDto {
-  // TODO
+  DirectionDto direction = DirectionDto::Up;
 };
 
 // TODO: ver de eliminarlo

@@ -32,6 +32,8 @@ public:
 
   // Protocolo de acciones
   MoveDto receive_move();
+  MineDto receive_mine();
+  ToolTypeDto receive_select_tool();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

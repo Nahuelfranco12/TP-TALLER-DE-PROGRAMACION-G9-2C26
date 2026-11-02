@@ -43,9 +43,12 @@ void ServerReceiver::run() {
         case OP_MOVE:
             match->push_command(factory.create(client_id, protocol.receive_move()));
             break;
-        case OP_SELECT_TOOL:
-            match->push_command(factory.create(client_id, protocol.receive_select_tool()));
-            break;
+      case OP_SELECT_TOOL:
+        match->push_command(factory.create(client_id, protocol.receive_select_tool()));
+        break;
+      case OP_MINE:
+        match->push_command(factory.create(client_id, protocol.receive_mine()));
+        break;
         default:
             throw std::runtime_error("Operación desconocida");
       }
