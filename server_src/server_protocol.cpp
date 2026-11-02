@@ -34,10 +34,10 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state, bool sendCom
   }
 }
 
-// TODO:
 void ServerProtocol::send_world_map_state(const SectorStateDto &farmState, const SectorStateDto &villageState, const SectorStateDto &cavernState) {
   send_sector_state(farmState, false);
   send_sector_state(cavernState, false);
+  (void)villageState;
   // send_sector_state(villageState, false);
 }
 

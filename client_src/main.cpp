@@ -74,12 +74,10 @@ int main(int argc, char *argv[]) try {
       SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
-
   // Mapas
   SectorStateDto farm, cavern; //, village
   client.try_get_latest_state(farm);
   client.try_get_latest_state(cavern);
-
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
 	Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
 	
@@ -226,9 +224,10 @@ int main(int argc, char *argv[]) try {
       }
     }
 
-		// Respuesta del servidor
-		WorldState state;
-		if (client.try_get_latest_state(state)) {
+    SectorStateDto ultimo_estado;
+    // Respuesta del servidor
+    SectorStateDto state;
+    if (client.try_get_latest_state(state)) {
 			ultimo_estado = state;
 			for (const PlayerPosition& jugador : state.players) {
 				if (jugador.id == client.get_my_id()) {
