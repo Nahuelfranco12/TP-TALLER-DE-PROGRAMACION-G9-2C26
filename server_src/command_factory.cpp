@@ -9,6 +9,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<MoveCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const MineDto &dto) {
+  return std::make_unique<MineCommand>(player_id, dto.direction);
+}
+
 std::unique_ptr<Command> CommandFactory::create(int player_id,
                                                 const ToolTypeDto& dto) {
   return std::make_unique<SelectToolCommand>(player_id, static_cast<AvailableTools>(dto);
