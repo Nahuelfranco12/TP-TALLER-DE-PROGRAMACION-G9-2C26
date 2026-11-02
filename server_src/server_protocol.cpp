@@ -10,7 +10,7 @@
 ServerProtocol::ServerProtocol(Socket &&socket)
     : skt(std::move(socket)), protocol(skt) {}
 
-void ServerProtocol::send_sector_state(const SectorStateDto &state) {
+void ServerProtocol::send_sector_state(const SectorStateDto &state, bool sendComplete) {
   protocol.send_u8(OP_WORLD_STATE);
 
   protocol.send_u8(static_cast<uint8_t>(state.type));
@@ -19,22 +19,26 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
 
   send_tiles(state.sector);
 
-  protocol.send_u16(static_cast<uint16_t>(state.players.size()));
-  for (const auto &[position, player] : state.players) {
-    send_position(position);
-    send_player(player);
-  }
+  if (sendComplete) {
+    protocol.send_u16(static_cast<uint16_t>(state.players.size()));
+    for (const auto &[position, player] : state.players) {
+      send_position(position);
+      send_player(player);
+    }
 
-  protocol.send_u16(static_cast<uint16_t>(state.entities.size()));
-  for (const auto &[position, type] : state.entities) {
-    send_position(position);
-    protocol.send_u8(static_cast<uint8_t>(type));
+    protocol.send_u16(static_cast<uint16_t>(state.entities.size()));
+    for (const auto &[position, type] : state.entities) {
+      send_position(position);
+      protocol.send_u8(static_cast<uint8_t>(type));
+    }
   }
 }
 
 // TODO:
 void ServerProtocol::send_world_map_state(const SectorStateDto &farmState, const SectorStateDto &villageState, const SectorStateDto &cavernState) {
-
+  send_sector_state(farmState, false);
+  send_sector_state(cavernState, false);
+  // send_sector_state(villageState, false);
 }
 
 void ServerProtocol::send_tiles(
