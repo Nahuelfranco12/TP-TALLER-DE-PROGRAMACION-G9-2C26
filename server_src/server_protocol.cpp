@@ -108,7 +108,7 @@ ToolTypeDto ServerProtocol::receive_select_tool() {
   return static_cast<ToolTypeDto>(protocol.receive_u8());
 }
 
-MineDto receive_mine() {
+MineDto ServerProtocol::receive_mine() {
   return MineDto{byte_to_direction(protocol.receive_u8())};
 }
 
