@@ -158,3 +158,25 @@ GameDtosBuilder::build(const WorldState &state, int clientId) {
   }
   return sectorDto;
 }
+
+std::optional<SectorStateDto>
+GameDtosBuilder::buildSectorMap(const WorldState &state, SectorTypeDto sectorType) {
+  SectorStateDto sectorDto;
+  sectorDto.type = sectorType;
+
+  for (const SectorState &sectorState : state.sectors) {
+    if (sectorState.id == static_cast<IdSector>(sectorType)) {
+      sectorDto.width = sectorState.width;
+      sectorDto.height = sectorState.height;
+
+      sectorDto.sector.assign(sectorDto.width, std::vector<TileDto>(sectorDto.height));
+      for (size_t x = 0; x < sectorDto.width; ++x)
+        for (size_t y = 0; y < sectorDto.height; ++y) {
+          const TerrainState &t = sectorState.tiles[x][y];
+          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
+      }
+    }
+  }
+
+  return sectorDto;
+}
