@@ -246,10 +246,22 @@ int main(int argc, char *argv[]) try {
 							en_caverna = false;
 							audio.poner_musica_granja();
 						}
-					}
-				}
-			}
-		}
+          }
+          continue;
+        }
+        presentes.insert(jugador.id);
+        std::unique_ptr<Personaje> &otro = otros[jugador.id];
+        if (!otro) {
+          otro = std::make_unique<Personaje>(renderer); // recién llegado
+          otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)], PELOS_SDL[static_cast<int>(jugador.outfit.hair)], PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)], REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
+        }
+        otro->aplicar(x, y);
+      }
+      // Los que ya no vienen en el estado se fueron de la partida
+      std::erase_if(otros, [&presentes](const auto &par) {
+        return !presentes.contains(par.first);
+      });
+    }
 
     // Si se cortó la conexión, se cierra el juego
     if (!client.is_connected()) {

@@ -123,6 +123,11 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
             PlayerDto playerDto{};
             playerDto.id = playerState.id;
 
+            playerDto.outfit.hat = static_cast<PlayerHatsDto>(playerState.outfit.hat);
+            playerDto.outfit.hair = static_cast<PlayerHairsDto>(playerState.outfit.hairs);
+            playerDto.outfit.tshirt = static_cast<PlayerTShirtsDto>(playerState.outfit.tshirt);
+            playerDto.outfit.pants = static_cast<PlayerPantsDto>(playerState.outfit.pants);
+
             if (playerState.id == clientId) {
               playerDto.life = static_cast<uint8_t>(playerState.life);
               playerDto.energy = static_cast<uint8_t>(playerState.energy);
