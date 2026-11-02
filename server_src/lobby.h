@@ -2,6 +2,7 @@
 #define LOBBY_H
 
 #include <map>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -12,15 +13,15 @@
 #include "match.h"
 
 class Lobby {
-    private:
-        std::mutex mutex;
-        std::map<std::string, std::unique_ptr<Match>> matches;
-        int next_code = 1;
+private:
+  std::mutex mutex;
+  std::map<std::string, std::unique_ptr<Match>> matches;
+  int next_code = 1;
 
-    public:
-        std::string create_match(const std::string& name);
-        std::vector<MatchInfoDto> list_matches();
-        Match* find_match(const std::string& code);
+public:
+  std::string create_match(const std::string &name);
+  std::vector<MatchInfoDto> list_matches();
+  Match *find_match(const std::string &code);
 };
 
 #endif

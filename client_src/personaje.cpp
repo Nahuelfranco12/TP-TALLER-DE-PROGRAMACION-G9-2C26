@@ -2,7 +2,9 @@
 
 #include <SDL2/SDL.h>
 
-using namespace SDL2pp;
+using SDL2pp::NullOpt;
+using SDL2pp::Rect;
+using SDL2pp::Renderer;
 
 namespace {
 // Cuántas prendas trae cada sheet

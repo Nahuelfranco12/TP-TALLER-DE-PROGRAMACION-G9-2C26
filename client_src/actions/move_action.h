@@ -4,13 +4,13 @@
 #include "../../common_src/game_dtos.h"
 #include "client_action.h"
 
-class MoveAction: public ClientAction {
+class MoveAction : public ClientAction {
 private:
-    MoveDto dto;
+  MoveDto dto;
 
 public:
-    explicit MoveAction(DirectionDto direction);
-    void send_by(ClientProtocol& protocol) const override;
+  explicit MoveAction(DirectionDto direction);
+  void send_by(ClientProtocol &protocol) const override;
 };
 
 #endif

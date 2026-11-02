@@ -1,6 +1,19 @@
 #include "command_factory.h"
 
-std::unique_ptr<Command> CommandFactory::create(int player_id, const MoveDto& dto) {
-    return std::make_unique<MoveCommand>(player_id, dto.direction);
+#include <memory>
+
+#include "./game/commands/join_command.h"
+
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const MoveDto &dto) {
+  return std::make_unique<MoveCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command>
+CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
+  PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),
+                           static_cast<PlayerHairs>(outfit.hair),
+                           static_cast<PlayerShirts>(outfit.tshirt),
+                           static_cast<PlayerPants>(outfit.pants));
+  return std::make_unique<JoinCommand>(player_id, game_outfit);
+}

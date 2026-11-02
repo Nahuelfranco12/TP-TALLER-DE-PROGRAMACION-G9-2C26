@@ -5,9 +5,10 @@
 
 class ChickenEgg : public Item {
 public:
-    ChickenEgg(double price) : Item(price, ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN) {};
+  explicit ChickenEgg(double price)
+      : Item(price, ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN) {}
 
-    bool stacksWith(const Item& other) const override;
+  bool stacksWith(const Item &other) const override;
 };
 
 #endif // CHICKEN_EGG_H_

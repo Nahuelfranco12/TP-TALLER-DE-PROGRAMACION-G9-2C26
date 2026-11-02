@@ -22,7 +22,11 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL_image.h>
 
-using namespace SDL2pp;
+using SDL2pp::Renderer;
+using SDL2pp::SDL;
+using SDL2pp::SDLImage;
+using SDL2pp::SDLTTF;
+using SDL2pp::Window;
 
 namespace {
 const int SOMBREROS_SDL[] = {45, 4, 40, 61, 121, 99};

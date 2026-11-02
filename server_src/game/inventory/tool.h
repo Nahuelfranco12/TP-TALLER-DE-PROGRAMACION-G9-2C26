@@ -5,10 +5,10 @@
 
 class Tool {
 public:
-    AvailableTools toolType;
+  AvailableTools toolType;
 
-    explicit Tool(AvailableTools toolType) : toolType(toolType) {}
-    virtual ~Tool() = default;
+  explicit Tool(AvailableTools toolType) : toolType(toolType) {}
+  virtual ~Tool() = default;
 };
 
 #endif // TOOL_H_
