@@ -49,9 +49,14 @@ int ClientProtocol::receive_player_id() {
   return protocol.receive_u16();
 }
 
-void ClientProtocol::send_create_match(const std::string &name) {
-  protocol.send_u8(OP_CREATE_MATCH);
-  protocol.send_string(name);
+void ClientProtocol::send_create_match(LobbyRequestDto& dto) {
+    protocol.send_u8(OP_CREATE_MATCH);
+    protocol.send_string(dto.match_name);
+    protocol.send_string(dto.player_name);
+    protocol.send_u16(dto.player_outfit.hat);
+    protocol.send_u16(dto.player_outfit.hair);
+    protocol.send_u16(dto.player_outfit.tshirt);
+    protocol.send_u16(dto.player_outfit.pants);
 }
 
 std::string ClientProtocol::receive_created_match() {
@@ -133,10 +138,10 @@ PlayerDto ClientProtocol::receive_player() {
     PlayerDto player;
     player.id = protocol.receive_u16();
 
-    player.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
-    player.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
-    player.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
-    player.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
+    player.outfit.hat = static_cast<PlayerHatsDto>(protocol.receive_u8());
+    player.outfit.hair = static_cast<PlayerHairsDto>(protocol.receive_u8());
+    player.outfit.tshirt = static_cast<PlayerTShirtsDto>(protocol.receive_u8());
+    player.outfit.pants = static_cast<PlayerPantsDto>(protocol.receive_u8());
 
     player.life = protocol.receive_u16();
     player.energy = protocol.receive_u16();

@@ -25,13 +25,13 @@ public:
     int receive_player_id();
     
     SectorStateDto receive_sector_state();
-
+    
     // Protocolo de acciones del jugador
     void send_move_dto(const MoveDto& dto);
     void send_select_tool(const ToolTypeDto& dto);
     
     // Protocolo de menú
-    void send_create_match(const std::string& name);
+    void send_create_match(LobbyRequestDto &dto);
     void send_list_matches();
     void send_join_match(const std::string& code);
     std::string receive_created_match();
