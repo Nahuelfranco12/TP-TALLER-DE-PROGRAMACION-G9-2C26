@@ -42,6 +42,9 @@ public:
   void send_join_result(bool result);
 
   void send_sector_state(const SectorStateDto &state);
+
+  // TODO:
+  void send_world_map_state(const SectorStateDto &farmState, const SectorStateDto &villageState, const SectorStateDto &cavernState);
   void shutdown();
 
   void close();

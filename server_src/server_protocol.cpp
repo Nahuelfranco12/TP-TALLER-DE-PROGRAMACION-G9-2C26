@@ -32,6 +32,11 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   }
 }
 
+// TODO:
+void ServerProtocol::send_world_map_state(const SectorStateDto &farmState, const SectorStateDto &villageState, const SectorStateDto &cavernState) {
+
+}
+
 void ServerProtocol::send_tiles(
     const std::vector<std::vector<TileDto>> &tiles) {
   int columns = tiles.size();

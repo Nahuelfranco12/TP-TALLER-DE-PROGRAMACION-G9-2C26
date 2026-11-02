@@ -80,26 +80,20 @@ int main(int argc, char *argv[]) try {
 	
 	Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
 
-	// Casas y animales
-	Granja granja(renderer);
-
+  // Casas y animales
+  Granja granja(renderer);
 	Caverna caverna(renderer);
 
+  const int TILE = 64;
 	bool en_caverna = false;
-
 	bool viendo_mapa = false;
 
-	SectorStateDto ultimo_estado;
-
-	const int TILE = 64;
-		
-	// Todo el sonido (música, pasos y volúmenes) está en la clase Audio
-	Audio audio;
+  SectorStateDto farm, village, cavern;
+  
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
-
-	Interfaz interfaz(renderer);
+  Interfaz interfaz(renderer);
 
   TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
   long vueltas = 1;

@@ -9,7 +9,17 @@ ServerSender::ServerSender(ServerProtocol &protocol,
 
 void ServerSender::run() {
   try {
+    bool first_run = true;
     while (should_keep_running()) {
+      if (first_run) {
+        std::optional<SectorMapState> farmSectorState = builder.buildMapState(SectorTypeDto::FARM);
+        std::optional<SectorMapState> cavernSectorState = builder.buildMapState(SectorTypeDto::CAVERN);
+        std::optional<SectorMapState> villageSectorState = builder.buildMapState(SectorTypeDto::VILLAGE);
+
+        protocol.send_world_map_state(farmSectorState.value(), cavernSectorState.value(), villageSectorState.value());
+
+        first_run = false;
+      }
       WorldState state = to_send_queue.pop();
       std::optional<SectorStateDto> dto =
           builder.build(state, client_id, nullptr);
