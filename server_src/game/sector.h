@@ -52,9 +52,6 @@ public:
   const Terrain &getTerrain(Position pos) const { return tiles[pos.x][pos.y]; }
 
   SectorState state() const;
-  SectorMapState mapState() const;
-
-    void tick(double deltaTime);
 };
 
 #endif // SECTOR_H_

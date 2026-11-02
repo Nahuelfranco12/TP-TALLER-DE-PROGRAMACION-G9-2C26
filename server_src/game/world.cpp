@@ -89,15 +89,3 @@ WorldState World::state() const {
     state.players.push_back(player->state());
   return state;
 }
-
-SectorMapState World::mapState(IdSector id) const {
-  return sectors.at(id).mapState();
-}
-
-void World::tick(double deltaTime) {
-    for (auto &[id, sector] : this->sectors)
-    {
-        sector.tick(deltaTime);    
-    }
-    
-}
