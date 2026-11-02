@@ -1,3 +1,5 @@
+#include "select_tool_action.h"
+
 SelectToolAction::SelectToolAction(ToolTypeDto tool): tool(tool) {}
 
 void SelectToolAction::send_by(ClientProtocol& protocol) const {

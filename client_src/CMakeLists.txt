@@ -30,6 +30,8 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_customizar_personaje.cpp
     Pantallas/implementaciones/dibujar_personaje.cpp
     actions/move_action.cpp
+    actions/select_tool_action.cpp
+    actions/mine_action.cpp
     PUBLIC
     # .h files
     client.h
@@ -61,6 +63,8 @@ target_sources(taller_client
     Pantallas/headers/servicio_lobby.h
     actions/client_action.h
     actions/move_action.h
+    actions/select_tool_action.h
+    actions/mine_action.h
     caverna.h
     inventario.h
     alrededores.h
