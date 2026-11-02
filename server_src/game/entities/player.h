@@ -46,9 +46,9 @@ public:
   PlayerState state() const;
 
   EntityState entityState() const override {
-    EntityState state = Entity::entityState();
-    state.playerId = id;
-    return state;
+    EntityState entity_state = Entity::entityState();
+    entity_state.playerId = id;
+    return entity_state;
   }
 };
 

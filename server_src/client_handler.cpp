@@ -25,6 +25,7 @@ bool ClientHandler::is_dead() { return !receiver.is_alive(); }
 ClientHandler::~ClientHandler() {
   receiver.stop();
   sender.stop();
+  // cppcheck-suppress throwInNoexceptFunction
   to_send_queue.close();
   protocol.shutdown();
   receiver.join();

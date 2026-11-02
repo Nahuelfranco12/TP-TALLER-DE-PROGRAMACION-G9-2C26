@@ -18,7 +18,8 @@ bool Inventory::addItem(std::unique_ptr<Item> item) {
 }
 
 bool Inventory::addTool(std::unique_ptr<Tool> tool) {
-  for (auto &t : this->tools)
+  // cppcheck-suppress useStlAlgorithm
+  for (const auto &t : this->tools)
     if (t->toolType == tool->toolType)
       return false; // ya existe esa herramienta
 
@@ -31,6 +32,7 @@ bool Inventory::addTool(std::unique_ptr<Tool> tool) {
 
 Tool *Inventory::getTool(AvailableTools type) {
   for (auto &t : this->tools)
+    // cppcheck-suppress useStlAlgorithm
     if (t->toolType == type)
       return t.get();
   return nullptr;

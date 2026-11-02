@@ -12,7 +12,7 @@ public:
   Animal(size_t pos_x, size_t pos_y, AnimalType animalType)
       : Entity(pos_x, pos_y, EntityTypes::ANIMAL), animalType(animalType) {}
 
-  virtual ~Animal() = default;
+  ~Animal() override = default;
 
   AnimalType getAnimalType() const { return animalType; }
 

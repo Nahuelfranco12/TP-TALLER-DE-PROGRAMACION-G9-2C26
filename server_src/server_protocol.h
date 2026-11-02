@@ -14,7 +14,7 @@ private:
   Socket skt;
   Protocol protocol;
 
-  DirectionDto byte_to_direction(uint8_t direction_byte);
+  static DirectionDto byte_to_direction(uint8_t direction_byte);
   void send_tiles(const std::vector<std::vector<TileDto>> &tiles);
   void send_player(const PlayerDto &player);
   void send_inventory(const InventoryDto &inventory);

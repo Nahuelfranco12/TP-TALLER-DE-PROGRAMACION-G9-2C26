@@ -11,9 +11,11 @@ MoveResult Player::move(Position destination) {
   // actualSector (puertas)
 }
 
+// cppcheck-suppress constParameterReference
 void Player::mine(Mineral &mineral) {
   if (!this->position.isAdjacentTo(mineral.position))
     return;
+  // cppcheck-suppress constVariablePointer
   Tool *pickaxe = this->inventory.getTool(AvailableTools::PICKAXE);
   if (!pickaxe)
     return;

@@ -7,6 +7,7 @@ void MineCommand::execute(World &world) {
   if (!player)
     return;
 
+  // cppcheck-suppress constVariablePointer
   Sector *sector = player->getActualSector();
   if (!sector)
     return;

@@ -16,9 +16,10 @@ struct TerrainState {
 };
 
 struct EntityState {
-  EntityTypes type;
+  EntityTypes type{};
   Position position;
-  int playerId;               // INVALID_PLAYER_ID en caso de no ser jugador.
+  int playerId =
+      INVALID_PLAYER_ID;      // INVALID_PLAYER_ID en caso de no ser jugador.
   MineralTypes mineralType{}; // en caso de ser mineral.
   AnimalType animalType{};    // en caso de ser animal.
 
@@ -49,29 +50,29 @@ struct PlayerOutfitState {
 };
 
 struct PlayerState {
-  int id;
+  int id = 0;
   Position position;
-  double life;
-  double energy;
-  int coins;
-  IdSector sector;
+  double life = 0.0;
+  double energy = 0.0;
+  int coins = 0;
+  IdSector sector{};
 
-  PlayerOutfitState outfit;
+  PlayerOutfitState outfit{};
 
   InventoryState inventory;
 };
 
 struct SectorMapState {
-  IdSector id;
-  int width;
-  int height;
+  IdSector id{};
+  int width = 0;
+  int height = 0;
   std::vector<std::vector<TerrainState>> tiles;
 };
 
 struct SectorState {
-  IdSector id;
-  int width;
-  int height;
+  IdSector id{};
+  int width = 0;
+  int height = 0;
   std::vector<EntityState> entities;
 };
 

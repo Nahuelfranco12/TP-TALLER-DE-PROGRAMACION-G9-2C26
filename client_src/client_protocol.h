@@ -13,7 +13,7 @@ class ClientProtocol {
 private:
   Socket skt;
   Protocol protocol;
-  uint8_t direction_to_byte(DirectionDto direction);
+  static uint8_t direction_to_byte(DirectionDto direction);
 
   std::vector<std::vector<TileDto>> receive_tiles();
   PlayerDto receive_player();

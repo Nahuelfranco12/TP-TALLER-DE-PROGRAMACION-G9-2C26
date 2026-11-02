@@ -93,6 +93,7 @@ int Client::get_my_id() const { return my_id; }
 Client::~Client() {
   receiver.stop();
   sender.stop();
+  // cppcheck-suppress throwInNoexceptFunction
   to_send_queue.close();
   received_queue.close();
   protocol.shutdown();

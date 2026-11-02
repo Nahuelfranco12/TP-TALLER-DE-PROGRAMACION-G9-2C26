@@ -8,11 +8,11 @@
 
 class GameDtosBuilder {
 private:
-  ItemTypeDto toDto(const ItemState &itemState);
-  ToolTypeDto toDto(AvailableTools tool);
-  std::optional<EntityTypeDto> toDto(const EntityState &entity);
-  SectorTypeDto toDto(IdSector id);
-  TerrainTypeDto toDto(TerrainType terrain);
+  static ItemTypeDto toDto(const ItemState &itemState);
+  static ToolTypeDto toDto(AvailableTools tool);
+  static std::optional<EntityTypeDto> toDto(const EntityState &entity);
+  static SectorTypeDto toDto(IdSector id);
+  static TerrainTypeDto toDto(TerrainType terrain);
 
 public:
   std::optional<SectorStateDto> build(const WorldState &state, int clientId,

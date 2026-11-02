@@ -119,28 +119,28 @@ struct InventorySlotDto {
 };
 
 struct InventoryDto {
-  size_t ownerId;
+  size_t ownerId = 0;
 
   std::list<InventorySlotDto> slots;
   std::list<ToolTypeDto> tools;
 };
 
 struct PlayerDto {
-  size_t id;
+  size_t id = 0;
 
-  PlayerOutfitDto outfit;
+  PlayerOutfitDto outfit{};
 
-  double life;
-  double energy;
-  size_t coins;
+  double life = 0.0;
+  double energy = 0.0;
+  size_t coins = 0;
 
   std::list<InventoryDto> inventory;
 };
 
 struct SectorStateDto {
-  SectorTypeDto type;
-  size_t width;
-  size_t height;
+  SectorTypeDto type{};
+  size_t width = 0;
+  size_t height = 0;
 
   std::vector<std::vector<TileDto>> sector;
   std::map<GamePositionDto, PlayerDto> players;
@@ -170,7 +170,7 @@ struct LobbyRequestDto {
   // Atributos para Unirse a partida
   std::string code;
   std::string player_name;
-  PlayerOutfitDto player_outfit;
+  PlayerOutfitDto player_outfit{};
 };
 
 struct MatchInfo {

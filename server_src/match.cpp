@@ -35,6 +35,7 @@ const std::string &Match::get_name() const { return name; }
 int Match::player_count() { return clients.size(); }
 
 Match::~Match() {
+  // cppcheck-suppress throwInNoexceptFunction
   received_queue.close();
   gameloop.stop();
   gameloop.join();

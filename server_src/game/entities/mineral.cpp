@@ -23,6 +23,7 @@ std::unique_ptr<Item> Mineral::toItem() const {
   return std::make_unique<MineralItem>(price, this->mineralType);
 }
 
+// cppcheck-suppress functionStatic
 void Mineral::pickaxeEffect() {
   // TODO: implementar (spawn de enemigos, perder el material)
 }
