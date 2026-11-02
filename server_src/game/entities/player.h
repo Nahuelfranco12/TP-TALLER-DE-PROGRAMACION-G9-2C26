@@ -23,7 +23,7 @@ private:
   int coins;
   PlayerOutfit outfit;
 
-  Tool *actualTool;
+  Tool *actualTool = nullptr;
   Inventory inventory;
   Sector *actualSector;
 
@@ -45,7 +45,7 @@ public:
   void mine(Mineral &mineral);
 
   void selectTool(AvailableTools tool);
-  Tool& getSelectedTool();
+  Tool* getSelectedTool();
 
   // getters
   Sector *getActualSector() { return actualSector; }

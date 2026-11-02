@@ -12,10 +12,13 @@ MoveResult Player::move(Position destination) {
 }
 
 void Player::selectTool(AvailableTools tool) {
-  this->actualTool = *this->inventory.getTool(tool);
+  Tool* found = this->inventory.getTool(tool);
+  if (found != nullptr) {
+      this->actualTool = found;
+  }
 }
 
-Tool& Player::getSelectedTool() {
+Tool* Player::getSelectedTool() {
   return this->actualTool;
 }
 
@@ -24,7 +27,7 @@ void Player::mine(Mineral &mineral) {
   if (!this->position.isAdjacentTo(mineral.position))
     return;
   // cppcheck-suppress constVariablePointer
-  if (this->actualTool.toolType != AvailableTools::PICKAXE)
+  if (this->actualTool == nullptr || this->actualTool->toolType != AvailableTools::PICKAXE)
     return;
 
   // TODO: Falta el chequeo de efecto secundario de algunos minerales
@@ -46,6 +49,6 @@ PlayerState Player::state() const {
                      this->actualSector->getId(),
                      PlayerOutfitState{this->outfit.hat, this->outfit.hair,
                                        this->outfit.tshirt, this->outfit.pants},
-                     this->actualTool.toolType,
+                     this->actualTool != nullptr ? this->actualTool->toolType : AvailableTools{},
                      this->inventory.state()};
 }

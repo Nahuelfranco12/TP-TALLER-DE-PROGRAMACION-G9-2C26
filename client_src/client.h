@@ -27,6 +27,7 @@ public:
 
   void send_join();
   void send_move(DirectionDto direction);
+  void send_select_tool(ToolTypeDto tool);
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;
   int get_my_id() const;
