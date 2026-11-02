@@ -11,6 +11,7 @@
 #include "../common_src/constants.h"
 #include "actions/move_action.h"
 #include "actions/select_tool_action.h"
+#include "actions/mine_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),

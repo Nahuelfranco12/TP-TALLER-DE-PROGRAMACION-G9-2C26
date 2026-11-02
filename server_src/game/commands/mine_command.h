@@ -3,7 +3,7 @@
 
 #include "../command.h"
 #include "../position.h"
-#include <game_dtos.h>
+#include "../../../common_src/game_dtos.h"
 
 class MineCommand : public Command {
 private:

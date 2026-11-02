@@ -9,11 +9,9 @@ private:
     ToolTypeDto tool;
 
 public:
-    explicit SelectToolAction(ToolTypeDto tool): tool(tool) {}
+    explicit SelectToolAction(ToolTypeDto tool);
 
-    void send_by(ClientProtocol& protocol) const override {
-        protocol.send_select_tool(tool);
-    }
+    void send_by(ClientProtocol& protocol) const override;
 };
 
 #endif
