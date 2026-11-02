@@ -256,6 +256,7 @@ int main(int argc, char *argv[]) try {
         std::unique_ptr<Personaje> &otro = otros[jugador.id];
         if (!otro) {
           otro = std::make_unique<Personaje>(renderer); // recién llegado
+          otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)], PELOS_SDL[static_cast<int>(jugador.outfit.hair)], PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)], REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
       }
