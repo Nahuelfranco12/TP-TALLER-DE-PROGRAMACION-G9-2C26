@@ -2,7 +2,8 @@
 
 #include <random>
 
-using namespace SDL2pp;
+using SDL2pp::Rect;
+using SDL2pp::Renderer;
 
 namespace {
 const int ESCALA = 4;

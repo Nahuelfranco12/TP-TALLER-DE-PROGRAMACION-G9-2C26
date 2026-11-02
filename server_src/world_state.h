@@ -2,62 +2,64 @@
 #define WORLD_STATE_H_
 
 #include "game/game_constants.h"
-#include "game/terrain.h"
 #include "game/position.h"
+#include "game/terrain.h"
 
-#include <vector>
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 struct TerrainState {
-    TerrainType type;
-    bool transitable;
-    bool arable;
+  TerrainType type;
+  bool transitable;
+  bool arable;
 };
 
 struct EntityState {
-    EntityTypes type;
-    Position position;
-    int playerId; // INVALID_PLAYER_ID en caso de no ser jugador.
-    MineralTypes mineralType{}; // en caso de ser mineral.
-    AnimalType animalType{}; // en caso de ser animal.
+  EntityTypes type{};
+  Position position;
+  int playerId =
+      INVALID_PLAYER_ID;      // INVALID_PLAYER_ID en caso de no ser jugador.
+  MineralTypes mineralType{}; // en caso de ser mineral.
+  AnimalType animalType{};    // en caso de ser animal.
 
-    // TODO: cultivos y npcs
+  // TODO: cultivos y npcs
 };
 
 struct ItemState {
-    ItemType type;
-    int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso contrario
-    int count;
+  ItemType type;
+  int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso
+               // contrario
+  int count;
 };
 
 struct ToolState {
-    AvailableTools type;
+  AvailableTools type;
 };
 
 struct InventoryState {
-    std::vector<ItemState> items;
-    std::vector<ToolState> tools;
+  std::vector<ItemState> items;
+  std::vector<ToolState> tools;
 };
 
 struct PlayerOutfitState {
-    PlayerHats hat;
-    PlayerHairs hairs;
-    PlayerShirts tshirt;
-    PlayerPants pants;
+  PlayerHats hat;
+  PlayerHairs hairs;
+  PlayerShirts tshirt;
+  PlayerPants pants;
 };
 
 struct PlayerState {
-    int id;
-    Position position;
-    double life;
-    double energy;
-    int coins;
-    IdSector sector;
+  int id = 0;
+  Position position;
+  double life = 0.0;
+  double energy = 0.0;
+  int coins = 0;
+  IdSector sector{};
 
-    PlayerOutfitState outfit;
+  PlayerOutfitState outfit{};
 
-    InventoryState inventory;
+  InventoryState inventory;
 };
 
 struct SectorMapState {
@@ -75,10 +77,8 @@ struct SectorState {
 };
 
 struct WorldState {
-    std::vector<SectorState> sectors;
-    std::vector<PlayerState> players;
+  std::vector<SectorState> sectors;
+  std::vector<PlayerState> players;
 };
-
-
 
 #endif // WORLD_STATE_H_

@@ -6,9 +6,10 @@
 
 class MineralItem : public Item {
 public:
-    MineralItem(double price, MineralTypes mineralType) : Item(price, ItemType::MINERAL, mineralType) {}
+  MineralItem(double price, MineralTypes mineralType)
+      : Item(price, ItemType::MINERAL, mineralType) {}
 
-    bool stacksWith(const Item& other) const override;
+  bool stacksWith(const Item &other) const override;
 };
 
 #endif // MINERAL_ITEM_H_

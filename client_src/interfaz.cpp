@@ -2,7 +2,9 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-using namespace SDL2pp;
+using SDL2pp::NullOpt;
+using SDL2pp::Rect;
+using SDL2pp::Renderer;
 
 namespace {
 const SDL2pp::Color BLANCO = {255, 255, 255, 255};

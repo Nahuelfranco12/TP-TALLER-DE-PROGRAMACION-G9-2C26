@@ -5,24 +5,25 @@
 #include "../common_src/thread.h"
 
 #include "./game/command.h"
-#include "server_protocol.h"
-#include "match.h"
-#include "lobby.h"
 #include "command_factory.h"
+#include "lobby.h"
+#include "match.h"
+#include "server_protocol.h"
 
-class ServerReceiver: public Thread {
+class ServerReceiver : public Thread {
 private:
-    ServerProtocol& protocol;
-    Lobby& lobby;
-    Queue<WorldState>& to_send_queue;
-    int client_id;
-    Match* match = nullptr;
-    CommandFactory factory;
+  ServerProtocol &protocol;
+  Lobby &lobby;
+  Queue<WorldState> &to_send_queue;
+  int client_id;
+  Match *match = nullptr;
+  CommandFactory factory;
 
 public:
-    ServerReceiver(ServerProtocol& protocol, Lobby& lobby, Queue<WorldState>& to_send_queue, int client_id);
+  ServerReceiver(ServerProtocol &protocol, Lobby &lobby,
+                 Queue<WorldState> &to_send_queue, int client_id);
 
-    void run() override;
+  void run() override;
 };
 
 #endif

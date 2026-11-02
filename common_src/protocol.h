@@ -8,19 +8,19 @@
 
 class Protocol {
 private:
-    Socket& skt;
+  Socket &skt;
 
 public:
-    explicit Protocol(Socket& skt);
+  explicit Protocol(Socket &skt);
 
-    void send_u8(uint8_t value);
-    void send_u16(uint16_t value);
+  void send_u8(uint8_t value);
+  void send_u16(uint16_t value);
 
-    uint8_t receive_u8();
-    uint16_t receive_u16();
+  uint8_t receive_u8();
+  uint16_t receive_u16();
 
-    std::string receive_string();
-    void send_string(const std::string& str);
+  std::string receive_string();
+  void send_string(const std::string &str);
 };
 
-#endif  // PROTOCOL_H_
+#endif // PROTOCOL_H_

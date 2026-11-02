@@ -4,15 +4,16 @@
 #include <cstddef>
 #include <map>
 #include <memory>
+#include <utility>
 #include <vector>
 
-#include "game_constants.h"
 #include "../world_state.h"
+#include "entities/door.h"
+#include "entities/entity.h"
+#include "game_constants.h"
 #include "move_result.h"
 #include "position.h"
 #include "terrain.h"
-#include "entities/door.h"
-#include "entities/entity.h"
 
 class Sector {
 private:
@@ -24,31 +25,34 @@ private:
   std::map<Position, std::unique_ptr<Door>> doors;
 
 public:
-    Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {}
+  Sector(size_t width, size_t height, IdSector id)
+      : width(width), height(height), id(id),
+        tiles(width, std::vector<Terrain>(
+                         height, Terrain(true, false, TerrainType::GRASS))) {}
 
-    virtual ~Sector() = default;
+  virtual ~Sector() = default;
 
-    MoveResult move(Position origin, Position destine);
-    
-    bool canMoveTo(Position pos) const;
-    bool isEmpty(Position pos) const;
+  MoveResult move(Position origin, Position destine);
 
-    bool addEntity(std::unique_ptr<Entity> entity, Position pos);
-    std::unique_ptr<Entity> removeEntity(Position pos);
+  bool canMoveTo(Position pos) const;
+  bool isEmpty(Position pos) const;
 
-    bool addDoor(std::unique_ptr<Door> door, Position pos);
-    // std::unique_ptr<Door> removeDoor(Position pos);
+  bool addEntity(std::unique_ptr<Entity> entity, Position pos);
+  std::unique_ptr<Entity> removeEntity(Position pos);
 
-    Entity* getEntity(Position pos) const;
-    Position findFreePosition() const;
+  bool addDoor(std::unique_ptr<Door> door, Position pos);
+  // std::unique_ptr<Door> removeDoor(Position pos);
 
-    IdSector getId() const { return id;     }
-    size_t getWidth() const { return width;  }
-    size_t getHeight() const { return height; }
-    const Terrain& getTerrain(Position pos) const { return tiles[pos.x][pos.y]; }
+  Entity *getEntity(Position pos) const;
+  Position findFreePosition() const;
 
-    SectorState state() const;
-    SectorMapState mapState() const;
+  IdSector getId() const { return id; }
+  size_t getWidth() const { return width; }
+  size_t getHeight() const { return height; }
+  const Terrain &getTerrain(Position pos) const { return tiles[pos.x][pos.y]; }
+
+  SectorState state() const;
+  SectorMapState mapState() const;
 };
 
 #endif // SECTOR_H_

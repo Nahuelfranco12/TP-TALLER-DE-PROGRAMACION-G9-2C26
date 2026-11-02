@@ -6,12 +6,12 @@
 
 class LeaveCommand : public Command {
 private:
-    int playerId;
+  int playerId;
 
 public:
-    LeaveCommand(int playerId) : playerId(playerId) {}
+  explicit LeaveCommand(int playerId) : playerId(playerId) {}
 
-    void execute(World& world) override;
+  void execute(World &world) override;
 };
 
 #endif // LEAVE_COMMAND_H_

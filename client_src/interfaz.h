@@ -17,8 +17,8 @@ private:
   SDL2pp::Rect boton_menos;
   SDL2pp::Rect boton_mas;
 
-  void dibujar_boton(SDL2pp::Renderer &renderer, const SDL2pp::Rect &boton,
-                     SDL2pp::Texture &texto);
+  static void dibujar_boton(SDL2pp::Renderer &renderer,
+                            const SDL2pp::Rect &boton, SDL2pp::Texture &texto);
 
 public:
   explicit Interfaz(SDL2pp::Renderer &renderer);

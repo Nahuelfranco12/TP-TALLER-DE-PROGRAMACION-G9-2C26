@@ -5,13 +5,13 @@
 #include <map>
 #include <string>
 
-#include "server_sender.h"
-#include "server_receiver.h"
-#include "client_queues.h"
-#include "lobby.h"
 #include "../common_src/queue.h"
 #include "../common_src/socket.h"
 #include "../common_src/thread.h"
+#include "client_queues.h"
+#include "lobby.h"
+#include "server_receiver.h"
+#include "server_sender.h"
 
 #include "server_protocol.h"
 
@@ -19,23 +19,24 @@
 
 class ClientHandler {
 private:
-    int client_id;
-    ServerProtocol protocol;
-    Queue<WorldState> to_send_queue;
-    Lobby& lobby;
-    ServerReceiver receiver;
-    ServerSender sender;
+  int client_id;
+  ServerProtocol protocol;
+  Queue<WorldState> to_send_queue;
+  Lobby &lobby;
+  ServerReceiver receiver;
+  ServerSender sender;
+
 public:
-    ClientHandler(Socket&& skt, int client_id, Lobby& lobby);
+  ClientHandler(Socket &&skt, int client_id, Lobby &lobby);
 
-    void start();
+  void start();
 
-    bool is_dead();
+  bool is_dead();
 
-    ClientHandler(const ClientHandler&) = delete;
-    ClientHandler& operator=(const ClientHandler&) = delete;
+  ClientHandler(const ClientHandler &) = delete;
+  ClientHandler &operator=(const ClientHandler &) = delete;
 
-    ~ClientHandler();
+  ~ClientHandler();
 };
 
-#endif  // CLIENT_HANDLER_H_
+#endif // CLIENT_HANDLER_H_

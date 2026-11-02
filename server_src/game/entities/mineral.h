@@ -4,31 +4,34 @@
 #include <memory>
 
 #include "../game_constants.h"
-#include "entity.h"
 #include "../inventory/item.h"
+#include "entity.h"
 
 class Mineral : public Entity {
 private:
-    MineralTypes mineralType;
+  MineralTypes mineralType;
 
-    double spawnFrequency;
-    MineralPickaxeTime pickaxeTime;
+  double spawnFrequency;
+  MineralPickaxeTime pickaxeTime;
 
 public:
-    Mineral(size_t pos_x, size_t pos_y, MineralTypes mineralType, double spawnFrequency, MineralPickaxeTime pickaxeTime) : Entity(pos_x, pos_y, EntityTypes::MINERAL), mineralType(mineralType), spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
+  Mineral(size_t pos_x, size_t pos_y, MineralTypes mineralType,
+          double spawnFrequency, MineralPickaxeTime pickaxeTime)
+      : Entity(pos_x, pos_y, EntityTypes::MINERAL), mineralType(mineralType),
+        spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
 
-    MineralTypes getMineralType() const { return mineralType; }
-    double getSpawnFrequency() const { return spawnFrequency; }
-    MineralPickaxeTime getPickaxeTime() const { return pickaxeTime; }
+  MineralTypes getMineralType() const { return mineralType; }
+  double getSpawnFrequency() const { return spawnFrequency; }
+  MineralPickaxeTime getPickaxeTime() const { return pickaxeTime; }
 
-    std::unique_ptr<Item> toItem() const;
-    void pickaxeEffect();
+  std::unique_ptr<Item> toItem() const;
+  void pickaxeEffect();
 
-    EntityState entityState() const override {
-        EntityState state = Entity::entityState();
-        state.mineralType = this->mineralType;
-        return state;
-    }
+  EntityState entityState() const override {
+    EntityState state = Entity::entityState();
+    state.mineralType = this->mineralType;
+    return state;
+  }
 };
 
 #endif // MINERAL_H_

@@ -2,13 +2,14 @@
 #define GAMELOOP_H
 
 #include <map>
+#include <memory>
 
 #include "../common_src/game_dtos.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 
-#include "./game/world.h"
 #include "./game/command.h"
+#include "./game/world.h"
 
 #include "client_queues.h"
 
@@ -19,19 +20,20 @@
 
 #define TICKS_PER_SECOND 30
 
+class Gameloop : public Thread {
+private:
+  Queue<std::unique_ptr<Command>> &received_queue;
+  ClientQueues &clients;
+  World world;
 
-class Gameloop: public Thread {
-    private:
-        Queue<std::unique_ptr<Command>>& received_queue;
-        ClientQueues& clients;
-        World world;
+  WorldState make_world_state() const;
+  void process_commands();
 
-        WorldState make_world_state() const;
-        void process_commands();
-    public:
-        Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed);
+public:
+  Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
+           ClientQueues &clients, DaySpeed worldSpeed);
 
-        void run() override;
+  void run() override;
 };
 
 #endif
