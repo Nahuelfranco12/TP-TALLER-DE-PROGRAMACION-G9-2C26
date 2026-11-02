@@ -33,7 +33,7 @@ public:
     void send_select_tool(const ToolTypeDto& dto);
     
     // Protocolo de menú
-    void send_create_match(LobbyRequestDto &dto);
+    void send_create_match(const std::string& name);
     void send_list_matches();
     void send_join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit);
     std::string receive_created_match();

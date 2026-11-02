@@ -49,11 +49,9 @@ int ClientProtocol::receive_player_id() {
   return protocol.receive_u16();
 }
 
-void ClientProtocol::send_create_match(LobbyRequestDto& dto) {
-    protocol.send_u8(OP_CREATE_MATCH);
-    protocol.send_string(dto.match_name);
-    protocol.send_string(dto.player_name);
-    send_outfit(dto.player_outfit);
+void ClientProtocol::send_create_match(const std::string &name) {
+  protocol.send_u8(OP_CREATE_MATCH);
+  protocol.send_string(name);
 }
 
 std::string ClientProtocol::receive_created_match() {
