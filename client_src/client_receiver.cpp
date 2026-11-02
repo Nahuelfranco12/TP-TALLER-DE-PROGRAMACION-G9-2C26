@@ -20,6 +20,8 @@ void ClientReceiver::run() {
 
         received_queue.try_push(farmState);
         received_queue.try_push(cavernState);
+
+        first_run = false;
       }
       SectorStateDto state = protocol.receive_sector_state();
       received_queue.try_push(state);
