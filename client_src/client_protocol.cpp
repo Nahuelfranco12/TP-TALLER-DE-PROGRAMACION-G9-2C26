@@ -53,10 +53,7 @@ void ClientProtocol::send_create_match(LobbyRequestDto& dto) {
     protocol.send_u8(OP_CREATE_MATCH);
     protocol.send_string(dto.match_name);
     protocol.send_string(dto.player_name);
-    protocol.send_u16(dto.player_outfit.hat);
-    protocol.send_u16(dto.player_outfit.hair);
-    protocol.send_u16(dto.player_outfit.tshirt);
-    protocol.send_u16(dto.player_outfit.pants);
+    send_outfit(dto.player_outfit);
 }
 
 std::string ClientProtocol::receive_created_match() {
