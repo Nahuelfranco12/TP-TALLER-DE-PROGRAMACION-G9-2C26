@@ -64,15 +64,15 @@ struct PlayerState {
 
 struct SectorMapState {
   IdSector id{};
-  int width = 0;
-  int height = 0;
+  size_t width = 0;
+  size_t height = 0;
   std::vector<std::vector<TerrainState>> tiles;
 };
 
 struct SectorState {
   IdSector id{};
-  int width = 0;
-  int height = 0;
+  size_t width = 0;
+  size_t height = 0;
   std::vector<EntityState> entities;
 };
 
