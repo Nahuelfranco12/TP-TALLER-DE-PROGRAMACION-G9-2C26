@@ -16,9 +16,8 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define DIR_LEFT 2
 #define DIR_RIGHT 3
 
-
-#define OP_MOVE  1
-#define OP_WORLD_STATE 2 
+#define OP_MOVE 1
+#define OP_WORLD_STATE 2
 #define OP_PLAYER_ID 3
 #define OP_CREATE_MATCH 4
 #define OP_LIST_MATCHES 5
@@ -28,4 +27,4 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1
 
-#endif  // CONSTANTS_H_
+#endif // CONSTANTS_H_

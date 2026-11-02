@@ -10,12 +10,12 @@
 #include "acceptor.h"
 #include "match.h"
 
-Server::Server(const char* servname):
-        acceptor(servname,lobby) {}
+Server::Server(const char *servname) : acceptor(servname, lobby) {}
 
 void Server::run() {
-    acceptor.start();
+  acceptor.start();
 
-    char character;
-    while (std::cin >> character && character != END_OP) {}
+  char character;
+  while (std::cin >> character && character != END_OP) {
+  }
 }

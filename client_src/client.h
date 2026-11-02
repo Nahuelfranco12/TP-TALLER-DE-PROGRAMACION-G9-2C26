@@ -1,8 +1,9 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "../common_src/constants.h"
 #include "../common_src/game_dtos.h"
@@ -13,27 +14,28 @@
 
 class Client {
 private:
-    ClientProtocol protocol;
-    int my_id;
-    Queue<SectorStateDto> received_queue;
-    Queue<std::unique_ptr<ClientAction>> to_send_queue;
-    ClientReceiver receiver;
-    ClientSender sender;
-    bool in_game = false;
+  ClientProtocol protocol;
+  int my_id;
+  Queue<SectorStateDto> received_queue;
+  Queue<std::unique_ptr<ClientAction>> to_send_queue;
+  ClientReceiver receiver;
+  ClientSender sender;
+  bool in_game = false;
 
 public:
   explicit Client(const char *hostname, const char *servname);
 
-    void send_join();
-    void send_move(DirectionDto direction);
-    bool try_get_latest_state(SectorStateDto& state);
-    bool is_connected() const;
-    int get_my_id() const;
+  void send_join();
+  void send_move(DirectionDto direction);
+  bool try_get_latest_state(SectorStateDto &state);
+  bool is_connected() const;
+  int get_my_id() const;
 
-    //Comandos para QT
-    std::string create_match(const std::string& name);
-    std::vector<MatchInfoDto> list_matches();
-    bool join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit);
+  // Comandos para QT
+  std::string create_match(const std::string &name);
+  std::vector<MatchInfoDto> list_matches();
+  bool join_match(const std::string &code, const std::string &player_name,
+                  const PlayerOutfitDto &outfit);
 
   void run();
 

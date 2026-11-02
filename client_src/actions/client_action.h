@@ -5,8 +5,8 @@
 
 class ClientAction {
 public:
-    virtual void send_by(ClientProtocol& protocol) const = 0;
-    virtual ~ClientAction() = default;
+  virtual void send_by(ClientProtocol &protocol) const = 0;
+  virtual ~ClientAction() = default;
 };
 
 #endif

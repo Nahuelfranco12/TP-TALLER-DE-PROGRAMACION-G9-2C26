@@ -34,7 +34,7 @@ private:
 
 public:
   // Cargo las texturas
-  Personaje(SDL2pp::Renderer &renderer);
+  explicit Personaje(SDL2pp::Renderer &renderer);
 
   // POne al personaje donde dice el servidor (true si se movió)
   bool aplicar(int nuevo_x, int nuevo_y);

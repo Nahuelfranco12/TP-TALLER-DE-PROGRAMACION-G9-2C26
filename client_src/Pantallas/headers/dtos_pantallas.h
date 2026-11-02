@@ -1,13 +1,13 @@
 #ifndef DTOS_PANTALLAS_H
 #define DTOS_PANTALLAS_H
 
-#include <QString>
 #include <QPixmap>
+#include <QString>
 
 enum class ModoPartida { Ninguno, Nueva, Unirse, Retomar };
 
-struct Apariencia{
-	int gorro = 0;
+struct Apariencia {
+  int gorro = 0;
   int pelo = 0;
   int pantalon = 0;
   int remera = 0;
@@ -37,9 +37,9 @@ struct DatosTarjeta {
 };
 
 struct ResultadoLobby {
-    bool ok = false;
-    QString codigoPartida;
-    QString mensajeError;
+  bool ok = false;
+  QString codigoPartida;
+  QString mensajeError;
 };
 
 struct MundoMock {

@@ -18,18 +18,12 @@ enum class AnimalType { COW, CHICKEN };
 
 enum class DaySpeed { SLOW, MEDIUM, FAST };
 
-enum class ItemType {
-    MINERAL,
-    SEED,
-    DECORATION_PRODUCT,
-    CROP,
-    ANIMAL_PRODUCT
-};
+enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT };
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
-enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH  };
+enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
 
