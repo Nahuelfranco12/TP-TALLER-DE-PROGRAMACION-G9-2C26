@@ -61,17 +61,17 @@ struct PlayerState {
 };
 
 struct SectorMapState {
-    IdSector id;
-    int width;
-    int height;
-    std::vector<std::vector<TerrainState>> tiles;
+  IdSector id{};
+  size_t width = 0;
+  size_t height = 0;
+  std::vector<std::vector<TerrainState>> tiles;
 };
 
 struct SectorState {
-    IdSector id;
-    int width;
-    int height;
-    std::vector<EntityState> entities;
+  IdSector id{};
+  size_t width = 0;
+  size_t height = 0;
+  std::vector<EntityState> entities;
 };
 
 struct WorldState {

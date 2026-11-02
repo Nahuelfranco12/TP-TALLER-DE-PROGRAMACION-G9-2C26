@@ -2,11 +2,11 @@
 #include <chrono>
 #include <thread>
 
-
-Gameloop::Gameloop(Queue<std::unique_ptr<Command>>& received_queue, ClientQueues& clients, DaySpeed worldSpeed):
-    received_queue(received_queue), clients(clients), world(worldSpeed) {
-        // TODO: revisar, esta hardcodeado a un unico sector
-        this->world.addSector(IdSector::FARM);
+Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
+                   ClientQueues &clients, DaySpeed worldSpeed)
+    : received_queue(received_queue), clients(clients), world(worldSpeed) {
+  // TODO: revisar, esta hardcodeado a un unico sector
+  this->world.addSector(IdSector::FARM);
 }
 
 

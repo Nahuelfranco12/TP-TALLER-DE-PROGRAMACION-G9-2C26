@@ -5,10 +5,10 @@
 
 class Position {
 public:
-    int x;
-    int y;
+  size_t x;
+  size_t y;
 
-    Position(int x, int y) : x(x), y(y) {};
+  Position(size_t x, size_t y) : x(x), y(y) {}
 
     bool operator<(const Position& other) const {
         if (x != other.x) 
@@ -20,11 +20,11 @@ public:
         return x == other.x && y == other.y;
     }
 
-    bool isAdjacentTo(const Position& other) const {
-        int dx = (x > other.x) ? x - other.x : other.x - x;
-        int dy = (y > other.y) ? y - other.y : other.y - y;
-        return (dx + dy) == 1;
-    }    
+  bool isAdjacentTo(const Position &other) const {
+    size_t dx = (x > other.x) ? x - other.x : other.x - x;
+    size_t dy = (y > other.y) ? y - other.y : other.y - y;
+    return (dx + dy) == 1;
+  }
 };
 
 #endif // POSITION_H_

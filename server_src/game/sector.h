@@ -16,12 +16,12 @@
 
 class Sector {
 private:
-    int width;
-    int height;
-    IdSector id;
-    std::vector<std::vector<Terrain>> tiles;
-    std::map<Position, std::unique_ptr<Entity>> entities;
-    std::map<Position, std::unique_ptr<Door>> doors;
+  size_t width;
+  size_t height;
+  IdSector id;
+  std::vector<std::vector<Terrain>> tiles;
+  std::map<Position, std::unique_ptr<Entity>> entities;
+  std::map<Position, std::unique_ptr<Door>> doors;
 
 public:
     Sector(size_t width, size_t height, IdSector id) : width(width), height(height), id(id), tiles(width, std::vector<Terrain>(height, Terrain(true, false, TerrainType::GRASS))) {}

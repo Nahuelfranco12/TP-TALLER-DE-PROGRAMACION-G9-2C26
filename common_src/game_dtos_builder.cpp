@@ -140,13 +140,13 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState& state, in
         }
     }
 
-    if (map) {
-        sectorDto.sector.assign(map->width, std::vector<TileDto>(map->height));
-        for (int x = 0; x < map->width; ++x)
-            for (int y = 0; y < map->height; ++y) {
-                const TerrainState& t = map->tiles[x][y];
-                sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
-            }
-    }
-    return sectorDto;
+  if (map) {
+    sectorDto.sector.assign(map->width, std::vector<TileDto>(map->height));
+    for (size_t x = 0; x < map->width; ++x)
+      for (size_t y = 0; y < map->height; ++y) {
+        const TerrainState &t = map->tiles[x][y];
+        sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
+      }
+  }
+  return sectorDto;
 }
