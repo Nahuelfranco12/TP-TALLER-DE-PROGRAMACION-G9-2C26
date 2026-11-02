@@ -78,6 +78,10 @@ void Client::send_select_tool(ToolTypeDto tool) {
     to_send_queue.try_push(std::make_unique<SelectToolAction>(tool));
 }
 
+void Client::send_mine(DirectionDto direction) {
+  to_send_queue.try_push(std::make_unique<MineAction>(direction));
+}
+
 bool Client::try_get_latest_state(SectorStateDto &state) {
   bool has_been_received = false;
   SectorStateDto next_state;
