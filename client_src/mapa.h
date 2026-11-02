@@ -10,17 +10,17 @@ enum TipoMapa {MAPA_GRANJA, MAPA_CAVERNA};
 
 class Mapa {
 private:
-    SDL2pp::Texture suelo;
-    std::vector<std::string> filas;
-    char borde;
+  SDL2pp::Texture suelo;
+  std::vector<std::string> filas;
+  char borde;
 
-    TipoMapa tipo;
+  TipoMapa tipo;
 
-    std::vector<std::string> pasto_afuera;
-    int margen;
+  std::vector<std::string> pasto_afuera;
+  int margen;
 
-    void generar_granja(int ancho, int alto, unsigned int semilla);
-    void generar_caverna(int ancho, int alto, unsigned int semilla);
+  void generar_granja(int ancho, int alto, unsigned int semilla);
+  void generar_caverna(int ancho, int alto, unsigned int semilla);
 
   char tile_en(int x, int y) const;
 

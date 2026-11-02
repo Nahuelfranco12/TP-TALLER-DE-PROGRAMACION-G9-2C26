@@ -11,6 +11,14 @@ MoveResult Player::move(Position destination) {
   // actualSector (puertas)
 }
 
+void Player::selectTool(AvailableTools tool) {
+  this->actualTool = *this->inventory.getTool(tool);
+}
+
+Tool& Player::getSelectedTool() {
+  return this->actualTool;
+}
+
 // cppcheck-suppress constParameterReference
 void Player::mine(Mineral &mineral) {
   if (!this->position.isAdjacentTo(mineral.position))

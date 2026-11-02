@@ -23,6 +23,7 @@ private:
   int coins;
   PlayerOutfit outfit;
 
+  Tool& actualTool;
   Inventory inventory;
   Sector *actualSector;
 
@@ -36,6 +37,10 @@ public:
   MoveResult move(Position destination);
   void mine(Mineral &mineral);
 
+  void selectTool(AvailableTools tool);
+  Tool& getSelectedTool();
+
+  // getters
   Sector *getActualSector() { return actualSector; }
   void setActualSector(Sector *s) { actualSector = s; }
   double getLife() const { return life; }
@@ -43,8 +48,8 @@ public:
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
 
+  // state para el serializar el estado del mundo
   PlayerState state() const;
-
   EntityState entityState() const override {
     EntityState entity_state = Entity::entityState();
     entity_state.playerId = id;
