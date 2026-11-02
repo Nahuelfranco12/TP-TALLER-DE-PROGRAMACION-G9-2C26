@@ -43,6 +43,11 @@ void ClientProtocol::send_select_tool(const ToolTypeDto &dto) {
   protocol.send_u8(static_cast<uint8_t>(dto));
 }
 
+void ClientProtocol::send_mine(const MineDto& dto) {
+  protocol.send_u8(OP_MINE);
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
