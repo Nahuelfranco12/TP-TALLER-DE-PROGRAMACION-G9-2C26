@@ -23,8 +23,6 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     switch (datos.modo) {
     case ModoPartida::Nueva:
       codigo = client.create_match(datos.nombrePartida.toStdString());
-      PlayerOutfitDto outfit{static_cast<PlayerHatsDto>(datos.personaje.ropa.gorro), static_cast<PlayerHairsDto>(datos.personaje.ropa.pelo), static_cast<PlayerTShirtsDto>(datos.personaje.ropa.remera), static_cast<PlayerPantsDto>(datos.personaje.ropa.pantalon)};
-      client.join_match(codigo, datos.personaje.nombre.toStdString(), outfit);
       break;
     case ModoPartida::Unirse:
       codigo = datos.codigoUnirsePartida.toStdString();
@@ -33,8 +31,8 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     case ModoPartida::Ninguno:
       return ResultadoLobby{false, "", ERROR_NO_DISPONIBLE};
     }
-
-    if (!client.join_match(codigo))
+    PlayerOutfitDto outfit{static_cast<PlayerHatsDto>(datos.personaje.ropa.gorro), static_cast<PlayerHairsDto>(datos.personaje.ropa.pelo), static_cast<PlayerTShirtsDto>(datos.personaje.ropa.remera), static_cast<PlayerPantsDto>(datos.personaje.ropa.pantalon)};
+    if (!client.join_match(codigo, datos.personaje.nombre.toStdString(), outfit))
       return ResultadoLobby{false, "", ERROR_CODIGO};
 
     enPartida = true;
