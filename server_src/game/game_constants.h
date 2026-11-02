@@ -16,6 +16,8 @@ enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
 
 enum class AnimalType { COW, CHICKEN };
 
+enum class DaySpeed { SLOW, MEDIUM, FAST };
+
 enum class ItemType {
     MINERAL,
     SEED,

@@ -13,6 +13,6 @@ public:
     PlayerOutfit(PlayerHats hat, PlayerHairs hair, PlayerShirts tshirt, PlayerPants pants) : 
         hat(hat), hair(hair), tshirt(tshirt), pants(pants)
         {};
-}
+};
 
 #endif // PLAYER_OUTFIT_H_

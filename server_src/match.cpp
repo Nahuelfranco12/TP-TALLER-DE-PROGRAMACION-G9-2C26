@@ -1,17 +1,18 @@
 #include "match.h"
 
 #include "../common_src/constants.h"
+#include "game/game_constants.h"
 
 Match::Match(const std::string& name):
     name(name),
     received_queue(QUEUE_MAX_SIZE),
-    gameloop(received_queue, clients) {
+    gameloop(received_queue, clients, DaySpeed::MEDIUM) {
         gameloop.start();
     }
 
 void Match::join(int client_id, Queue<WorldState>& to_send_queue) {
     clients.add_client(client_id, to_send_queue);
-    received_queue.push(std::make_unique<JoinCommand>(client_id));
+    received_queue.push(std::make_unique<JoinCommand>(client_id, PlayerOutfit{PlayerHats::HAT_DEFAULT, PlayerHairs::BLONDE, PlayerShirts::TSHIRT_DEFAULT, PlayerPants::PANTS_DEFAULT}));
 }
 
 void Match::leave(int client_id) {
@@ -23,7 +24,7 @@ void Match::leave(int client_id) {
 }
 
 void Match::push_command(std::unique_ptr<Command> cmd) {
-    received_queue.push(cmd);
+    received_queue.push(std::move(cmd));
 }
 
 const std::string& Match::get_name() const {

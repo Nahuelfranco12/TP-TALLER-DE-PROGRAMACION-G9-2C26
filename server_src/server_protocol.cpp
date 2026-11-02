@@ -81,7 +81,7 @@ void ServerProtocol::send_inventory(const InventoryDto& inventory) {
     }
 }
 
-void send_position(const GamePositionDto& position) {
+void ServerProtocol::send_position(const GamePositionDto& position) {
     protocol.send_u16(static_cast<uint16_t>(position.x));
     protocol.send_u16(static_cast<uint16_t>(position.y));
 }

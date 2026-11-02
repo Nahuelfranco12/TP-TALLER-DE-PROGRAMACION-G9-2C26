@@ -1,9 +1,9 @@
 #ifndef WORLD_STATE_H_
 #define WORLD_STATE_H_
 
-#include "game_constants.h"
-#include "terrain.h"
-#include "position.h"
+#include "game/game_constants.h"
+#include "game/terrain.h"
+#include "game/position.h"
 
 #include <vector>
 #include <cstddef>
@@ -19,8 +19,8 @@ struct EntityState {
     EntityTypes type;
     Position position;
     int playerId; // INVALID_PLAYER_ID en caso de no ser jugador.
-    MineralTypes mineralType; // en caso de ser mineral.
-    AnimalType animalType; // en caso de ser animal.
+    MineralTypes mineralType{}; // en caso de ser mineral.
+    AnimalType animalType{}; // en caso de ser animal.
 
     // TODO: cultivos y npcs
 };
@@ -78,5 +78,7 @@ struct WorldState {
     std::vector<SectorState> sectors;
     std::vector<PlayerState> players;
 };
+
+
 
 #endif // WORLD_STATE_H_

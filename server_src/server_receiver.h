@@ -8,6 +8,7 @@
 #include "server_protocol.h"
 #include "match.h"
 #include "lobby.h"
+#include "command_factory.h"
 
 class ServerReceiver: public Thread {
 private:

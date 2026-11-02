@@ -6,6 +6,8 @@
 #include "../position.h"
 #include "entity.h"
 
+class Sector;
+
 class Door {
 private:
     Position position;

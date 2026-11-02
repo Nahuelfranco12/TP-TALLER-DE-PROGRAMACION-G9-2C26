@@ -9,7 +9,7 @@ private:
 public:
     Position position;
 
-    Entity(size_t pos_x, size_t pos_y, EntityTypes type) : position(pos_x, pos_y), entityType(entityType) {};
+    Entity(size_t pos_x, size_t pos_y, EntityTypes type) : entityType(type), position(pos_x, pos_y) {};
     virtual ~Entity() = default;
 
     void setPosition(Position newPosition) { this->position = newPosition; }

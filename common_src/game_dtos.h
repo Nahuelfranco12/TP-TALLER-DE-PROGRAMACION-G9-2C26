@@ -76,7 +76,7 @@ struct TileDto {
 };
 
 struct InventorySlotDto {
-    size_t count;
+    int count;
     ItemTypeDto item;
 };
 

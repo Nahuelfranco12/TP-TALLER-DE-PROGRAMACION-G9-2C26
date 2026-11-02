@@ -7,6 +7,7 @@ target_sources(taller_common
     resolver.cpp
     resolvererror.cpp
     socket.cpp
+    game_dtos_builder.cpp
     PUBLIC
     # .h files
     foo.h
@@ -19,5 +20,6 @@ target_sources(taller_common
     thread.h
     constants.h
     game_dtos.h
+    game_dtos_builder.h
     )
     
