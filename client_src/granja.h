@@ -45,11 +45,11 @@ private:
   long vueltas;
 
   void dibujar_casa(SDL2pp::Renderer &renderer, const Casa &casa, int camara_x,
-                    int camara_y);
+                    int camara_y, int lado);
   void dibujar_cultivo(SDL2pp::Renderer &renderer, const Cultivo &cultivo,
-                       int camara_x, int camara_y);
+                       int camara_x, int camara_y, int lado);
   void dibujar_animal(SDL2pp::Renderer &renderer, const Animal &animal,
-                      int camara_x, int camara_y);
+                      int camara_x, int camara_y, int lado);
 
 public:
   explicit Granja(SDL2pp::Renderer &renderer);

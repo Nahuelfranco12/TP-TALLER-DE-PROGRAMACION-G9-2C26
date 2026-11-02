@@ -66,7 +66,7 @@ Granja::Granja(Renderer &renderer)
 void Granja::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
 void Granja::dibujar_casa(Renderer &renderer, const Casa &casa, int camara_x,
-                          int camara_y) {
+                          int camara_y, int lado) {
   const SDL_Rect &modelo = MODELOS_CASAS[casa.modelo];
   Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
 

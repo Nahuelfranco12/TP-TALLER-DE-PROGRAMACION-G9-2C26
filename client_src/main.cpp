@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) try {
 
 	bool viendo_mapa = false;
 
-	WorldState ultimo_estado;
+	SectorStateDto ultimo_estado;
 
   const int TILE = 64;
 
@@ -244,12 +244,12 @@ int main(int argc, char *argv[]) try {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
 
-						int x = personaje.obtener_tile_x();
-						int y = personaje.obtener_tile_y();
-						if (!en_caverna && granja.es_entrada_mina(x, y)) {
+						int tile_x = personaje.obtener_tile_x();
+						int tile_y = personaje.obtener_tile_y();
+						if (!en_caverna && granja.es_entrada_mina(tile_x, tile_y)) {
 							en_caverna = true;
 							audio.poner_musica_caverna();
-						} else if (en_caverna && mapa_caverna.es_escalera(x, y)) {
+						} else if (en_caverna && mapa_caverna.es_escalera(tile_x, tile_y)) {
 							en_caverna = false;
 							audio.poner_musica_granja();
 						}
@@ -287,8 +287,6 @@ int main(int argc, char *argv[]) try {
     int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
     renderer.Clear();
-    mapa.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                 window.GetHeight());
 
 		if (en_caverna) {
 			mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
@@ -330,13 +328,13 @@ int main(int argc, char *argv[]) try {
 			caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
 
 			// Figurita de cada jugador
-			for (const PlayerPosition& jugador : ultimo_estado.players) {
-				int origen_x = origen_granja_x;
-				if (jugador.id == client.get_my_id() && en_caverna) {
-					origen_x = origen_caverna_x;
-				}
-				personaje.dibujar_quieto(renderer, jugador.x, jugador.y, -origen_x, -origen_y, lado);
-			}
+			for (const auto &[posicion, jugador] : ultimo_estado.players) {
+          int origen_x = origen_granja_x;
+          if (static_cast<int>(jugador.id) == client.get_my_id() && en_caverna) {
+              origen_x = origen_caverna_x;
+          }
+          personaje.dibujar_quieto(renderer, posicion.x, posicion.y, -origen_x, -origen_y, lado);
+      }
 		}
 
     interfaz.dibujar(renderer, audio);

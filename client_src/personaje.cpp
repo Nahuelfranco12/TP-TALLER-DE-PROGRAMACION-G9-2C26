@@ -150,24 +150,11 @@ void Personaje::dibujar(Renderer& renderer, int camara_x, int camara_y) {
 		long paso = (vueltas_caminando / VUELTAS_POR_CUADRO) % 4;
 		columna = PASOS_ANIMACION[paso];
 	}
-// Dibuja todas las capas del granjero, una arriba de la otra
-void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
-  // ¿Qué cuadro de la animación toca?
-  int columna = 0;
-  if (vueltas_restantes_paso > 0) {
-    long paso = (vueltas_caminando / VUELTAS_POR_CUADRO) % 4;
-    columna = PASOS_ANIMACION[paso];
-  }
 
 	int rebote = 0;
 	if (columna != 0) {
 		rebote = 1;
 	}
-  // Saber si dibujarlo dado vuelta
-  bool espejo = false;
-  if (mirando == IZQUIERDA) {
-    espejo = true;
-  }
 
 	int fila_cuerpo = mirando;
 	if (mirando == IZQUIERDA) {
@@ -200,34 +187,9 @@ void Personaje::dibujar_capas(Renderer& renderer, int x, int y, int lado, int co
 		fila = DERECHA;
 		flip = SDL_FLIP_HORIZONTAL;
 	}
-  // ¿Qué fila dibujar?
-  int fila;
-  if (mirando == IZQUIERDA) {
-    fila = DERECHA;
-  } else {
-    fila = mirando;
-  }
-
-  // ¿Le pongo espejo?
-  int flip;
-  if (espejo) {
-    flip = SDL_FLIP_HORIZONTAL;
-  } else {
-    flip = SDL_FLIP_NONE;
-  }
-
-  int x = tile_x * TILE - camara_x;
-  int y = tile_y * TILE - TILE - camara_y;
 
 	Rect destino(x, y, 16 * lado / 16, 32 * lado / 16);
 	int desplazamiento = rebote * lado / 16;
-  Rect destino(x, y, 16 * 4, 32 * 4);
-
-  // Rebote: al caminar el cuerpo baja y la ropa baja con él
-  int rebote = 0;
-  if (columna != 0) {
-    rebote = 1 * 4;
-  }
 
   // Cuerpo
   Rect origen_cuerpo(columna * 16, fila_cuerpo * 32, 16, 32);
@@ -250,17 +212,6 @@ void Personaje::dibujar_capas(Renderer& renderer, int x, int y, int lado, int co
 	Rect origen_remera((remera % 16) * 8, (remera / 16) * 32 + fila_remera, 8, 8);
 	Rect destino_remera(x + 4 * lado / 16, y + 15 * lado / 16 + desplazamiento, 8 * lado / 16, 8 * lado / 16);
 	renderer.Copy(remeras, origen_remera, destino_remera);
-  // Remera
-  int fila_remera = 0; // abajo
-  if (mirando == DERECHA)
-    fila_remera = 8;
-  if (mirando == IZQUIERDA)
-    fila_remera = 16;
-  if (mirando == ARRIBA)
-    fila_remera = 24;
-  Rect origen_remera((remera % 16) * 8, (remera / 16) * 32 + fila_remera, 8, 8);
-  Rect destino_remera(x + 4 * 4, y + 15 * 4 + rebote, 8 * 4, 8 * 4);
-  renderer.Copy(remeras, origen_remera, destino_remera);
 
   // Brazos
   Rect origen_brazos(96 + columna * 16, fila_cuerpo * 32, 16, 32);
@@ -286,19 +237,4 @@ void Personaje::dibujar_capas(Renderer& renderer, int x, int y, int lado, int co
 		Rect destino_sombrero(x - 2 * lado / 16, y - 4 * lado / 16 + desplazamiento, 20 * lado / 16, 20 * lado / 16);
 		renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
 	}
-  // Sombrero (-1 = sin sombrero)
-  if (sombrero >= 0) {
-    int fila_sombrero = 0; // abajo
-    if (mirando == DERECHA)
-      fila_sombrero = 20;
-    if (mirando == IZQUIERDA)
-      fila_sombrero = 40;
-    if (mirando == ARRIBA)
-      fila_sombrero = 60;
-    Rect origen_sombrero((sombrero % 12) * 20,
-                         (sombrero / 12) * 80 + fila_sombrero, 20, 20);
-    Rect destino_sombrero(static_cast<int>(x) - 2 * 4,
-                          static_cast<int>(y) - 4 * 4 + rebote, 20 * 4, 20 * 4);
-    renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
-  }
 }
