@@ -12,6 +12,9 @@ target_sources(taller_client
     client_protocol.cpp
     client_receiver.cpp
     client_sender.cpp
+    caverna.cpp
+    inventario.cpp
+    alrededores.cpp
     servicio_lobby_red.cpp
     Pantallas/pantalla.ui
     Pantallas/Images.qrc
@@ -58,4 +61,7 @@ target_sources(taller_client
     Pantallas/headers/servicio_lobby.h
     actions/client_action.h
     actions/move_action.h
+    caverna.h
+    inventario.h
+    alrededores.h
     )
