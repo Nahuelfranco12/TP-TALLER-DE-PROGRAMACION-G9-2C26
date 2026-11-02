@@ -11,20 +11,21 @@ void ServerSender::run() {
   try {
     bool first_run = true;
     while (should_keep_running()) {
+      WorldState state = to_send_queue.pop();
       if (first_run) {
-        std::optional<SectorMapState> farmSectorState = builder.buildMapState(SectorTypeDto::FARM);
-        std::optional<SectorMapState> cavernSectorState = builder.buildMapState(SectorTypeDto::CAVERN);
-        std::optional<SectorMapState> villageSectorState = builder.buildMapState(SectorTypeDto::VILLAGE);
+        std::optional<SectorStateDto> farmSectorState = builder.buildSectorMap(state, SectorTypeDto::FARM);
+        std::optional<SectorStateDto> cavernSectorState = builder.buildSectorMap(state, SectorTypeDto::CAVERN);
+        std::optional<SectorStateDto> villageSectorState = builder.buildSectorMap(state, SectorTypeDto::VILLAGE);
 
-        protocol.send_world_map_state(farmSectorState.value(), cavernSectorState.value(), villageSectorState.value());
+        if (farmSectorState && cavernSectorState && villageSectorState)
+          protocol.send_world_map_state(farmSectorState.value(), cavernSectorState.value(), villageSectorState.value());
 
         first_run = false;
       }
-      WorldState state = to_send_queue.pop();
       std::optional<SectorStateDto> dto =
-          builder.build(state, client_id, nullptr);
+          builder.build(state, client_id);
       if (dto) {
-        protocol.send_sector_state(dto.value());
+        protocol.send_sector_state(dto.value(), true);
       }
     }
   } catch (const ClosedQueue &) {
