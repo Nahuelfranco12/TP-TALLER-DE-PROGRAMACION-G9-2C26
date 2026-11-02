@@ -38,7 +38,6 @@ public:
   Sector *getSector(IdSector id);
 
   WorldState state() const;
-  SectorMapState mapState(IdSector id) const;
 };
 
 #endif // WORLD_H_

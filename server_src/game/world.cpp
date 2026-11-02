@@ -89,7 +89,3 @@ WorldState World::state() const {
     state.players.push_back(player->state());
   return state;
 }
-
-SectorMapState World::mapState(IdSector id) const {
-  return sectors.at(id).mapState();
-}

@@ -81,22 +81,19 @@ Position Sector::findFreePosition() const {
 }
 
 SectorState Sector::state() const {
-  SectorState state{id, width, height, {}};
+  SectorState state{id, width, height, {}, {}};
+
   state.entities.reserve(entities.size());
   for (const auto &[pos, entity] : entities)
     state.entities.push_back(entity->entityState());
-  return state;
-}
 
-SectorMapState Sector::mapState() const {
-  SectorMapState sectorState{id, width, height, {}};
-  sectorState.tiles.assign(width, std::vector<TerrainState>(height));
+  state.tiles.assign(width, std::vector<TerrainState>(height));
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
-      sectorState.tiles[x][y] = {terrain.getTerrainType(),
+      state.tiles[x][y] = {terrain.getTerrainType(),
                                  terrain.isTransitable(), terrain.isArable()};
     }
 
-  return sectorState;
+  return state;
 }
