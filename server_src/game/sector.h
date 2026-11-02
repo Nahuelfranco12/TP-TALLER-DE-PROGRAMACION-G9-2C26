@@ -49,6 +49,8 @@ public:
 
     SectorState state() const;
     SectorMapState mapState() const;
+
+    void tick(double deltaTime);
 };
 
 #endif // SECTOR_H_

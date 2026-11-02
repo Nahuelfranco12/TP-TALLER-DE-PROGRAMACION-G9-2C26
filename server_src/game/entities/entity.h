@@ -19,6 +19,8 @@ public:
     virtual EntityState entityState() const {
         return EntityState{entityType, position, INVALID_PLAYER_ID};
     }
+
+    virtual void tick(double deltaTime);
 };
 
 #endif // ENTITY_H_

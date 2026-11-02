@@ -96,3 +96,9 @@ SectorMapState Sector::mapState() const {
 
     return sectorState;
 }
+
+void Sector::tick(double deltaTime) {
+    for (auto& [pos, entity] : this->entities) {
+        entity->tick(deltaTime);
+    }
+}

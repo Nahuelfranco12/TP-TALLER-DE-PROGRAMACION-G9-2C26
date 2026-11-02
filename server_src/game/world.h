@@ -39,6 +39,8 @@ public:
 
     WorldState state() const;
     SectorMapState mapState(IdSector id) const;
+
+    void tick(double deltaTime);
 };
 
 #endif // WORLD_H_
