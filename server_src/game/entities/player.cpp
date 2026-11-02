@@ -24,10 +24,11 @@ void Player::mine(Mineral &mineral) {
   if (!this->position.isAdjacentTo(mineral.position))
     return;
   // cppcheck-suppress constVariablePointer
-  Tool *pickaxe = this->inventory.getTool(AvailableTools::PICKAXE);
-  if (!pickaxe)
+  if (this->actualTool.toolType != AvailableTools::PICKAXE)
     return;
 
+  // TODO: Falta el chequeo de efecto secundario de algunos minerales
+  
   auto item = mineral.toItem();
   auto removed = this->actualSector->removeEntity(mineral.position);
   if (!removed)
