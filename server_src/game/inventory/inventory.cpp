@@ -39,7 +39,7 @@ InventoryState Inventory::state() const {
     state.items.reserve(items.size());
     for (const InventorySlot& slot : items) {
         const Item& item = slot.getItem();
-        state.items.push_back({item.getType(), item.subtype(),
+        state.items.push_back({item.getType(), item.subtypeToInt(),
                            static_cast<uint8_t>(slot.getCount())});
     }
     for (const auto& tool : tools)
