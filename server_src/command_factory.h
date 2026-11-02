@@ -9,6 +9,7 @@ class CommandFactory {
 public:
     std::unique_ptr<Command> create(int player_id, const MoveDto& dto);
     std::unique_ptr<Command> create(int player_id, const MineDto& dto);
+    std::unique_ptr<Command> create_join(int player_id, const PlayerOutfitDto& outfit);
 };
 
 #endif // COMMAND_FACTORY_H_

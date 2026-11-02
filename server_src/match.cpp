@@ -10,9 +10,9 @@ Match::Match(const std::string& name):
         gameloop.start();
     }
 
-void Match::join(int client_id, Queue<WorldState>& to_send_queue) {
+void Match::join(int client_id, Queue<WorldState>& to_send_queue, std::unique_ptr<Command> join_cmd) {
     clients.add_client(client_id, to_send_queue);
-    received_queue.push(std::make_unique<JoinCommand>(client_id, PlayerOutfit{PlayerHats::HAT_DEFAULT, PlayerHairs::BLONDE, PlayerShirts::TSHIRT_DEFAULT, PlayerPants::PANTS_DEFAULT}));
+    received_queue.push(std::move(join_cmd));
 }
 
 void Match::leave(int client_id) {

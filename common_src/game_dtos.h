@@ -135,10 +135,11 @@ struct LobbyRequestDto {
 
     // Atributos para Creacion de Partida
     std::string match_name;
+    
+    // Atributos para Unirse a partida
+    std::string code;
     std::string player_name;
     PlayerOutfitDto player_outfit;
-
-    // Atributos para Listar/Abandonar partida
 };
 
 struct MatchInfo {

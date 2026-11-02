@@ -20,6 +20,8 @@ private:
     InventoryDto receive_inventory();
     GamePositionDto receive_position();
     
+    void send_outfit(const PlayerOutfitDto& outfit);
+    PlayerOutfitDto receive_outfit();
 public:
     explicit ClientProtocol(const char* hostname, const char* servname);
     int receive_player_id();
@@ -33,7 +35,7 @@ public:
     // Protocolo de menú
     void send_create_match(LobbyRequestDto &dto);
     void send_list_matches();
-    void send_join_match(const std::string& code);
+    void send_join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit);
     std::string receive_created_match();
     std::vector<MatchInfoDto> receive_match_list();
     bool receive_join_result();

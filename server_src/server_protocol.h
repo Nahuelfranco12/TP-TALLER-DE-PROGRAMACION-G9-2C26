@@ -21,6 +21,7 @@ private:
     void send_position(const GamePositionDto& position);
 
     PlayerOutfitDto receive_outfit();
+    void send_outfit(const PlayerOutfitDto& outfit);
 
 public:
     explicit ServerProtocol(Socket&& socket);

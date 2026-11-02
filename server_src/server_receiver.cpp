@@ -19,12 +19,12 @@ void ServerReceiver::run() {
             } else if (request.action == LobbyActionDto::List) {
                 protocol.send_match_list(lobby.list_matches());
             } else if (request.action == LobbyActionDto::Join) {
-                Match* found = lobby.find_match(request.match_name);
+                Match* found = lobby.find_match(request.code);
                 bool was_found = found != nullptr;
                 protocol.send_join_result(was_found); // Se le avisa al cliente que se va a unir primero para que se prepare para recibir WorldStates
                 if(was_found) {
                     match = found;
-                    match->join(client_id, to_send_queue);
+                    match->join(client_id, to_send_queue, factory.create_join(client_id, request.player_outfit));
                 }
             }
         }

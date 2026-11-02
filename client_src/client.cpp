@@ -28,7 +28,7 @@ void Client::run() {
                 std::cout << m.code << " - " << m.name << " (" << m.players << " jugadores)"
                           << STRING_BRK;
         } else if (line.rfind("j ", 0) == 0) {
-            if (join_match(line.substr(2)))
+            if (join_match(line.substr(2), "jugador", PlayerOutfitDto{}))
                 std::cout << "Te uniste. Sos el jugador " << my_id << STRING_BRK;
             else
                 std::cout << "No existe esa partida" << STRING_BRK;
@@ -116,8 +116,8 @@ std::vector<MatchInfoDto> Client::list_matches() {
     return protocol.receive_match_list();
 }
 
-bool Client::join_match(const std::string &code) {
-    protocol.send_join_match(code);
+bool Client::join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit) {
+    protocol.send_join_match(code, player_name, outfit);
     bool client_could_join = protocol.receive_join_result();
     if (client_could_join) {
         receiver.start();

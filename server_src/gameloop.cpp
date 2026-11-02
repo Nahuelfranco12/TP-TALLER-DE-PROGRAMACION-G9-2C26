@@ -40,7 +40,5 @@ void Gameloop::run() {
 }
 
 WorldState Gameloop::make_world_state() const {
-    WorldState state;
-    // TODO
-    return state;
+    return world.state();
 }

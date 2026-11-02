@@ -33,7 +33,7 @@ public:
     //Comandos para QT
     std::string create_match(const std::string& name);
     std::vector<MatchInfoDto> list_matches();
-    bool join_match(const std::string& code);
+    bool join_match(const std::string& code, const std::string& player_name, const PlayerOutfitDto& outfit);
 
   void run();
 
