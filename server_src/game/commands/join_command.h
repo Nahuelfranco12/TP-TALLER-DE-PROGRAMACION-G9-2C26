@@ -6,13 +6,14 @@
 
 class JoinCommand : public Command {
 private:
-    int playerId;
-    PlayerOutfit outfit;
+  int playerId;
+  PlayerOutfit outfit;
 
 public:
-    JoinCommand(int playerId, PlayerOutfit outfit) : playerId(playerId), outfit(outfit) {}
+  JoinCommand(int playerId, PlayerOutfit outfit)
+      : playerId(playerId), outfit(outfit) {}
 
-    void execute(World& world) override;
+  void execute(World &world) override;
 };
 
 #endif // JOIN_COMMAND_H_
