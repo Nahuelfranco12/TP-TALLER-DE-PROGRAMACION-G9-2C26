@@ -140,6 +140,7 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
               for (const ToolState &t : playerState.inventory.tools)
                 inv.tools.push_back(toDto(t.type));
               playerDto.inventory.push_back(std::move(inv));
+              playerDto.actualTool = static_cast<ToolTypeDto>(playerState.actualTool);
             }
             sectorDto.players[pos] = std::move(playerDto);
           }

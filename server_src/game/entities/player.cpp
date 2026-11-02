@@ -46,5 +46,6 @@ PlayerState Player::state() const {
                      this->actualSector->getId(),
                      PlayerOutfitState{this->outfit.hat, this->outfit.hair,
                                        this->outfit.tshirt, this->outfit.pants},
+                     this->actualTool.toolType,
                      this->inventory.state()};
 }

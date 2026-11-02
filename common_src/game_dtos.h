@@ -134,6 +134,8 @@ struct PlayerDto {
   double energy = 0.0;
   size_t coins = 0;
 
+  ToolTypeDto actualTool;
+
   std::list<InventoryDto> inventory;
 };
 
