@@ -4,8 +4,8 @@
 #include <string>
 
 struct ClientMessage {
-    int client_id = 0;
-    std::string text;
+  int client_id = 0;
+  std::string text;
 }
 
 #endif

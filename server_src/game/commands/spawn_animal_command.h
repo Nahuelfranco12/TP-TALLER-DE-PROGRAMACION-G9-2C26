@@ -8,15 +8,16 @@
 
 class SpawnAnimalCommand : public Command {
 private:
-    IdSector   sectorId;
-    Position   position;
-    AnimalType animalType;
+  IdSector sectorId;
+  Position position;
+  AnimalType animalType;
 
 public:
-    SpawnAnimalCommand(IdSector sectorId, Position position, AnimalType animalType)
-        : sectorId(sectorId), position(position), animalType(animalType) {}
+  SpawnAnimalCommand(IdSector sectorId, Position position,
+                     AnimalType animalType)
+      : sectorId(sectorId), position(position), animalType(animalType) {}
 
-    void execute(World& world) override;
+  void execute(World &world) override;
 };
 
 #endif // SPAWN_ANIMAL_COMMAND_H_
