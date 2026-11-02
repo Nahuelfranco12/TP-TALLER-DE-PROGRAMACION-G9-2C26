@@ -141,6 +141,22 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   return state;
 }
 
+SectorStateDto ClientProtocol::receive_sector_map_state() {
+  if (protocol.receive_u8() != OP_WORLD_STATE)
+    throw std::runtime_error(
+        "Mensaje inesperado"); // este chequeo lo pongo x las dudas, lo podemos
+                               // sacar mas adelante
+
+  SectorStateDto state;
+  state.type = static_cast<SectorTypeDto>(protocol.receive_u8());
+  state.width = protocol.receive_u16();
+  state.height = protocol.receive_u16();
+
+  state.sector = receive_tiles();
+
+  return state;
+}
+
 std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
   int columns = protocol.receive_u16();
   int rows = protocol.receive_u16();

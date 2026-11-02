@@ -74,9 +74,14 @@ int main(int argc, char *argv[]) try {
       SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
+
   // Mapas
-  Mapa mapa_granja(renderer, MAPA_GRANJA, 20, 20, 42);
-	Mapa mapa_caverna(renderer, MAPA_CAVERNA, 20, 20, 7);
+  SectorStateDto farm, cavern; //, village
+  client.try_get_latest_state(farm);
+  client.try_get_latest_state(cavern);
+
+  Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
+	Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
 	
 	Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
 
@@ -87,9 +92,6 @@ int main(int argc, char *argv[]) try {
   const int TILE = 64;
 	bool en_caverna = false;
 	bool viendo_mapa = false;
-
-  SectorStateDto farm, village, cavern;
-  
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;

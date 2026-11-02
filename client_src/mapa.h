@@ -6,7 +6,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-enum TipoMapa {MAPA_GRANJA, MAPA_CAVERNA};
+#include "../common_src/game_dtos.h"
 
 class Mapa {
 private:
@@ -14,7 +14,7 @@ private:
   std::vector<std::string> filas;
   char borde;
 
-  TipoMapa tipo;
+  SectorTypeDto tipo;
 
   std::vector<std::string> pasto_afuera;
   int margen;
@@ -28,15 +28,17 @@ private:
 
     void dibujar_tile(SDL2pp::Renderer& renderer, char tipo, int x, int y, int lado);
 public:
-    Mapa(SDL2pp::Renderer& renderer, TipoMapa tipo, int ancho, int alto, unsigned int semilla);
+  Mapa(SDL2pp::Renderer &renderer, SectorTypeDto tipo, int ancho, int alto, unsigned int semilla);
 
   int obtener_ancho() const;
   int obtener_alto() const;
 
     bool es_escalera(int x, int y) const;
 
-    void dibujar_completo(SDL2pp::Renderer& renderer, int origen_x, int origen_y, int lado);
-    void dibujar(SDL2pp::Renderer& renderer, int camara_x, int camara_y, int ancho_ventana, int alto_ventana);
+  void dibujar_completo(SDL2pp::Renderer& renderer, int origen_x, int origen_y, int lado);
+  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
+               int ancho_ventana, int alto_ventana);
+
 };
 
 #endif

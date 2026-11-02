@@ -28,6 +28,7 @@ public:
   int receive_player_id();
 
   SectorStateDto receive_sector_state();
+  SectorStateDto receive_sector_map_state();
 
   // Protocolo de acciones del jugador
   void send_move_dto(const MoveDto &dto);
