@@ -15,8 +15,7 @@ private:
   static TerrainTypeDto toDto(TerrainType terrain);
 
 public:
-  std::optional<SectorStateDto> build(const WorldState &state, int clientId,
-                                      const SectorMapState *map);
+  std::optional<SectorStateDto> build(const WorldState &state, int clientId);
 };
 
 #endif // GAME_DTOS_BUILDER_H_
