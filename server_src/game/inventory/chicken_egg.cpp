@@ -8,5 +8,5 @@ bool ChickenEgg::stacksWith(const Item& other) const {
     
     if (!o)
         return false;
-    return this->type == o->type;
+    return this->getSubtype() == o->getSubtype();
 }

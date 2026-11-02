@@ -8,5 +8,5 @@ bool MineralItem::stacksWith(const Item& other) const {
     
     if (!o)
         return false;
-    return this->mineralType == o->mineralType;
+    return this->getSubtype() == o->getSubtype();
 }

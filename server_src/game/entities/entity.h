@@ -2,6 +2,7 @@
 #define ENTITY_H_
 
 #include "../position.h"
+#include "../../world_state.h"
 
 class Entity {
 private:

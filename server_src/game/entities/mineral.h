@@ -5,6 +5,7 @@
 
 #include "../game_constants.h"
 #include "entity.h"
+#include "../inventory/item.h"
 
 class Mineral : public Entity {
 private:

@@ -8,5 +8,5 @@ bool CowMilk::stacksWith(const Item& other) const {
     
     if (!o)
         return false;
-    return this->type == o->type;
+    return this->getType() == o->getType();
 }

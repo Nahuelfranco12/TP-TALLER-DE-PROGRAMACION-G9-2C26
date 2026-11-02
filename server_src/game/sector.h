@@ -16,8 +16,8 @@
 
 class Sector {
 private:
-    size_t width;
-    size_t height;
+    int width;
+    int height;
     IdSector id;
     std::vector<std::vector<Terrain>> tiles;
     std::map<Position, std::unique_ptr<Entity>> entities;

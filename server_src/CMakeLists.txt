@@ -18,10 +18,11 @@ target_sources(taller_server
     game/entities/player.cpp
     game/sector.cpp
     game/world.cpp
+    game/inventory/chicken_egg.cpp
+    game/inventory/cow_milk.cpp
     game/inventory/inventory_slot.cpp
     game/inventory/mineral_item.cpp
     game/inventory/inventory.cpp
-    game/inventory/item.cpp
     game/commands/move_command.cpp
     game/commands/join_command.cpp
     game/commands/leave_command.cpp
@@ -52,6 +53,8 @@ target_sources(taller_server
     game/entities/player.h
     game/sector.h
     game/world.h
+    game/inventory/chicken_egg.h
+    game/inventory/cow_milk.h
     game/inventory/inventory_slot.h
     game/inventory/mineral_item.h
     game/inventory/inventory.h
