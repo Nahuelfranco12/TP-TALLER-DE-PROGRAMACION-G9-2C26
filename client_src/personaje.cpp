@@ -196,10 +196,6 @@ void Personaje::dibujar_capas(Renderer& renderer, int x, int y, int lado, int co
 	Rect destino(x, y, 16 * lado / 16, 32 * lado / 16);
 	int desplazamiento = rebote * lado / 16;
 
-	// Cuerpo
-	Rect origen_cuerpo(columna * 16, fila_cuerpo * 32, 16, 32);
-	renderer.Copy(cuerpo, origen_cuerpo, destino, 0.0, NullOpt, flip);
-
 	// Pantalones
 	Rect origen_pantalon((pantalon % 10) * 192 + columna * 16, (pantalon / 10)  * 688 + fila_cuerpo * 32, 16, 32);
 	renderer.Copy(pantalones, origen_pantalon, destino, 0.0, NullOpt, flip);
