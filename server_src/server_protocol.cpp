@@ -121,9 +121,16 @@ DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
 
 LobbyRequestDto ServerProtocol::receive_lobby_request() {
     uint8_t operation = protocol.receive_u8();
+
+    std::string match_name, player_name;
+    PlayerOutfitDto player_outfit;
+    
     switch(operation) {
         case OP_CREATE_MATCH:
-            return LobbyRequestDto{LobbyActionDto::Create, protocol.receive_string()};
+            match_name = protocol.receive_string();
+            player_name = protocol.receive_string();
+            player_outfit = receive_outfit();
+            return LobbyRequestDto{LobbyActionDto::Create, match_name, player_name, player_outfit};
         case OP_LIST_MATCHES:
             return LobbyRequestDto{LobbyActionDto::List, ""};
         case OP_JOIN_MATCH:

@@ -18,6 +18,13 @@ enum class PlayerHairsDto { BLONDE, BROWN };
 enum class PlayerTShirtsDto { BLACK, WHITE };
 enum class PlayerPantsDto { JEANS, SHORTS, SKIRT };
 
+struct PlayerOutfitDto {
+    PlayerHatsDto hat;
+    PlayerHairsDto hair;
+    PlayerTShirtsDto tshirt;
+    PlayerPantsDto pants;
+};
+
 enum class ItemTypeDto {
     MINERAL_GOLD,
     MINERAL_IRON,
@@ -90,10 +97,7 @@ struct InventoryDto {
 struct PlayerDto {
     size_t id;
 
-    PlayerHatsDto hat;
-    PlayerHairsDto hair;
-    PlayerTShirtsDto tshirt;
-    PlayerPantsDto pants;
+    PlayerOutfitDto outfit;
 
     double life;
     double energy;
@@ -128,7 +132,13 @@ enum class LobbyActionDto { Create, List, Join };
 
 struct LobbyRequestDto {
     LobbyActionDto action = LobbyActionDto::List;
-    std::string text;
+
+    // Atributos para Creacion de Partida
+    std::string match_name;
+    std::string player_name;
+    PlayerOutfitDto player_outfit;
+
+    // Atributos para Listar/Abandonar partida
 };
 
 struct MatchInfo {

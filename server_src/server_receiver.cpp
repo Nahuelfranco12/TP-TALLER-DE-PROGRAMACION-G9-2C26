@@ -15,11 +15,11 @@ void ServerReceiver::run() {
             LobbyRequestDto request = protocol.receive_lobby_request();
 
             if(request.action == LobbyActionDto::Create) {
-                protocol.send_match_created(lobby.create_match(request.text));
+                protocol.send_match_created(lobby.create_match(request.match_name));
             } else if (request.action == LobbyActionDto::List) {
                 protocol.send_match_list(lobby.list_matches());
             } else if (request.action == LobbyActionDto::Join) {
-                Match* found = lobby.find_match(request.text);
+                Match* found = lobby.find_match(request.match_name);
                 bool was_found = found != nullptr;
                 protocol.send_join_result(was_found); // Se le avisa al cliente que se va a unir primero para que se prepare para recibir WorldStates
                 if(was_found) {
