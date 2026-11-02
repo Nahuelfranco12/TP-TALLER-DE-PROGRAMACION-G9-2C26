@@ -20,22 +20,22 @@ int tile_de_pixel(int pixel) {
   return tile;
 }
 
-    const char* archivo_tileset(TipoMapa tipo) {
-        if (tipo == MAPA_GRANJA) {
-            return "assets/mapas/ground_01_16x16.png";
-        }
-        return "assets/mapas/Dungeon_Tileset.png";
+const char* archivo_tileset(SectorTypeDto tipo) {
+    if (tipo == SectorTypeDto::FARM) {
+        return "assets/mapas/ground_01_16x16.png";
     }
+    return "assets/mapas/Dungeon_Tileset.png";
+}
 } // namespace
 
-Mapa::Mapa(Renderer& renderer, TipoMapa tipo, int ancho, int alto, unsigned int semilla) 
+Mapa::Mapa(Renderer& renderer, SectorTypeDto tipo, int ancho, int alto, unsigned int semilla) 
     : suelo(renderer, archivo_tileset(tipo)),
     borde(','),
     tipo(tipo),
     margen(0) {
-    if (tipo == MAPA_GRANJA) {
+    if (tipo == SectorTypeDto::FARM) {
         generar_granja(ancho, alto, semilla);
-    } else if (tipo == MAPA_CAVERNA) {
+    } else if (tipo == SectorTypeDto::CAVERN) {
         generar_caverna(ancho, alto, semilla);
     }
 }
