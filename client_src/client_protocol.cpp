@@ -161,6 +161,7 @@ PlayerDto ClientProtocol::receive_player() {
   player.life = protocol.receive_u16();
   player.energy = protocol.receive_u16();
   player.coins = protocol.receive_u16();
+  player.actualTool = static_cast<ToolTypeDto>(protocol.receive_u8());
 
   int inventory_count = protocol.receive_u8();
   for (int i = 0; i < inventory_count; i++) {

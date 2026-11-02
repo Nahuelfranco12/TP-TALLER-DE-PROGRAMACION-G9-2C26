@@ -58,7 +58,7 @@ void ServerProtocol::send_player(const PlayerDto &player) {
   protocol.send_u16(static_cast<uint16_t>(player.life));
   protocol.send_u16(static_cast<uint16_t>(player.energy));
   protocol.send_u16(static_cast<uint16_t>(player.coins));
-
+  protocol.send_u8(static_cast<uint8_t>(player.actualTool));
   protocol.send_u8(static_cast<uint8_t>(player.inventory.size()));
   for (const InventoryDto &inventory : player.inventory) {
     send_inventory(inventory);
