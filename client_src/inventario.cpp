@@ -77,7 +77,7 @@ bool Inventario::tengo_en_la_mano(Herramienta herramienta) const {
 }
 
 Rect Inventario::rect_casillero(int i, int ancho_ventana,
-                                int alto_ventana) const {
+                                int alto_ventana) {
   int ancho_barra = CASILLEROS * LADO + SEPARACION;
   int x = (ancho_ventana - ancho_barra) / 2 + i * LADO;
   if (i >= MAX_HERRAMIENTAS) {
