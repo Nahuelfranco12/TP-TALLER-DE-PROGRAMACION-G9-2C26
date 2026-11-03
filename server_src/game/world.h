@@ -21,6 +21,7 @@ public:
   explicit World(DaySpeed speed) : speed(speed) {}
 
   bool addSector(IdSector id, size_t width = 30, size_t height = 30);
+  bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine, Position posOrigin, Position posDestine);
 
   void addPlayer(int id, PlayerOutfit outfit, IdSector idSector);
   void removePlayer(int id);
