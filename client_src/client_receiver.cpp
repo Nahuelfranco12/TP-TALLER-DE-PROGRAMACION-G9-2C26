@@ -11,18 +11,7 @@ ClientReceiver::ClientReceiver(ClientProtocol &protocol,
 
 void ClientReceiver::run() {
   try {
-    bool first_run = true;
     while (should_keep_running()) {
-      if (first_run) {
-        SectorStateDto farmState = protocol.receive_sector_map_state();
-        SectorStateDto cavernState = protocol.receive_sector_map_state();
-        // SectorStateDto villageState = protocol.receive_sector_map_state();
-
-        received_queue.try_push(farmState);
-        received_queue.try_push(cavernState);
-
-        first_run = false;
-      }
       SectorStateDto state = protocol.receive_sector_state();
       received_queue.try_push(state);
     }

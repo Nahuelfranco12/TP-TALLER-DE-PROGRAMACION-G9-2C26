@@ -130,9 +130,14 @@ bool Client::join_match(const std::string &code, const std::string &player_name,
   protocol.send_join_match(code, player_name, outfit);
   bool client_could_join = protocol.receive_join_result();
   if (client_could_join) {
+    world_map = protocol.receive_world_map();
     receiver.start();
     sender.start();
     in_game = true;
   }
   return client_could_join;
+}
+
+const WorldMapDto& Client::get_world_map() const {
+    return world_map;
 }

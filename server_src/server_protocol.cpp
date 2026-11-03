@@ -10,8 +10,7 @@
 ServerProtocol::ServerProtocol(Socket &&socket)
     : skt(std::move(socket)), protocol(skt) {}
 
-void ServerProtocol::send_sector_state(const SectorStateDto &state,
-                                       bool sendComplete) {
+void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   protocol.send_u8(OP_WORLD_STATE);
 
   protocol.send_u8(static_cast<uint8_t>(state.type));
@@ -20,28 +19,28 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state,
 
   send_tiles(state.sector);
 
-  if (sendComplete) {
-    protocol.send_u16(static_cast<uint16_t>(state.players.size()));
-    for (const auto &[position, player] : state.players) {
-      send_position(position);
-      send_player(player);
-    }
+  protocol.send_u16(static_cast<uint16_t>(state.players.size()));
+  for (const auto &[position, player] : state.players) {
+    send_position(position);
+    send_player(player);
+  }
 
-    protocol.send_u16(static_cast<uint16_t>(state.entities.size()));
-    for (const auto &[position, type] : state.entities) {
-      send_position(position);
-      protocol.send_u8(static_cast<uint8_t>(type));
-    }
+  protocol.send_u16(static_cast<uint16_t>(state.entities.size()));
+  for (const auto &[position, type] : state.entities) {
+    send_position(position);
+    protocol.send_u8(static_cast<uint8_t>(type));
   }
 }
 
-void ServerProtocol::send_world_map_state(const SectorStateDto &farmState,
-                                          const SectorStateDto &villageState,
-                                          const SectorStateDto &cavernState) {
-  send_sector_state(farmState, false);
-  send_sector_state(cavernState, false);
-  (void)villageState;
-  // send_sector_state(villageState, false);
+void ServerProtocol::send_world_map(const WorldMapDto &map) {
+  protocol.send_u8(OP_WORLD_MAP);
+  protocol.send_u8(static_cast<uint8_t>(map.sectors.size()));
+  for (const SectorStateDto &sector : map.sectors) {
+      protocol.send_u8(static_cast<uint8_t>(sector.type));
+      protocol.send_u16(static_cast<uint16_t>(sector.width));
+      protocol.send_u16(static_cast<uint16_t>(sector.height));
+      send_tiles(sector.sector);
+  }
 }
 
 void ServerProtocol::send_tiles(

@@ -85,8 +85,10 @@ int main(int argc, char *argv[]) try {
 
   // Mapas
   SectorStateDto farm, cavern; //, village
-  client.try_get_latest_state(farm);
-  client.try_get_latest_state(cavern);
+  for (const SectorStateDto &sector : client.get_world_map().sectors) {
+      if (sector.type == SectorTypeDto::FARM) farm = sector;
+      if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
+  }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
   Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
 
@@ -112,17 +114,16 @@ int main(int argc, char *argv[]) try {
 
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
-
-  // Se repite hasta  que el usuario cierre la ventana
-  bool corriendo = true;
-  while (corriendo) {
-    // Proceso eventos
-    SDL_Event evento;
-    while (SDL_PollEvent(&evento)) {
-      if (evento.type == SDL_MOUSEBUTTONDOWN &&
-          evento.button.button == SDL_BUTTON_LEFT) {
-        interfaz.click(evento.button.x, evento.button.y, audio);
-      }
+  SectorStateDto ultimo_estado;
+	// Se repite hasta  que el usuario cierre la ventana
+	bool corriendo = true;
+	while (corriendo) {
+		// Proceso eventos
+		SDL_Event evento;
+		while (SDL_PollEvent(&evento)) {
+			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+				interfaz.click(evento.button.x, evento.button.y, audio);
+			}
 
       if (evento.type == SDL_QUIT) {
         corriendo = false;
@@ -233,7 +234,6 @@ int main(int argc, char *argv[]) try {
       }
     }
 
-    SectorStateDto ultimo_estado;
     // Respuesta del servidor
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {

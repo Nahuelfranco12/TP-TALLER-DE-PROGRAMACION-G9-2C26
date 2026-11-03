@@ -149,6 +149,10 @@ struct SectorStateDto {
   std::map<GamePositionDto, EntityTypeDto> entities;
 };
 
+struct WorldMapDto {
+  std::vector<SectorStateDto> sectors;
+};
+
 // TODO: revisar para cuando se necesita mostrar el mapa completo
 struct WorldStateDto {
   std::list<SectorStateDto> world;
