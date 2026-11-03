@@ -51,16 +51,14 @@ void Audio::subir_volumen_pasos() {
 
 void Audio::reproducir_paso() { mixer.PlayChannel(-1, sonido_pasos, 0); }
 
-int Audio::obtener_volumen_musica() const {
-	return volumen_musica;
-}
+int Audio::obtener_volumen_musica() const { return volumen_musica; }
 
 void Audio::poner_musica_granja() {
-	suena_granja = true;
-	mixer.PlayMusic(musica_granja, -1);
+  suena_granja = true;
+  mixer.PlayMusic(musica_granja, -1);
 }
 
 void Audio::poner_musica_caverna() {
-	suena_granja = false;
-	mixer.PlayMusic(musica_pueblo, -1);
+  suena_granja = false;
+  mixer.PlayMusic(musica_pueblo, -1);
 }

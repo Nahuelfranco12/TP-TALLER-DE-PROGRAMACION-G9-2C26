@@ -4,15 +4,14 @@
 #include "../../common_src/game_dtos.h"
 #include "client_action.h"
 
-
-class MineAction: public ClientAction {
+class MineAction : public ClientAction {
 private:
-    MineDto dto;
+  MineDto dto;
 
 public:
-    explicit MineAction(DirectionDto direction);
+  explicit MineAction(DirectionDto direction);
 
-    void send_by(ClientProtocol& protocol) const override;
+  void send_by(ClientProtocol &protocol) const override;
 };
 
 #endif

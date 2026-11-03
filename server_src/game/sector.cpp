@@ -91,8 +91,8 @@ SectorState Sector::state() const {
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
-      state.tiles[x][y] = {terrain.getTerrainType(),
-                                 terrain.isTransitable(), terrain.isArable()};
+      state.tiles[x][y] = {terrain.getTerrainType(), terrain.isTransitable(),
+                           terrain.isArable()};
     }
 
   return state;

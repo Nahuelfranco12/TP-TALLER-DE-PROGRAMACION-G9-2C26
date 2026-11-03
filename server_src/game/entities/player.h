@@ -33,19 +33,20 @@ public:
       : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), life(100),
         energy(100), coins(rand() % 100 + 1), outfit(outfit), inventory(),
         actualSector(actualSector) {
-          this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
-          this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
-          this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
-          this->inventory.addTool(std::make_unique<Tool>(AvailableTools::WATERING_CAN));
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
+    this->inventory.addTool(
+        std::make_unique<Tool>(AvailableTools::WATERING_CAN));
 
-          this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
-        }
+    this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
+  }
 
   MoveResult move(Position destination);
   void mine(Mineral &mineral);
 
   void selectTool(AvailableTools tool);
-  Tool* getSelectedTool();
+  Tool *getSelectedTool();
 
   // getters
   Sector *getActualSector() { return actualSector; }

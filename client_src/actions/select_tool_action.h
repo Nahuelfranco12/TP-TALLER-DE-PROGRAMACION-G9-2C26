@@ -4,14 +4,14 @@
 #include "../../common_src/game_dtos.h"
 #include "client_action.h"
 
-class SelectToolAction: public ClientAction {
+class SelectToolAction : public ClientAction {
 private:
-    ToolTypeDto tool;
+  ToolTypeDto tool;
 
 public:
-    explicit SelectToolAction(ToolTypeDto tool);
+  explicit SelectToolAction(ToolTypeDto tool);
 
-    void send_by(ClientProtocol& protocol) const override;
+  void send_by(ClientProtocol &protocol) const override;
 };
 
 #endif
