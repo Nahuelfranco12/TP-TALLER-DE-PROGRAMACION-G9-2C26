@@ -13,6 +13,7 @@ struct TerrainState {
   TerrainType type;
   bool transitable;
   bool arable;
+  bool isDoor;
 };
 
 struct EntityState {
