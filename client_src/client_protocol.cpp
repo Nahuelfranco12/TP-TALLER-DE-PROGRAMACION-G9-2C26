@@ -169,6 +169,7 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
       tile.type = static_cast<TerrainTypeDto>(protocol.receive_u8());
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
+      tile.isDoor = protocol.receive_u8() == 1;
     }
   }
   return tiles;

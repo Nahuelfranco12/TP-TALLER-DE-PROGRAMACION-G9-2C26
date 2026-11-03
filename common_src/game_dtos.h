@@ -12,8 +12,7 @@ enum class DirectionDto { Up, Down, Left, Right };
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
-  GROUND,
-  DOOR
+  GROUND
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
 enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
@@ -111,6 +110,7 @@ struct TileDto {
   TerrainTypeDto type;
   bool transitable;
   bool arable;
+  bool isDoor;
 };
 
 struct InventorySlotDto {
