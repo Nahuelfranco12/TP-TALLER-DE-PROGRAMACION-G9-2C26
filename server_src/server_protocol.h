@@ -41,12 +41,10 @@ public:
   void send_match_list(const std::vector<MatchInfoDto> &matches);
   void send_join_result(bool result);
 
-  void send_sector_state(const SectorStateDto &state, bool sendComplete);
+  void send_sector_state(const SectorStateDto &state);
 
-  // TODO:
-  void send_world_map_state(const SectorStateDto &farmState,
-                            const SectorStateDto &villageState,
-                            const SectorStateDto &cavernState);
+  // Protocolo de mapa
+  void send_world_map(const WorldMapDto &map);
   void shutdown();
 
   void close();
