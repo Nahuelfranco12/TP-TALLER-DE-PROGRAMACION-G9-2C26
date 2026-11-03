@@ -36,7 +36,7 @@ private:
   SDL2pp::Texture gallina;
   SDL2pp::Texture cultivos;
   SDL2pp::Texture suelo;
-    SDL2pp::Texture tileset_caverna;
+  SDL2pp::Texture tileset_caverna;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
@@ -56,9 +56,10 @@ public:
 
   void animar(long vueltas_pasadas);
 
-    bool es_entrada_mina(int x, int y) const;
+  static bool es_entrada_mina(int x, int y);
 
-  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado = 64);
+  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
+               int lado = 64);
 };
 
 #endif

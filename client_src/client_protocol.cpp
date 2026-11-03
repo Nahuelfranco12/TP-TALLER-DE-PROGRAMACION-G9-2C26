@@ -43,7 +43,7 @@ void ClientProtocol::send_select_tool(const ToolTypeDto &dto) {
   protocol.send_u8(static_cast<uint8_t>(dto));
 }
 
-void ClientProtocol::send_mine_dto(const MineDto& dto) {
+void ClientProtocol::send_mine_dto(const MineDto &dto) {
   protocol.send_u8(OP_MINE);
   protocol.send_u8(direction_to_byte(dto.direction));
 }

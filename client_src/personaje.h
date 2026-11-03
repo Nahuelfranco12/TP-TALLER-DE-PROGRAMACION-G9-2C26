@@ -31,9 +31,11 @@ private:
   Direccion mirando;
   long vueltas_caminando;
   long vueltas_restantes_paso;
-    long vueltas_picando;
+  long vueltas_picando;
 
-    void dibujar_capas(SDL2pp::Renderer& renderer, int x, int y, int lado, int columna, int fila_cuerpo, Direccion direccion, int rebote);
+  void dibujar_capas(SDL2pp::Renderer &renderer, int x, int y, int lado,
+                     int columna, int fila_cuerpo, Direccion direccion,
+                     int rebote);
 
 public:
   // Cargo las texturas
@@ -45,19 +47,20 @@ public:
   // Avanza la animación de caminar
   void animar(long vueltas);
 
-    void picar();
+  void picar();
 
   // Dónde está (en tiles)
   int obtener_tile_x() const;
   int obtener_tile_y() const;
 
-    Direccion obtener_direccion() const;
+  Direccion obtener_direccion() const;
 
   // Dibuja el granjero (capas)
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y);
 
-    void dibujar_quieto(SDL2pp::Renderer& renderer, int otro_tile_x, int otro_tile_y, int camara_x, int camara_y, int lado);
-    
+  void dibujar_quieto(SDL2pp::Renderer &renderer, int otro_tile_x,
+                      int otro_tile_y, int camara_x, int camara_y, int lado);
+
   // Cambiar ropa y colores
   void cambiar_pantalon();
   void cambiar_remera();

@@ -1,9 +1,9 @@
 #ifndef MINE_COMMAND_H_
 #define MINE_COMMAND_H_
 
+#include "../../../common_src/game_dtos.h"
 #include "../command.h"
 #include "../position.h"
-#include "../../../common_src/game_dtos.h"
 
 class MineCommand : public Command {
 private:

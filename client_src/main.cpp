@@ -1,19 +1,19 @@
+#include "alrededores.h"
 #include "audio.h"
+#include "caverna.h"
 #include "client.h"
 #include "common_src/game_dtos.h"
-#include "alrededores.h"
 #include "granja.h"
-#include "caverna.h"
 #include "inventario.h"
 
-#include <algorithm>
-#include <iostream>
 #include "interfaz.h"
 #include "mapa.h"
 #include "pantalla.h"
 #include "personaje.h"
 #include "servicio_lobby_red.h"
 #include "tasa_constante.h"
+#include <algorithm>
+#include <iostream>
 
 #include <QApplication>
 #include <QFontDatabase>
@@ -88,39 +88,41 @@ int main(int argc, char *argv[]) try {
   client.try_get_latest_state(farm);
   client.try_get_latest_state(cavern);
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
-	Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
-	
-	Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
+  Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
+
+  Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
+                          mapa_granja.obtener_alto(), 42);
 
   // Casas y animales
   Granja granja(renderer);
-	Caverna caverna(renderer);
+  Caverna caverna(renderer);
 
   const int TILE = 64;
-	bool en_caverna = false;
-	bool viendo_mapa = false;
+  bool en_caverna = false;
+  bool viendo_mapa = false;
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
-  Interfaz interfaz(renderer);
+  Interfaz interfaz(renderer, servicio.codigo());
 
-	Inventario inventario(renderer);
+  Inventario inventario(renderer);
 
-	TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
-	long vueltas = 1;
+  TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
+  long vueltas = 1;
 
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
 
-	// Se repite hasta  que el usuario cierre la ventana
-	bool corriendo = true;
-	while (corriendo) {
-		// Proceso eventos
-		SDL_Event evento;
-		while (SDL_PollEvent(&evento)) {
-			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				interfaz.click(evento.button.x, evento.button.y, audio);
-			}
+  // Se repite hasta  que el usuario cierre la ventana
+  bool corriendo = true;
+  while (corriendo) {
+    // Proceso eventos
+    SDL_Event evento;
+    while (SDL_PollEvent(&evento)) {
+      if (evento.type == SDL_MOUSEBUTTONDOWN &&
+          evento.button.button == SDL_BUTTON_LEFT) {
+        interfaz.click(evento.button.x, evento.button.y, audio);
+      }
 
       if (evento.type == SDL_QUIT) {
         corriendo = false;
@@ -130,54 +132,60 @@ int main(int argc, char *argv[]) try {
         corriendo = false;
       }
 
-			// M abre y cierra mapa
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
-				viendo_mapa = !viendo_mapa;
-			}
+      // M abre y cierra mapa
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
+        viendo_mapa = !viendo_mapa;
+      }
 
-			// 1 a 4 elegir herramienta
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 && evento.key.keysym.sym <= SDLK_4) {
+      // 1 a 4 elegir herramienta
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
+          evento.key.keysym.sym <= SDLK_4) {
         int numero = evento.key.keysym.sym - SDLK_1;
-				inventario.seleccionar(numero);
+        inventario.seleccionar(numero);
         client.send_select_tool(static_cast<ToolTypeDto>(numero));
-			}
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
-				en_caverna = !en_caverna;
-				if (en_caverna) {
-					audio.poner_musica_caverna();
-				} else {
-					audio.poner_musica_granja();
-				}
-			}
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
+        en_caverna = !en_caverna;
+        if (en_caverna) {
+          audio.poner_musica_caverna();
+        } else {
+          audio.poner_musica_granja();
+        }
+      }
 
-			if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && en_caverna) {
-				int frente_x = personaje.obtener_tile_x();
-				int frente_y = personaje.obtener_tile_y();
-				switch (personaje.obtener_direccion()) {
-					case ARRIBA:
-						frente_y--;
-						break;
-					case ABAJO:
-						frente_y++;
-						break;
-					case IZQUIERDA:
-						frente_x--;
-						break;
-					case DERECHA:
-						frente_x++;
-						break;
-				}
-				if (inventario.tengo_en_la_mano(PICO)) {
-					personaje.picar();
-					int roto = caverna.picar(frente_x, frente_y);
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE &&
+          en_caverna) {
+        int frente_x = personaje.obtener_tile_x();
+        int frente_y = personaje.obtener_tile_y();
+        switch (personaje.obtener_direccion()) {
+        case ARRIBA:
+          frente_y--;
+          break;
+        case ABAJO:
+          frente_y++;
+          break;
+        case IZQUIERDA:
+          frente_x--;
+          break;
+        case DERECHA:
+          frente_x++;
+          break;
+        }
+        if (inventario.tengo_en_la_mano(PICO)) {
+          personaje.picar();
+          int roto = caverna.picar(frente_x, frente_y);
 
-					if (roto == 0) inventario.agregar(ITEM_HIERRO, 1);
-					if (roto == 1) inventario.agregar(ITEM_CARBON, 1);
-					if (roto == 2) inventario.agregar(ITEM_LAPISLAZULI, 1);
-					if (roto == 3) inventario.agregar(ITEM_ORO, 1);
-				}
-			}
+          if (roto == 0)
+            inventario.agregar(ITEM_HIERRO, 1);
+          if (roto == 1)
+            inventario.agregar(ITEM_CARBON, 1);
+          if (roto == 2)
+            inventario.agregar(ITEM_LAPISLAZULI, 1);
+          if (roto == 3)
+            inventario.agregar(ITEM_ORO, 1);
+        }
+      }
 
       // Cambiar de prenda
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
@@ -229,7 +237,7 @@ int main(int argc, char *argv[]) try {
     // Respuesta del servidor
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
-			ultimo_estado = state;
+      ultimo_estado = state;
       std::set<size_t> presentes;
       const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
@@ -240,15 +248,15 @@ int main(int argc, char *argv[]) try {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
 
-						int tile_x = personaje.obtener_tile_x();
-						int tile_y = personaje.obtener_tile_y();
-						if (!en_caverna && granja.es_entrada_mina(tile_x, tile_y)) {
-							en_caverna = true;
-							audio.poner_musica_caverna();
-						} else if (en_caverna && mapa_caverna.es_escalera(tile_x, tile_y)) {
-							en_caverna = false;
-							audio.poner_musica_granja();
-						}
+            int tile_x = personaje.obtener_tile_x();
+            int tile_y = personaje.obtener_tile_y();
+            if (!en_caverna && granja.es_entrada_mina(tile_x, tile_y)) {
+              en_caverna = true;
+              audio.poner_musica_caverna();
+            } else if (en_caverna && mapa_caverna.es_escalera(tile_x, tile_y)) {
+              en_caverna = false;
+              audio.poner_musica_granja();
+            }
           }
           continue;
         }
@@ -256,7 +264,10 @@ int main(int argc, char *argv[]) try {
         std::unique_ptr<Personaje> &otro = otros[jugador.id];
         if (!otro) {
           otro = std::make_unique<Personaje>(renderer); // recién llegado
-          otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)], PELOS_SDL[static_cast<int>(jugador.outfit.hair)], PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)], REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
+          otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)],
+                       PELOS_SDL[static_cast<int>(jugador.outfit.hair)],
+                       PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)],
+                       REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
       }
@@ -285,60 +296,68 @@ int main(int argc, char *argv[]) try {
 
     renderer.Clear();
 
-		if (en_caverna) {
-			mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
-			caverna.dibujar(renderer, camara_x, camara_y);
-		} else {
-			mapa_granja.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
-	    granja.dibujar(renderer, camara_x, camara_y);
-			alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
-		}
+    if (en_caverna) {
+      mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                           window.GetHeight());
+      caverna.dibujar(renderer, camara_x, camara_y);
+    } else {
+      mapa_granja.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                          window.GetHeight());
+      granja.dibujar(renderer, camara_x, camara_y);
+      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                          window.GetHeight());
+    }
 
     // Primero los demás jugadores, después el propio para que quede encima
     for (auto &par : otros)
       par.second->dibujar(renderer, camara_x, camara_y);
     personaje.dibujar(renderer, camara_x, camara_y);
 
-		// Mapa completo (M)
-		if (viendo_mapa) {
-			const int MARGEN = 40;
-			const int SEPARACION = 30;
+    // Mapa completo (M)
+    if (viendo_mapa) {
+      const int MARGEN = 40;
+      const int SEPARACION = 30;
 
-			int ancho_total = mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
-			int alto_maximo = std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
-			int lado_ancho = (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
-			int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
-			int lado = std::min(lado_ancho, lado_alto);
+      int ancho_total =
+          mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
+      int alto_maximo =
+          std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
+      int lado_ancho =
+          (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
+      int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
+      int lado = std::min(lado_ancho, lado_alto);
 
-			int ancho_dibujo = lado * ancho_total + SEPARACION;
-			int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
-			int origen_caverna_x = origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
-			int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
+      int ancho_dibujo = lado * ancho_total + SEPARACION;
+      int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
+      int origen_caverna_x =
+          origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
+      int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
 
-			//Fondo oscuro
-			renderer.SetDrawColor(20, 20, 20, 255);
-			renderer.Clear();
+      // Fondo oscuro
+      renderer.SetDrawColor(20, 20, 20, 255);
+      renderer.Clear();
 
-			mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
-			granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
-			mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
-			caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
+      mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
+      granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
+      mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
+      caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
 
-			// Figurita de cada jugador
-			for (const auto &[posicion, jugador] : ultimo_estado.players) {
-          int origen_x = origen_granja_x;
-          if (static_cast<int>(jugador.id) == client.get_my_id() && en_caverna) {
-              origen_x = origen_caverna_x;
-          }
-          personaje.dibujar_quieto(renderer, posicion.x, posicion.y, -origen_x, -origen_y, lado);
+      // Figurita de cada jugador
+      for (const auto &[posicion, jugador] : ultimo_estado.players) {
+        int origen_x = origen_granja_x;
+        if (static_cast<int>(jugador.id) == client.get_my_id() && en_caverna) {
+          origen_x = origen_caverna_x;
+        }
+        personaje.dibujar_quieto(renderer, posicion.x, posicion.y, -origen_x,
+                                 -origen_y, lado);
       }
-		}
+    }
 
     interfaz.dibujar(renderer, audio);
 
-		if (!viendo_mapa) {
-			inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());
-		}
+    if (!viendo_mapa) {
+      inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());
+    }
 
     renderer.Present();
 

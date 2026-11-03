@@ -18,11 +18,11 @@ public:
   // Abrir el audio, cargar los sonidos y arrancar la música
   Audio();
 
-    // Alternar entre m´usicas
-    void cambiar_musica();
+  // Alternar entre m´usicas
+  void cambiar_musica();
 
-    void poner_musica_granja();
-    void poner_musica_caverna();
+  void poner_musica_granja();
+  void poner_musica_caverna();
 
   // Volúmenes
   void bajar_volumen_musica();

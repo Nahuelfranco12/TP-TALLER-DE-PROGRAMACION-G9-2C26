@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,8 @@ class Lobby {
 private:
   std::mutex mutex;
   std::map<std::string, std::unique_ptr<Match>> matches;
-  int next_code = 1;
+  std::mt19937 rng{std::random_device{}()};
+  std::string generate_code();
 
 public:
   std::string create_match(const std::string &name);

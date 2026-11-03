@@ -33,7 +33,7 @@ public:
   // Protocolo de acciones del jugador
   void send_move_dto(const MoveDto &dto);
   void send_select_tool(const ToolTypeDto &dto);
-  void send_mine_dto(const MineDto& dto);
+  void send_mine_dto(const MineDto &dto);
 
   // Protocolo de menú
   void send_create_match(const std::string &name);
