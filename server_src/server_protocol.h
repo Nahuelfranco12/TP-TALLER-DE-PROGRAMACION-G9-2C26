@@ -44,7 +44,9 @@ public:
   void send_sector_state(const SectorStateDto &state, bool sendComplete);
 
   // TODO:
-  void send_world_map_state(const SectorStateDto &farmState, const SectorStateDto &villageState, const SectorStateDto &cavernState);
+  void send_world_map_state(const SectorStateDto &farmState,
+                            const SectorStateDto &villageState,
+                            const SectorStateDto &cavernState);
   void shutdown();
 
   void close();

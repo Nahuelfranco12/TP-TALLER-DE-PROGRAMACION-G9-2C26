@@ -40,17 +40,18 @@ void ServerReceiver::run() {
       // pushear en el match (match->push_command(cmd))
       int op = protocol.receive_operation();
       switch (op) {
-        case OP_MOVE:
-            match->push_command(factory.create(client_id, protocol.receive_move()));
-            break;
+      case OP_MOVE:
+        match->push_command(factory.create(client_id, protocol.receive_move()));
+        break;
       case OP_SELECT_TOOL:
-        match->push_command(factory.create(client_id, protocol.receive_select_tool()));
+        match->push_command(
+            factory.create(client_id, protocol.receive_select_tool()));
         break;
       case OP_MINE:
         match->push_command(factory.create(client_id, protocol.receive_mine()));
         break;
-        default:
-            throw std::runtime_error("Operación desconocida");
+      default:
+        throw std::runtime_error("Operación desconocida");
       }
     }
   } catch (const ClosedQueue &) {

@@ -17,7 +17,8 @@ private:
 public:
   std::optional<SectorStateDto> build(const WorldState &state, int clientId);
 
-  std::optional<SectorStateDto> buildSectorMap(const WorldState &state, SectorTypeDto sectorType);
+  std::optional<SectorStateDto> buildSectorMap(const WorldState &state,
+                                               SectorTypeDto sectorType);
 };
 
 #endif // GAME_DTOS_BUILDER_H_

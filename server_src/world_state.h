@@ -58,7 +58,7 @@ struct PlayerState {
   IdSector sector{};
 
   PlayerOutfitState outfit{};
-  AvailableTools actualTool;
+  AvailableTools actualTool{};
 
   InventoryState inventory;
 };
