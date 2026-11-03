@@ -17,9 +17,9 @@ private:
   Position destinePosition;
 
 public:
-  Door(size_t pos_x, size_t pos_y, IdSector idDestineSector,
+  Door(Position position, IdSector idDestineSector,
        Sector &destineSector, Position destinePosition)
-      : position(pos_x, pos_y), idDestineSector(idDestineSector),
+      : position(position), idDestineSector(idDestineSector),
         destineSector(destineSector), destinePosition(destinePosition) {}
 
   IdSector getIdDestineSector() const { return idDestineSector; }

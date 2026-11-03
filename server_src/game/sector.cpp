@@ -50,6 +50,9 @@ bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
 }
 
 bool Sector::addDoor(std::unique_ptr<Door> door, Position pos) {
+  // TODO: revisar este caso, el cual es cuando en la posicion ya hay una entidad.
+  if (!canMoveTo(pos))
+    return false;
   auto [it, inserted] = this->doors.try_emplace(pos, std::move(door));
   return inserted;
 }
