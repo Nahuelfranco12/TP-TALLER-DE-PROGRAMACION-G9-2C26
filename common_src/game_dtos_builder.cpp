@@ -92,9 +92,8 @@ TerrainTypeDto GameDtosBuilder::toDto(TerrainType terrain) {
   throw std::logic_error("TerrainType sin DTO");
 }
 
-std::optional<SectorStateDto>
-GameDtosBuilder::build(const WorldState &state, int clientId,
-                       const SectorMapState *map) {
+std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
+                                                     int clientId) {
   std::map<int, const PlayerState *> byId;
   for (const PlayerState &playerState : state.players)
     byId[playerState.id] = &playerState;
@@ -112,6 +111,14 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
       sectorDto.width = sectorState.width;
       sectorDto.height = sectorState.height;
 
+      sectorDto.sector.assign(sectorDto.width,
+                              std::vector<TileDto>(sectorDto.height));
+      for (size_t x = 0; x < sectorDto.width; ++x)
+        for (size_t y = 0; y < sectorDto.height; ++y) {
+          const TerrainState &t = sectorState.tiles[x][y];
+          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable, t.isDoor};
+        }
+
       for (const EntityState &e : sectorState.entities) {
         GamePositionDto pos{e.position.x, e.position.y};
 
@@ -122,6 +129,15 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
 
             PlayerDto playerDto{};
             playerDto.id = playerState.id;
+
+            playerDto.outfit.hat =
+                static_cast<PlayerHatsDto>(playerState.outfit.hat);
+            playerDto.outfit.hair =
+                static_cast<PlayerHairsDto>(playerState.outfit.hairs);
+            playerDto.outfit.tshirt =
+                static_cast<PlayerTShirtsDto>(playerState.outfit.tshirt);
+            playerDto.outfit.pants =
+                static_cast<PlayerPantsDto>(playerState.outfit.pants);
 
             if (playerState.id == clientId) {
               playerDto.life = static_cast<uint8_t>(playerState.life);
@@ -135,6 +151,8 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
               for (const ToolState &t : playerState.inventory.tools)
                 inv.tools.push_back(toDto(t.type));
               playerDto.inventory.push_back(std::move(inv));
+              playerDto.actualTool =
+                  static_cast<ToolTypeDto>(playerState.actualTool);
             }
             sectorDto.players[pos] = std::move(playerDto);
           }
@@ -144,14 +162,29 @@ GameDtosBuilder::build(const WorldState &state, int clientId,
       }
     }
   }
+  return sectorDto;
+}
 
-  if (map) {
-    sectorDto.sector.assign(map->width, std::vector<TileDto>(map->height));
-    for (size_t x = 0; x < map->width; ++x)
-      for (size_t y = 0; y < map->height; ++y) {
-        const TerrainState &t = map->tiles[x][y];
-        sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
-      }
+std::optional<SectorStateDto>
+GameDtosBuilder::buildSectorMap(const WorldState &state,
+                                SectorTypeDto sectorType) {
+  SectorStateDto sectorDto;
+  sectorDto.type = sectorType;
+
+  for (const SectorState &sectorState : state.sectors) {
+    if (sectorState.id == static_cast<IdSector>(sectorType)) {
+      sectorDto.width = sectorState.width;
+      sectorDto.height = sectorState.height;
+
+      sectorDto.sector.assign(sectorDto.width,
+                              std::vector<TileDto>(sectorDto.height));
+      for (size_t x = 0; x < sectorDto.width; ++x)
+        for (size_t y = 0; y < sectorDto.height; ++y) {
+          const TerrainState &t = sectorState.tiles[x][y];
+          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
+        }
+    }
   }
+
   return sectorDto;
 }

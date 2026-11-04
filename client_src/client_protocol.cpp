@@ -43,6 +43,11 @@ void ClientProtocol::send_select_tool(const ToolTypeDto &dto) {
   protocol.send_u8(static_cast<uint8_t>(dto));
 }
 
+void ClientProtocol::send_mine_dto(const MineDto &dto) {
+  protocol.send_u8(OP_MINE);
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
@@ -136,6 +141,23 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   return state;
 }
 
+WorldMapDto ClientProtocol::receive_world_map() {
+  if (protocol.receive_u8() != OP_WORLD_MAP)
+      throw std::runtime_error("Mensaje inesperado");
+
+  WorldMapDto map;
+  int sector_count = protocol.receive_u8();
+  for (int i = 0; i < sector_count; i++) {
+      SectorStateDto sector;
+      sector.type = static_cast<SectorTypeDto>(protocol.receive_u8());
+      sector.width = protocol.receive_u16();
+      sector.height = protocol.receive_u16();
+      sector.sector = receive_tiles();
+      map.sectors.push_back(sector);
+  }
+  return map;
+}
+
 std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
   int columns = protocol.receive_u16();
   int rows = protocol.receive_u16();
@@ -147,6 +169,7 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
       tile.type = static_cast<TerrainTypeDto>(protocol.receive_u8());
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
+      tile.isDoor = protocol.receive_u8() == 1;
     }
   }
   return tiles;
@@ -161,6 +184,7 @@ PlayerDto ClientProtocol::receive_player() {
   player.life = protocol.receive_u16();
   player.energy = protocol.receive_u16();
   player.coins = protocol.receive_u16();
+  player.actualTool = static_cast<ToolTypeDto>(protocol.receive_u8());
 
   int inventory_count = protocol.receive_u8();
   for (int i = 0; i < inventory_count; i++) {

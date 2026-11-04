@@ -50,6 +50,9 @@ bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
 }
 
 bool Sector::addDoor(std::unique_ptr<Door> door, Position pos) {
+  // TODO: revisar este caso, el cual es cuando en la posicion ya hay una entidad.
+  if (!canMoveTo(pos))
+    return false;
   auto [it, inserted] = this->doors.try_emplace(pos, std::move(door));
   return inserted;
 }
@@ -81,22 +84,23 @@ Position Sector::findFreePosition() const {
 }
 
 SectorState Sector::state() const {
-  SectorState state{id, width, height, {}};
+  SectorState state{id, width, height, {}, {}};
+
   state.entities.reserve(entities.size());
   for (const auto &[pos, entity] : entities)
     state.entities.push_back(entity->entityState());
-  return state;
-}
 
-SectorMapState Sector::mapState() const {
-  SectorMapState sectorState{id, width, height, {}};
-  sectorState.tiles.assign(width, std::vector<TerrainState>(height));
+  state.tiles.assign(width, std::vector<TerrainState>(height));
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
-      sectorState.tiles[x][y] = {terrain.getTerrainType(),
-                                 terrain.isTransitable(), terrain.isArable()};
+      state.tiles[x][y] = {
+        terrain.getTerrainType(),
+        terrain.isTransitable(),
+        terrain.isArable(),
+        this->doors.find(Position(x, y)) != this->doors.end()
+      };
     }
 
-  return sectorState;
+  return state;
 }

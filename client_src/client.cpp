@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "../common_src/constants.h"
+#include "actions/mine_action.h"
 #include "actions/move_action.h"
+#include "actions/select_tool_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -73,6 +75,14 @@ void Client::send_move(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<MoveAction>(direction));
 }
 
+void Client::send_select_tool(ToolTypeDto tool) {
+  to_send_queue.try_push(std::make_unique<SelectToolAction>(tool));
+}
+
+void Client::send_mine(DirectionDto direction) {
+  to_send_queue.try_push(std::make_unique<MineAction>(direction));
+}
+
 bool Client::try_get_latest_state(SectorStateDto &state) {
   bool has_been_received = false;
   SectorStateDto next_state;
@@ -120,9 +130,14 @@ bool Client::join_match(const std::string &code, const std::string &player_name,
   protocol.send_join_match(code, player_name, outfit);
   bool client_could_join = protocol.receive_join_result();
   if (client_could_join) {
+    world_map = protocol.receive_world_map();
     receiver.start();
     sender.start();
     in_game = true;
   }
   return client_could_join;
+}
+
+const WorldMapDto& Client::get_world_map() const {
+    return world_map;
 }

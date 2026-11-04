@@ -1,17 +1,18 @@
 #ifndef MINE_COMMAND_H_
 #define MINE_COMMAND_H_
 
+#include "../../../common_src/game_dtos.h"
 #include "../command.h"
 #include "../position.h"
 
 class MineCommand : public Command {
 private:
   int playerId;
-  Position mineralPosition;
+  DirectionDto direction;
 
 public:
-  MineCommand(int playerId, Position mineralPosition)
-      : playerId(playerId), mineralPosition(mineralPosition) {}
+  MineCommand(int playerId, DirectionDto direction)
+      : playerId(playerId), direction(direction) {}
 
   void execute(World &world) override;
 };

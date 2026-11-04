@@ -21,6 +21,9 @@ public:
   // Alternar entre m´usicas
   void cambiar_musica();
 
+  void poner_musica_granja();
+  void poner_musica_caverna();
+
   // Volúmenes
   void bajar_volumen_musica();
   void subir_volumen_musica();

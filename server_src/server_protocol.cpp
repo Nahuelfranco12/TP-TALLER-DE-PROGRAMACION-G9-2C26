@@ -32,6 +32,17 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   }
 }
 
+void ServerProtocol::send_world_map(const WorldMapDto &map) {
+  protocol.send_u8(OP_WORLD_MAP);
+  protocol.send_u8(static_cast<uint8_t>(map.sectors.size()));
+  for (const SectorStateDto &sector : map.sectors) {
+      protocol.send_u8(static_cast<uint8_t>(sector.type));
+      protocol.send_u16(static_cast<uint16_t>(sector.width));
+      protocol.send_u16(static_cast<uint16_t>(sector.height));
+      send_tiles(sector.sector);
+  }
+}
+
 void ServerProtocol::send_tiles(
     const std::vector<std::vector<TileDto>> &tiles) {
   int columns = tiles.size();
@@ -46,6 +57,7 @@ void ServerProtocol::send_tiles(
       protocol.send_u8(static_cast<uint8_t>(tile.type));
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
+      protocol.send_u8(tile.isDoor ? 1 : 0);
     }
   }
 }
@@ -58,7 +70,7 @@ void ServerProtocol::send_player(const PlayerDto &player) {
   protocol.send_u16(static_cast<uint16_t>(player.life));
   protocol.send_u16(static_cast<uint16_t>(player.energy));
   protocol.send_u16(static_cast<uint16_t>(player.coins));
-
+  protocol.send_u8(static_cast<uint8_t>(player.actualTool));
   protocol.send_u8(static_cast<uint8_t>(player.inventory.size()));
   for (const InventoryDto &inventory : player.inventory) {
     send_inventory(inventory);
@@ -102,6 +114,14 @@ void ServerProtocol::close() {
 
 MoveDto ServerProtocol::receive_move() {
   return MoveDto{byte_to_direction(protocol.receive_u8())};
+}
+
+ToolTypeDto ServerProtocol::receive_select_tool() {
+  return static_cast<ToolTypeDto>(protocol.receive_u8());
+}
+
+MineDto ServerProtocol::receive_mine() {
+  return MineDto{byte_to_direction(protocol.receive_u8())};
 }
 
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {

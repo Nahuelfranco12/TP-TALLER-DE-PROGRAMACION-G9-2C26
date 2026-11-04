@@ -11,6 +11,22 @@ bool World::addSector(IdSector id, size_t width, size_t height) {
   return inserted;
 }
 
+bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine, Position posOrigin, Position posDestine) {
+  auto sectorOriginIt = this->sectors.find(idSectorOrigin);
+  auto sectorDestineIt = this->sectors.find(idSectorDestine);
+
+  if (sectorOriginIt == this->sectors.end() || sectorDestineIt == this->sectors.end())
+    return false;
+
+  Sector &sectorOrigin = sectorOriginIt->second;
+  Sector &sectorDestine = sectorDestineIt->second;
+
+  bool doorOrigin = sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine, sectorDestine, posDestine), posOrigin);
+  bool doorDestine = sectorDestine.addDoor(std::make_unique<Door>(posDestine, idSectorOrigin, sectorOrigin, posOrigin), posDestine);
+
+  return doorOrigin && doorDestine;
+}
+
 void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
   auto sectorIt = this->sectors.find(idSector);
   if (sectorIt == this->sectors.end())
@@ -88,8 +104,4 @@ WorldState World::state() const {
   for (const auto &[id, player] : players)
     state.players.push_back(player->state());
   return state;
-}
-
-SectorMapState World::mapState(IdSector id) const {
-  return sectors.at(id).mapState();
 }

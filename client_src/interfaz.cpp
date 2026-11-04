@@ -1,5 +1,8 @@
 #include "interfaz.h"
 
+#include <string>
+
+#include <SDL.h>
 #include <SDL2pp/SDL2pp.hh>
 
 using SDL2pp::NullOpt;
@@ -9,17 +12,32 @@ using SDL2pp::Renderer;
 namespace {
 const SDL2pp::Color BLANCO = {255, 255, 255, 255};
 const int TAMANIO_LETRA = 16;
+const int MARGEN = 16;
+const int ALTO_BOTON = 32;
+const int RELLENO = 8;
 } // namespace
 
-Interfaz::Interfaz(SDL2pp::Renderer &renderer)
+Interfaz::Interfaz(SDL2pp::Renderer &renderer,
+                   const std::string &codigo_partida)
     : fuente("assets/fuentes/DejaVuSans-Bold.ttf", TAMANIO_LETRA),
       texto_musica(renderer, fuente.RenderUTF8_Blended("Música", BLANCO)),
       texto_menos(renderer, fuente.RenderUTF8_Blended("-", BLANCO)),
       texto_mas(renderer, fuente.RenderUTF8_Blended("+", BLANCO)),
       boton_musica(16, 16, 90, 32), boton_menos(114, 16, 32, 32),
-      boton_mas(254, 16, 32, 32) {}
+      boton_mas(254, 16, 32, 32), codigo(codigo_partida),
+      texto_boton_codigo(
+          renderer, fuente.RenderUTF8_Blended("Código Multiplayer", BLANCO)),
+      texto_codigo(renderer,
+                   fuente.RenderUTF8_Blended(
+                       "Código: " + codigo_partida + "  (copiado)", BLANCO)) {}
 
 bool Interfaz::click(int x, int y, Audio &audio) {
+  if (boton_codigo.Contains(x, y)) {
+    mostrando_codigo = !mostrando_codigo;
+    if (mostrando_codigo)
+      SDL_SetClipboardText(codigo.c_str());
+    return true;
+  }
   if (boton_musica.Contains(x, y)) {
     audio.cambiar_musica();
     return true;
@@ -63,4 +81,9 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
     }
     renderer.FillRect(rayita);
   }
+  SDL2pp::Texture &texto = mostrando_codigo ? texto_codigo : texto_boton_codigo;
+  int ancho = texto.GetWidth() + 2 * RELLENO;
+  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho,
+                      ALTO_BOTON);
+  dibujar_boton(renderer, boton_codigo, texto);
 }

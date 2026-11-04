@@ -32,6 +32,8 @@ public:
 
   // Protocolo de acciones
   MoveDto receive_move();
+  MineDto receive_mine();
+  ToolTypeDto receive_select_tool();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();
@@ -40,6 +42,9 @@ public:
   void send_join_result(bool result);
 
   void send_sector_state(const SectorStateDto &state);
+
+  // Protocolo de mapa
+  void send_world_map(const WorldMapDto &map);
   void shutdown();
 
   void close();

@@ -9,13 +9,26 @@ ServerSender::ServerSender(ServerProtocol &protocol,
 
 void ServerSender::run() {
   try {
+    bool map_sent = false;
     while (should_keep_running()) {
       WorldState state = to_send_queue.pop();
-      std::optional<SectorStateDto> dto =
-          builder.build(state, client_id, nullptr);
-      if (dto) {
-        protocol.send_sector_state(dto.value());
+      std::optional<SectorStateDto> dto = builder.build(state, client_id);
+      if(!dto) {
+        continue;
       }
+
+      if(!map_sent) {
+        WorldMapDto map;
+        for (SectorTypeDto type : {SectorTypeDto::FARM, SectorTypeDto::VILLAGE, SectorTypeDto::CAVERN}) {
+          std::optional<SectorStateDto> sector = builder.buildSectorMap(state, type);
+          if(sector) {
+            map.sectors.push_back(sector.value());
+          }
+        }
+        protocol.send_world_map(map);
+        map_sent = true;
+      } 
+      protocol.send_sector_state(dto.value());
     }
   } catch (const ClosedQueue &) {
 

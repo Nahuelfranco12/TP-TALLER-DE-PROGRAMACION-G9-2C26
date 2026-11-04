@@ -13,6 +13,7 @@ struct TerrainState {
   TerrainType type;
   bool transitable;
   bool arable;
+  bool isDoor;
 };
 
 struct EntityState {
@@ -58,21 +59,16 @@ struct PlayerState {
   IdSector sector{};
 
   PlayerOutfitState outfit{};
+  AvailableTools actualTool{};
 
   InventoryState inventory;
-};
-
-struct SectorMapState {
-  IdSector id{};
-  size_t width = 0;
-  size_t height = 0;
-  std::vector<std::vector<TerrainState>> tiles;
 };
 
 struct SectorState {
   IdSector id{};
   size_t width = 0;
   size_t height = 0;
+  std::vector<std::vector<TerrainState>> tiles;
   std::vector<EntityState> entities;
 };
 

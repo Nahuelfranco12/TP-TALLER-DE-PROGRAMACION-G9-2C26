@@ -23,6 +23,7 @@ private:
   int coins;
   PlayerOutfit outfit;
 
+  Tool *actualTool = nullptr;
   Inventory inventory;
   Sector *actualSector;
 
@@ -31,11 +32,23 @@ public:
          PlayerOutfit outfit)
       : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), life(100),
         energy(100), coins(rand() % 100 + 1), outfit(outfit), inventory(),
-        actualSector(actualSector) {}
+        actualSector(actualSector) {
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
+    this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
+    this->inventory.addTool(
+        std::make_unique<Tool>(AvailableTools::WATERING_CAN));
+
+    this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
+  }
 
   MoveResult move(Position destination);
   void mine(Mineral &mineral);
 
+  void selectTool(AvailableTools tool);
+  Tool *getSelectedTool();
+
+  // getters
   Sector *getActualSector() { return actualSector; }
   void setActualSector(Sector *s) { actualSector = s; }
   double getLife() const { return life; }
@@ -43,8 +56,8 @@ public:
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
 
+  // state para el serializar el estado del mundo
   PlayerState state() const;
-
   EntityState entityState() const override {
     EntityState entity_state = Entity::entityState();
     entity_state.playerId = id;
