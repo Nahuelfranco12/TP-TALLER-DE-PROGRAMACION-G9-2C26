@@ -6,11 +6,19 @@
 #include "controlador_unirse_partida.h"
 #include "navegador.h"
 #include "ui_pantalla.h"
+#include "vista_responsive.h"
+#include "constantes.h"
 
 Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Pantalla) {
   ui->setupUi(this);
   ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
+  ui->verticalLayout->removeWidget(ui->stackedWidget);
+  ui->stackedWidget->setParent(nullptr);
+  ui->verticalLayout->setContentsMargins(0, 0, 0, 0);
+  ui->verticalLayout->addWidget(new VistaEscalada(
+      ui->stackedWidget, QSize(ANCHO_DISENIO, ALTO_DISENIO),
+      ui->centralwidget));
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
   new ControladorMenuPrincipal(*ui, *navegador, this);
