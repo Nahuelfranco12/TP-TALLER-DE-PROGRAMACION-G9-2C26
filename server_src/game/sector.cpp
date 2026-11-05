@@ -111,3 +111,9 @@ void Sector::tick(double deltaTime) {
     }
 }
 
+
+void Sector::tick() {
+  for(auto &[position, entity] : entities ) {
+    entity->tick();
+  }
+}

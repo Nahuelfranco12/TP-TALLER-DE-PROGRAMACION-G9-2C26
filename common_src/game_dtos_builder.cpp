@@ -157,7 +157,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
             sectorDto.players[pos] = std::move(playerDto);
           }
         } else if (auto type = toDto(e)) {
-          sectorDto.entities[pos] = *type;
+          EntityDto entityDto;
+          entityDto.type = *type;
+          entityDto.ready = e.is_ready;
+          sectorDto.entities[pos] = entityDto;
         }
       }
     }

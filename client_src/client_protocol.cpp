@@ -134,8 +134,10 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   int entity_count = protocol.receive_u16();
   for (int i = 0; i < entity_count; i++) {
     GamePositionDto position = receive_position();
-    state.entities[position] =
-        static_cast<EntityTypeDto>(protocol.receive_u8());
+    EntityDto entity;
+    entity.type = static_cast<EntityTypeDto>(protocol.receive_u8());
+    entity.ready = protocol.receive_u8() == 1;
+    state.entities[position] = entity;
   }
 
   return state;
