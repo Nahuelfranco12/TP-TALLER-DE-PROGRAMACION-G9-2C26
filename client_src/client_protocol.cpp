@@ -48,6 +48,11 @@ void ClientProtocol::send_mine_dto(const MineDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
+void ClientProtocol::send_collect_dto(const CollectDto &dto) {
+  protocol.send_u8(OP_COLLECT);
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");

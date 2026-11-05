@@ -125,6 +125,10 @@ MineDto ServerProtocol::receive_mine() {
   return MineDto{byte_to_direction(protocol.receive_u8())};
 }
 
+CollectDto ServerProtocol::receive_collect() {
+  return CollectDto{byte_to_direction(protocol.receive_u8())};
+}
+
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
   switch (direction_byte) {
   case DIR_UP:
