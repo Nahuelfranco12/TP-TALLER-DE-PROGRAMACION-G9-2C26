@@ -160,15 +160,6 @@ int main(int argc, char *argv[]) try {
         }
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
-        en_caverna = !en_caverna;
-        if (en_caverna) {
-          audio.poner_musica_caverna();
-        } else {
-          audio.poner_musica_granja();
-        }
-      }
-
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE &&
           en_caverna) {
         int frente_x = personaje.obtener_tile_x();
@@ -252,6 +243,15 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+	  bool ahora_en_caverna = (state.type == SectorTypeDto::CAVERN);
+	  if (ahora_en_caverna != en_caverna) {
+		en_caverna = ahora_en_caverna;
+		if (en_caverna) {
+		  audio.poner_musica_caverna();
+		} else {
+		  audio.poner_musica_granja();
+		}
+      }
       std::set<size_t> presentes;
       const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
@@ -261,16 +261,6 @@ int main(int argc, char *argv[]) try {
         if (jugador.id == mi_id) {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
-
-            int tile_x = personaje.obtener_tile_x();
-            int tile_y = personaje.obtener_tile_y();
-            if (!en_caverna && granja.es_entrada_mina(tile_x, tile_y)) {
-              en_caverna = true;
-              audio.poner_musica_caverna();
-            } else if (en_caverna && mapa_caverna.es_escalera(tile_x, tile_y)) {
-              en_caverna = false;
-              audio.poner_musica_granja();
-            }
           }
           continue;
         }

@@ -20,5 +20,8 @@ void MoveCommand::execute(World &world) {
     destination.x = player->position.x + 1;
     break;
   }
-  player->move(destination);
+  MoveResult resultado = player->move(destination);
+  if (resultado.success && resultado.idSector != player->getActualSector()->getId()) {
+    player->setActualSector(world.getSector(resultado.idSector));
+  }
 }
