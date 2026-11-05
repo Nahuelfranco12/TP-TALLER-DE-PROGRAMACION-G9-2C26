@@ -48,6 +48,11 @@ void ClientProtocol::send_mine_dto(const MineDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
+void ClientProtocol::send_collect_dto(const CollectDto &dto) {
+  protocol.send_u8(OP_COLLECT);
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
@@ -134,8 +139,10 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   int entity_count = protocol.receive_u16();
   for (int i = 0; i < entity_count; i++) {
     GamePositionDto position = receive_position();
-    state.entities[position] =
-        static_cast<EntityTypeDto>(protocol.receive_u8());
+    EntityDto entity;
+    entity.type = static_cast<EntityTypeDto>(protocol.receive_u8());
+    entity.ready = protocol.receive_u8() == 1;
+    state.entities[position] = entity;
   }
 
   return state;

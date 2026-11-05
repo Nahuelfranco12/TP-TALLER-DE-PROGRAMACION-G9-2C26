@@ -20,6 +20,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
                                              static_cast<AvailableTools>(dto));
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const CollectDto &dto) {
+  return std::make_unique<CollectCommand>(player_id, dto.direction);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
   PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),

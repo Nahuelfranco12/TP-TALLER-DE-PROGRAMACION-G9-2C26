@@ -10,6 +10,12 @@
 #define PRICE_LAPIZLAZULI 40
 #define PRICE_COAL 10
 
+#define PRICE_EGG 20
+#define PRICE_MILK 30
+
+#define TICKS_FOR_MILK 1000
+#define TICKS_FOR_EGG 1000
+
 #define INVALID_PLAYER_ID -1
 
 enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };

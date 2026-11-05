@@ -2,11 +2,37 @@
 #define CHICKEN_H_
 
 #include "animal.h"
+#include "collectable.h"
+#include "../inventory/chicken_egg.h"
+#include "../game_constants.h"
 
-class Chicken : public Animal {
+class Chicken : public Animal, public ICollectable {
+private:
+  int progress = 0;
+  int ticksToBeReady;
+
 public:
   Chicken(size_t pos_x, size_t pos_y)
-      : Animal(pos_x, pos_y, AnimalType::CHICKEN) {}
+      : Animal(pos_x, pos_y, AnimalType::CHICKEN), ticksToBeReady(TICKS_FOR_EGG) {}
+
+  void tick() override {
+    if (progress < ticksToBeReady)
+      progress += 1;
+  }
+
+  bool canCollect() const override {
+    if (progress == ticksToBeReady)
+      return true;
+    return false;
+  }
+
+  std::unique_ptr<Item> collect() override {
+    if (canCollect()) {
+      progress = 0;
+      return std::make_unique<ChickenEgg>(PRICE_EGG);
+    }
+    return nullptr;
+  }
 };
 
 #endif // CHICKEN_H_

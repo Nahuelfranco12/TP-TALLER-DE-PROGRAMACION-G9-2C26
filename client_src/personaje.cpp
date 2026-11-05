@@ -135,7 +135,17 @@ void Personaje::picar() {
   }
 }
 
-int Personaje::obtener_tile_x() const { return tile_x; }
+void Personaje::picar() {
+  if (vueltas_picando <= 0) {
+    vueltas_picando = DURACION_PICAR;
+  }
+}
+
+int Personaje::obtener_tile_x() const {
+	return tile_x;
+}
+
+Direccion Personaje::obtener_direccion() const { return mirando; }
 
 Direccion Personaje::obtener_direccion() const { return mirando; }
 

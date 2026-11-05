@@ -105,3 +105,9 @@ WorldState World::state() const {
     state.players.push_back(player->state());
   return state;
 }
+
+void World::tick() {
+  for(auto &[id, sector] : sectors) {
+    sector.tick();
+  }
+}

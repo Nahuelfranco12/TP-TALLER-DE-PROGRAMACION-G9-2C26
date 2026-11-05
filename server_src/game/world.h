@@ -39,6 +39,8 @@ public:
   Sector *getSector(IdSector id);
 
   WorldState state() const;
+
+  void tick();
 };
 
 #endif // WORLD_H_

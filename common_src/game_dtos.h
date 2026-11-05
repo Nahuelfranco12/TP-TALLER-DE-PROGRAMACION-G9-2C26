@@ -90,6 +90,10 @@ struct MineDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct CollectDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
@@ -139,6 +143,11 @@ struct PlayerDto {
   std::list<InventoryDto> inventory;
 };
 
+struct EntityDto {
+  EntityTypeDto type{};
+  bool ready = false;
+};
+
 struct SectorStateDto {
   SectorTypeDto type{};
   size_t width = 0;
@@ -146,7 +155,7 @@ struct SectorStateDto {
 
   std::vector<std::vector<TileDto>> sector;
   std::map<GamePositionDto, PlayerDto> players;
-  std::map<GamePositionDto, EntityTypeDto> entities;
+  std::map<GamePositionDto, EntityDto> entities;
 };
 
 struct WorldMapDto {
