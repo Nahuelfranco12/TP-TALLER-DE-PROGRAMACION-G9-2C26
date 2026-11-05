@@ -1,10 +1,12 @@
 #ifndef CHICKEN_H_
 #define CHICKEN_H_
 
+#include "../game_constants.h"
+#include "../inventory/chicken_egg.h"
 #include "animal.h"
 #include "collectable.h"
-#include "../inventory/chicken_egg.h"
-#include "../game_constants.h"
+
+#include <memory>
 
 class Chicken : public Animal, public ICollectable {
 private:
@@ -13,7 +15,8 @@ private:
 
 public:
   Chicken(size_t pos_x, size_t pos_y)
-      : Animal(pos_x, pos_y, AnimalType::CHICKEN), ticksToBeReady(TICKS_FOR_EGG) {}
+      : Animal(pos_x, pos_y, AnimalType::CHICKEN),
+        ticksToBeReady(TICKS_FOR_EGG) {}
 
   void tick() override {
     if (progress < ticksToBeReady)

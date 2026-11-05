@@ -19,9 +19,10 @@ public:
   virtual EntityTypes getType() const { return this->entityType; }
 
   virtual EntityState entityState() const {
-    return EntityState{entityType, position, INVALID_PLAYER_ID, MineralTypes{}, AnimalType{}, false};
+    return EntityState{entityType,     position,     INVALID_PLAYER_ID,
+                       MineralTypes{}, AnimalType{}, false};
   }
-  
+
   virtual void tick() {}
 };
 

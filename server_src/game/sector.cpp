@@ -50,7 +50,8 @@ bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
 }
 
 bool Sector::addDoor(std::unique_ptr<Door> door, Position pos) {
-  // TODO: revisar este caso, el cual es cuando en la posicion ya hay una entidad.
+  // TODO: revisar este caso, el cual es cuando en la posicion ya hay una
+  // entidad.
   if (!canMoveTo(pos))
     return false;
   auto [it, inserted] = this->doors.try_emplace(pos, std::move(door));
@@ -95,25 +96,21 @@ SectorState Sector::state() const {
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
       state.tiles[x][y] = {
-        terrain.getTerrainType(),
-        terrain.isTransitable(),
-        terrain.isArable(),
-        this->doors.find(Position(x, y)) != this->doors.end()
-      };
+          terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable(),
+          this->doors.find(Position(x, y)) != this->doors.end()};
     }
 
   return state;
 }
 
 void Sector::tick(double deltaTime) {
-    for (auto& [pos, entity] : this->entities) {
-        entity->tick(deltaTime);
-    }
+  for (auto &[pos, entity] : this->entities) {
+    entity->tick(deltaTime);
+  }
 }
 
-
 void Sector::tick() {
-  for(auto &[position, entity] : entities ) {
+  for (auto &[position, entity] : entities) {
     entity->tick();
   }
 }

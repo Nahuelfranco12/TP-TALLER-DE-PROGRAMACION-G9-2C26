@@ -11,18 +11,26 @@ bool World::addSector(IdSector id, size_t width, size_t height) {
   return inserted;
 }
 
-bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine, Position posOrigin, Position posDestine) {
+bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
+                    Position posOrigin, Position posDestine) {
   auto sectorOriginIt = this->sectors.find(idSectorOrigin);
   auto sectorDestineIt = this->sectors.find(idSectorDestine);
 
-  if (sectorOriginIt == this->sectors.end() || sectorDestineIt == this->sectors.end())
+  if (sectorOriginIt == this->sectors.end() ||
+      sectorDestineIt == this->sectors.end())
     return false;
 
   Sector &sectorOrigin = sectorOriginIt->second;
   Sector &sectorDestine = sectorDestineIt->second;
 
-  bool doorOrigin = sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine, sectorDestine, posDestine), posOrigin);
-  bool doorDestine = sectorDestine.addDoor(std::make_unique<Door>(posDestine, idSectorOrigin, sectorOrigin, posOrigin), posDestine);
+  bool doorOrigin =
+      sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine,
+                                                  sectorDestine, posDestine),
+                           posOrigin);
+  bool doorDestine =
+      sectorDestine.addDoor(std::make_unique<Door>(posDestine, idSectorOrigin,
+                                                   sectorOrigin, posOrigin),
+                            posDestine);
 
   return doorOrigin && doorDestine;
 }
@@ -107,7 +115,7 @@ WorldState World::state() const {
 }
 
 void World::tick() {
-  for(auto &[id, sector] : sectors) {
+  for (auto &[id, sector] : sectors) {
     sector.tick();
   }
 }
