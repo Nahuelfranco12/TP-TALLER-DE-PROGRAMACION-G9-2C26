@@ -5,7 +5,7 @@
 
 #include "../game_constants.h"
 
-using ItemSubtype = std::variant<AnimalType, MineralTypes>;
+using ItemSubtype = std::variant<AnimalType, MineralTypes, CropTypes>;
 
 class Item {
 private:

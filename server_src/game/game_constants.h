@@ -46,6 +46,7 @@ enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
+enum class CropGrowth {  SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
 
 enum class PlayerHats { HAT_DEFAULT };
 enum class PlayerHairs { BLONDE, CURLY };
