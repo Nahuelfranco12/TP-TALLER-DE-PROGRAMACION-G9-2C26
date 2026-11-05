@@ -108,9 +108,3 @@ void Sector::tick() {
         entity->tick();
     }
 }
-
-void Sector::tick() {
-  for (auto &[position, entity] : entities) {
-    entity->tick();
-  }
-}
