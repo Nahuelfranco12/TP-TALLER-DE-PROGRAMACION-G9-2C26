@@ -11,6 +11,7 @@
 class Mapa {
 private:
   SDL2pp::Texture suelo;
+  SDL2pp::Texture muebles;
   std::vector<std::string> filas;
   char borde;
 

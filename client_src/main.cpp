@@ -193,23 +193,6 @@ int main(int argc, char *argv[]) try {
         }
       }
 
-      // Cambiar de prenda
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
-        personaje.cambiar_pantalon();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_r) {
-        personaje.cambiar_remera();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c) {
-        personaje.cambiar_pelo();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_h) {
-        personaje.cambiar_sombrero();
-      }
-
       // Cambiar color (O pantalon, V pelo)
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_o) {
         personaje.cambiar_color_pantalon();
@@ -243,6 +226,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+
 	  bool ahora_en_caverna = (state.type == SectorTypeDto::CAVERN);
 	  if (ahora_en_caverna != en_caverna) {
 		en_caverna = ahora_en_caverna;
@@ -251,9 +235,18 @@ int main(int argc, char *argv[]) try {
 		} else {
 		  audio.poner_musica_granja();
 		}
-      }
-      std::set<size_t> presentes;
-      const size_t mi_id = static_cast<size_t>(client.get_my_id());
+    }
+
+	if (en_caverna) {
+		mapa_caverna.actualizar(state.sector);
+	} else {
+		mapa_granja.actualizar(state.sector);
+    granja.actualizar(state.entities);
+	}
+
+
+    std::set<size_t> presentes;
+    const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
       for (const auto &[posicion, jugador] : state.players) {
         const int x = static_cast<int>(posicion.x);

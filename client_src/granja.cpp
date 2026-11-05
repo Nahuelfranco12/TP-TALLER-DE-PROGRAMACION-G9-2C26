@@ -27,12 +27,7 @@ const int ULTIMA_ETAPA[4] = {5, 5, 6, 5};
 
 const int ARADA_X = 4 * 16;
 const int ARADA_Y = 4 * 16;
-
-const int ENTRADA_MINA_X = 10;
-const int ENTRADA_MINA_Y = 1;
-const int ESCALERA_COLUMNA = 9;
-const int ESCALERA_FILA = 3;
-} // namespace
+}
 
 Granja::Granja(Renderer &renderer)
     // Cargar texturas
@@ -41,18 +36,11 @@ Granja::Granja(Renderer &renderer)
       gallina(renderer, "assets/animales/Chicken Blonde  Green.png"),
       cultivos(renderer, "assets/cultivos/Spring Crops.png"),
       suelo(renderer, "assets/mapas/ground_01_16x16.png"),
-      tileset_caverna(renderer, "assets/mapas/Dungeon_Tileset.png"),
       vueltas(0) {
 
   // Por ahora fijos
   // Hacer después con servidor
   lista_casas.push_back({2, 1, 0});
-
-  lista_animales.push_back({VACA, 4, 14, false});
-  lista_animales.push_back({VACA, 8, 15, true});
-  lista_animales.push_back({GALLINA, 13, 11, false});
-  lista_animales.push_back({GALLINA, 15, 12, true});
-  lista_animales.push_back({GALLINA, 14, 14, false});
 
   for (int tipo = FRUTILLA; tipo <= PAPA; tipo++) {
     for (int columna = 0; columna < 4; columna++) {
@@ -126,16 +114,20 @@ void Granja::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
     dibujar_casa(renderer, casa, camara_x, camara_y, lado);
   }
 
-  Rect origen_escalera(ESCALERA_COLUMNA * 16, ESCALERA_FILA * 16, 16, 16);
-  Rect destino_escalera(ENTRADA_MINA_X * lado - camara_x,
-                        ENTRADA_MINA_Y * lado - camara_y, lado, lado);
-  renderer.Copy(tileset_caverna, origen_escalera, destino_escalera);
-
   for (const Animal &animal : lista_animales) {
     dibujar_animal(renderer, animal, camara_x, camara_y, lado);
   }
 }
 
-bool Granja::es_entrada_mina(int x, int y) {
-  return x == ENTRADA_MINA_X && y == ENTRADA_MINA_Y;
+void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
+  lista_animales.clear();
+  for (const auto &[pos, entidad] : entidades) {
+    int x = static_cast<int>(pos.x);
+    int y = static_cast<int>(pos.y);
+    if (entidad.type == EntityTypeDto::COW) {
+      lista_animales.push_back({VACA, x, y, false});
+    } else if (entidad.type == EntityTypeDto::CHICKEN) {
+      lista_animales.push_back({GALLINA, x, y, false});
+    }
+  }
 }

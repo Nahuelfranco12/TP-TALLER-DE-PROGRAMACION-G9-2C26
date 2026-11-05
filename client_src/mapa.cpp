@@ -30,7 +30,10 @@ const char *archivo_tileset(SectorTypeDto tipo) {
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
-    : suelo(renderer, archivo_tileset(tipo)), borde(','), tipo(tipo),
+    : suelo(renderer, archivo_tileset(tipo)),
+      muebles(renderer, "assets/mapas/Tilesets_Furniture.png"),
+      borde(','),
+      tipo(tipo),
       margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
@@ -90,7 +93,6 @@ void Mapa::generar_caverna(int ancho, int alto, unsigned int semilla) {
   }
 
   filas[0] = std::string(ancho, 'w');
-  filas[1][ancho / 2] = 'e';
 }
 
 int Mapa::obtener_ancho() const {
@@ -122,12 +124,8 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
             if (tile.type == TerrainTypeDto::DIRT) {
                 letra = 'T';
             }
-            if (tile.type == TerrainTypeDto::DOOR) {
-                if (tipo == SectorTypeDto::CAVERN) {
-                    letra = 'e';
-                } else {
-                    letra = 'T';
-                }
+            if (tile.isDoor) {
+                letra = 'e';
             }
             if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
                 letra = 'w';
@@ -200,9 +198,10 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     columna = 2;
     fila = 0;
   }
-  if (tipo_tile == 'e') {
-    columna = 9;
-    fila = 3;
+  if (tipo_tile == 'e' && tipo != SectorTypeDto::CAVERN) {
+    int alto = 36 * lado / 30;
+    renderer.Copy(muebles, Rect(514, 370, 30, 36), Rect(x, y + lado - alto, lado, alto));
+    return;
   }
 
   Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);

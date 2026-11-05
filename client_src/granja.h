@@ -2,6 +2,9 @@
 #define GRANJA_H
 
 #include <vector>
+#include <map>
+
+#include "../common_src/game_dtos.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -36,7 +39,6 @@ private:
   SDL2pp::Texture gallina;
   SDL2pp::Texture cultivos;
   SDL2pp::Texture suelo;
-  SDL2pp::Texture tileset_caverna;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
@@ -56,10 +58,9 @@ public:
 
   void animar(long vueltas_pasadas);
 
-  static bool es_entrada_mina(int x, int y);
+  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado = 64);
 
-  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
-               int lado = 64);
+  void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 };
 
 #endif
