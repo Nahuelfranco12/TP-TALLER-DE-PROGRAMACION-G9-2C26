@@ -187,7 +187,6 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
           const TerrainState &t = sectorState.tiles[x][y];
           sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
                                     t.isDoor};
->>>>>>> develop
         }
     }
   }
