@@ -46,6 +46,9 @@ target_sources(taller_client
     client_protocol.h
     client_receiver.h
     client_sender.h
+    caverna.h
+    inventario.h
+    alrededores.h
     servicio_lobby_red.h
     Pantallas/headers/pantalla.h
     Pantallas/headers/partidas_estaticas.h
@@ -70,4 +73,5 @@ target_sources(taller_client
     caverna.h
     inventario.h
     alrededores.h
+
     )

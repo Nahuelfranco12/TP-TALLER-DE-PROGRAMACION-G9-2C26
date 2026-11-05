@@ -138,6 +138,4 @@ bool Client::join_match(const std::string &code, const std::string &player_name,
   return client_could_join;
 }
 
-const WorldMapDto& Client::get_world_map() const {
-    return world_map;
-}
+const WorldMapDto &Client::get_world_map() const { return world_map; }

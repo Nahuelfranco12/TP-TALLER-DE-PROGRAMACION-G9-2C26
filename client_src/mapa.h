@@ -27,6 +27,9 @@ private:
   void dibujar_tile(SDL2pp::Renderer &renderer, char tipo, int x, int y,
                     int lado);
 
+  void dibujar_tile(SDL2pp::Renderer &renderer, char tipo, int x, int y,
+                    int lado);
+
 public:
   Mapa(SDL2pp::Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
        unsigned int semilla);

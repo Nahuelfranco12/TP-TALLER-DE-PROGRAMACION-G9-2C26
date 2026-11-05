@@ -34,6 +34,7 @@ public:
   MoveDto receive_move();
   MineDto receive_mine();
   ToolTypeDto receive_select_tool();
+  CollectDto receive_collect();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

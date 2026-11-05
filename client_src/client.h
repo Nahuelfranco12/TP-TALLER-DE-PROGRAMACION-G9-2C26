@@ -33,7 +33,7 @@ public:
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;
   int get_my_id() const;
-  const WorldMapDto& get_world_map() const;
+  const WorldMapDto &get_world_map() const;
 
   // Comandos para QT
   std::string create_match(const std::string &name);
