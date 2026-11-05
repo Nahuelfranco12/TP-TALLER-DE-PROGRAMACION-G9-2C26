@@ -90,7 +90,9 @@ int main(int argc, char *argv[]) try {
       if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
-  Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
+  Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height, 7);
+  mapa_granja.actualizar(farm.sector);
+  mapa_caverna.actualizar(cavern.sector);
 
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
                           mapa_granja.obtener_alto(), 42);
@@ -122,7 +124,14 @@ int main(int argc, char *argv[]) try {
 		SDL_Event evento;
 		while (SDL_PollEvent(&evento)) {
 			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				interfaz.click(evento.button.x, evento.button.y, audio);
+				if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
+					if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
+						ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+						if (inventario.herramienta_seleccionada(herramienta)) {
+							client.send_select_tool(herramienta);
+						}
+					}
+				}
 			}
 
       if (evento.type == SDL_QUIT) {
@@ -141,9 +150,14 @@ int main(int argc, char *argv[]) try {
       // 1 a 4 elegir herramienta
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
           evento.key.keysym.sym <= SDLK_4) {
-        int numero = evento.key.keysym.sym - SDLK_1;
-        inventario.seleccionar(numero);
-        client.send_select_tool(static_cast<ToolTypeDto>(numero));
+        inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
+		ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+		if (inventario.herramienta_seleccionada(herramienta)) {
+		  client.send_select_tool(herramienta);
+		}
+        if (inventario.herramienta_seleccionada(herramienta)) {
+          client.send_select_tool(herramienta);
+        }
       }
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {

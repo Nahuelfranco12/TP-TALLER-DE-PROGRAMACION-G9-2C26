@@ -104,6 +104,41 @@ int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
 bool Mapa::es_escalera(int x, int y) const { return tile_en(x, y) == 'e'; }
 
+void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
+    int ancho = static_cast<int>(tiles.size());
+    int alto = 0;
+    if (ancho > 0) {
+        alto = static_cast<int>(tiles[0].size());
+    }
+
+    std::vector<std::string> nueva(alto, std::string(ancho, '.'));
+
+    // El servidor decide que hay en cada lugar
+    for (int x = 0; x < ancho; ++x) {
+        for (int y = 0; y < alto; ++y) {
+            const TileDto &tile = tiles[x][y];
+            
+            char letra = tile_en(x, y);
+            if (tile.type == TerrainTypeDto::DIRT) {
+                letra = 'T';
+            }
+            if (tile.type == TerrainTypeDto::DOOR) {
+                if (tipo == SectorTypeDto::CAVERN) {
+                    letra = 'e';
+                } else {
+                    letra = 'T';
+                }
+            }
+            if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
+                letra = 'w';
+            }
+
+            nueva[y][x] = letra;
+        }
+    }
+    filas = nueva;
+}
+
 char Mapa::tile_en(int x, int y) const {
   if (x >= 0 && x < obtener_ancho() && y >= 0 && y < obtener_alto()) {
     return filas[y][x];

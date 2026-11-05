@@ -36,6 +36,8 @@ public:
 
   bool es_escalera(int x, int y) const;
 
+  void actualizar(const std::vector<std::vector<TileDto>> &tiles);
+
   void dibujar_completo(SDL2pp::Renderer &renderer, int origen_x, int origen_y,
                         int lado);
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
