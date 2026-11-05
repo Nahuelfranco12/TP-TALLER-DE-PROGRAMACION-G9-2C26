@@ -24,7 +24,8 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_JOIN_MATCH 6
 #define OP_SELECT_TOOL 7
 #define OP_MINE 8
-#define OP_WORLD_MAP 9
+#define OP_COLLECT 9
+#define OP_WORLD_MAP 10
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

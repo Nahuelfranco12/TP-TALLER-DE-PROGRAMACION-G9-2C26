@@ -116,7 +116,8 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable, t.isDoor};
+          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
+                                    t.isDoor};
         }
 
       for (const EntityState &e : sectorState.entities) {

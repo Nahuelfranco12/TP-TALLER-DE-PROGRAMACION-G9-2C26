@@ -7,8 +7,6 @@
 
 MoveResult Player::move(Position destination) {
   return this->actualSector->move(this->position, destination);
-  // TODO: si MoveResult.idSector != actualSector->getId() actualizar
-  // actualSector (puertas)
 }
 
 void Player::selectTool(AvailableTools tool) {

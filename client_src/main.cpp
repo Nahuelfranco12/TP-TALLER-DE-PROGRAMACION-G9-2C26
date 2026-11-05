@@ -86,8 +86,10 @@ int main(int argc, char *argv[]) try {
   // Mapas
   SectorStateDto farm, cavern; //, village
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
-      if (sector.type == SectorTypeDto::FARM) farm = sector;
-      if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
+    if (sector.type == SectorTypeDto::FARM)
+      farm = sector;
+    if (sector.type == SectorTypeDto::CAVERN)
+      cavern = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
   Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height, 7);
@@ -117,22 +119,23 @@ int main(int argc, char *argv[]) try {
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
   SectorStateDto ultimo_estado;
-	// Se repite hasta  que el usuario cierre la ventana
-	bool corriendo = true;
-	while (corriendo) {
-		// Proceso eventos
-		SDL_Event evento;
-		while (SDL_PollEvent(&evento)) {
-			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
-					if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
-						ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-						if (inventario.herramienta_seleccionada(herramienta)) {
-							client.send_select_tool(herramienta);
-						}
-					}
-				}
-			}
+
+  bool corriendo = true;
+  while (corriendo) {
+    SDL_Event evento;
+    while (SDL_PollEvent(&evento)) {
+      if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+        if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
+          if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
+            ToolTypeDto heramienta = ToolTypeDto::PICKAXE;
+            if (inventario.herramienta_seleccionada(herramienta)) {
+              client.send_select_tool(herramienta);
+            }
+          }
+        }
+      }
+    }
+  }
 
       if (evento.type == SDL_QUIT) {
         corriendo = false;

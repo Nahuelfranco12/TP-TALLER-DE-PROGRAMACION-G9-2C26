@@ -37,10 +37,10 @@ void ServerProtocol::send_world_map(const WorldMapDto &map) {
   protocol.send_u8(OP_WORLD_MAP);
   protocol.send_u8(static_cast<uint8_t>(map.sectors.size()));
   for (const SectorStateDto &sector : map.sectors) {
-      protocol.send_u8(static_cast<uint8_t>(sector.type));
-      protocol.send_u16(static_cast<uint16_t>(sector.width));
-      protocol.send_u16(static_cast<uint16_t>(sector.height));
-      send_tiles(sector.sector);
+    protocol.send_u8(static_cast<uint8_t>(sector.type));
+    protocol.send_u16(static_cast<uint16_t>(sector.width));
+    protocol.send_u16(static_cast<uint16_t>(sector.height));
+    send_tiles(sector.sector);
   }
 }
 
@@ -123,6 +123,10 @@ ToolTypeDto ServerProtocol::receive_select_tool() {
 
 MineDto ServerProtocol::receive_mine() {
   return MineDto{byte_to_direction(protocol.receive_u8())};
+}
+
+CollectDto ServerProtocol::receive_collect() {
+  return CollectDto{byte_to_direction(protocol.receive_u8())};
 }
 
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {

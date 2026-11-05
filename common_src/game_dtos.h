@@ -90,6 +90,10 @@ struct MineDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct CollectDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
