@@ -116,7 +116,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable};
+          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable, t.isDoor};
         }
 
       for (const EntityState &e : sectorState.entities) {
@@ -157,7 +157,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
             sectorDto.players[pos] = std::move(playerDto);
           }
         } else if (auto type = toDto(e)) {
-          sectorDto.entities[pos] = *type;
+          EntityDto entityDto;
+          entityDto.type = *type;
+          entityDto.ready = e.is_ready;
+          sectorDto.entities[pos] = entityDto;
         }
       }
     }

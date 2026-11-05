@@ -12,8 +12,7 @@ enum class DirectionDto { Up, Down, Left, Right };
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
-  GROUND,
-  DOOR
+  GROUND
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
 enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
@@ -111,6 +110,7 @@ struct TileDto {
   TerrainTypeDto type;
   bool transitable;
   bool arable;
+  bool isDoor;
 };
 
 struct InventorySlotDto {
@@ -139,6 +139,11 @@ struct PlayerDto {
   std::list<InventoryDto> inventory;
 };
 
+struct EntityDto {
+  EntityTypeDto type{};
+  bool ready = false;
+};
+
 struct SectorStateDto {
   SectorTypeDto type{};
   size_t width = 0;
@@ -146,7 +151,7 @@ struct SectorStateDto {
 
   std::vector<std::vector<TileDto>> sector;
   std::map<GamePositionDto, PlayerDto> players;
-  std::map<GamePositionDto, EntityTypeDto> entities;
+  std::map<GamePositionDto, EntityDto> entities;
 };
 
 struct WorldMapDto {

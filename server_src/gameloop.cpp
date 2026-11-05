@@ -6,10 +6,7 @@
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
                    ClientQueues &clients, DaySpeed worldSpeed)
     : received_queue(received_queue), clients(clients), world(worldSpeed) {
-  // TODO: revisar, esta hardcodeado a un unico sector
-  this->world.addSector(IdSector::FARM);
-  this->world.addSector(IdSector::CAVERN_LEVEL);
-  this->world.addSector(IdSector::VILLAGE);
+      addWorldSectors();
 }
 
 void Gameloop::process_commands() {
@@ -19,12 +16,23 @@ void Gameloop::process_commands() {
   }
 }
 
+void Gameloop::addWorldSectors() {
+  this->world.addSector(IdSector::FARM);
+  this->world.addSector(IdSector::CAVERN_LEVEL);
+  this->world.addSector(IdSector::VILLAGE);
+
+  this->world.addDoor(IdSector::FARM, IdSector::CAVERN_LEVEL, Position(15, 0), Position(15, 0));
+  this->world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15), Position(0, 15));
+}
+
+
 void Gameloop::run() {
   const std::chrono::milliseconds tickrate(1000 / TICKS_PER_SECOND);
   auto time_1 = std::chrono::steady_clock::now();
   try {
     while (should_keep_running()) {
       process_commands();
+      world.tick();
       clients.send_to_all(make_world_state());
 
       auto time_2 = std::chrono::steady_clock::now();

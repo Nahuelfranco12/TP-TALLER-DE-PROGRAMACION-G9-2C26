@@ -26,9 +26,10 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   }
 
   protocol.send_u16(static_cast<uint16_t>(state.entities.size()));
-  for (const auto &[position, type] : state.entities) {
+  for (const auto &[position, entity] : state.entities) {
     send_position(position);
-    protocol.send_u8(static_cast<uint8_t>(type));
+    protocol.send_u8(static_cast<uint8_t>(entity.type));
+    protocol.send_u8(entity.ready ? 1 : 0);
   }
 }
 
@@ -57,6 +58,7 @@ void ServerProtocol::send_tiles(
       protocol.send_u8(static_cast<uint8_t>(tile.type));
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
+      protocol.send_u8(tile.isDoor ? 1 : 0);
     }
   }
 }

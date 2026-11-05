@@ -29,6 +29,8 @@ private:
   WorldState make_world_state() const;
   void process_commands();
 
+  void addWorldSectors();
+
 public:
   Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
            ClientQueues &clients, DaySpeed worldSpeed);
