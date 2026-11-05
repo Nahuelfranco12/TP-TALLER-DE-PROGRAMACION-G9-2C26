@@ -31,12 +31,12 @@ private:
     int etapa;
   };
 
-    SDL2pp::Texture casas;
-    SDL2pp::Texture vaca;
-    SDL2pp::Texture gallina;
-    SDL2pp::Texture cultivos;
-    SDL2pp::Texture suelo;
-    SDL2pp::Texture tileset_caverna;
+  SDL2pp::Texture casas;
+  SDL2pp::Texture vaca;
+  SDL2pp::Texture gallina;
+  SDL2pp::Texture cultivos;
+  SDL2pp::Texture suelo;
+  SDL2pp::Texture tileset_caverna;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;

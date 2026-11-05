@@ -24,6 +24,13 @@ const char *archivo_tileset(SectorTypeDto tipo) {
   }
   return "assets/mapas/Dungeon_Tileset.png";
 }
+
+const char *archivo_tileset(SectorTypeDto tipo) {
+  if (tipo == SectorTypeDto::FARM) {
+    return "assets/mapas/ground_01_16x16.png";
+  }
+  return "assets/mapas/Dungeon_Tileset.png";
+}
 } // namespace
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
@@ -168,9 +175,9 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     fila = 3;
   }
 
-    Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);
-    Rect destino(x, y, lado, lado);
-    renderer.Copy(suelo, origen, destino);
+  Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);
+  Rect destino(x, y, lado, lado);
+  renderer.Copy(suelo, origen, destino);
 }
 
 void Mapa::dibujar(Renderer &renderer, int camara_x, int camara_y,

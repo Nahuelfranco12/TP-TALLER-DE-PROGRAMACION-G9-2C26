@@ -68,4 +68,8 @@ target_sources(taller_client
     actions/move_action.h
     actions/select_tool_action.h
     actions/mine_action.h
+    caverna.h
+    inventario.h
+    alrededores.h
+
     )

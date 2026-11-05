@@ -49,9 +49,9 @@ public:
 
   void picar();
 
-    // Dónde está (en tiles)
-    int obtener_tile_x() const;
-    int obtener_tile_y() const;
+  // Dónde está (en tiles)
+  int obtener_tile_x() const;
+  int obtener_tile_y() const;
 
   Direccion obtener_direccion() const;
 

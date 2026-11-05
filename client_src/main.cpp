@@ -295,8 +295,6 @@ int main(int argc, char *argv[]) try {
     int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
     renderer.Clear();
-    mapa.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                 window.GetHeight());
 
     if (en_caverna) {
       mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
@@ -355,7 +353,7 @@ int main(int argc, char *argv[]) try {
       }
     }
 
-		interfaz.dibujar(renderer, audio);
+    interfaz.dibujar(renderer, audio);
 
     if (!viendo_mapa) {
       inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());

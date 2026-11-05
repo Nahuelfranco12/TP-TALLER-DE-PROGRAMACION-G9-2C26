@@ -135,9 +135,17 @@ void Personaje::picar() {
   }
 }
 
+void Personaje::picar() {
+  if (vueltas_picando <= 0) {
+    vueltas_picando = DURACION_PICAR;
+  }
+}
+
 int Personaje::obtener_tile_x() const {
 	return tile_x;
 }
+
+Direccion Personaje::obtener_direccion() const { return mirando; }
 
 Direccion Personaje::obtener_direccion() const { return mirando; }
 
@@ -217,9 +225,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                       8 * lado / 16, 8 * lado / 16);
   renderer.Copy(remeras, origen_remera, destino_remera);
 
-	// Brazos
-	Rect origen_brazos(96 + columna * 16, fila_cuerpo * 32, 16, 32);
-	renderer.Copy(cuerpo, origen_brazos, destino, 0.0, NullOpt, flip);
+  // Brazos
+  Rect origen_brazos(96 + columna * 16, fila_cuerpo * 32, 16, 32);
+  renderer.Copy(cuerpo, origen_brazos, destino, 0.0, NullOpt, flip);
 
   // Pelo
   Rect origen_pelo((pelo % 16) * 16, (pelo / 16) * 96 + fila * 32, 16, 32);
