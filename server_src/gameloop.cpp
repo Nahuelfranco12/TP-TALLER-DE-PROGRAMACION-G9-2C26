@@ -32,6 +32,7 @@ void Gameloop::run() {
   try {
     while (should_keep_running()) {
       process_commands();
+      world.tick();
       clients.send_to_all(make_world_state());
 
       auto time_2 = std::chrono::steady_clock::now();

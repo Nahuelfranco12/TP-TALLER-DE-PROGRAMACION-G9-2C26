@@ -3,7 +3,7 @@
 
 #include "animal.h"
 
-#define TICKS_FOR_EGG 100
+#define TICKS_FOR_EGG 1000
 
 class Chicken : public Animal {
 private:

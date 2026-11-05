@@ -104,3 +104,9 @@ SectorState Sector::state() const {
 
   return state;
 }
+
+void Sector::tick() {
+  for(auto &[position, entity] : entities ) {
+    entity->tick();
+  }
+}
