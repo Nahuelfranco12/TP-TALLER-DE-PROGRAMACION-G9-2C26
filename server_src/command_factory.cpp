@@ -20,7 +20,8 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
                                              static_cast<AvailableTools>(dto));
 }
 
-std::unique_ptr<Command> CommandFactory::create(int player_id, const CollectDto &dto) {
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const CollectDto &dto) {
   return std::make_unique<CollectCommand>(player_id, dto.direction);
 }
 

@@ -1,10 +1,12 @@
 #ifndef COW_H_
 #define COW_H_
 
+#include "../game_constants.h"
+#include "../inventory/cow_milk.h"
 #include "animal.h"
 #include "collectable.h"
-#include "../inventory/cow_milk.h"
-#include "../game_constants.h"
+
+#include <memory>
 
 class Cow : public Animal, public ICollectable {
 private:
@@ -12,7 +14,8 @@ private:
   int ticksToBeReady;
 
 public:
-  Cow(size_t pos_x, size_t pos_y) : Animal(pos_x, pos_y, AnimalType::COW), ticksToBeReady(TICKS_FOR_MILK) {}
+  Cow(size_t pos_x, size_t pos_y)
+      : Animal(pos_x, pos_y, AnimalType::COW), ticksToBeReady(TICKS_FOR_MILK) {}
 
   void tick() override {
     if (progress < ticksToBeReady)

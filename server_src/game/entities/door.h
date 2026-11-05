@@ -17,8 +17,8 @@ private:
   Position destinePosition;
 
 public:
-  Door(Position position, IdSector idDestineSector,
-       Sector &destineSector, Position destinePosition)
+  Door(Position position, IdSector idDestineSector, Sector &destineSector,
+       Position destinePosition)
       : position(position), idDestineSector(idDestineSector),
         destineSector(destineSector), destinePosition(destinePosition) {}
 

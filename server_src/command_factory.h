@@ -5,10 +5,10 @@
 
 #include "../common_src/game_dtos.h"
 #include "./game/command.h"
+#include "./game/commands/collect_command.h"
 #include "./game/commands/mine_command.h"
 #include "./game/commands/move_command.h"
 #include "./game/commands/select_tool_command.h"
-#include "./game/commands/collect_command.h"
 
 class CommandFactory {
 public:

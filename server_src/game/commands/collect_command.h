@@ -6,14 +6,14 @@
 
 class CollectCommand : public Command {
 private:
-    int playerId;
-    DirectionDto direction;
+  int playerId;
+  DirectionDto direction;
 
 public:
-    CollectCommand(int playerId, DirectionDto direction)
-        : playerId(playerId), direction(direction) {}
+  CollectCommand(int playerId, DirectionDto direction)
+      : playerId(playerId), direction(direction) {}
 
-    void execute(World& world) override;
+  void execute(World &world) override;
 };
 
 #endif // COLLECT_COMMAND_H_

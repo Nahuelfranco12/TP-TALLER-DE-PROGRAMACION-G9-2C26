@@ -150,17 +150,17 @@ SectorStateDto ClientProtocol::receive_sector_state() {
 
 WorldMapDto ClientProtocol::receive_world_map() {
   if (protocol.receive_u8() != OP_WORLD_MAP)
-      throw std::runtime_error("Mensaje inesperado");
+    throw std::runtime_error("Mensaje inesperado");
 
   WorldMapDto map;
   int sector_count = protocol.receive_u8();
   for (int i = 0; i < sector_count; i++) {
-      SectorStateDto sector;
-      sector.type = static_cast<SectorTypeDto>(protocol.receive_u8());
-      sector.width = protocol.receive_u16();
-      sector.height = protocol.receive_u16();
-      sector.sector = receive_tiles();
-      map.sectors.push_back(sector);
+    SectorStateDto sector;
+    sector.type = static_cast<SectorTypeDto>(protocol.receive_u8());
+    sector.width = protocol.receive_u16();
+    sector.height = protocol.receive_u16();
+    sector.sector = receive_tiles();
+    map.sectors.push_back(sector);
   }
   return map;
 }

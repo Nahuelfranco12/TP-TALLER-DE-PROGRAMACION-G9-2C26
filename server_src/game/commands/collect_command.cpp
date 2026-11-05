@@ -3,27 +3,41 @@
 #include "../entities/collectable.h"
 #include "../world.h"
 
-void CollectCommand::execute(World& world) {
-    Player* player = world.getPlayer(this->playerId);
-    if (!player) return;
+#include <utility>
 
-    Position target(player->position.x, player->position.y);
-    switch (this->direction) {
-    case DirectionDto::Up:    target.y -= 1; break;
-    case DirectionDto::Down:  target.y += 1; break;
-    case DirectionDto::Left:  target.x -= 1; break;
-    case DirectionDto::Right: target.x += 1; break;
-    }
+void CollectCommand::execute(World &world) {
+  Player *player = world.getPlayer(this->playerId);
+  if (!player)
+    return;
 
-    Sector* sector = player->getActualSector();
-    if (!sector) return;
+  Position target(player->position.x, player->position.y);
+  switch (this->direction) {
+  case DirectionDto::Up:
+    target.y -= 1;
+    break;
+  case DirectionDto::Down:
+    target.y += 1;
+    break;
+  case DirectionDto::Left:
+    target.x -= 1;
+    break;
+  case DirectionDto::Right:
+    target.x += 1;
+    break;
+  }
 
-    Entity* entity = sector->getEntity(target);
-    if (!entity) return;
+  const Sector *sector = player->getActualSector();
+  if (!sector)
+    return;
 
-    ICollectable* collectable = dynamic_cast<ICollectable*>(entity);
-    if (!collectable || !collectable->canCollect()) return;
+  Entity *entity = sector->getEntity(target);
+  if (!entity)
+    return;
 
-    auto product = collectable->collect();
-    player->getInventory().addItem(std::move(product));
+  ICollectable *collectable = dynamic_cast<ICollectable *>(entity);
+  if (!collectable || !collectable->canCollect())
+    return;
+
+  auto product = collectable->collect();
+  player->getInventory().addItem(std::move(product));
 }
