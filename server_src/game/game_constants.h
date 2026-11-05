@@ -21,6 +21,12 @@
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
 
+#define CROP_MULTIPLIER_BASE 1
+#define CROP_MULTIPLIER_GOOD 1.25
+#define CROP_MULITPLIER_EXCELENT 2
+#define CROP_MULTIPLIER_INCREDIBLE 4
+#define CROP_MULTIPLIER_PERFECT 8
+
 #define INVALID_PLAYER_ID -1
 
 enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
@@ -38,7 +44,8 @@ enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
 
-// enum class CrowTypes {  }; // TODO: tipos de cultivo
+enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
+enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
 
 enum class PlayerHats { HAT_DEFAULT };
 enum class PlayerHairs { BLONDE, CURLY };
