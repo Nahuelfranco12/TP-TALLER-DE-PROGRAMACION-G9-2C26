@@ -10,19 +10,14 @@ const int ESCALA = 4;
 const int TILE_SHEET = 16;
 const int TILE = TILE_SHEET * ESCALA;
 
+const char BORDE = ',';
+
 int tile_de_pixel(int pixel) {
   int tile = pixel / TILE;
   if (pixel < 0 && pixel % TILE != 0) {
     tile--;
   }
   return tile;
-}
-
-const char *archivo_tileset(SectorTypeDto tipo) {
-  if (tipo == SectorTypeDto::FARM) {
-    return "assets/mapas/ground_01_16x16.png";
-  }
-  return "assets/mapas/Dungeon_Tileset.png";
 }
 
 const char *archivo_tileset(SectorTypeDto tipo) {
