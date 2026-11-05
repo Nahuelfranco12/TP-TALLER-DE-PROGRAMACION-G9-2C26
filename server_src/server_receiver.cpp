@@ -53,6 +53,7 @@ void ServerReceiver::run() {
       case OP_COLLECT:
         match->push_command(
             factory.create(client_id, protocol.receive_collect()));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }
