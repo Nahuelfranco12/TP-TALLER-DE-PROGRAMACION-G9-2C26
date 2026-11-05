@@ -42,7 +42,7 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };

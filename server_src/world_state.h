@@ -24,6 +24,7 @@ struct EntityState {
   MineralTypes mineralType{}; // en caso de ser mineral.
   AnimalType animalType{};    // en caso de ser animal.
   bool is_ready;
+  CropTypes cropType{};
 
   // TODO: cultivos y npcs
 };
