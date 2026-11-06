@@ -1,3 +1,11 @@
-#include "common_src/foo.h"
+#include "ventanaeditor.h"
 
-int main() { return foo(4); }
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    VentanaEditor w;
+    w.show();
+    return QApplication::exec();
+}

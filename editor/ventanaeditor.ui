@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaEditor</class>
+ <widget class="QMainWindow" name="VentanaEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>VentanaEditor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <widget class="QWidget" name="pageInicioEditor">
+       <property name="styleSheet">
+        <string notr="true">#pageInicioEditor {
+    border-image: url(:/Pantallas/fondo_editor.jpg);
+}</string>
+       </property>
+       <widget class="QPushButton" name="botonCrearMapa">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>330</y>
+          <width>301</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/Botones/boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/Botones/boton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Crear Mapa</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="botonCrearMapa_2">
+        <property name="geometry">
+         <rect>
+          <x>840</x>
+          <y>340</y>
+          <width>301</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border-image: url(:/Botones/boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/Botones/boton_apretado.png);
+    padding-top: 3px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>Editar Mapa</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="cartelMPEditor">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>60</y>
+          <width>401</width>
+          <height>251</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#cartelMPEditor{
+    border-image: url(:/Cartel/cartel_stardew_valley.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="letraEDITOR">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>460</y>
+          <width>411</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel#letraEDITOR{
+    border-image: url(:/Cartel/letra_editor.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="editorMapas"/>
+      <widget class="QWidget" name="creadorMapas"/>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

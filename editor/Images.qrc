@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/Botones">
+        <file alias="boton_bw.png">../assets/Botones/Boton_bw.png</file>
+        <file alias="boton_normal.png">../assets/Botones/Boton_normal.png</file>
+        <file alias="boton_apretado.png">../assets/Botones/botton_apretado.png</file>
+    </qresource>
+    <qresource prefix="/Cartel">
+        <file alias="cartel_datos.png">../assets/cartel/cartel-datos.png</file>
+        <file alias="cartel_stardew_valley.png">../assets/cartel/cartel_stardew_valley.png</file>
+        <file alias="letra_editor.png">../assets/cartel/EDITOR.png</file>
+    </qresource>
+    <qresource prefix="/Flechas">
+        <file alias="flecha_normal_derecha.png">../assets/flechas/flecha_normal_derecha.png</file>
+        <file alias="flecha_normal_izquierda.png">../assets/flechas/flecha_normal_izquierda.png</file>
+        <file alias="flecha_apretada_derecha.png">../assets/flechas/flecha_apretada_derecha.png</file>
+        <file alias="flecha_apretada_izquierda.png">../assets/flechas/flecha_apretada_izquierda.png</file>
+    </qresource>
+    <qresource prefix="/Pantallas">
+        <file alias="fondo_editor.jpg">../assets/Pantallas/fondo-editor.jpg</file>
+    </qresource>
+    <qresource prefix="/Fuentes">
+        <file alias="stardew_valley.otf">../assets/fuentes/Stardew_Valley.otf</file>
+        <file alias="stardew_valley.ttf">../assets/fuentes/Stardew_Valley.ttf</file>
+        <file alias="dejavu_sans_bold.ttf">../assets/fuentes/DejaVuSans-Bold.ttf</file>
+    </qresource>
+</RCC>
