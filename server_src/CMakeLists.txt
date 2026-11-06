@@ -71,4 +71,3 @@ target_sources(taller_server
     game/commands/spawn_animal_command.h
     game/terrain.h
     )
-    

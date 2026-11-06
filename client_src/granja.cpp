@@ -74,8 +74,7 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
   renderer.Copy(suelo, origen_tierra, destino);
 
   int fila = cultivo.tipo * 2 + 1;
-  Rect origen_planta(cultivo.etapa * CULTIVO_LADO, fila * CULTIVO_LADO,
-                     CULTIVO_LADO, CULTIVO_LADO);
+  Rect origen_planta(cultivo.etapa * CULTIVO_LADO, fila * CULTIVO_LADO, CULTIVO_LADO, CULTIVO_LADO);
   renderer.Copy(cultivos, origen_planta, destino);
 }
 
