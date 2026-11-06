@@ -17,8 +17,11 @@ private:
   std::map<IdSector, Sector> sectors;
   std::map<int, Player *> players;
 
+  size_t dayTick;
+  size_t dayNumber;
+
 public:
-  explicit World(DaySpeed speed) : speed(speed) {}
+  explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
 
   bool addSector(IdSector id, size_t width = 30, size_t height = 30);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
@@ -42,6 +45,7 @@ public:
   WorldState state() const;
 
   void tick();
+  void endDay();
 };
 
 #endif // WORLD_H_

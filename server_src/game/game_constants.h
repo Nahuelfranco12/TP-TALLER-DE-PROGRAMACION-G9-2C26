@@ -1,6 +1,10 @@
 #ifndef GAME_CONSTANTS_H_
 #define GAME_CONSTANTS_H_
 
+#define TICKS_PER_SECOND 30
+#define DAY_DURATION_MINUTES 14
+#define TICKS_PER_DAY (DAY_DURATION_MINUTES * 60 * TICKS_PER_SECOND)
+
 #define MAX_INVENTORY_ITEMS 9
 #define MAX_INVETORY_STACK 50
 #define MAX_INVENTORY_TOOLS 4
@@ -42,7 +46,7 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };

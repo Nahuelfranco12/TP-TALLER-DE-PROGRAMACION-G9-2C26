@@ -108,3 +108,7 @@ void Sector::tick() {
         entity->tick();
     }
 }
+
+void Sector::endDay() {
+  
+}

@@ -53,6 +53,7 @@ public:
 
   SectorState state() const;
   void tick();
+  void endDay();
 };
 
 #endif // SECTOR_H_

@@ -12,13 +12,7 @@
 #include "./game/world.h"
 
 #include "client_queues.h"
-
-#define MAP_WIDTH 20
-#define MAP_HEIGHT 20
-#define START_X 10
-#define START_Y 10
-
-#define TICKS_PER_SECOND 30
+#include "./game/game_constants.h"
 
 class Gameloop : public Thread {
 private:

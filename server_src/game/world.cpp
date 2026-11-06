@@ -118,4 +118,16 @@ void World::tick() {
   for (auto &[id, sector] : sectors) {
     sector.tick();
   }
+
+  dayTick++;
+  if (dayTick >= TICKS_PER_DAY) {
+    dayTick = 0;
+    dayNumber++;
+    endDay();
+  }
+}
+
+void World::endDay() {
+  for (auto& [id, sector] : sectors)
+      sector.endDay();
 }
