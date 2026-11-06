@@ -48,7 +48,7 @@ ToolTypeDto GameDtosBuilder::toDto(AvailableTools tool) {
 std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
   switch (e.type) {
   case EntityTypes::MINERAL:
-    switch (e.mineralType) {
+    switch (e.mineral.type) {
     case MineralTypes::GOLD:
       return EntityTypeDto::MINERAL_GOLD;
     case MineralTypes::IRON:
@@ -60,7 +60,7 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     }
     break;
   case EntityTypes::ANIMAL:
-    return e.animalType == AnimalType::COW ? EntityTypeDto::COW
+    return e.animal.type == AnimalType::COW ? EntityTypeDto::COW
                                            : EntityTypeDto::CHICKEN;
   default:
     break;
@@ -160,7 +160,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
         } else if (auto type = toDto(e)) {
           EntityDto entityDto;
           entityDto.type = *type;
-          entityDto.ready = e.is_ready;
+          entityDto.ready = e.animal.is_ready;
           sectorDto.entities[pos] = entityDto;
         }
       }

@@ -52,8 +52,8 @@ public:
 
     EntityState entityState() const override {
         EntityState state = Entity::entityState();
-        state.cropType = type;
-        state.is_ready = canCollect();
+        state.crop.type = type;
+        state.crop.growth = growth();
         return state;
     }
 };
