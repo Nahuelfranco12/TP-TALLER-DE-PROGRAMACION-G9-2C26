@@ -104,9 +104,9 @@ SectorState Sector::state() const {
 }
 
 void Sector::tick() {
-    for (auto& [pos, entity] : this->entities) {
-        entity->tick();
-    }
+  for (auto &[pos, entity] : this->entities) {
+    entity->tick();
+  }
 }
 
 void Sector::endDay() {
