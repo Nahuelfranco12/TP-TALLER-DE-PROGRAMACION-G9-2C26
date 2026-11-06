@@ -23,7 +23,7 @@ public:
   }
 
   bool canCollect() const override {
-    if (progress == ticksToBeReady)
+    if (progress >= ticksToBeReady)
       return true;
     return false;
   }
@@ -34,6 +34,12 @@ public:
       return std::make_unique<CowMilk>(PRICE_MILK);
     }
     return nullptr;
+  }
+
+  EntityState entityState() const override {
+    EntityState state = Animal::entityState();
+    state.animal.is_ready = canCollect();
+    return state;
   }
 };
 
