@@ -24,13 +24,6 @@ const char *archivo_tileset(SectorTypeDto tipo) {
   }
   return "assets/mapas/Dungeon_Tileset.png";
 }
-
-const char *archivo_tileset(SectorTypeDto tipo) {
-  if (tipo == SectorTypeDto::FARM) {
-    return "assets/mapas/ground_01_16x16.png";
-  }
-  return "assets/mapas/Dungeon_Tileset.png";
-}
 } // namespace
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,

@@ -30,6 +30,7 @@ target_sources(taller_server
     game/commands/spawn_mineral_command.cpp
     game/commands/mine_command.cpp
     game/commands/spawn_animal_command.cpp
+    game/commands/collect_command.cpp
     game/terrain.cpp
 
     PUBLIC
@@ -66,7 +67,7 @@ target_sources(taller_server
     game/commands/leave_command.h
     game/commands/spawn_mineral_command.h
     game/commands/mine_command.h
+    game/commands/collect_command.h
     game/commands/spawn_animal_command.h
     game/terrain.h
     )
-    

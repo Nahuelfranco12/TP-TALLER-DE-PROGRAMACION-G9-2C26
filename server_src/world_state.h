@@ -23,7 +23,7 @@ struct EntityState {
       INVALID_PLAYER_ID;      // INVALID_PLAYER_ID en caso de no ser jugador.
   MineralTypes mineralType{}; // en caso de ser mineral.
   AnimalType animalType{};    // en caso de ser animal.
-  bool is_ready;
+  bool is_ready = true;
 
   // TODO: cultivos y npcs
 };

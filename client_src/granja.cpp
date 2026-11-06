@@ -82,10 +82,14 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
   int y = cultivo.tile_y * lado - camara_y;
   Rect destino(x, y, lado, lado);
 
-  int x = casa.tile_x * lado - camara_x;
-  int y = casa.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / 16, modelo.h * lado / 16);
-  renderer.Copy(casas, origen, destino);
+  // Tierra arada debajo de la planta
+  Rect origen_arada(ARADA_X, ARADA_Y, 16, 16);
+  renderer.Copy(suelo, origen_arada, destino);
+
+  // Planta: columna = etapa, fila = tipo de cultivo
+  Rect origen(cultivo.etapa * CULTIVO_LADO, cultivo.tipo * CULTIVO_LADO,
+              CULTIVO_LADO, CULTIVO_LADO);
+  renderer.Copy(cultivos, origen, destino);
 }
 
 void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
