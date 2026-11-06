@@ -49,7 +49,7 @@ QPushButton:pressed {
          <string>Crear Mapa</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="botonCrearMapa_2">
+       <widget class="QPushButton" name="botonEditarMapa">
         <property name="geometry">
          <rect>
           <x>840</x>
