@@ -62,6 +62,8 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
   case EntityTypes::ANIMAL:
     return e.animal.type == AnimalType::COW ? EntityTypeDto::COW
                                            : EntityTypeDto::CHICKEN;
+  case EntityTypes::CROP:
+    return EntityTypeDto::CROP;
   default:
     break;
   }
@@ -161,6 +163,8 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           EntityDto entityDto;
           entityDto.type = *type;
           entityDto.ready = e.animal.is_ready;
+          entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
+          entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
           sectorDto.entities[pos] = entityDto;
         }
       }

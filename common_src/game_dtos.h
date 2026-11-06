@@ -77,10 +77,15 @@ enum class EntityTypeDto {
   MINERAL_IRON,
   MINERAL_LAPIZLAZULI,
   MINERAL_COAL,
+  CROP,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo
 };
+
+enum class CropTypeDto { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
+
+enum class CropGrowthDto { SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
 
 struct MoveDto {
   DirectionDto direction = DirectionDto::Up;
@@ -143,9 +148,15 @@ struct PlayerDto {
   std::list<InventoryDto> inventory;
 };
 
+struct CropDto {
+    CropTypeDto type{};
+    CropGrowthDto growth{};
+};
+
 struct EntityDto {
   EntityTypeDto type{};
-  bool ready = false;
+  bool ready = false; // x ahora solo se usa si es animal
+  CropDto crop{}; // Solo se usa si es cultivo
 };
 
 struct SectorStateDto {
