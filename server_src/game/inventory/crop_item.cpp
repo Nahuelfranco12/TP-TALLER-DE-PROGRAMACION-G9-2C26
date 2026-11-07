@@ -1,6 +1,6 @@
 #include "crop_item.h"
 
-CropItem::CropItem(double price, CropTypes cropType, CropQuality quality): Item(price, ItemType::CROP, cropType) {}
+CropItem::CropItem(double price, CropTypes cropType, CropQuality quality): Item(price, ItemType::CROP, cropType), quality(quality) {}
 
 CropQuality CropItem::getQuality() const {
     return quality;

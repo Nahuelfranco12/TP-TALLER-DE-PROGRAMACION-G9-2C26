@@ -31,6 +31,9 @@ target_sources(taller_server
     game/commands/mine_command.cpp
     game/commands/spawn_animal_command.cpp
     game/terrain.cpp
+    game/commands/collect_command.cpp
+    game/commands/plant_command.cpp
+    game/inventory/crop_item.cpp
 
     PUBLIC
     # .h files
@@ -68,5 +71,13 @@ target_sources(taller_server
     game/commands/mine_command.h
     game/commands/spawn_animal_command.h
     game/terrain.h
+    game/commands/collect_command.h
+    game/commands/plant_command.h
+    game/entities/animal.h
+    game/entities/cow.h
+    game/entities/chicken.h
+    game/entities/crop.h
+    game/entities/collectable.h
+    game/inventory/crop_item.h
     )
     
