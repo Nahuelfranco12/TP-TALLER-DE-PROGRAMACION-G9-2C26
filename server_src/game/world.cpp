@@ -96,7 +96,7 @@ const std::map<int, Player *> World::getPlayers() const {
 
 Sector *World::getSector(IdSector id) {
   auto it = this->sectors.find(id);
-  return (it != this->sectors.end()) ? &it->second.get() : nullptr;
+  return (it != this->sectors.end()) ? it->second.get() : nullptr;
 }
 
 WorldState World::state() const {
