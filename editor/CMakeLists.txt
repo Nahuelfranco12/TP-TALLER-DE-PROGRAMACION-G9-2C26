@@ -9,11 +9,25 @@ qt_standard_project_setup()
 qt_add_executable(editor
     WIN32 MACOSX_BUNDLE
     main.cpp
-    ventanaeditor.cpp
-    ventanaeditor.h
     ventanaeditor.ui
     Images.qrc
 
+    headers/controlador_inicio_editor.h
+    headers/controlador_pagina_editor.h
+    headers/datos_editor.h
+    #headers/dtos.h
+    headers/navegador.h
+    headers/ventanaeditor.h
+
+    implementaciones/controlador_inicio_editor.cpp
+    implementaciones/navegador.cpp
+    implementaciones/ventanaeditor.cpp
+)
+
+target_include_directories(editor PRIVATE headers)
+
+set_target_properties(editor PROPERTIES
+    AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(editor

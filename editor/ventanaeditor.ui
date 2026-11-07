@@ -17,6 +17,9 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="styleSheet">
        <string notr="true">#pageMapas {
     background-color: black;
@@ -143,14 +146,10 @@ QPushButton:pressed {
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="editorMapas">
-       <property name="styleSheet">
-        <string notr="true">#pageMapas {
-    background-color: black;
-}</string>
-       </property>
-      </widget>
       <widget class="QWidget" name="pageMapas">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QWidget" name="barraIzqPM" native="true">
