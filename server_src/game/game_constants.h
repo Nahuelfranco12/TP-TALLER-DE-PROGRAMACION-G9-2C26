@@ -9,6 +9,8 @@
 #define MAX_INVETORY_STACK 50
 #define MAX_INVENTORY_TOOLS 4
 
+#define MAX_CAVERN_LEVELS 10
+
 #define PRICE_GOLD 80
 #define PRICE_IRON 50
 #define PRICE_LAPIZLAZULI 40
@@ -33,7 +35,20 @@
 
 #define INVALID_PLAYER_ID -1
 
-enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
+enum IdSector {
+  FARM,
+  VILLAGE,
+  CAVERN_LEVEL_1,
+  CAVERN_LEVEL_2,
+  CAVERN_LEVEL_3,
+  CAVERN_LEVEL_4,
+  CAVERN_LEVEL_5,
+  CAVERN_LEVEL_6,
+  CAVERN_LEVEL_7,
+  CAVERN_LEVEL_8,
+  CAVERN_LEVEL_9,
+  CAVERN_LEVEL_10
+};
 
 enum class AnimalType { COW, CHICKEN };
 
@@ -50,7 +65,7 @@ enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
-enum class CropGrowth {  SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
+enum class CropGrowth { SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
 
 enum class PlayerHats { HAT_DEFAULT };
 enum class PlayerHairs { BLONDE, CURLY };

@@ -14,7 +14,7 @@
 class World {
 private:
   DaySpeed speed;
-  std::map<IdSector, Sector> sectors;
+  std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
 
   size_t dayTick;
@@ -23,7 +23,7 @@ private:
 public:
   explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
 
-  bool addSector(IdSector id, size_t width = 30, size_t height = 30);
+  bool addSector(std::unique_ptr<Sector> sector);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 

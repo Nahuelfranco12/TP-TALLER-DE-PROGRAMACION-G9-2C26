@@ -6,8 +6,9 @@
 #include "entities/cow.h"
 #include "entities/mineral.h"
 
-bool World::addSector(IdSector id, size_t width, size_t height) {
-  auto [it, inserted] = this->sectors.try_emplace(id, width, height, id);
+bool World::addSector(std::unique_ptr<Sector> sector) {
+  IdSector id = sector->getId();
+  auto [it, inserted] = this->sectors.try_emplace(id, std::move(sector));
   return inserted;
 }
 
@@ -20,8 +21,8 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
       sectorDestineIt == this->sectors.end())
     return false;
 
-  Sector &sectorOrigin = sectorOriginIt->second;
-  Sector &sectorDestine = sectorDestineIt->second;
+  Sector &sectorOrigin = *sectorOriginIt->second;
+  Sector &sectorDestine = *sectorDestineIt->second;
 
   bool doorOrigin =
       sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine,
@@ -40,7 +41,7 @@ void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
   if (sectorIt == this->sectors.end())
     return;
 
-  Sector &sector = sectorIt->second;
+  Sector &sector = *sectorIt->second;
   Position startPos = sector.findFreePosition();
 
   auto player =
@@ -62,7 +63,7 @@ bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
     return false;
   auto mineral =
       std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeTime);
-  return it->second.addEntity(std::move(mineral), pos);
+  return it->second->addEntity(std::move(mineral), pos);
 }
 
 bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
@@ -81,7 +82,7 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
   default:
     return false;
   }
-  return it->second.addEntity(std::move(animal), pos);
+  return it->second->addEntity(std::move(animal), pos);
 }
 
 // cppcheck-suppress functionStatic
@@ -101,14 +102,14 @@ const std::map<int, Player *> World::getPlayers() const {
 
 Sector *World::getSector(IdSector id) {
   auto it = this->sectors.find(id);
-  return (it != this->sectors.end()) ? &it->second : nullptr;
+  return (it != this->sectors.end()) ? &it->second.get() : nullptr;
 }
 
 WorldState World::state() const {
   WorldState state;
   state.sectors.reserve(sectors.size());
   for (const auto &[id, sector] : sectors)
-    state.sectors.push_back(sector.state());
+    state.sectors.push_back(sector->state());
   for (const auto &[id, player] : players)
     state.players.push_back(player->state());
   return state;
@@ -116,7 +117,7 @@ WorldState World::state() const {
 
 void World::tick() {
   for (auto &[id, sector] : sectors) {
-    sector.tick();
+    sector->tick();
   }
 
   dayTick++;
@@ -128,6 +129,6 @@ void World::tick() {
 }
 
 void World::endDay() {
-  for (auto& [id, sector] : sectors)
-      sector.endDay();
+  for (auto &[id, sector] : sectors)
+    sector->endDay();
 }

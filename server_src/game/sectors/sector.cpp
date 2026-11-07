@@ -74,6 +74,14 @@ Entity *Sector::getEntity(Position pos) const {
   return it->second.get();
 }
 
+size_t Sector::playerCount() const {
+  size_t count = 0;
+  for (const auto& [pos, entity] : entities)
+    if (entity->getType() == EntityTypes::PLAYER)
+      count++;
+  return count;
+}
+
 Position Sector::findFreePosition() const {
   for (size_t x = 0; x < this->width; x++)
     for (size_t y = 0; y < this->height; y++) {
@@ -107,8 +115,4 @@ void Sector::tick() {
   for (auto &[pos, entity] : this->entities) {
     entity->tick();
   }
-}
-
-void Sector::endDay() {
-  
 }
