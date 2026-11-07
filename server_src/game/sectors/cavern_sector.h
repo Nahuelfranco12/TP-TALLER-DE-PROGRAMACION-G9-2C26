@@ -23,7 +23,9 @@ private:
     Position randomFreePosition();
 
 public:
-    CavernSector(size_t width, size_t height, IdSector id, CavernLevelConfig config);
+    CavernSector(size_t width, size_t height, IdSector id, CavernLevelConfig config) : Sector(width, height, id, Terrain(true, false, TerrainType::GROUND)), config(config) {
+        reset();
+    }
 
     void reset() override;
     void endDay() override;

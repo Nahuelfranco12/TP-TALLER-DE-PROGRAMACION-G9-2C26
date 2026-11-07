@@ -50,6 +50,8 @@ enum IdSector {
   CAVERN_LEVEL_10
 };
 
+enum TerrainType { DIRT, GRASS, GROUND };
+
 enum class AnimalType { COW, CHICKEN };
 
 enum class DaySpeed { SLOW, MEDIUM, FAST };

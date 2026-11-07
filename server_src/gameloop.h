@@ -11,8 +11,8 @@
 #include "./game/command.h"
 #include "./game/world.h"
 
-#include "client_queues.h"
 #include "./game/game_constants.h"
+#include "client_queues.h"
 
 class Gameloop : public Thread {
 private:
