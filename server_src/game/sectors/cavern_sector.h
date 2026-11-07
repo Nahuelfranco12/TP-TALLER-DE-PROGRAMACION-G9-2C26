@@ -27,6 +27,8 @@ public:
         reset();
     }
 
+    bool addEntity(std::unique_ptr<Entity> entity, Position pos);
+
     void reset() override;
     void endDay() override;
 };
