@@ -39,6 +39,7 @@ public:
 
   Sector *getSector(IdSector id);
 
+  GameTime currentTime() const;
   WorldState state() const;
 
   void tick();

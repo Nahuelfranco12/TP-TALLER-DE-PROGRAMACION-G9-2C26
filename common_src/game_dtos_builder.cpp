@@ -166,6 +166,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       }
     }
   }
+
+  sectorDto.time = {state.time.hours, state.time.minutes};
+  sectorDto.dayNumber = state.dayNumber;
+
   return sectorDto;
 }
 
