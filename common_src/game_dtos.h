@@ -115,6 +115,11 @@ struct GamePositionDto {
   }
 };
 
+struct PlantDto {
+  GamePositionDto target;
+  CropTypeDto crop{};
+};
+
 struct TileDto {
   TerrainTypeDto type;
   bool transitable;

@@ -131,6 +131,14 @@ CollectDto ServerProtocol::receive_collect() {
   return CollectDto{byte_to_direction(protocol.receive_u8())};
 }
 
+PlantDto ServerProtocol::receive_plant() {
+  PlantDto dto;
+  dto.target.x = protocol.receive_u16();
+  dto.target.y = protocol.receive_u16();
+  dto.crop = static_cast<CropTypeDto>(protocol.receive_u8());
+  return dto;
+}
+
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
   switch (direction_byte) {
   case DIR_UP:

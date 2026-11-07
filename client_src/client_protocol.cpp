@@ -53,6 +53,13 @@ void ClientProtocol::send_collect_dto(const CollectDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
+void ClientProtocol::send_plant_dto(const PlantDto& dto) {
+  protocol.send_u8(OP_PLANT);
+    protocol.send_u16(static_cast<uint16_t>(dto.target.x));
+    protocol.send_u16(static_cast<uint16_t>(dto.target.y));
+    protocol.send_u8(static_cast<uint8_t>(dto.crop));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
