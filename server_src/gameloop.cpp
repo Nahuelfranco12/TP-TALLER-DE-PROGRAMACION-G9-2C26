@@ -18,10 +18,13 @@ void Gameloop::process_commands() {
 }
 
 void Gameloop::addWorldSectors() {
-  this->world.addSector(std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2));
-  this->world.addSector(std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
+  this->world.addSector(
+      std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2));
+  this->world.addSector(
+      std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
 
-  world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15), Position(0, 15));
+  world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15),
+                Position(0, 15));
 
   this->world.spawnAnimal(IdSector::FARM, Position(10, 10), AnimalType::COW);
   this->world.spawnAnimal(IdSector::FARM, Position(11, 10),

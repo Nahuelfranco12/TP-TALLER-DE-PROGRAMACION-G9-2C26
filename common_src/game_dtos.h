@@ -149,8 +149,8 @@ struct EntityDto {
 };
 
 struct GameTimeDto {
-    size_t hours = 6;
-    size_t minutes = 0;
+  size_t hours = 6;
+  size_t minutes = 0;
 };
 
 struct SectorStateDto {

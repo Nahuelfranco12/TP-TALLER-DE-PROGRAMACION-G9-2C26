@@ -27,8 +27,7 @@ protected:
 public:
   Sector(size_t width, size_t height, IdSector id, Terrain terrainType)
       : width(width), height(height), id(id),
-        tiles(width, std::vector<Terrain>(
-                         height, terrainType)) {}
+        tiles(width, std::vector<Terrain>(height, terrainType)) {}
   virtual ~Sector() = default;
 
   MoveResult move(Position origin, Position destine);
@@ -36,15 +35,15 @@ public:
   bool isEmpty(Position pos) const;
   Position findFreePosition() const;
 
-  bool addEntity(std::unique_ptr<Entity> entity, Position pos);
+  virtual bool addEntity(std::unique_ptr<Entity> entity, Position pos);
   std::unique_ptr<Entity> removeEntity(Position pos);
   bool addDoor(std::unique_ptr<Door> door, Position pos);
   // std::unique_ptr<Door> removeDoor(Position pos);
-  
+
   /*
-  * getters
-  */
-  
+   * getters
+   */
+
   Entity *getEntity(Position pos) const;
   IdSector getId() const { return id; }
   size_t getWidth() const { return width; }
@@ -57,8 +56,8 @@ public:
   virtual void endDay();
 
   /*
-  * State para obtener el estado del sector completo y poder serializarlo.
-  */
+   * State para obtener el estado del sector completo y poder serializarlo.
+   */
   SectorState state() const;
 };
 

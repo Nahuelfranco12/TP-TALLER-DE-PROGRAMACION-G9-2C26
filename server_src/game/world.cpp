@@ -104,17 +104,17 @@ GameTime World::currentTime() const {
   size_t quantized = (totalMinutes / TIME_INTERVAL) * TIME_INTERVAL;
 
   size_t absoluteMinutes = DAY_START_HOUR * 60 + quantized;
-  return { (absoluteMinutes / 60) % 24, absoluteMinutes % 60} ;
+  return {(absoluteMinutes / 60) % 24, absoluteMinutes % 60};
 }
 
 WorldState World::state() const {
   WorldState state;
   state.sectors.reserve(sectors.size());
-  
+
   for (const auto &[id, sector] : sectors)
     state.sectors.push_back(sector->state());
-  
-    for (const auto &[id, player] : players)
+
+  for (const auto &[id, player] : players)
     state.players.push_back(player->state());
 
   state.dayNumber = dayNumber;

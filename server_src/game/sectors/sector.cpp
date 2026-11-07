@@ -76,7 +76,7 @@ Entity *Sector::getEntity(Position pos) const {
 
 size_t Sector::playerCount() const {
   size_t count = 0;
-  for (const auto& [pos, entity] : entities)
+  for (const auto &[pos, entity] : entities)
     if (entity->getType() == EntityTypes::PLAYER)
       count++;
   return count;

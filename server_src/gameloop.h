@@ -9,11 +9,11 @@
 #include "../common_src/thread.h"
 
 #include "./game/command.h"
-#include "./game/world.h"
+#include "./game/game_constants.h"
 #include "./game/sectors/cavern.h"
 #include "./game/sectors/farm_sector.h"
 #include "./game/sectors/village_sector.h"
-#include "./game/game_constants.h"
+#include "./game/world.h"
 
 #include "client_queues.h"
 
