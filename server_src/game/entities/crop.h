@@ -72,6 +72,8 @@ public:
         state.crop.growth = growth();
         return state;
     }
+
+    bool removeOnCollect() const override { return true; }
 };
 
 #endif // CROP_H_

@@ -41,6 +41,8 @@ public:
     state.animal.is_ready = canCollect();
     return state;
   }
+
+  bool removeOnCollect() const override { return false; }
 };
 
 #endif // COW_H_
