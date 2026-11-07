@@ -85,12 +85,6 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
   return it->second->addEntity(std::move(animal), pos);
 }
 
-// cppcheck-suppress functionStatic
-bool World::transfer(Entity & /*e*/, IdSector /*destine*/, Position /*pos*/) {
-  // TODO: implementar transferencia entre sectores
-  return false;
-}
-
 Player *World::getPlayer(int id) {
   auto it = this->players.find(id);
   return (it != this->players.end()) ? it->second : nullptr;

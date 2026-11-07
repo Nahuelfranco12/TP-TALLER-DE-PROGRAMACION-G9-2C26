@@ -34,9 +34,6 @@ public:
                     double freq, MineralPickaxeTime pickaxeTime);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
 
-  // TODO: implementar con puertas
-  bool transfer(Entity &e, IdSector destine, Position pos);
-
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
 
