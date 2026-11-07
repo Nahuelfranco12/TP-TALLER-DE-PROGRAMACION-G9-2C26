@@ -12,9 +12,15 @@ bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
   return Sector::addEntity(std::move(entity), pos);
 }
 
+void CavernSector::initEntities() {
+  spawnMinerals();
+  // spawnEnemies();
+}
+
 void CavernSector::reset() {
   clearEntities();
   initEntities();
+  pendingReset = false;
 }
 
 void CavernSector::endDay() {

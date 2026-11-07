@@ -145,9 +145,9 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     state.entities[position] = entity;
   }
 
-  state.time.hours   = protocol.receive_u8();
+  state.time.hours = protocol.receive_u8();
   state.time.minutes = protocol.receive_u8();
-  state.dayNumber    = protocol.receive_u8();
+  state.dayNumber = protocol.receive_u8();
 
   return state;
 }

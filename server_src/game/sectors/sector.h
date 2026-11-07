@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "../../world_state.h"
-#include "entities/door.h"
-#include "entities/entity.h"
-#include "game_constants.h"
-#include "move_result.h"
-#include "position.h"
-#include "terrain.h"
+#include "../entities/door.h"
+#include "../entities/entity.h"
+#include "../game_constants.h"
+#include "../move_result.h"
+#include "../position.h"
+#include "../terrain.h"
 
 class Sector {
 protected:
@@ -52,8 +52,8 @@ public:
   size_t playerCount() const;
 
   void tick();
-  virtual void reset();
-  virtual void endDay();
+  virtual void reset() {};
+  virtual void endDay() {};
 
   /*
    * State para obtener el estado del sector completo y poder serializarlo.

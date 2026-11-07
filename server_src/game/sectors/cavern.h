@@ -27,7 +27,9 @@ public:
       CavernLevelConfig config{.minMinerals = 8 + i * 2,
                                .maxMinerals = 12 + i * 2,
                                .minEnemies = 3 + i,
-                               .maxEnemies = 6 + i};
+                               .maxEnemies = 6 + i,
+                              .availableMinerals = minerals
+                              };
       world.addSector(std::make_unique<CavernSector>(
           CAVERN_DIMENSION, CAVERN_DIMENSION, levelId(i), config));
     }

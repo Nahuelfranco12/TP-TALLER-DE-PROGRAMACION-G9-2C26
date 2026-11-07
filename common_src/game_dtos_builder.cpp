@@ -74,8 +74,17 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
-  case CAVERN_LEVEL:
-    return SectorTypeDto::CAVERN;
+  case IdSector::CAVERN_LEVEL_1:
+  case IdSector::CAVERN_LEVEL_2:
+  case IdSector::CAVERN_LEVEL_3:
+  case IdSector::CAVERN_LEVEL_4:
+  case IdSector::CAVERN_LEVEL_5:
+  case IdSector::CAVERN_LEVEL_6:
+  case IdSector::CAVERN_LEVEL_7:
+  case IdSector::CAVERN_LEVEL_8:
+  case IdSector::CAVERN_LEVEL_9:
+  case IdSector::CAVERN_LEVEL_10:
+      return SectorTypeDto::CAVERN;
   }
   throw std::logic_error("IdSector sin DTO");
 }

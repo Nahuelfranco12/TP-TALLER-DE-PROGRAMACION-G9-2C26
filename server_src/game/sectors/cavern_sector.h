@@ -4,13 +4,14 @@
 #include "sector.h"
 
 #include <memory>
+#include <random>
 #include <vector>
 
 struct CavernLevelConfig {
-  int minMinerals;
-  int maxMinerals;
-  int minEnemies;
-  int maxEnemies;
+  size_t minMinerals;
+  size_t maxMinerals;
+  size_t minEnemies;
+  size_t maxEnemies;
   std::vector<MineralTypes> availableMinerals;
 };
 

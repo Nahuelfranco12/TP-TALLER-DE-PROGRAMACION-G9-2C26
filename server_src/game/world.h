@@ -9,7 +9,7 @@
 #include "./entities/player.h"
 #include "game_constants.h"
 #include "position.h"
-#include "sector.h"
+#include "./sectors/sector.h"
 
 class World {
 private:

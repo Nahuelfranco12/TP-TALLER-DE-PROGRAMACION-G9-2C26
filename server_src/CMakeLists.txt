@@ -16,7 +16,8 @@ target_sources(taller_server
     game/entities/mineral.cpp
     game/entities/door.cpp
     game/entities/player.cpp
-    game/sector.cpp
+    game/sectors/sector.cpp
+    game/sectors/cavern_sector.cpp
     game/world.cpp
     game/inventory/chicken_egg.cpp
     game/inventory/cow_milk.cpp
@@ -31,7 +32,6 @@ target_sources(taller_server
     game/commands/mine_command.cpp
     game/commands/spawn_animal_command.cpp
     game/commands/collect_command.cpp
-    game/terrain.cpp
 
     PUBLIC
     # .h files
@@ -53,7 +53,11 @@ target_sources(taller_server
     game/entities/mineral.h
     game/entities/door.h
     game/entities/player.h
-    game/sector.h
+    game/sectors/sector.h
+    game/sectors/cavern_sector.h
+    game/sectors/cavern.h
+    game/sectors/farm_sector.h
+    game/sectors/village_sector.h
     game/world.h
     game/inventory/chicken_egg.h
     game/inventory/cow_milk.h
