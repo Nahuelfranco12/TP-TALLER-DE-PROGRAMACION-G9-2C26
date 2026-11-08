@@ -32,6 +32,10 @@ add_library(taller_common STATIC)
 # HEY!! TODO XXX: add more subfolders here
 add_subdirectory(common_src/)
 
+add_library(taller_game STATIC)
+add_subdirectory(server_src/game/)
+target_include_directories(taller_game PUBLIC .)
+target_link_libraries(taller_game taller_common)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
@@ -151,7 +155,7 @@ if(TALLER_SERVER)
     set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the taller_common lib target
-    target_link_libraries(taller_server taller_common)
+    target_link_libraries(taller_server taller_common taller_game)
 endif()
 
 if(TALLER_EDITOR)
@@ -222,6 +226,7 @@ if(TALLER_TESTS)
     # Change this if you have to.
     target_link_libraries(taller_tests
         taller_common
+        taller_game
         GTest::gtest_main
     )
 endif()
