@@ -1,7 +1,7 @@
 #ifndef TERRAIN_H_
 #define TERRAIN_H_
 
-enum TerrainType { DIRT, GRASS, GROUND };
+#include "game_constants.h"
 
 class Terrain {
 private:
@@ -13,9 +13,9 @@ public:
   Terrain(bool transitable, bool arable, TerrainType type)
       : transitable(transitable), arable(arable), terrainType(type) {}
 
-  bool isTransitable() const;
-  bool isArable() const;
-  TerrainType getTerrainType() const;
+  bool isTransitable() const { return this->transitable; }
+  bool isArable() const { return this->arable; }
+  TerrainType getTerrainType() const { return this->terrainType; }
 };
 
 #endif // TERRAIN_H_

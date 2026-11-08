@@ -76,7 +76,30 @@ bool Inventario::tengo_en_la_mano(Herramienta herramienta) const {
          herramientas[seleccionado] == herramienta;
 }
 
-Rect Inventario::rect_casillero(int i, int ancho_ventana, int alto_ventana) {
+bool Inventario::herramienta_seleccionada(ToolTypeDto &herramienta) const {
+  if (seleccionado >= static_cast<int>(herramientas.size())) {
+    herramienta = static_cast<ToolTypeDto>(seleccionado);
+    return false;
+  }
+  switch (herramientas[seleccionado]) {
+  case PICO:
+    herramienta = ToolTypeDto::PICKAXE;
+    break;
+  case REGADERA:
+    herramienta = ToolTypeDto::WATERING_CAN;
+    break;
+  case PALA:
+    herramienta = ToolTypeDto::SHOVEL;
+    break;
+  case ESPADA:
+    herramienta = ToolTypeDto::SWORD;
+    break;
+  }
+  return true;
+}
+
+Rect Inventario::rect_casillero(int i, int ancho_ventana,
+                                int alto_ventana) {
   int ancho_barra = CASILLEROS * LADO + SEPARACION;
   int x = (ancho_ventana - ancho_barra) / 2 + i * LADO;
   if (i >= MAX_HERRAMIENTAS) {

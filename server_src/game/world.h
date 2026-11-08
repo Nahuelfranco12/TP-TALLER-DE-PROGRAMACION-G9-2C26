@@ -9,18 +9,21 @@
 #include "./entities/player.h"
 #include "game_constants.h"
 #include "position.h"
-#include "sector.h"
+#include "./sectors/sector.h"
 
 class World {
 private:
   DaySpeed speed;
-  std::map<IdSector, Sector> sectors;
+  std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
 
-public:
-  explicit World(DaySpeed speed) : speed(speed) {}
+  size_t dayTick;
+  size_t dayNumber;
 
-  bool addSector(IdSector id, size_t width = 30, size_t height = 30);
+public:
+  explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
+
+  bool addSector(std::unique_ptr<Sector> sector);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
@@ -31,17 +34,16 @@ public:
                     double freq, MineralPickaxeTime pickaxeTime);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
 
-  // TODO: implementar con puertas
-  bool transfer(Entity &e, IdSector destine, Position pos);
-
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
 
   Sector *getSector(IdSector id);
 
+  GameTime currentTime() const;
   WorldState state() const;
 
   void tick();
+  void endDay();
 };
 
 #endif // WORLD_H_

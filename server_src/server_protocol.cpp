@@ -33,6 +33,10 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
   }
+
+  protocol.send_u8(static_cast<uint8_t>(state.time.hours));
+  protocol.send_u8(static_cast<uint8_t>(state.time.minutes));
+  protocol.send_u8(static_cast<uint8_t>(state.dayNumber));
 }
 
 void ServerProtocol::send_world_map(const WorldMapDto &map) {

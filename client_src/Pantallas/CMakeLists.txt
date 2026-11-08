@@ -23,6 +23,7 @@ qt_add_executable(Pantallas
     implementaciones/tarjeta_item.cpp
     headers/navegador.h
     implementaciones/navegador.cpp
+    implementaciones/vista_responsive.cpp
     headers/lista_seleccionable.h
     implementaciones/lista_seleccionable.cpp
     headers/controlador_pagina.h
@@ -41,6 +42,7 @@ qt_add_executable(Pantallas
     headers/dibujar_personaje.h
     implementaciones/dibujar_personaje.cpp
     headers/servicio_lobby.h
+    headers/vista_responsive.h
 )
 
 target_link_libraries(Pantallas

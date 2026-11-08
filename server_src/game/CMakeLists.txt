@@ -1,0 +1,22 @@
+target_sources(taller_game
+    PRIVATE
+    world.cpp
+    entities/mineral.cpp
+    entities/door.cpp
+    entities/player.cpp
+    inventory/inventory.cpp
+    inventory/inventory_slot.cpp
+    inventory/mineral_item.cpp
+    inventory/chicken_egg.cpp
+    inventory/cow_milk.cpp
+    commands/move_command.cpp
+    commands/join_command.cpp
+    commands/leave_command.cpp
+    commands/select_tool_command.cpp
+    commands/mine_command.cpp
+    commands/collect_command.cpp
+    commands/spawn_mineral_command.cpp
+    commands/spawn_animal_command.cpp
+    sectors/sector.cpp
+    sectors/cavern_sector.cpp
+)

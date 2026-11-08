@@ -88,9 +88,16 @@ struct SectorState {
   std::vector<EntityState> entities;
 };
 
+struct GameTime {
+  size_t hours;
+  size_t minutes;
+};
+
 struct WorldState {
   std::vector<SectorState> sectors;
   std::vector<PlayerState> players;
+  size_t dayNumber = 1;
+  GameTime time{6, 0};
 };
 
 #endif // WORLD_STATE_H_
