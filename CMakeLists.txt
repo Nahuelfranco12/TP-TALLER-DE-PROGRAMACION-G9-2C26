@@ -229,4 +229,5 @@ if(TALLER_TESTS)
         taller_game
         GTest::gtest_main
     )
+    gtest_discover_tests(taller_tests)
 endif()

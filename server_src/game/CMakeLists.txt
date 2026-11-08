@@ -1,12 +1,9 @@
 target_sources(taller_game
     PRIVATE
     world.cpp
-    terrain.cpp
-    sector.cpp
     entities/mineral.cpp
     entities/door.cpp
     entities/player.cpp
-    entities/animal.cpp
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
@@ -20,5 +17,6 @@ target_sources(taller_game
     commands/collect_command.cpp
     commands/spawn_mineral_command.cpp
     commands/spawn_animal_command.cpp
+    sectors/sector.cpp
     sectors/cavern_sector.cpp
 )
