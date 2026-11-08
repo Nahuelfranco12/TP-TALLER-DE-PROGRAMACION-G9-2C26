@@ -1,15 +1,10 @@
-#include "controlador_inicio_editor.h"
-
 #include <QDir>
 #include <QFileDialog>
 #include <QPushButton>
 
+#include "constantes.h"
+#include "controlador_inicio_editor.h"
 #include "ui_ventanaeditor.h"
-
-namespace {
-const char *TITULO_ABRIR = "Abrir mapa";
-const char *FILTRO_MAPAS = "Mapas (*.toml *.json)";
-}  // namespace
 
 ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
                                                  Navegador &navegador,
@@ -30,9 +25,9 @@ void ControladorInicioEditor::crearMapa() {
 }
 
 void ControladorInicioEditor::editarMapa() {
-  QString ruta = QFileDialog::getOpenFileName(
-      ui.pageInicioEditor->window(), TITULO_ABRIR, QDir::homePath(),
-      FILTRO_MAPAS);
+  QString ruta =
+      QFileDialog::getOpenFileName(ui.pageInicioEditor->window(), TITULO_ABRIR,
+                                   QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   datos = DatosEditor{ModoEditor::Editar, ruta};

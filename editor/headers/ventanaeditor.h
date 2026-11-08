@@ -1,8 +1,8 @@
 #ifndef VENTANAEDITOR_H
 #define VENTANAEDITOR_H
 
-#include <QMainWindow>
 #include "datos_editor.h"
+#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

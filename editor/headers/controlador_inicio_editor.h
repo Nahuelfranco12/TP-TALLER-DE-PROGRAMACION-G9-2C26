@@ -5,15 +5,15 @@
 #include "datos_editor.h"
 
 class ControladorInicioEditor : public ControladorPaginaEditor {
- public:
+public:
   ControladorInicioEditor(Ui::VentanaEditor &ui, Navegador &navegador,
                           DatosEditor &datos, QObject *parent = nullptr);
   void limpiarPagina() override;
 
- private:
+private:
   DatosEditor &datos;
   void crearMapa();
   void editarMapa();
 };
 
-#endif  // CONTROLADOR_INICIO_EDITOR_H_
+#endif // CONTROLADOR_INICIO_EDITOR_H_

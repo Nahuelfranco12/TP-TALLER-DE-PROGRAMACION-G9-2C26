@@ -23,4 +23,23 @@
         <file alias="stardew_valley.ttf">../assets/fuentes/Stardew_Valley.ttf</file>
         <file alias="dejavu_sans_bold.ttf">../assets/fuentes/DejaVuSans-Bold.ttf</file>
     </qresource>
+	<qresource prefix="/Mapas">
+	    <file alias="suelo.png">../assets/mapas/ground_01_16x16.png</file>
+	    <file alias="cabanias.png">../assets/mapas/Tilesets_Cabins.png</file>
+	    <file alias="arbol.png">../assets/mapas/tree1.png</file>
+	    <file alias="piedras.png">../assets/mapas/Road copiar.png</file>
+	    <file alias="cerco.png">../assets/mapas/Fence's copiar.png</file>
+	    <file alias="dungeon.png">../assets/mapas/Dungeon_Tileset.png</file>
+	    <file alias="objetos.png">../assets/mapas/objects_01_16x16.png</file>
+		<file alias="centro_comunitario.png">../assets/mapas/centro_com.png</file>
+	</qresource>
+    <qresource prefix="/Edificios">
+        <file alias="casa.png">../assets/edificios/House.png</file>
+    </qresource>
+    <qresource prefix="/Npcs">
+	    <file alias="marnie.png">../assets/npcs/marnie.png</file>
+	    <file alias="clint.png">../assets/npcs/clint.png</file>
+	    <file alias="pierre.png">../assets/npcs/pierre.png</file>
+	    <file alias="robin.png">../assets/npcs/robin.png</file>
+	</qresource>
 </RCC>

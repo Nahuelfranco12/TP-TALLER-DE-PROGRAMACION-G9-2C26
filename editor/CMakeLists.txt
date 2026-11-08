@@ -15,10 +15,16 @@ qt_add_executable(editor
     headers/controlador_inicio_editor.h
     headers/controlador_pagina_editor.h
     headers/datos_editor.h
-    #headers/dtos.h
     headers/navegador.h
     headers/ventanaeditor.h
+    headers/controlador_mapas.h
+    headers/editor_dtos.h
+    headers/vista_responsive.h
+    headers/constantes.h
 
+    implementaciones/vista_responsive.cpp
+    implementaciones/editor_dtos.cpp
+    implementaciones/controlador_mapas.cpp
     implementaciones/controlador_inicio_editor.cpp
     implementaciones/navegador.cpp
     implementaciones/ventanaeditor.cpp

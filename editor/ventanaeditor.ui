@@ -160,22 +160,89 @@ QPushButton:pressed {
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: white;</string>
+           <string notr="true">background-color: black;</string>
           </property>
           <widget class="QLabel" name="label">
            <property name="geometry">
             <rect>
-             <x>40</x>
+             <x>0</x>
              <y>20</y>
-             <width>221</width>
+             <width>301</width>
              <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-color:black;</string>
+            <string notr="true">background-color: black;
+qproperty-alignment: AlignCenter;
+font-size: 24px;</string>
            </property>
            <property name="text">
             <string>Assets</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="botonVolverPM">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>550</y>
+             <width>241</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    border-image: url(:/Botones/boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/Botones/boton_apretado.png);
+    padding-top: 3px; 
+}</string>
+           </property>
+           <property name="text">
+            <string>Volver</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="botonExportarPM">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>620</y>
+             <width>241</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    border-image: url(:/Botones/boton_normal.png);
+    color: #f1b356; 
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+	border-image: url(:/Botones/boton_apretado.png);
+    padding-top: 3px; 
+}</string>
+           </property>
+           <property name="text">
+            <string>Exportar</string>
+           </property>
+          </widget>
+          <widget class="QListWidget" name="paletaAssets">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>70</y>
+             <width>301</width>
+             <height>471</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
           </widget>
          </widget>

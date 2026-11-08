@@ -10,4 +10,4 @@ struct DatosEditor {
   QString rutaArchivo;
 };
 
-#endif  // DATOS_EDITOR_H_
+#endif // DATOS_EDITOR_H_
