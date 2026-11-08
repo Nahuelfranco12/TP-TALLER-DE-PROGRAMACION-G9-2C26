@@ -53,6 +53,13 @@ void ClientProtocol::send_collect_dto(const CollectDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
+void ClientProtocol::send_plant_dto(const PlantDto& dto) {
+  protocol.send_u8(OP_PLANT);
+  protocol.send_u16(static_cast<uint16_t>(dto.target.x));
+  protocol.send_u16(static_cast<uint16_t>(dto.target.y));
+  protocol.send_u8(static_cast<uint8_t>(dto.crop));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
@@ -142,6 +149,8 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     EntityDto entity;
     entity.type = static_cast<EntityTypeDto>(protocol.receive_u8());
     entity.ready = protocol.receive_u8() == 1;
+    entity.crop.type = static_cast<CropTypeDto>(protocol.receive_u8());
+    entity.crop.growth = static_cast<CropGrowthDto>(protocol.receive_u8()); 
     state.entities[position] = entity;
   }
 
@@ -213,6 +222,7 @@ InventoryDto ClientProtocol::receive_inventory() {
     InventorySlotDto slot;
     slot.count = protocol.receive_u16();
     slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
+    slot.quality = static_cast<CropQualityDto>(protocol.receive_u8());
     inventory.slots.push_back(slot);
   }
 

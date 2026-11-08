@@ -16,14 +16,28 @@ struct TerrainState {
   bool isDoor;
 };
 
+struct CropState {
+  CropTypes type{};
+  CropGrowth growth{};
+};
+
+struct MineralState {
+  MineralTypes type{};
+};
+
+struct AnimalState {
+  AnimalType type{};
+  bool is_ready = false;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
   int playerId =
       INVALID_PLAYER_ID;      // INVALID_PLAYER_ID en caso de no ser jugador.
-  MineralTypes mineralType{}; // en caso de ser mineral.
-  AnimalType animalType{};    // en caso de ser animal.
-  bool is_ready = true;
+  MineralState mineral{}; // en caso de ser mineral.
+  AnimalState animal{};    // en caso de ser animal.
+  CropState crop{}; // en caso de ser mineral
 
   // TODO: cultivos y npcs
 };
@@ -33,6 +47,7 @@ struct ItemState {
   int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso
                // contrario
   int count;
+  CropQuality quality{};
 };
 
 struct ToolState {

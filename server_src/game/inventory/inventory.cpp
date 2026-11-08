@@ -1,8 +1,9 @@
 #include "inventory.h"
-
+#include "crop_item.h"
 #include <utility>
 
 bool Inventory::addItem(std::unique_ptr<Item> item) {
+  if (!item) return false;
   for (InventorySlot &slot : this->items) {
     if (slot.getItem().stacksWith(*item)) {
       bool result = slot.add();
@@ -43,8 +44,17 @@ InventoryState Inventory::state() const {
   state.items.reserve(items.size());
   for (const InventorySlot &slot : items) {
     const Item &item = slot.getItem();
-    state.items.push_back({item.getType(), item.subtypeToInt(),
-                           static_cast<uint8_t>(slot.getCount())});
+    ItemState itemState;
+    itemState.type = item.getType();
+    itemState.subtype = item.subtypeToInt();
+    itemState.count = slot.getCount();
+    const CropItem *crop = dynamic_cast<const CropItem *>(&item);
+        if (crop) {
+            itemState.quality = crop->getQuality();
+        }
+
+        state.items.push_back(itemState);
+    
   }
   for (const auto &tool : tools)
     state.tools.push_back({tool->toolType});

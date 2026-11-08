@@ -29,7 +29,7 @@ public:
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();
-    state.mineralType = this->mineralType;
+    state.mineral.type = this->mineralType;
     return state;
   }
 };

@@ -8,6 +8,7 @@
 #include "./game/commands/collect_command.h"
 #include "./game/commands/mine_command.h"
 #include "./game/commands/move_command.h"
+#include "./game/commands/plant_command.h"
 #include "./game/commands/select_tool_command.h"
 
 class CommandFactory {
@@ -16,6 +17,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const MineDto &dto);
   std::unique_ptr<Command> create(int player_id, const ToolTypeDto &dto);
   std::unique_ptr<Command> create(int player_id, const CollectDto &dto);
+  std::unique_ptr<Command> create(int player_id, const PlantDto &dto);
   std::unique_ptr<Command> create_join(int player_id,
                                        const PlayerOutfitDto &outfit);
 };

@@ -30,6 +30,8 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     send_position(position);
     protocol.send_u8(static_cast<uint8_t>(entity.type));
     protocol.send_u8(entity.ready ? 1 : 0);
+    protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
+    protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
@@ -89,6 +91,7 @@ void ServerProtocol::send_inventory(const InventoryDto &inventory) {
   for (const InventorySlotDto &slot : inventory.slots) {
     protocol.send_u16(static_cast<uint16_t>(slot.count));
     protocol.send_u8(static_cast<uint8_t>(slot.item));
+    protocol.send_u8(static_cast<uint8_t>(slot.quality));
   }
 
   protocol.send_u16(static_cast<uint16_t>(inventory.tools.size()));
@@ -131,6 +134,14 @@ MineDto ServerProtocol::receive_mine() {
 
 CollectDto ServerProtocol::receive_collect() {
   return CollectDto{byte_to_direction(protocol.receive_u8())};
+}
+
+PlantDto ServerProtocol::receive_plant() {
+  PlantDto dto;
+  dto.target.x = protocol.receive_u16();
+  dto.target.y = protocol.receive_u16();
+  dto.crop = static_cast<CropTypeDto>(protocol.receive_u8());
+  return dto;
 }
 
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {

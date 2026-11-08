@@ -24,7 +24,7 @@ public:
   }
 
   bool canCollect() const override {
-    if (progress == ticksToBeReady)
+    if (progress >= ticksToBeReady)
       return true;
     return false;
   }
@@ -36,6 +36,14 @@ public:
     }
     return nullptr;
   }
+
+  EntityState entityState() const override {
+    EntityState state = Animal::entityState();
+    state.animal.is_ready = canCollect();
+    return state;
+  }
+
+  bool removeOnCollect() const override { return false; }
 };
 
 #endif // CHICKEN_H_

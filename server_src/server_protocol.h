@@ -35,6 +35,7 @@ public:
   MineDto receive_mine();
   ToolTypeDto receive_select_tool();
   CollectDto receive_collect();
+  PlantDto receive_plant();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();
