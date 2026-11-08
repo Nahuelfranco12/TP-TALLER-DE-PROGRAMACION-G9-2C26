@@ -148,6 +148,11 @@ struct EntityDto {
   bool ready = false;
 };
 
+struct GameTimeDto {
+  size_t hours = 6;
+  size_t minutes = 0;
+};
+
 struct SectorStateDto {
   SectorTypeDto type{};
   size_t width = 0;
@@ -156,6 +161,9 @@ struct SectorStateDto {
   std::vector<std::vector<TileDto>> sector;
   std::map<GamePositionDto, PlayerDto> players;
   std::map<GamePositionDto, EntityDto> entities;
+
+  GameTimeDto time{};
+  size_t dayNumber = 1;
 };
 
 struct WorldMapDto {

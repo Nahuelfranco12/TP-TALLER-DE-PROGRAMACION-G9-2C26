@@ -3,7 +3,7 @@
 #include <memory>
 #include <utility>
 
-#include "../sector.h"
+#include "../sectors/sector.h"
 
 Position Door::moveEntity(std::unique_ptr<Entity> entity) {
   if (this->destineSector.canMoveTo(this->destinePosition)) {

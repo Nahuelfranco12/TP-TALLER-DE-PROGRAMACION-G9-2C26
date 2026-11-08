@@ -1,9 +1,22 @@
 #ifndef GAME_CONSTANTS_H_
 #define GAME_CONSTANTS_H_
 
+#define SECTOR_DIMENSION_1 50
+#define SECTOR_DIMENSION_2 70
+
+#define CAVERN_DIMENSION 40
+
+#define TICKS_PER_SECOND 30
+#define DAY_START_HOUR 6
+#define DAY_DURATION_MINUTES 14
+#define TIME_INTERVAL 10
+#define TICKS_PER_DAY (DAY_DURATION_MINUTES * 60 * TICKS_PER_SECOND)
+
 #define MAX_INVENTORY_ITEMS 9
 #define MAX_INVETORY_STACK 50
 #define MAX_INVENTORY_TOOLS 4
+
+#define MAX_CAVERN_LEVELS 10
 
 #define PRICE_GOLD 80
 #define PRICE_IRON 50
@@ -21,9 +34,30 @@
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
 
+#define CROP_MULTIPLIER_BASE 1
+#define CROP_MULTIPLIER_GOOD 1.25
+#define CROP_MULITPLIER_EXCELENT 2
+#define CROP_MULTIPLIER_INCREDIBLE 4
+#define CROP_MULTIPLIER_PERFECT 8
+
 #define INVALID_PLAYER_ID -1
 
-enum IdSector { FARM, VILLAGE, CAVERN_LEVEL };
+enum IdSector {
+  FARM,
+  VILLAGE,
+  CAVERN_LEVEL_1,
+  CAVERN_LEVEL_2,
+  CAVERN_LEVEL_3,
+  CAVERN_LEVEL_4,
+  CAVERN_LEVEL_5,
+  CAVERN_LEVEL_6,
+  CAVERN_LEVEL_7,
+  CAVERN_LEVEL_8,
+  CAVERN_LEVEL_9,
+  CAVERN_LEVEL_10
+};
+
+enum TerrainType { DIRT, GRASS, GROUND };
 
 enum class AnimalType { COW, CHICKEN };
 
@@ -36,9 +70,11 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
-// enum class CrowTypes {  }; // TODO: tipos de cultivo
+enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
+enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
+enum class CropGrowth { SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
 
 enum class PlayerHats { HAT_DEFAULT };
 enum class PlayerHairs { BLONDE, CURLY };

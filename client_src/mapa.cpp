@@ -10,6 +10,8 @@ const int ESCALA = 4;
 const int TILE_SHEET = 16;
 const int TILE = TILE_SHEET * ESCALA;
 
+const char BORDE = ',';
+
 int tile_de_pixel(int pixel) {
   int tile = pixel / TILE;
   if (pixel < 0 && pixel % TILE != 0) {
@@ -28,7 +30,10 @@ const char *archivo_tileset(SectorTypeDto tipo) {
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
-    : suelo(renderer, archivo_tileset(tipo)), borde(','), tipo(tipo),
+    : suelo(renderer, archivo_tileset(tipo)),
+      muebles(renderer, "assets/mapas/Tilesets_Furniture.png"),
+      borde(','),
+      tipo(tipo),
       margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
@@ -88,7 +93,6 @@ void Mapa::generar_caverna(int ancho, int alto, unsigned int semilla) {
   }
 
   filas[0] = std::string(ancho, 'w');
-  filas[1][ancho / 2] = 'e';
 }
 
 int Mapa::obtener_ancho() const {
@@ -101,6 +105,37 @@ int Mapa::obtener_ancho() const {
 int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
 bool Mapa::es_escalera(int x, int y) const { return tile_en(x, y) == 'e'; }
+
+void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
+    int ancho = static_cast<int>(tiles.size());
+    int alto = 0;
+    if (ancho > 0) {
+        alto = static_cast<int>(tiles[0].size());
+    }
+
+    std::vector<std::string> nueva(alto, std::string(ancho, '.'));
+
+    // El servidor decide que hay en cada lugar
+    for (int x = 0; x < ancho; ++x) {
+        for (int y = 0; y < alto; ++y) {
+            const TileDto &tile = tiles[x][y];
+            
+            char letra = tile_en(x, y);
+            if (tile.type == TerrainTypeDto::DIRT) {
+                letra = 'T';
+            }
+            if (tile.isDoor) {
+                letra = 'e';
+            }
+            if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
+                letra = 'w';
+            }
+
+            nueva[y][x] = letra;
+        }
+    }
+    filas = nueva;
+}
 
 char Mapa::tile_en(int x, int y) const {
   if (x >= 0 && x < obtener_ancho() && y >= 0 && y < obtener_alto()) {
@@ -163,9 +198,10 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     columna = 2;
     fila = 0;
   }
-  if (tipo_tile == 'e') {
-    columna = 9;
-    fila = 3;
+  if (tipo_tile == 'e' && tipo != SectorTypeDto::CAVERN) {
+    int alto = 36 * lado / 30;
+    renderer.Copy(muebles, Rect(514, 370, 30, 36), Rect(x, y + lado - alto, lado, alto));
+    return;
   }
 
   Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);

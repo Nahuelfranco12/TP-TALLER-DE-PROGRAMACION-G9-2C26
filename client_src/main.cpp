@@ -86,13 +86,13 @@ int main(int argc, char *argv[]) try {
   // Mapas
   SectorStateDto farm, cavern; //, village
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
-    if (sector.type == SectorTypeDto::FARM)
-      farm = sector;
-    if (sector.type == SectorTypeDto::CAVERN)
-      cavern = sector;
+      if (sector.type == SectorTypeDto::FARM) farm = sector;
+      if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
-  Mapa mapa_caverna(renderer, farm.type, cavern.width, cavern.height, 7);
+  Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height, 7);
+  mapa_granja.actualizar(farm.sector);
+  mapa_caverna.actualizar(cavern.sector);
 
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
                           mapa_granja.obtener_alto(), 42);
@@ -117,16 +117,22 @@ int main(int argc, char *argv[]) try {
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
   SectorStateDto ultimo_estado;
-  // Se repite hasta  que el usuario cierre la ventana
-  bool corriendo = true;
-  while (corriendo) {
-    // Proceso eventos
-    SDL_Event evento;
-    while (SDL_PollEvent(&evento)) {
-      if (evento.type == SDL_MOUSEBUTTONDOWN &&
-          evento.button.button == SDL_BUTTON_LEFT) {
-        interfaz.click(evento.button.x, evento.button.y, audio);
-      }
+	// Se repite hasta  que el usuario cierre la ventana
+	bool corriendo = true;
+	while (corriendo) {
+		// Proceso eventos
+		SDL_Event evento;
+		while (SDL_PollEvent(&evento)) {
+			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+				if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
+					if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
+						ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+						if (inventario.herramienta_seleccionada(herramienta)) {
+							client.send_select_tool(herramienta);
+						}
+					}
+				}
+			}
 
       if (evento.type == SDL_QUIT) {
         corriendo = false;
@@ -144,17 +150,13 @@ int main(int argc, char *argv[]) try {
       // 1 a 4 elegir herramienta
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
           evento.key.keysym.sym <= SDLK_4) {
-        int numero = evento.key.keysym.sym - SDLK_1;
-        inventario.seleccionar(numero);
-        client.send_select_tool(static_cast<ToolTypeDto>(numero));
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_z) {
-        en_caverna = !en_caverna;
-        if (en_caverna) {
-          audio.poner_musica_caverna();
-        } else {
-          audio.poner_musica_granja();
+        inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
+		ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+		if (inventario.herramienta_seleccionada(herramienta)) {
+		  client.send_select_tool(herramienta);
+		}
+        if (inventario.herramienta_seleccionada(herramienta)) {
+          client.send_select_tool(herramienta);
         }
       }
 
@@ -191,23 +193,6 @@ int main(int argc, char *argv[]) try {
         }
       }
 
-      // Cambiar de prenda
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_p) {
-        personaje.cambiar_pantalon();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_r) {
-        personaje.cambiar_remera();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c) {
-        personaje.cambiar_pelo();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_h) {
-        personaje.cambiar_sombrero();
-      }
-
       // Cambiar color (O pantalon, V pelo)
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_o) {
         personaje.cambiar_color_pantalon();
@@ -241,8 +226,27 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
-      std::set<size_t> presentes;
-      const size_t mi_id = static_cast<size_t>(client.get_my_id());
+
+	  bool ahora_en_caverna = (state.type == SectorTypeDto::CAVERN);
+	  if (ahora_en_caverna != en_caverna) {
+		en_caverna = ahora_en_caverna;
+		if (en_caverna) {
+		  audio.poner_musica_caverna();
+		} else {
+		  audio.poner_musica_granja();
+		}
+    }
+
+	if (en_caverna) {
+		mapa_caverna.actualizar(state.sector);
+	} else {
+		mapa_granja.actualizar(state.sector);
+    granja.actualizar(state.entities);
+	}
+
+
+    std::set<size_t> presentes;
+    const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
       for (const auto &[posicion, jugador] : state.players) {
         const int x = static_cast<int>(posicion.x);
@@ -250,16 +254,6 @@ int main(int argc, char *argv[]) try {
         if (jugador.id == mi_id) {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
-
-            int tile_x = personaje.obtener_tile_x();
-            int tile_y = personaje.obtener_tile_y();
-            if (!en_caverna && granja.es_entrada_mina(tile_x, tile_y)) {
-              en_caverna = true;
-              audio.poner_musica_caverna();
-            } else if (en_caverna && mapa_caverna.es_escalera(tile_x, tile_y)) {
-              en_caverna = false;
-              audio.poner_musica_granja();
-            }
           }
           continue;
         }
