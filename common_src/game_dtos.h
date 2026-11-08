@@ -63,7 +63,14 @@ enum class ItemTypeDto {
   SEED,
   CHICKEN_EGG,
   COW_MILK,
-  CULTIVO, // TODO: los distintos tipo de cultivos + su rareza
+  SEED_STRAWBERRY,
+  SEED_GREEN_ONION,
+  SEED_POTATO,
+  SEED_PUMPKIN,
+  CROP_STRAWBERRY,
+  CROP_GREEN_ONION,
+  CROP_POTATO,
+  CROP_PUMPKIN,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -86,6 +93,8 @@ enum class EntityTypeDto {
 enum class CropTypeDto { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 
 enum class CropGrowthDto { SEED_STAGE, EARLY_GROWTH, MID_GROWTH, FULL_GROWTH };
+
+enum class CropQualityDto { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
 
 struct MoveDto {
   DirectionDto direction = DirectionDto::Up;
@@ -130,6 +139,7 @@ struct TileDto {
 struct InventorySlotDto {
   int count;
   ItemTypeDto item;
+  CropQualityDto quality{};
 };
 
 struct InventoryDto {

@@ -55,9 +55,9 @@ void ClientProtocol::send_collect_dto(const CollectDto &dto) {
 
 void ClientProtocol::send_plant_dto(const PlantDto& dto) {
   protocol.send_u8(OP_PLANT);
-    protocol.send_u16(static_cast<uint16_t>(dto.target.x));
-    protocol.send_u16(static_cast<uint16_t>(dto.target.y));
-    protocol.send_u8(static_cast<uint8_t>(dto.crop));
+  protocol.send_u16(static_cast<uint16_t>(dto.target.x));
+  protocol.send_u16(static_cast<uint16_t>(dto.target.y));
+  protocol.send_u8(static_cast<uint8_t>(dto.crop));
 }
 
 int ClientProtocol::receive_player_id() {
@@ -218,6 +218,7 @@ InventoryDto ClientProtocol::receive_inventory() {
     InventorySlotDto slot;
     slot.count = protocol.receive_u16();
     slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
+    slot.quality = static_cast<CropQualityDto>(protocol.receive_u8());
     inventory.slots.push_back(slot);
   }
 

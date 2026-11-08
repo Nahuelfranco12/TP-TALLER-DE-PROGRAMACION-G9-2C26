@@ -20,11 +20,25 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
     }
     break;
   case ItemType::SEED:
-    return ItemTypeDto::SEED;
+    switch (static_cast<CropTypes>(item.subtype)) {
+        case CropTypes::STRAWBERRY:  return ItemTypeDto::SEED_STRAWBERRY;
+        case CropTypes::GREEN_ONION: return ItemTypeDto::SEED_GREEN_ONION;
+        case CropTypes::POTATO:      return ItemTypeDto::SEED_POTATO;
+        case CropTypes::PUMPKIN:     return ItemTypeDto::SEED_PUMPKIN;
+    }
+    break;
   case ItemType::CROP:
-    return ItemTypeDto::CULTIVO;
+      switch (static_cast<CropTypes>(item.subtype)) {
+          case CropTypes::STRAWBERRY:  return ItemTypeDto::CROP_STRAWBERRY;
+          case CropTypes::GREEN_ONION: return ItemTypeDto::CROP_GREEN_ONION;
+          case CropTypes::POTATO:      return ItemTypeDto::CROP_POTATO;
+          case CropTypes::PUMPKIN:     return ItemTypeDto::CROP_PUMPKIN;
+      }
+      break;
   case ItemType::ANIMAL_PRODUCT:
-    return ItemTypeDto::CHICKEN_EGG; // TODO: huevo o leche
+      if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
+          return ItemTypeDto::COW_MILK;
+      return ItemTypeDto::CHICKEN_EGG;
   default:
     break;
   }
@@ -150,7 +164,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
               InventoryDto inv;
               inv.ownerId = playerState.id;
               for (const ItemState &i : playerState.inventory.items)
-                inv.slots.push_back({i.count, toDto(i)});
+                inv.slots.push_back({i.count, toDto(i), static_cast<CropQualityDto>(i.quality)});
               for (const ToolState &t : playerState.inventory.tools)
                 inv.tools.push_back(toDto(t.type));
               playerDto.inventory.push_back(std::move(inv));

@@ -87,6 +87,7 @@ void ServerProtocol::send_inventory(const InventoryDto &inventory) {
   for (const InventorySlotDto &slot : inventory.slots) {
     protocol.send_u16(static_cast<uint16_t>(slot.count));
     protocol.send_u8(static_cast<uint8_t>(slot.item));
+    protocol.send_u8(static_cast<uint8_t>(slot.quality));
   }
 
   protocol.send_u16(static_cast<uint16_t>(inventory.tools.size()));

@@ -47,6 +47,7 @@ struct ItemState {
   int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso
                // contrario
   int count;
+  CropQuality quality{};
 };
 
 struct ToolState {
