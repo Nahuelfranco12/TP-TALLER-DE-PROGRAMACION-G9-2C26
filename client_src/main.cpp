@@ -164,32 +164,30 @@ int main(int argc, char *argv[]) try {
           en_caverna) {
         int frente_x = personaje.obtener_tile_x();
         int frente_y = personaje.obtener_tile_y();
+
+        DirectionDto dir = DirectionDto::Up;
         switch (personaje.obtener_direccion()) {
         case ARRIBA:
+          dir = DirectionDto::Up;
           frente_y--;
           break;
         case ABAJO:
+          dir = DirectionDto::Down;
           frente_y++;
           break;
         case IZQUIERDA:
+          dir = DirectionDto::Left;
           frente_x--;
           break;
         case DERECHA:
+          dir = DirectionDto::Right;
           frente_x++;
           break;
         }
-        if (inventario.tengo_en_la_mano(PICO)) {
+        if (inventario.tengo_en_la_mano(PICO)  && !personaje.esta_picando()) {
           personaje.picar();
-          int roto = caverna.picar(frente_x, frente_y);
-
-          if (roto == 0)
-            inventario.agregar(ITEM_HIERRO, 1);
-          if (roto == 1)
-            inventario.agregar(ITEM_CARBON, 1);
-          if (roto == 2)
-            inventario.agregar(ITEM_LAPISLAZULI, 1);
-          if (roto == 3)
-            inventario.agregar(ITEM_ORO, 1);
+          // caverna.picar(frente_x, frente_y);
+          client.send_mine(dir); // TODO: revisar
         }
       }
 
@@ -239,11 +237,11 @@ int main(int argc, char *argv[]) try {
 
 	if (en_caverna) {
 		mapa_caverna.actualizar(state.sector);
+    caverna.actualizar(state.entities);
 	} else {
 		mapa_granja.actualizar(state.sector);
     granja.actualizar(state.entities);
 	}
-
 
     std::set<size_t> presentes;
     const size_t mi_id = static_cast<size_t>(client.get_my_id());

@@ -48,6 +48,7 @@ public:
   void animar(long vueltas);
 
   void picar();
+  bool esta_picando() const { return vueltas_picando > 0; }
 
   // Dónde está (en tiles)
   int obtener_tile_x() const;
