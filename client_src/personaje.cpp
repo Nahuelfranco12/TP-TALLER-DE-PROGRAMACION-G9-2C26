@@ -7,11 +7,6 @@ using SDL2pp::Rect;
 using SDL2pp::Renderer;
 
 namespace {
-// Cuántas prendas trae cada sheet
-const int CANTIDAD_PANTALONES = 16;
-const int CANTIDAD_REMERAS = 128;
-const int CANTIDAD_PELOS = 63;
-const int CANTIDAD_SOMBREROS = 122;
 
 // Paleta de colores
 const Uint8 COLORES[8][3] = {
@@ -59,21 +54,6 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
                          COLORES[color_pantalon][2]);
   pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
                     COLORES[color_pelo][2]);
-}
-
-void Personaje::cambiar_pantalon() {
-  pantalon = (pantalon + 1) % CANTIDAD_PANTALONES;
-}
-
-void Personaje::cambiar_remera() { remera = (remera + 1) % CANTIDAD_REMERAS; }
-
-void Personaje::cambiar_pelo() { pelo = (pelo + 1) % CANTIDAD_PELOS; }
-
-void Personaje::cambiar_sombrero() {
-  sombrero = sombrero + 1;
-  if (sombrero >= CANTIDAD_SOMBREROS) {
-    sombrero = -1;
-  }
 }
 
 void Personaje::cambiar_color_pantalon() {

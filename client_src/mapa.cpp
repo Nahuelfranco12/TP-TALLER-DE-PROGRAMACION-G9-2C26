@@ -11,6 +11,7 @@ const int TILE_SHEET = 16;
 const int TILE = TILE_SHEET * ESCALA;
 
 const char BORDE = ',';
+const int FILA_CAMINO = 15;
 
 int tile_de_pixel(int pixel) {
   int tile = pixel / TILE;
@@ -24,7 +25,10 @@ const char *archivo_tileset(SectorTypeDto tipo) {
   if (tipo == SectorTypeDto::FARM) {
     return "assets/mapas/ground_01_16x16.png";
   }
-  return "assets/mapas/Dungeon_Tileset.png";
+  else if (tipo == SectorTypeDto::CAVERN) {
+    return "assets/mapas/Dungeon_Tileset.png";
+  }
+  return "assets/mapas/PelicanTown_Buildings.png";
 }
 } // namespace
 
@@ -32,6 +36,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
     : suelo(renderer, archivo_tileset(tipo)),
       muebles(renderer, "assets/mapas/Tilesets_Furniture.png"),
+      piso_pueblo(renderer, "assets/mapas/PelicanTown_Buildings.png"),
+      flores(renderer, "assets/mapas/ComunityCenter_Offerings.png"),
       borde(','),
       tipo(tipo),
       margen(0) {
@@ -39,6 +45,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
     generar_granja(ancho, alto, semilla);
   } else if (tipo == SectorTypeDto::CAVERN) {
     generar_caverna(ancho, alto, semilla);
+  } else if (tipo == SectorTypeDto::VILLAGE) {
+    generar_pueblo(ancho, alto, semilla);
   }
 }
 
@@ -64,7 +72,7 @@ void Mapa::generar_granja(int ancho, int alto, unsigned int semilla) {
         bool adentro = x >= 0 && y >= 0 && x < ancho_total && y < alto_total &&
                        dx * dx + dy * dy <= radio * radio;
         if (adentro && dx * dx + dy * dy <= radio * radio) {
-          pasto_afuera[y][x] = ',';
+          pasto_afuera[y][x] = 'f';
         }
       }
     }
@@ -95,6 +103,25 @@ void Mapa::generar_caverna(int ancho, int alto, unsigned int semilla) {
   filas[0] = std::string(ancho, 'w');
 }
 
+void Mapa::generar_pueblo(int ancho, int alto, unsigned int semilla) {
+  margen = 30;
+  int ancho_total = ancho + 2 * margen;
+  int alto_total = alto + 2 * margen;
+  pasto_afuera.assign(alto_total, std::string(ancho_total, 'c'));
+
+  filas.assign(alto, std::string(ancho, 'c'));
+
+  std::mt19937 azar(semilla);
+  std::uniform_int_distribution<int> dado(0, 9);
+  for (int y = 0; y < alto_total; ++y) {
+    for (int x = 0; x < ancho_total; ++x) {
+      if (dado(azar) == 0) {
+        pasto_afuera[y][x] = 'f';
+      }
+    }
+  }
+}
+
 int Mapa::obtener_ancho() const {
   if (filas.empty()) {
     return 0;
@@ -102,9 +129,13 @@ int Mapa::obtener_ancho() const {
   return static_cast<int>(filas[0].size());
 }
 
-int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
+int Mapa::obtener_alto() const { 
+  return static_cast<int>(filas.size());
+}
 
-bool Mapa::es_escalera(int x, int y) const { return tile_en(x, y) == 'e'; }
+bool Mapa::es_escalera(int x, int y) const { 
+  return tile_en(x, y) == 'e'; 
+}
 
 void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
     int ancho = static_cast<int>(tiles.size());
@@ -203,6 +234,16 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     renderer.Copy(muebles, Rect(514, 370, 30, 36), Rect(x, y + lado - alto, lado, alto));
     return;
   }
+  if (tipo_tile == 'c' && tipo != SectorTypeDto::CAVERN) {
+    renderer.Copy(piso_pueblo, Rect(0, 368, 16, 16), Rect(x, y, lado, lado));
+    return;
+  }
+
+  if (tipo_tile == 'f') {
+    renderer.Copy(piso_pueblo, Rect(0, 368, 16, 16), Rect(x, y, lado, lado));
+    renderer.Copy(flores, Rect(160, 276, 16, 16), Rect(x, y, lado, lado));
+    return;
+  }
 
   Rect origen(columna * TILE_SHEET, fila * TILE_SHEET, TILE_SHEET, TILE_SHEET);
   Rect destino(x, y, lado, lado);
@@ -210,7 +251,7 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
 }
 
 void Mapa::dibujar(Renderer &renderer, int camara_x, int camara_y,
-                   int ancho_ventana, int alto_ventana) {
+                   int ancho_ventana, int alto_ventana, bool incluir_margen) {
   int primera_columna = tile_de_pixel(camara_x);
   int primera_fila = tile_de_pixel(camara_y);
   int ultima_columna = tile_de_pixel(camara_x + ancho_ventana);
@@ -228,6 +269,9 @@ void Mapa::dibujar(Renderer &renderer, int camara_x, int camara_y,
       dibujar_tile(renderer, tile_en(columna, fila), x, y, TILE);
       if (afuera) {
         suelo.SetColorMod(255, 255, 255);
+      }
+      if (afuera && !incluir_margen) {
+        continue;
       }
     }
   }
