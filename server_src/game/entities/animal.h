@@ -18,7 +18,7 @@ public:
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();
-    state.animalType = animalType;
+    state.animal.type = animalType;
     return state;
   }
 };

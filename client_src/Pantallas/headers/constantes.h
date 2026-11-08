@@ -3,6 +3,10 @@
 
 #define BASE_COORDENADAS 1
 
+// lo agrego para hacer responsive toda la parte de QT
+#define ANCHO_DISENIO 1280
+#define ALTO_DISENIO 720
+
 // estos los uso en el customizar personaje
 #define ANCHO_GORRO 20
 #define ALTO_GORRO 20

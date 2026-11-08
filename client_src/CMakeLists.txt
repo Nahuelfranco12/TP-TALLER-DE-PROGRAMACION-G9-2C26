@@ -32,6 +32,9 @@ target_sources(taller_client
     actions/move_action.cpp
     actions/select_tool_action.cpp
     actions/mine_action.cpp
+    actions/collect_action.cpp
+    actions/plant_action.cpp
+    Pantallas/implementaciones/vista_responsive.cpp
     PUBLIC
     # .h files
     client.h
@@ -64,10 +67,13 @@ target_sources(taller_client
     Pantallas/headers/dtos_pantallas.h
     Pantallas/headers/dibujar_personaje.h
     Pantallas/headers/servicio_lobby.h
+    Pantallas/headers/vista_responsive.h
     actions/client_action.h
     actions/move_action.h
     actions/select_tool_action.h
     actions/mine_action.h
+    actions/collect_action.h
+    actions/plant_action.h
     caverna.h
     inventario.h
     alrededores.h

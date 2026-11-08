@@ -20,11 +20,25 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
     }
     break;
   case ItemType::SEED:
-    return ItemTypeDto::SEED;
+    switch (static_cast<CropTypes>(item.subtype)) {
+        case CropTypes::STRAWBERRY:  return ItemTypeDto::SEED_STRAWBERRY;
+        case CropTypes::GREEN_ONION: return ItemTypeDto::SEED_GREEN_ONION;
+        case CropTypes::POTATO:      return ItemTypeDto::SEED_POTATO;
+        case CropTypes::PUMPKIN:     return ItemTypeDto::SEED_PUMPKIN;
+    }
+    break;
   case ItemType::CROP:
-    return ItemTypeDto::CULTIVO;
+      switch (static_cast<CropTypes>(item.subtype)) {
+          case CropTypes::STRAWBERRY:  return ItemTypeDto::CROP_STRAWBERRY;
+          case CropTypes::GREEN_ONION: return ItemTypeDto::CROP_GREEN_ONION;
+          case CropTypes::POTATO:      return ItemTypeDto::CROP_POTATO;
+          case CropTypes::PUMPKIN:     return ItemTypeDto::CROP_PUMPKIN;
+      }
+      break;
   case ItemType::ANIMAL_PRODUCT:
-    return ItemTypeDto::CHICKEN_EGG; // TODO: huevo o leche
+      if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
+          return ItemTypeDto::COW_MILK;
+      return ItemTypeDto::CHICKEN_EGG;
   default:
     break;
   }
@@ -48,7 +62,7 @@ ToolTypeDto GameDtosBuilder::toDto(AvailableTools tool) {
 std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
   switch (e.type) {
   case EntityTypes::MINERAL:
-    switch (e.mineralType) {
+    switch (e.mineral.type) {
     case MineralTypes::GOLD:
       return EntityTypeDto::MINERAL_GOLD;
     case MineralTypes::IRON:
@@ -60,8 +74,10 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     }
     break;
   case EntityTypes::ANIMAL:
-    return e.animalType == AnimalType::COW ? EntityTypeDto::COW
+    return e.animal.type == AnimalType::COW ? EntityTypeDto::COW
                                            : EntityTypeDto::CHICKEN;
+  case EntityTypes::CROP:
+    return EntityTypeDto::CROP;
   default:
     break;
   }
@@ -74,8 +90,17 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
-  case CAVERN_LEVEL:
-    return SectorTypeDto::CAVERN;
+  case IdSector::CAVERN_LEVEL_1:
+  case IdSector::CAVERN_LEVEL_2:
+  case IdSector::CAVERN_LEVEL_3:
+  case IdSector::CAVERN_LEVEL_4:
+  case IdSector::CAVERN_LEVEL_5:
+  case IdSector::CAVERN_LEVEL_6:
+  case IdSector::CAVERN_LEVEL_7:
+  case IdSector::CAVERN_LEVEL_8:
+  case IdSector::CAVERN_LEVEL_9:
+  case IdSector::CAVERN_LEVEL_10:
+      return SectorTypeDto::CAVERN;
   }
   throw std::logic_error("IdSector sin DTO");
 }
@@ -148,7 +173,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
               InventoryDto inv;
               inv.ownerId = playerState.id;
               for (const ItemState &i : playerState.inventory.items)
-                inv.slots.push_back({i.count, toDto(i)});
+                inv.slots.push_back({i.count, toDto(i), static_cast<CropQualityDto>(i.quality)});
               for (const ToolState &t : playerState.inventory.tools)
                 inv.tools.push_back(toDto(t.type));
               playerDto.inventory.push_back(std::move(inv));
@@ -160,12 +185,18 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
         } else if (auto type = toDto(e)) {
           EntityDto entityDto;
           entityDto.type = *type;
-          entityDto.ready = e.is_ready;
+          entityDto.ready = e.animal.is_ready;
+          entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
+          entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
           sectorDto.entities[pos] = entityDto;
         }
       }
     }
   }
+
+  sectorDto.time = {state.time.hours, state.time.minutes};
+  sectorDto.dayNumber = state.dayNumber;
+
   return sectorDto;
 }
 

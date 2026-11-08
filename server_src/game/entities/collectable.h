@@ -11,6 +11,8 @@ public:
   virtual bool canCollect() const = 0;
 
   virtual std::unique_ptr<Item> collect() = 0;
+
+  virtual bool removeOnCollect() const = 0;
 };
 
 #endif // COLLECTABLE_H_

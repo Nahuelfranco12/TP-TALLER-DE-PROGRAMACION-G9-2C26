@@ -9,16 +9,13 @@
 #include "../common_src/thread.h"
 
 #include "./game/command.h"
+#include "./game/game_constants.h"
+#include "./game/sectors/cavern.h"
+#include "./game/sectors/farm_sector.h"
+#include "./game/sectors/village_sector.h"
 #include "./game/world.h"
 
 #include "client_queues.h"
-
-#define MAP_WIDTH 20
-#define MAP_HEIGHT 20
-#define START_X 10
-#define START_Y 10
-
-#define TICKS_PER_SECOND 30
 
 class Gameloop : public Thread {
 private:
