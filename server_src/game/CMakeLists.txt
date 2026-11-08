@@ -7,6 +7,7 @@ target_sources(taller_game
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
+    inventory/crop_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
     commands/move_command.cpp
@@ -17,6 +18,7 @@ target_sources(taller_game
     commands/collect_command.cpp
     commands/spawn_mineral_command.cpp
     commands/spawn_animal_command.cpp
+    commands/plant_command.cpp
     sectors/sector.cpp
     sectors/cavern_sector.cpp
 )
