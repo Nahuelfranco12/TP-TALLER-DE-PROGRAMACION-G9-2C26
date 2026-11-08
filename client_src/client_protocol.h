@@ -19,7 +19,9 @@ private:
   PlayerDto receive_player();
   InventoryDto receive_inventory();
   GamePositionDto receive_position();
+  InventorySlotDto receive_slot();
 
+  void send_slot(const InventorySlotDto &slot);
   void send_outfit(const PlayerOutfitDto &outfit);
   PlayerOutfitDto receive_outfit();
 
@@ -36,6 +38,8 @@ public:
   void send_mine_dto(const MineDto &dto);
   void send_collect_dto(const CollectDto &dto);
   void send_plant_dto(const PlantDto& dto);
+  void send_gift_offer_dto(const GiftOfferDto& dto);
+  void send_gift_response_dto(const GiftResponseDto& dto);
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

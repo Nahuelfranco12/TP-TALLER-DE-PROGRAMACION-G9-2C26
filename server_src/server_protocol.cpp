@@ -82,6 +82,8 @@ void ServerProtocol::send_player(const PlayerDto &player) {
   for (const InventoryDto &inventory : player.inventory) {
     send_inventory(inventory);
   }
+  protocol.send_u16(static_cast<uint16_t>(player.pendingGift.giverId));
+  send_slot(player.pendingGift.gift);
 }
 
 void ServerProtocol::send_inventory(const InventoryDto &inventory) {
@@ -89,9 +91,7 @@ void ServerProtocol::send_inventory(const InventoryDto &inventory) {
 
   protocol.send_u16(static_cast<uint16_t>(inventory.slots.size()));
   for (const InventorySlotDto &slot : inventory.slots) {
-    protocol.send_u16(static_cast<uint16_t>(slot.count));
-    protocol.send_u8(static_cast<uint8_t>(slot.item));
-    protocol.send_u8(static_cast<uint8_t>(slot.quality));
+    send_slot(slot);
   }
 
   protocol.send_u16(static_cast<uint16_t>(inventory.tools.size()));
@@ -103,6 +103,20 @@ void ServerProtocol::send_inventory(const InventoryDto &inventory) {
 void ServerProtocol::send_position(const GamePositionDto &position) {
   protocol.send_u16(static_cast<uint16_t>(position.x));
   protocol.send_u16(static_cast<uint16_t>(position.y));
+}
+
+void ServerProtocol::send_slot(const InventorySlotDto &slot) {
+  protocol.send_u8(static_cast<uint8_t>(slot.item));
+  protocol.send_u8(static_cast<uint8_t>(slot.quality));
+  protocol.send_u16(static_cast<uint16_t>(slot.count));
+}
+
+InventorySlotDto ServerProtocol::receive_slot() {
+  InventorySlotDto slot;
+  slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
+  slot.quality = static_cast<CropQualityDto>(protocol.receive_u8());
+  slot.count = protocol.receive_u16();
+  return slot;
 }
 
 void ServerProtocol::shutdown() {
@@ -141,6 +155,19 @@ PlantDto ServerProtocol::receive_plant() {
   dto.target.x = protocol.receive_u16();
   dto.target.y = protocol.receive_u16();
   dto.crop = static_cast<CropTypeDto>(protocol.receive_u8());
+  return dto;
+}
+
+GiftOfferDto ServerProtocol::receive_gift_offer() {
+  GiftOfferDto dto;
+  dto.receiverId = protocol.receive_u16();
+  dto.gift = receive_slot();
+  return dto;
+}
+
+GiftResponseDto ServerProtocol::receive_gift_response() {
+  GiftResponseDto dto;
+  dto.accept = protocol.receive_u8() == 1;
   return dto;
 }
 
