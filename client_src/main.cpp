@@ -48,6 +48,17 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   pantalla.show();
   QApplication::exec();
 }
+
+// TODO : Revisar funcion, la pongo temporalmente para parsear de semilla a crop
+bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
+  switch (item) {
+  case ItemTypeDto::SEED_STRAWBERRY:  cultivo = CropTypeDto::STRAWBERRY;  return true;
+  case ItemTypeDto::SEED_GREEN_ONION: cultivo = CropTypeDto::GREEN_ONION; return true;
+  case ItemTypeDto::SEED_POTATO:      cultivo = CropTypeDto::POTATO;      return true;
+  case ItemTypeDto::SEED_PUMPKIN:     cultivo = CropTypeDto::PUMPKIN;     return true;
+  default:                            return false;
+  }
+}
 } // namespace
 
 int main(int argc, char *argv[]) try {
@@ -147,21 +158,17 @@ int main(int argc, char *argv[]) try {
         viendo_mapa = !viendo_mapa;
       }
 
-      // 1 a 4 elegir herramienta
+      // 1 a 4 elegir herramienta, 5 a 9 elige los items
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
-          evento.key.keysym.sym <= SDLK_4) {
+          evento.key.keysym.sym <= SDLK_9) {
         inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
-		ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-		if (inventario.herramienta_seleccionada(herramienta)) {
-		  client.send_select_tool(herramienta);
-		}
+        ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
         if (inventario.herramienta_seleccionada(herramienta)) {
           client.send_select_tool(herramienta);
         }
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE &&
-          en_caverna) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
         int frente_y = personaje.obtener_tile_y();
 
@@ -184,10 +191,19 @@ int main(int argc, char *argv[]) try {
           frente_x++;
           break;
         }
-        if (inventario.tengo_en_la_mano(PICO)  && !personaje.esta_picando()) {
-          personaje.picar();
-          // caverna.picar(frente_x, frente_y);
-          client.send_mine(dir); // TODO: revisar
+        InventorySlotDto en_la_mano;
+        CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
+
+        if (en_caverna) {
+          if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
+            personaje.picar();
+            client.send_mine(dir);
+          }
+        } else if (inventario.item_seleccionado(en_la_mano) &&
+                   es_semilla(en_la_mano.item, cultivo)) {
+          client.send_plant(frente_x, frente_y, cultivo);
+        } else {
+          client.send_collect(dir);
         }
       }
 
@@ -252,6 +268,9 @@ int main(int argc, char *argv[]) try {
         if (jugador.id == mi_id) {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
+          }
+          if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
+            inventario.actualizar(jugador.inventory.front());
           }
           continue;
         }

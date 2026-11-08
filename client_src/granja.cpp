@@ -41,14 +41,6 @@ Granja::Granja(Renderer &renderer)
   // Por ahora fijos
   // Hacer después con servidor
   lista_casas.push_back({2, 1, 0});
-
-  for (int tipo = FRUTILLA; tipo <= PAPA; tipo++) {
-    for (int columna = 0; columna < 4; columna++) {
-      int etapa = columna * ULTIMA_ETAPA[tipo] / 3;
-      lista_cultivos.push_back(
-          {static_cast<TipoCultivo>(tipo), 3 + columna, 8 + tipo, etapa});
-    }
-  }
 }
 
 void Granja::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
@@ -121,6 +113,7 @@ void Granja::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
 
 void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
   lista_animales.clear();
+  lista_cultivos.clear();
   for (const auto &[pos, entidad] : entidades) {
     int x = static_cast<int>(pos.x);
     int y = static_cast<int>(pos.y);
@@ -128,6 +121,10 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
       lista_animales.push_back({VACA, x, y, false});
     } else if (entidad.type == EntityTypeDto::CHICKEN) {
       lista_animales.push_back({GALLINA, x, y, false});
+    } else if (entidad.type == EntityTypeDto::CROP) {
+      TipoCultivo tipo = static_cast<TipoCultivo>(entidad.crop.type);
+      int etapa = static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] / 3;
+      lista_cultivos.push_back({tipo, x, y, etapa});
     }
   }
 }
