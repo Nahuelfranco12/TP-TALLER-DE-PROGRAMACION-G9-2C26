@@ -18,10 +18,11 @@ Caverna::Caverna(Renderer &renderer)
   lista_minerales.push_back({ORO, 12, 11, 0});
   lista_minerales.push_back({HIERRO, 4, 14, 0});
   lista_minerales.push_back({CARBON, 15, 15, 0});
+  lista_minerales.push_back({LAPISLAZULI, 10, 13, 0});
   lista_minerales.push_back({ORO, 11, 9, 0});
 }
 
-bool Caverna::picar(int tile_x, int tile_y) {
+int Caverna::picar(int tile_x, int tile_y) {
   for (size_t i = 0; i < lista_minerales.size(); i++) {
     Mineral &mineral = lista_minerales[i];
     if (mineral.tile_x == tile_x && mineral.tile_y == tile_y) {

@@ -5,6 +5,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "common_src/game_dtos.h"
+
 enum TipoItem {
   ITEM_ORO,
   ITEM_HIERRO,
@@ -57,6 +59,8 @@ public:
 
   void seleccionar(int numero);
   bool click(int x, int y, int ancho_ventana, int alto_ventana);
+
+  bool herramienta_seleccionada(ToolTypeDto &herramienta) const;
 
   bool tengo_en_la_mano(Herramienta herramienta) const;
 
