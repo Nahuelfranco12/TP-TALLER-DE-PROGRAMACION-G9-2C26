@@ -1,6 +1,5 @@
 target_sources(taller_server
     PRIVATE
-    # .cpp files
     server_main.cpp
     acceptor.cpp
     client_handler.cpp
@@ -13,6 +12,7 @@ target_sources(taller_server
     match.cpp
     lobby.cpp
     command_factory.cpp
+<<<<<<< HEAD
     game/entities/mineral.cpp
     game/entities/door.cpp
     game/entities/player.cpp
@@ -71,3 +71,6 @@ target_sources(taller_server
     game/commands/spawn_animal_command.h
     game/terrain.h
     )
+=======
+)
+>>>>>>> 55695fb7749bbefd950d2e405ab1b438445c80a2

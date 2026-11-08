@@ -19,6 +19,7 @@
 
 #include <QApplication>
 #include <QFontDatabase>
+
 #include <exception>
 #include <iostream>
 #include <map>
@@ -50,7 +51,18 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   pantalla.show();
   QApplication::exec();
 }
-} // namespace
+
+// TODO : Revisar funcion, la pongo temporalmente para parsear de semilla a crop
+bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
+  switch (item) {
+  case ItemTypeDto::SEED_STRAWBERRY:  cultivo = CropTypeDto::STRAWBERRY;  return true;
+  case ItemTypeDto::SEED_GREEN_ONION: cultivo = CropTypeDto::GREEN_ONION; return true;
+  case ItemTypeDto::SEED_POTATO:      cultivo = CropTypeDto::POTATO;      return true;
+  case ItemTypeDto::SEED_PUMPKIN:     cultivo = CropTypeDto::PUMPKIN;     return true;
+  default:                            return false;
+  }
+}
+}
 
 int main(int argc, char *argv[]) try {
   if (argc != 3) {
@@ -154,45 +166,52 @@ int main(int argc, char *argv[]) try {
         viendo_mapa = !viendo_mapa;
       }
 
-      // 1 a 4 elegir herramienta
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
-          evento.key.keysym.sym <= SDLK_4) {
+      // 1 a 9 seleccionar herramienta
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 && evento.key.keysym.sym <= SDLK_9) {
         inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
-		ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-		if (inventario.herramienta_seleccionada(herramienta)) {
-		  client.send_select_tool(herramienta);
-		}
-  }
+		    ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+		    if (inventario.herramienta_seleccionada(herramienta)) {
+		      client.send_select_tool(herramienta);
+        }
+		  }
+    }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && zona == SectorTypeDto::CAVERN) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
         int frente_y = personaje.obtener_tile_y();
+
+        DirectionDto dir = DirectionDto::Up;
         switch (personaje.obtener_direccion()) {
         case ARRIBA:
+          dir = DirectionDto::Up;
           frente_y--;
           break;
         case ABAJO:
+          dir = DirectionDto::Down;
           frente_y++;
           break;
         case IZQUIERDA:
+          dir = DirectionDto::Left;
           frente_x--;
           break;
         case DERECHA:
+          dir = DirectionDto::Right;
           frente_x++;
           break;
         }
-        if (inventario.tengo_en_la_mano(PICO)) {
-          personaje.picar();
-          int roto = caverna.picar(frente_x, frente_y);
+        InventorySlotDto en_la_mano;
+        CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
 
-          if (roto == 0)
-            inventario.agregar(ITEM_HIERRO, 1);
-          if (roto == 1)
-            inventario.agregar(ITEM_CARBON, 1);
-          if (roto == 2)
-            inventario.agregar(ITEM_LAPISLAZULI, 1);
-          if (roto == 3)
-            inventario.agregar(ITEM_ORO, 1);
+        if (zona == SectorTypeDto::CAVERN) {
+          if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
+            personaje.picar();
+            client.send_mine(dir);
+          }
+        } else if (inventario.item_seleccionado(en_la_mano) &&
+                   es_semilla(en_la_mano.item, cultivo)) {
+          client.send_plant(frente_x, frente_y, cultivo);
+        } else {
+          client.send_collect(dir);
         }
       }
 
@@ -241,7 +260,7 @@ int main(int argc, char *argv[]) try {
     granja.actualizar(state.entities);
   }
 
-
+    // Actualizar jugadores
     std::set<size_t> presentes;
     const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
@@ -251,6 +270,9 @@ int main(int argc, char *argv[]) try {
         if (jugador.id == mi_id) {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
+          }
+          if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
+            inventario.actualizar(jugador.inventory.front());
           }
           continue;
         }

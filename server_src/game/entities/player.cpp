@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "../sector.h"
+#include "../sectors/sector.h"
 #include "mineral.h"
 
 MoveResult Player::move(Position destination) {

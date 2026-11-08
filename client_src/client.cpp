@@ -12,6 +12,8 @@
 #include "actions/mine_action.h"
 #include "actions/move_action.h"
 #include "actions/select_tool_action.h"
+#include "actions/collect_action.h"
+#include "actions/plant_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -81,6 +83,14 @@ void Client::send_select_tool(ToolTypeDto tool) {
 
 void Client::send_mine(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<MineAction>(direction));
+}
+
+void Client::send_collect(DirectionDto direction) {
+    to_send_queue.try_push(std::make_unique<CollectAction>(direction));
+}
+
+void Client::send_plant(int x, int y, CropTypeDto crop) {
+    to_send_queue.try_push(std::make_unique<PlantAction>(x, y, crop));
 }
 
 bool Client::try_get_latest_state(SectorStateDto &state) {

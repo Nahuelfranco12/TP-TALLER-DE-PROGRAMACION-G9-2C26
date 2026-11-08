@@ -5,7 +5,7 @@
 
 class Seed : public Item {
 public:
-  explicit Seed(double price) : Item(price, ItemType::SEED) {}
+  explicit Seed(double price, CropTypes type) : Item(price, ItemType::SEED, type) {}
 };
 
 #endif // SEED_H_

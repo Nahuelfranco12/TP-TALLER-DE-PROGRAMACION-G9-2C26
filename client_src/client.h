@@ -30,6 +30,10 @@ public:
   void send_move(DirectionDto direction);
   void send_select_tool(ToolTypeDto tool);
   void send_mine(DirectionDto direction);
+  void send_collect(DirectionDto direction);
+  void send_plant(int x, int y, CropTypeDto crop);
+
+
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;
   int get_my_id() const;

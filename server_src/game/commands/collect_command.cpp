@@ -26,7 +26,7 @@ void CollectCommand::execute(World &world) {
     break;
   }
 
-  const Sector *sector = player->getActualSector();
+  Sector *sector = player->getActualSector();
   if (!sector)
     return;
 
@@ -38,6 +38,12 @@ void CollectCommand::execute(World &world) {
   if (!collectable || !collectable->canCollect())
     return;
 
+  bool should_remove = collectable->removeOnCollect();
+
   auto product = collectable->collect();
   player->getInventory().addItem(std::move(product));
+
+  if(should_remove) {
+    sector->removeEntity(target);
+  }
 }

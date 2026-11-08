@@ -25,6 +25,12 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<CollectCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const PlantDto &dto) {
+    Position target(dto.target.x, dto.target.y);
+    CropTypes crop = static_cast<CropTypes>(dto.crop);
+    return std::make_unique<PlantCommand>(player_id, target, crop);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
   PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),

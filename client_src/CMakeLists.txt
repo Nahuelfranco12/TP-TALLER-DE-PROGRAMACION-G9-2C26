@@ -32,6 +32,8 @@ target_sources(taller_client
     actions/move_action.cpp
     actions/select_tool_action.cpp
     actions/mine_action.cpp
+    actions/collect_action.cpp
+    actions/plant_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     pueblo.cpp
     mapa_mundo.cpp
@@ -72,9 +74,8 @@ target_sources(taller_client
     actions/move_action.h
     actions/select_tool_action.h
     actions/mine_action.h
-    caverna.h
-    inventario.h
-    alrededores.h
+    actions/collect_action.h
+    actions/plant_action.h
     pueblo.h
     mapa_mundo.h
     )
