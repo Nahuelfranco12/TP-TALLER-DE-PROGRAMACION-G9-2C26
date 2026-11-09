@@ -14,6 +14,8 @@ void PlantCommand::execute(World &world) {
 
     Sector *sector = player->getActualSector();
     if (!sector) return;
+    
+    if (!sector->isTilled(this->target)) return;
 
     if (sector->getEntity(this->target)) return;
 
