@@ -163,6 +163,14 @@ void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
 }
 
+  void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y, int lado) {
+    int fila_cuerpo = mirando;
+    if (mirando == IZQUIERDA) {
+      fila_cuerpo = DERECHA;
+    }
+    dibujar_capas(renderer, centro_x - lado / 2, pie_y - 2 * lado, lado, 0, fila_cuerpo, mirando, 0);
+  }
+
 void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                               int columna, int fila_cuerpo, Direccion direccion,
                               int rebote) {

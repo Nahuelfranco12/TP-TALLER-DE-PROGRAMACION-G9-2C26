@@ -73,6 +73,8 @@ public:
   void cambiar_color_pelo();
   void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
               int nueva_remera);
+
+  void dibujar_icono(SDL2pp::Renderer &renderer, int centro_x, int pie_y, int lado);
 };
 
 #endif

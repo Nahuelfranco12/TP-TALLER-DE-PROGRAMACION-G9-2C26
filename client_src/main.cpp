@@ -113,13 +113,13 @@ int main(int argc, char *argv[]) try {
 
   const int TILE = 64;
 
-  MapaMundo mapa_mundo(mapa_granja, mapa_pueblo, mapa_caverna, TILE);
-
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
 
   Granja granja(renderer);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
+
+  MapaMundo mapa_mundo(client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
   bool viendo_mapa = false;
@@ -341,44 +341,9 @@ int main(int argc, char *argv[]) try {
     }
     personaje.dibujar(renderer, camara_x, camara_y);
     
-    // Mapa completo (M)
+    // Mapa del mundo (M)
     if (viendo_mapa) {
-      const int MARGEN = 40;
-      const int SEPARACION = 30;
-
-      int ancho_total =
-          mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
-      int alto_maximo =
-          std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
-      int lado_ancho =
-          (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
-      int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
-      int lado = std::min(lado_ancho, lado_alto);
-
-      int ancho_dibujo = lado * ancho_total + SEPARACION;
-      int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
-      int origen_caverna_x =
-          origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
-      int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
-
-      // Fondo oscuro
-      renderer.SetDrawColor(20, 20, 20, 255);
-      renderer.Clear();
-
-      mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
-      granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
-      mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
-      caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
-
-      // Figurita de cada jugador
-      for (const auto &[posicion, jugador] : ultimo_estado.players) {
-        int origen_x = origen_granja_x;
-        if (static_cast<int>(jugador.id) == client.get_my_id() && zona == SectorTypeDto::CAVERN) {
-          origen_x = origen_caverna_x;
-        }
-        personaje.dibujar_quieto(renderer, posicion.x, posicion.y, -origen_x,
-                                 -origen_y, lado);
-      }
+      mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona, personaje);
     }
 
     interfaz.dibujar(renderer, audio);
