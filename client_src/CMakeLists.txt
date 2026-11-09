@@ -35,6 +35,7 @@ target_sources(taller_client
     actions/collect_action.cpp
     actions/plant_action.cpp
     actions/till_action.cpp
+    actions/water_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     pueblo.cpp
     mapa_mundo.cpp
@@ -78,6 +79,7 @@ target_sources(taller_client
     actions/collect_action.h
     actions/plant_action.h
     actions/till_action.h
+    actions/water_action.h
     pueblo.h
     mapa_mundo.h
     )

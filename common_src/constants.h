@@ -28,6 +28,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_WORLD_MAP 10
 #define OP_PLANT 11
 #define OP_TILL 14
+#define OP_WATER 15
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

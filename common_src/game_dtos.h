@@ -112,6 +112,10 @@ struct TillDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct WaterDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;

@@ -33,6 +33,7 @@ public:
   void send_collect(DirectionDto direction);
   void send_plant(int x, int y, CropTypeDto crop);
   void send_till(DirectionDto direction);
+  void send_water(DirectionDto direction);
 
 
   bool try_get_latest_state(SectorStateDto &state);

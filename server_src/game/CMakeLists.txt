@@ -4,6 +4,7 @@ target_sources(taller_game
     entities/mineral.cpp
     entities/door.cpp
     entities/player.cpp
+    entities/crop.cpp
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
