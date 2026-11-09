@@ -174,7 +174,6 @@ int main(int argc, char *argv[]) try {
 		      client.send_select_tool(herramienta);
         }
 		  }
-    }
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
@@ -218,15 +217,19 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
         switch (evento.key.keysym.sym) {
         case SDLK_UP:
+          personaje.mirar(ARRIBA);
           client.send_move(DirectionDto::Up);
           break;
         case SDLK_DOWN:
+          personaje.mirar(ABAJO);
           client.send_move(DirectionDto::Down);
           break;
         case SDLK_LEFT:
+          personaje.mirar(IZQUIERDA);
           client.send_move(DirectionDto::Left);
           break;
         case SDLK_RIGHT:
+          personaje.mirar(DERECHA);
           client.send_move(DirectionDto::Right);
           break;
         default:
@@ -307,39 +310,37 @@ int main(int argc, char *argv[]) try {
     caverna.animar(vueltas);
     pueblo.animar(vueltas);
 
-    int origen_sector_x = 0;
-
-    if (zona == SectorTypeDto::VILLAGE) {
-      origen_sector_x = mapa_granja.obtener_ancho() * TILE;
-    } else if (zona == SectorTypeDto::CAVERN) {
-      origen_sector_x = (mapa_granja.obtener_ancho() + mapa_pueblo.obtener_ancho()) * TILE;
-    }
-
-    // Coordenadas globales de la cámara
-    int camara_x = origen_sector_x + personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
+    // Cámara centrada en el personaje
+    int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
     int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
-    int camara_x_local = camara_x - origen_sector_x;
-
-    renderer.Clear();
-
-    mapa_mundo.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
-
+    Mapa *mapa_actual = &mapa_granja;
     if (zona == SectorTypeDto::CAVERN) {
-      caverna.dibujar(renderer, camara_x_local, camara_y);
-    } else if (zona == SectorTypeDto::FARM) {
-      granja.dibujar(renderer, camara_x_local, camara_y);
-
-      alrededores.dibujar(renderer, camara_x_local, camara_y, window.GetWidth(), window.GetHeight());
-    } else {
-      pueblo.dibujar(renderer, camara_x_local, camara_y);
+      mapa_actual = &mapa_caverna;
+    } else if (zona == SectorTypeDto::VILLAGE) {
+      mapa_actual = &mapa_pueblo;
     }
 
-    // Primero los demás jugadores, después el propio para que quede encima
-    for (auto &par : otros)
-      par.second->dibujar(renderer, camara_x_local, camara_y);
-    personaje.dibujar(renderer, camara_x_local, camara_y);
+    renderer.SetDrawColor(0, 0, 0, 255);
+    renderer.Clear();
 
+    mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+
+    if (zona == SectorTypeDto::CAVERN) {
+      caverna.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::FARM) {
+      granja.dibujar(renderer, camara_x, camara_y);
+      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+    } else {
+      pueblo.dibujar(renderer, camara_x, camara_y);
+    }
+
+    // Primero los demas jugadores
+    for (auto &par : otros) {
+      par.second->dibujar(renderer, camara_x, camara_y);
+    }
+    personaje.dibujar(renderer, camara_x, camara_y);
+    
     // Mapa completo (M)
     if (viendo_mapa) {
       const int MARGEN = 40;

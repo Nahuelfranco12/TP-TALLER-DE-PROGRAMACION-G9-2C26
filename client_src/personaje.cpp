@@ -109,6 +109,10 @@ void Personaje::animar(long vueltas) {
   }
 }
 
+void Personaje::mirar(Direccion direccion) {
+  mirando = direccion;
+}
+
 void Personaje::picar() {
   if (vueltas_picando <= 0) {
     vueltas_picando = DURACION_PICAR;

@@ -12,11 +12,9 @@ target_sources(taller_server
     match.cpp
     lobby.cpp
     command_factory.cpp
-<<<<<<< HEAD
     game/entities/mineral.cpp
     game/entities/door.cpp
     game/entities/player.cpp
-    game/sector.cpp
     game/world.cpp
     game/inventory/chicken_egg.cpp
     game/inventory/cow_milk.cpp
@@ -31,7 +29,6 @@ target_sources(taller_server
     game/commands/mine_command.cpp
     game/commands/collect_command.cpp
     game/commands/spawn_animal_command.cpp
-    game/terrain.cpp
 
     PUBLIC
     # .h files
@@ -53,7 +50,6 @@ target_sources(taller_server
     game/entities/mineral.h
     game/entities/door.h
     game/entities/player.h
-    game/sector.h
     game/world.h
     game/inventory/chicken_egg.h
     game/inventory/cow_milk.h
@@ -71,6 +67,3 @@ target_sources(taller_server
     game/commands/spawn_animal_command.h
     game/terrain.h
     )
-=======
-)
->>>>>>> 55695fb7749bbefd950d2e405ab1b438445c80a2

@@ -47,6 +47,8 @@ public:
   // Avanza la animación de caminar
   void animar(long vueltas);
 
+  void mirar(Direccion direccion);
+
   void picar();
   bool esta_picando() const { return vueltas_picando > 0; }
 

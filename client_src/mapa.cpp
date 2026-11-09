@@ -50,33 +50,12 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
   }
 }
 
-void Mapa::generar_granja(int ancho, int alto, unsigned int semilla) {
+void Mapa::generar_granja(int ancho, int alto, unsigned int /*semilla*/) {
   margen = 30;
   int ancho_total = ancho + 2 * margen;
   int alto_total = alto + 2 * margen;
   pasto_afuera.assign(alto_total, std::string(ancho_total, '.'));
 
-  std::mt19937 azar(semilla);
-  std::uniform_int_distribution<int> dado_x(0, ancho_total - 1);
-  std::uniform_int_distribution<int> dado_y(0, alto_total - 1);
-  std::uniform_int_distribution<int> dado_radio(1, 3);
-  int manchas = ancho_total * alto_total / 25;
-  for (int i = 0; i < manchas; ++i) {
-    int centro_x = dado_x(azar);
-    int centro_y = dado_y(azar);
-    int radio = dado_radio(azar);
-    for (int y = centro_y - radio; y <= centro_y + radio; ++y) {
-      for (int x = centro_x - radio; x <= centro_x + radio; ++x) {
-        int dx = x - centro_x;
-        int dy = y - centro_y;
-        bool adentro = x >= 0 && y >= 0 && x < ancho_total && y < alto_total &&
-                       dx * dx + dy * dy <= radio * radio;
-        if (adentro && dx * dx + dy * dy <= radio * radio) {
-          pasto_afuera[y][x] = 'f';
-        }
-      }
-    }
-  }
   filas.clear();
   for (int y = 0; y < alto; y++) {
     filas.push_back(pasto_afuera[margen + y].substr(margen, ancho));
@@ -263,15 +242,15 @@ void Mapa::dibujar(Renderer &renderer, int camara_x, int camara_y,
       int y = fila * TILE - camara_y;
       bool afuera = columna < 0 || fila < 0 || columna >= obtener_ancho() ||
                     fila >= obtener_alto();
+      if (afuera && !incluir_margen) {
+        continue;
+      }
       if (afuera) {
         suelo.SetColorMod(150, 150, 150);
       }
       dibujar_tile(renderer, tile_en(columna, fila), x, y, TILE);
       if (afuera) {
         suelo.SetColorMod(255, 255, 255);
-      }
-      if (afuera && !incluir_margen) {
-        continue;
       }
     }
   }
