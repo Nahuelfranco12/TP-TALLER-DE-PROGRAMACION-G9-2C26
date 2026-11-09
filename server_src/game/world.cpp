@@ -100,8 +100,10 @@ Sector *World::getSector(IdSector id) {
 }
 
 GameTime World::currentTime() const {
-  size_t totalMinutes = (dayTick * DAY_DURATION_MINUTES) / TICKS_PER_DAY;
-  size_t quantized = (totalMinutes / TIME_INTERVAL) * TIME_INTERVAL;
+  size_t GAME_TOTAL_MINUTES = DAY_DURATION_HOUR * 60;
+  
+  size_t gameMinutes = (dayTick * GAME_TOTAL_MINUTES) / TICKS_PER_DAY;
+  size_t quantized = (gameMinutes / TIME_INTERVAL) * TIME_INTERVAL;
 
   size_t absoluteMinutes = DAY_START_HOUR * 60 + quantized;
   return {(absoluteMinutes / 60) % 24, absoluteMinutes % 60};
