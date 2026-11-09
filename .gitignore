@@ -4,6 +4,7 @@ build/
 build-*/
 **/build/
 cmake-build-*/
+.cache/
 
 # estos son binarios y cosas como librerias
 *.o
