@@ -9,7 +9,8 @@ enum class Terreno { Pasto, Tierra, Camino, PisoCaverna, Pared, PisoPueblo };
 
 enum class ElementosGranja {
   Cabania,
-  Arbol,
+  Arbol1,
+  Arbol2,
   Piedra,
   CercoFrente,
   CercoCostado,
@@ -38,17 +39,18 @@ struct Recorte {
 template <typename TipoElemento> struct InfoElemento {
   TipoElemento elemento{};
   const char *nombre = nullptr;
-  const char *recurso = nullptr;
+  const char *rutaSprite = nullptr;
   Recorte recorte;
 };
 
 const InfoElemento<Terreno> *infoTerreno(Terreno terreno);
+const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo);
+const InfoElemento<ElementosCaverna> *infoDe(ElementosCaverna tipo);
+const InfoElemento<ElementosPueblo> *infoDe(ElementosPueblo tipo);
+
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona);
 const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja();
 const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna();
 const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo();
-const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo);
-const InfoElemento<ElementosCaverna> *infoDe(ElementosCaverna tipo);
-const InfoElemento<ElementosPueblo> *infoDe(ElementosPueblo tipo);
 
 #endif // EDITOR_DTOS_H_

@@ -26,7 +26,8 @@
 	<qresource prefix="/Mapas">
 	    <file alias="suelo.png">../assets/mapas/ground_01_16x16.png</file>
 	    <file alias="cabanias.png">../assets/mapas/Tilesets_Cabins.png</file>
-	    <file alias="arbol.png">../assets/mapas/tree1.png</file>
+	    <file alias="arbol1.png">../assets/mapas/tree1.png</file>
+	    <file alias="arbol2.png">../assets/mapas/tree1_2.png</file>
 	    <file alias="piedras.png">../assets/mapas/Road copiar.png</file>
 	    <file alias="cerco_frente.png">../assets/mapas/Fence's copiar.png</file>
 	    <file alias="cerco_costado.png">../assets/mapas/Fence's copiar.png</file>

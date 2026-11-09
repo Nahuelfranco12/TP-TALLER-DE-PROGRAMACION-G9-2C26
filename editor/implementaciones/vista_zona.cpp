@@ -14,21 +14,25 @@ VistaZona::VistaZona(QWidget *parent)
 
 void VistaZona::limpiar() { escena->clear(); }
 
-QPixmap VistaZona::tileDe(Terreno terreno) const {
+QPixmap VistaZona::imagenTerrenoDe(Terreno terreno) const {
   const InfoElemento<Terreno> *info = infoTerreno(terreno);
   if (info == nullptr)
-    return spriteDe("", Recorte{}, TEXTO_DESCONOCIDO, LADO_TILE, LADO_TILE);
-  return spriteDe(info->recurso, info->recorte, QString::fromUtf8(info->nombre),
-                  LADO_TILE, LADO_TILE);
+    return imagenSpriteDe("", Recorte{}, TEXTO_DESCONOCIDO, TAMANIO_CELDA_MAPA,
+                          TAMANIO_CELDA_MAPA);
+  return imagenSpriteDe(info->rutaSprite, info->recorte,
+                        QString::fromUtf8(info->nombre), TAMANIO_CELDA_MAPA,
+                        TAMANIO_CELDA_MAPA);
 }
 
-void VistaZona::dibujarCuadricula(int ancho, int alto) {
-  QPen lapiz(COLOR_CUADRICULA);
+void VistaZona::dibujarLineasCuadricula(int ancho, int alto) {
+  QPen lapiz(COLOR_LINEAS_GRILLA);
   lapiz.setCosmetic(true);
   for (int x = 0; x <= ancho; ++x)
-    escena->addLine(x * LADO_TILE, 0, x * LADO_TILE, alto * LADO_TILE, lapiz);
+    escena->addLine(x * TAMANIO_CELDA_MAPA, 0, x * TAMANIO_CELDA_MAPA,
+                    alto * TAMANIO_CELDA_MAPA, lapiz);
   for (int y = 0; y <= alto; ++y)
-    escena->addLine(0, y * LADO_TILE, ancho * LADO_TILE, y * LADO_TILE, lapiz);
+    escena->addLine(0, y * TAMANIO_CELDA_MAPA, ancho * TAMANIO_CELDA_MAPA,
+                    y * TAMANIO_CELDA_MAPA, lapiz);
 }
 
 void VistaZona::setAlClickear(
@@ -40,7 +44,7 @@ void VistaZona::mousePressEvent(QMouseEvent *evento) {
   QPointF punto = mapToScene(evento->position().toPoint());
   if (!accionAlClickear || !sceneRect().contains(punto))
     return;
-  int x = static_cast<int>(punto.x()) / LADO_TILE;
-  int y = static_cast<int>(punto.y()) / LADO_TILE;
+  int x = static_cast<int>(punto.x()) / TAMANIO_CELDA_MAPA;
+  int y = static_cast<int>(punto.y()) / TAMANIO_CELDA_MAPA;
   accionAlClickear(x, y, evento->button());
 }

@@ -13,18 +13,32 @@ MapaEditor crearMapaPredeterminado() {
       MapaZona<ElementosPueblo>(Dimensiones{}, Terreno::PisoPueblo)};
 }
 
-Huella huellaDe(ElementosGranja tipo) {
+CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
   if (tipo == ElementosGranja::Cabania)
-    return Huella{HUELLA_CABANIA_ANCHO, HUELLA_CABANIA_ALTO};
-  return Huella{HUELLA_SIMPLE, HUELLA_SIMPLE};
+    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CABANIA_ANCHO,
+                                   TAMANIO_OCUPADO_CABANIA_ALTO};
+  if (tipo == ElementosGranja::Arbol1)
+    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
+                                   TAMANIO_OCUPADO_NORMAL};
+  if (tipo == ElementosGranja::Arbol2)
+    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ARBOL2,
+                                   TAMANIO_OCUPADO_ARBOL2};
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
+                                 TAMANIO_OCUPADO_NORMAL};
 }
 
-Huella huellaDe(ElementosCaverna) {
-  return Huella{HUELLA_SIMPLE, HUELLA_SIMPLE};
+CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna) {
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
+                                 TAMANIO_OCUPADO_NORMAL};
 }
 
-Huella huellaDe(ElementosPueblo) {
-  return Huella{HUELLA_SIMPLE, HUELLA_SIMPLE};
+CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
+  if (tipo == ElementosPueblo::CentroComunitario)
+    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CENTROCOM_ANCHO,
+                                   TAMANIO_OCUPADO_CENTROCOM_ALTO};
+
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
+                                 TAMANIO_OCUPADO_NORMAL};
 }
 
 bool esUnico(ElementosGranja tipo) {

@@ -96,8 +96,8 @@ void ControladorMapas::agregarAPaleta(
     const std::vector<InfoElemento<T>> &elementos) {
   for (const auto &info : elementos) {
     QString nombre = QString::fromUtf8(info.nombre);
-    QPixmap icono = spriteDe(info.recurso, info.recorte, nombre, TAMANIO_ICONO,
-                             TAMANIO_ICONO);
+    QPixmap icono = imagenSpriteDe(info.rutaSprite, info.recorte, nombre,
+                                   TAMANIO_ICONO, TAMANIO_ICONO);
     auto *item = new QListWidgetItem(QIcon(icono), nombre);
     item->setData(ROL_VALOR, static_cast<int>(info.elemento));
     item->setData(ROL_ES_TERRENO, std::is_same_v<T, Terreno>);
@@ -157,7 +157,7 @@ void ControladorMapas::dibujarMapa() {
 template <typename T>
 void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
                                int y, Qt::MouseButton boton) {
-  if (!zona.contiene(x, y))
+  if (!zona.existeCelda(x, y))
     return;
   if (boton == Qt::RightButton)
     zona.quitarEn(x, y);
@@ -173,7 +173,7 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
     return;
   int valor = item->data(ROL_VALOR).toInt();
   if (item->data(ROL_ES_TERRENO).toBool())
-    zona.setTerreno(x, y, static_cast<Terreno>(valor));
+    zona.pintarTerrenoConCelda(x, y, static_cast<Terreno>(valor));
   else
     zona.colocar(static_cast<T>(valor), x, y);
 }

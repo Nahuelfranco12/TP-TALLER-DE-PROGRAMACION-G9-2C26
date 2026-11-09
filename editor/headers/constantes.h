@@ -7,10 +7,11 @@
 #define TAMANIO_ICONO 48
 #define ROL_VALOR Qt::UserRole
 #define ROL_ES_TERRENO (Qt::UserRole + 1)
-#define COLOR_PLACEHOLDER QColor(120, 120, 120)
+#define COLOR_GRIS_FALTA_ASSET QColor(120, 120, 120)
 
 #define ANCHO_DISENIO 1280
 #define ALTO_DISENIO 720
+
 #define CANTIDAD_NIVELES_CAVERNA 10
 #define PRIMER_NIVEL_CAVERNA 1
 #define ANCHO_PREDETERMINADO 20
@@ -18,24 +19,24 @@
 #define DIMENSION_MINIMA 10
 #define DIMENSION_MAXIMA 50
 
-#define SUELO ":/Mapas/suelo.png"
-#define DUNGEON ":/Mapas/dungeon.png"
-#define PISO_PIEDRA ":/Mapas/cam_piedras.png"
-#define OBJETOS ":/Mapas/objetos.png"
-#define CERCO_FRENTE ":/Mapas/cerco_frente.png"
-#define CERCO_COSTADO ":/Mapas/cerco_costado.png"
-#define PIEDRAS ":/Mapas/piedras.png"
-#define ARBOL ":/Mapas/arbol.png"
+#define RUTA_SUELO ":/Mapas/suelo.png"
+#define RUTA_CAVERNA ":/Mapas/dungeon.png"
+#define RUTA_PISO_PIEDRA ":/Mapas/cam_piedras.png"
+#define RUTA_OBJETOS ":/Mapas/objetos.png"
+#define RUTA_CERCO_FRENTE ":/Mapas/cerco_frente.png"
+#define RUTA_CERCO_COSTADO ":/Mapas/cerco_costado.png"
+#define RUTA_PIEDRAS ":/Mapas/piedras.png"
+#define RUTA_ARBOL1 ":/Mapas/arbol1.png"
+#define RUTA_ARBOL2 ":/Mapas/arbol2.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
-#define CASA ":/Edificios/casa.png"
+#define RUTA_CASA ":/Edificios/casa.png"
 #define SIN_ASSET ""
 #define RUTA_MARNIE ":/Npcs/marnie.png"
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
 
-// recortes para el tema de mostrar bien segun el asset
-#define RECORTE_MR                                                             \
+#define RECORTE_MERNIE_ROBIN                                                   \
   { 24, 16, 16, 32 }
 #define RECORTE_PC                                                             \
   { 0, 0, 32, 32 }
@@ -68,7 +69,6 @@
 
 #define TEXTO_PASTO "Pasto"
 #define TEXTO_TIERRA "Tierra"
-#define TEXTO_CAMINO "Camino"
 #define TEXTO_PISO "Piso"
 #define TEXTO_PARED "Pared"
 #define TEXTO_CABANIA "Cabaña"
@@ -87,14 +87,17 @@
 #define TEXTO_CENTRO_COMUNITARIO "Centro comunitario"
 #define TEXTO_SALIDA_GRANJA "Salida a la granja"
 
-#define LADO_TILE 32
-#define COLOR_CUADRICULA QColor(0, 0, 0, 60)
+#define TAMANIO_CELDA_MAPA 32
+#define COLOR_LINEAS_GRILLA QColor(0, 0, 0, 60)
 #define TEXTO_DESCONOCIDO "?"
 
-// aca pongo lo que ocupa cada asset en los mapas cuando los creo/edito
-//  granja
-#define HUELLA_SIMPLE 1
-#define HUELLA_CABANIA_ANCHO 3
-#define HUELLA_CABANIA_ALTO 4
+#define TAMANIO_OCUPADO_NORMAL 1
+#define TAMANIO_OCUPADO_CABANIA_ANCHO 3
+#define TAMANIO_OCUPADO_CABANIA_ALTO 4
+
+#define TAMANIO_OCUPADO_CENTROCOM_ANCHO 6
+#define TAMANIO_OCUPADO_CENTROCOM_ALTO 4
+
+#define TAMANIO_OCUPADO_ARBOL2 2
 
 #endif // CONSTANTES_H

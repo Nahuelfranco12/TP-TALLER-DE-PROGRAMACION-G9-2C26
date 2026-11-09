@@ -8,7 +8,7 @@
 namespace {
 QPixmap placeholder(const QString &nombre, int ancho, int alto) {
   QPixmap pixmap(ancho, alto);
-  pixmap.fill(COLOR_PLACEHOLDER);
+  pixmap.fill(COLOR_GRIS_FALTA_ASSET);
   QPainter pintor(&pixmap);
   pintor.setPen(Qt::white);
   pintor.drawText(pixmap.rect(), Qt::AlignCenter, nombre.left(1));
@@ -17,9 +17,9 @@ QPixmap placeholder(const QString &nombre, int ancho, int alto) {
 }
 } // namespace
 
-QPixmap spriteDe(const char *recurso, const Recorte &recorte,
-                 const QString &nombre, int ancho, int alto) {
-  QPixmap hoja(QString::fromUtf8(recurso));
+QPixmap imagenSpriteDe(const char *rutaSprite, const Recorte &recorte,
+                       const QString &nombre, int ancho, int alto) {
+  QPixmap hoja(QString::fromUtf8(rutaSprite));
   if (hoja.isNull())
     return placeholder(nombre, ancho, alto);
   QPixmap imagen = hoja;

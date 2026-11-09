@@ -27,14 +27,14 @@ template <typename TipoObjeto> struct ObjetoColocado {
   int y;
 };
 
-struct Huella {
+struct CeldasOcupadasPorObjeto {
   int ancho;
   int alto;
 };
 
-Huella huellaDe(ElementosGranja tipo);
-Huella huellaDe(ElementosCaverna tipo);
-Huella huellaDe(ElementosPueblo tipo);
+CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo);
+CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo);
+CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo);
 
 bool esUnico(ElementosGranja tipo);
 bool esUnico(ElementosCaverna tipo);
@@ -42,18 +42,18 @@ bool esUnico(ElementosPueblo tipo);
 
 template <typename TipoObjeto>
 bool ocupa(const ObjetoColocado<TipoObjeto> &objeto, int x, int y) {
-  Huella huella = huellaDe(objeto.tipo);
-  return x >= objeto.x && x < objeto.x + huella.ancho && y >= objeto.y &&
-         y < objeto.y + huella.alto;
+  CeldasOcupadasPorObjeto celdaOcupada = OcupadaPor(objeto.tipo);
+  return x >= objeto.x && x < objeto.x + celdaOcupada.ancho && y >= objeto.y &&
+         y < objeto.y + celdaOcupada.alto;
 }
 
 template <typename TipoObjeto>
 bool seSuperponen(TipoObjeto tipo, int x, int y,
                   const ObjetoColocado<TipoObjeto> &otro) {
-  Huella a = huellaDe(tipo);
-  Huella b = huellaDe(otro.tipo);
-  return x < otro.x + b.ancho && otro.x < x + a.ancho && y < otro.y + b.alto &&
-         otro.y < y + a.alto;
+  CeldasOcupadasPorObjeto objeto1 = OcupadaPor(tipo);
+  CeldasOcupadasPorObjeto objeto2 = OcupadaPor(otro.tipo);
+  return x < otro.x + objeto2.ancho && otro.x < x + objeto1.ancho &&
+         y < otro.y + objeto2.alto && otro.y < y + objeto1.alto;
 }
 
 template <typename TipoObjeto> class MapaZona {
@@ -69,13 +69,13 @@ public:
   int alto() const { return dimensiones.alto; }
   Dimensiones tamanio() const { return dimensiones; }
 
-  bool contiene(int x, int y) const {
+  bool existeCelda(int x, int y) const {
     return x >= 0 && y >= 0 && x < dimensiones.ancho && y < dimensiones.alto;
   }
 
-  Terreno terrenoEn(int x, int y) const { return terrenos[indice(x, y)]; }
+  Terreno terrenoEnCelda(int x, int y) const { return terrenos[indice(x, y)]; }
 
-  void setTerreno(int x, int y, Terreno terreno) {
+  void pintarTerrenoConCelda(int x, int y, Terreno terreno) {
     terrenos[indice(x, y)] = terreno;
   }
 
@@ -83,7 +83,7 @@ public:
     return objetosColocados;
   }
 
-  const ObjetoColocado<TipoObjeto> *objetoEn(int x, int y) const {
+  const ObjetoColocado<TipoObjeto> *objetoEnCelda(int x, int y) const {
     auto objeto = std::find_if(
         objetosColocados.begin(), objetosColocados.end(),
         [x, y](const auto &candidato) { return ocupa(candidato, x, y); });
@@ -135,7 +135,7 @@ public:
 private:
   Dimensiones dimensiones;
   Terreno pisoBase;
-  std::vector<Terreno> terrenos; // fila por fila: indice = y * ancho + x
+  std::vector<Terreno> terrenos; // tengo un vector de terrenos
   std::vector<ObjetoColocado<TipoObjeto>> objetosColocados;
 
   static std::size_t cantidadCeldas(const Dimensiones &d) {
@@ -143,15 +143,15 @@ private:
   }
 
   std::size_t indice(int x, int y) const {
-    if (!contiene(x, y))
+    if (!existeCelda(x, y))
       throw std::out_of_range("Celda fuera de la zona");
     return static_cast<std::size_t>(y * dimensiones.ancho + x);
   }
 
   bool entra(TipoObjeto tipo, int x, int y) const {
-    Huella huella = huellaDe(tipo);
-    return contiene(x, y) &&
-           contiene(x + huella.ancho - 1, y + huella.alto - 1);
+    CeldasOcupadasPorObjeto celdaOcupada = OcupadaPor(tipo);
+    return existeCelda(x, y) &&
+           existeCelda(x + celdaOcupada.ancho - 1, y + celdaOcupada.alto - 1);
   }
 };
 
