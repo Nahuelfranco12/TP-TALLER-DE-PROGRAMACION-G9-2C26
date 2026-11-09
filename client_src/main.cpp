@@ -274,6 +274,7 @@ int main(int argc, char *argv[]) try {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
           }
+          personaje.agarrar(jugador.actualTool);
           if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
             inventario.actualizar(jugador.inventory.front());
           }
@@ -289,6 +290,7 @@ int main(int argc, char *argv[]) try {
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        otro->agarrar(jugador.actualTool);
       }
       // Los que ya no vienen en el estado se fueron de la partida
       std::erase_if(otros, [&presentes](const auto &par) {

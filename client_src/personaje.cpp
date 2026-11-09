@@ -5,6 +5,7 @@
 using SDL2pp::NullOpt;
 using SDL2pp::Rect;
 using SDL2pp::Renderer;
+using SDL2pp::Texture;
 
 namespace {
 
@@ -54,6 +55,11 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
                          COLORES[color_pantalon][2]);
   pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
                     COLORES[color_pelo][2]);
+
+  herramientas.emplace_back(renderer, "assets/inventario/sword.png");
+  herramientas.emplace_back(renderer, "assets/inventario/pickaxe.png");
+  herramientas.emplace_back(renderer, "assets/inventario/shovel.png");
+  herramientas.emplace_back(renderer, "assets/inventario/basket.png");
 }
 
 void Personaje::cambiar_color_pantalon() {
@@ -119,6 +125,10 @@ void Personaje::picar() {
   }
 }
 
+void Personaje::agarrar(ToolTypeDto herramienta) {
+  en_la_mano = herramienta;
+}
+
 int Personaje::obtener_tile_x() const { return tile_x; }
 
 Direccion Personaje::obtener_direccion() const { return mirando; }
@@ -153,6 +163,7 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   int x = tile_x * TILE - camara_x;
   int y = tile_y * TILE - TILE - camara_y;
   dibujar_capas(renderer, x, y, TILE, columna, fila_cuerpo, mirando, rebote);
+  dibujar_herramienta(renderer, x, y, TILE);
 }
 
 void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
@@ -232,4 +243,25 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                           20 * lado / 16, 20 * lado / 16);
     renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
   }
+}
+
+void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) {
+  if (mirando ==ARRIBA) {
+    return;
+  }
+
+  Texture &icono = herramientas[static_cast<int>(en_la_mano)];
+  int ancho = icono.GetWidth() * lado / 24;
+  int alto = icono.GetHeight() * lado / 24;
+
+  // Mano derecha
+  int mano_x = x + 9 * lado / 16;
+  int mano_y = y + 16 * lado / 16;
+  int flip = SDL_FLIP_NONE;
+  if (mirando == IZQUIERDA) {
+    mano_x = x + 7 * lado / 16 - ancho;
+    flip = SDL_FLIP_HORIZONTAL;
+  }
+
+  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt, flip);
 }
