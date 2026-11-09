@@ -10,6 +10,7 @@
 #include "./game/commands/move_command.h"
 #include "./game/commands/plant_command.h"
 #include "./game/commands/select_tool_command.h"
+#include "./game/commands/till_command.h"
 
 class CommandFactory {
 public:
@@ -18,6 +19,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const ToolTypeDto &dto);
   std::unique_ptr<Command> create(int player_id, const CollectDto &dto);
   std::unique_ptr<Command> create(int player_id, const PlantDto &dto);
+  std::unique_ptr<Command> create(int player_id, const TillDto &dto);
   std::unique_ptr<Command> create_join(int player_id,
                                        const PlayerOutfitDto &outfit);
 };

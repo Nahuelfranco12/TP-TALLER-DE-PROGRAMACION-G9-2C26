@@ -36,6 +36,7 @@ public:
   void send_mine_dto(const MineDto &dto);
   void send_collect_dto(const CollectDto &dto);
   void send_plant_dto(const PlantDto& dto);
+  void send_till_dto(const TillDto& dto);
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

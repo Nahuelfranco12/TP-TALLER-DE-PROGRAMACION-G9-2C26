@@ -36,6 +36,7 @@ public:
   ToolTypeDto receive_select_tool();
   CollectDto receive_collect();
   PlantDto receive_plant();
+  TillDto receive_till();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

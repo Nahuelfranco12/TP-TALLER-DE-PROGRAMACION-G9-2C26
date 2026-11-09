@@ -65,6 +65,7 @@ void ServerProtocol::send_tiles(
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
       protocol.send_u8(tile.isDoor ? 1 : 0);
+      protocol.send_u8(tile.tilled ? 1 : 0);
     }
   }
 }
@@ -142,6 +143,10 @@ PlantDto ServerProtocol::receive_plant() {
   dto.target.y = protocol.receive_u16();
   dto.crop = static_cast<CropTypeDto>(protocol.receive_u8());
   return dto;
+}
+
+TillDto ServerProtocol::receive_till() {
+  return TillDto{byte_to_direction(protocol.receive_u8())};
 }
 
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {

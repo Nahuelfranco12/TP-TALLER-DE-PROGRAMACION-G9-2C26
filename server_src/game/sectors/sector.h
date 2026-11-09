@@ -55,6 +55,9 @@ public:
   virtual void reset() {};
   virtual void endDay() {};
 
+  bool till(Position pos);
+  bool isTilled(Position pos) const;
+
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
    */
