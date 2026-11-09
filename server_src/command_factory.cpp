@@ -31,7 +31,7 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const PlantDto &d
     return std::make_unique<PlantCommand>(player_id, target, crop);
 }
 
-std::unique_ptr<Command> create(int player_id, const TillDto &dto) {
+std::unique_ptr<Command> CommandFactory::create(int player_id, const TillDto &dto) {
   return std::make_unique<TillCommand>(player_id, dto.direction);
 }
 

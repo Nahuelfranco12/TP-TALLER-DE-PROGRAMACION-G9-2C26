@@ -206,11 +206,13 @@ int main(int argc, char *argv[]) try {
             personaje.picar();
             client.send_mine(dir);
           }
+        } else if (inventario.tengo_en_la_mano(PALA)) {
+            client.send_till(dir);
         } else if (inventario.item_seleccionado(en_la_mano) &&
                    es_semilla(en_la_mano.item, cultivo)) {
-          client.send_plant(frente_x, frente_y, cultivo);
+            client.send_plant(frente_x, frente_y, cultivo);
         } else {
-          client.send_collect(dir);
+            client.send_collect(dir);
         }
       }
 
