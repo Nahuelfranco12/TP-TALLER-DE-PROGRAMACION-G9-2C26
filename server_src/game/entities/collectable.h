@@ -13,6 +13,8 @@ public:
   virtual std::unique_ptr<Item> collect() = 0;
 
   virtual bool removeOnCollect() const = 0;
+
+  virtual double energyCost() const = 0;
 };
 
 #endif // COLLECTABLE_H_

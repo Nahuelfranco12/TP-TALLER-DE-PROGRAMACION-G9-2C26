@@ -60,6 +60,11 @@ void ClientProtocol::send_plant_dto(const PlantDto& dto) {
   protocol.send_u8(static_cast<uint8_t>(dto.crop));
 }
 
+void ClientProtocol::send_till_dto(const TillDto &dto) {
+    protocol.send_u8(OP_TILL);
+    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
@@ -190,6 +195,7 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
       tile.isDoor = protocol.receive_u8() == 1;
+      tile.tilled = protocol.receive_u8() == 1;
     }
   }
   return tiles;

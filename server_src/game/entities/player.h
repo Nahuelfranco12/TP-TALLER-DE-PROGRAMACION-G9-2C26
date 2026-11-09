@@ -11,6 +11,7 @@
 #include "../move_result.h"
 #include "entity.h"
 #include "player_outfit.h"
+#include "../inventory/seed.h"
 
 class Sector;  // forward declaration
 class Mineral; // forward declaration
@@ -38,6 +39,10 @@ public:
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
     this->inventory.addTool(
         std::make_unique<Tool>(AvailableTools::WATERING_CAN));
+    
+    for (int i = 0; i < 5; i++) {
+      this->inventory.addItem(std::make_unique<Seed>(10, CropTypes::STRAWBERRY));
+    }
 
     this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
   }
@@ -55,6 +60,10 @@ public:
   double getEnergy() const { return energy; }
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
+
+  bool hasEnergy(size_t cost);
+  bool spendEnergy(size_t cost);
+  void restoreEnergy(size_t amount);
 
   // state para el serializar el estado del mundo
   PlayerState state() const;

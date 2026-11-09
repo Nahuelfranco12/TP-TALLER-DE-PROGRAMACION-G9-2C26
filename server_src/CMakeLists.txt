@@ -12,4 +12,60 @@ target_sources(taller_server
     match.cpp
     lobby.cpp
     command_factory.cpp
-)
+    game/entities/mineral.cpp
+    game/entities/door.cpp
+    game/entities/player.cpp
+    game/world.cpp
+    game/inventory/chicken_egg.cpp
+    game/inventory/cow_milk.cpp
+    game/inventory/inventory_slot.cpp
+    game/inventory/mineral_item.cpp
+    game/inventory/inventory.cpp
+    game/commands/move_command.cpp
+    game/commands/join_command.cpp
+    game/commands/select_tool_command.cpp
+    game/commands/leave_command.cpp
+    game/commands/spawn_mineral_command.cpp
+    game/commands/mine_command.cpp
+    game/commands/collect_command.cpp
+    game/commands/spawn_animal_command.cpp
+    game/commands/till_command.cpp
+
+    PUBLIC
+    # .h files
+    acceptor.h
+    client_handler.h
+    client_queues.h
+    gameloop.h
+    server.h
+    server_protocol.h
+    server_receiver.h
+    server_sender.h
+    match.h
+    lobby.h
+    command_factory.h
+    game/commands/join_command.h
+    game/commands/leave_command.h
+    game/commands/move_command.h
+    game/world.h
+    game/entities/mineral.h
+    game/entities/door.h
+    game/entities/player.h
+    game/world.h
+    game/inventory/chicken_egg.h
+    game/inventory/cow_milk.h
+    game/inventory/inventory_slot.h
+    game/inventory/mineral_item.h
+    game/inventory/inventory.h
+    game/inventory/item.h
+    game/commands/move_command.h
+    game/commands/join_command.h
+    game/commands/select_tool_command.h
+    game/commands/leave_command.h
+    game/commands/spawn_mineral_command.h
+    game/commands/mine_command.h
+    game/commands/collect_command.h
+    game/commands/spawn_animal_command.h
+    game/commands/till_command.h
+    game/terrain.h
+    )

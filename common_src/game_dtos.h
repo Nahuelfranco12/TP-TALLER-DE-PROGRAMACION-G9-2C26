@@ -108,6 +108,10 @@ struct CollectDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct TillDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
@@ -134,6 +138,7 @@ struct TileDto {
   bool transitable;
   bool arable;
   bool isDoor;
+  bool tilled;
 };
 
 struct InventorySlotDto {

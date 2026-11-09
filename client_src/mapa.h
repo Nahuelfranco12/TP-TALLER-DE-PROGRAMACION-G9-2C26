@@ -12,6 +12,8 @@ class Mapa {
 private:
   SDL2pp::Texture suelo;
   SDL2pp::Texture muebles;
+  SDL2pp::Texture piso_pueblo;
+  SDL2pp::Texture flores;
   std::vector<std::string> filas;
   char borde;
 
@@ -22,6 +24,7 @@ private:
 
   void generar_granja(int ancho, int alto, unsigned int semilla);
   void generar_caverna(int ancho, int alto, unsigned int semilla);
+  void generar_pueblo(int ancho, int alto, unsigned int semilla);
 
   char tile_en(int x, int y) const;
 
@@ -42,7 +45,7 @@ public:
   void dibujar_completo(SDL2pp::Renderer &renderer, int origen_x, int origen_y,
                         int lado);
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
-               int ancho_ventana, int alto_ventana);
+               int ancho_ventana, int alto_ventana, bool incluir_margen = true);
 };
 
 #endif

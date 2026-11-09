@@ -5,13 +5,9 @@
 using SDL2pp::NullOpt;
 using SDL2pp::Rect;
 using SDL2pp::Renderer;
+using SDL2pp::Texture;
 
 namespace {
-// Cuántas prendas trae cada sheet
-const int CANTIDAD_PANTALONES = 16;
-const int CANTIDAD_REMERAS = 128;
-const int CANTIDAD_PELOS = 63;
-const int CANTIDAD_SOMBREROS = 122;
 
 // Paleta de colores
 const Uint8 COLORES[8][3] = {
@@ -59,21 +55,11 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
                          COLORES[color_pantalon][2]);
   pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
                     COLORES[color_pelo][2]);
-}
 
-void Personaje::cambiar_pantalon() {
-  pantalon = (pantalon + 1) % CANTIDAD_PANTALONES;
-}
-
-void Personaje::cambiar_remera() { remera = (remera + 1) % CANTIDAD_REMERAS; }
-
-void Personaje::cambiar_pelo() { pelo = (pelo + 1) % CANTIDAD_PELOS; }
-
-void Personaje::cambiar_sombrero() {
-  sombrero = sombrero + 1;
-  if (sombrero >= CANTIDAD_SOMBREROS) {
-    sombrero = -1;
-  }
+  herramientas.emplace_back(renderer, "assets/inventario/sword.png");
+  herramientas.emplace_back(renderer, "assets/inventario/pickaxe.png");
+  herramientas.emplace_back(renderer, "assets/inventario/shovel.png");
+  herramientas.emplace_back(renderer, "assets/inventario/basket.png");
 }
 
 void Personaje::cambiar_color_pantalon() {
@@ -129,10 +115,18 @@ void Personaje::animar(long vueltas) {
   }
 }
 
+void Personaje::mirar(Direccion direccion) {
+  mirando = direccion;
+}
+
 void Personaje::picar() {
   if (vueltas_picando <= 0) {
     vueltas_picando = DURACION_PICAR;
   }
+}
+
+void Personaje::agarrar(ToolTypeDto herramienta) {
+  en_la_mano = herramienta;
 }
 
 int Personaje::obtener_tile_x() const { return tile_x; }
@@ -169,6 +163,7 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   int x = tile_x * TILE - camara_x;
   int y = tile_y * TILE - TILE - camara_y;
   dibujar_capas(renderer, x, y, TILE, columna, fila_cuerpo, mirando, rebote);
+  dibujar_herramienta(renderer, x, y, TILE);
 }
 
 void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
@@ -178,6 +173,14 @@ void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
   int y = otro_tile_y * lado - lado - camara_y;
   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
 }
+
+  void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y, int lado) {
+    int fila_cuerpo = mirando;
+    if (mirando == IZQUIERDA) {
+      fila_cuerpo = DERECHA;
+    }
+    dibujar_capas(renderer, centro_x - lado / 2, pie_y - 2 * lado, lado, 0, fila_cuerpo, mirando, 0);
+  }
 
 void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                               int columna, int fila_cuerpo, Direccion direccion,
@@ -240,4 +243,25 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                           20 * lado / 16, 20 * lado / 16);
     renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
   }
+}
+
+void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) {
+  if (mirando ==ARRIBA) {
+    return;
+  }
+
+  Texture &icono = herramientas[static_cast<int>(en_la_mano)];
+  int ancho = icono.GetWidth() * lado / 24;
+  int alto = icono.GetHeight() * lado / 24;
+
+  // Mano derecha
+  int mano_x = x + 9 * lado / 16;
+  int mano_y = y + 16 * lado / 16;
+  int flip = SDL_FLIP_NONE;
+  if (mirando == IZQUIERDA) {
+    mano_x = x + 7 * lado / 16 - ancho;
+    flip = SDL_FLIP_HORIZONTAL;
+  }
+
+  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt, flip);
 }

@@ -57,6 +57,9 @@ void ServerReceiver::run() {
       case OP_PLANT:
         match->push_command(factory.create(client_id, protocol.receive_plant()));
         break;
+      case OP_TILL:
+        match->push_command(factory.create(client_id, protocol.receive_till()));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }
