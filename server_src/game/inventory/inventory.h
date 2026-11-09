@@ -20,6 +20,7 @@ public:
   bool addItem(std::unique_ptr<Item> item);
   bool addTool(std::unique_ptr<Tool> tool);
   Tool *getTool(AvailableTools type);
+  bool giveSlotTo(int index, Inventory &other);
 
   InventoryState state() const;
 };

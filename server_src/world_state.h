@@ -78,6 +78,8 @@ struct PlayerState {
   AvailableTools actualTool{};
 
   InventoryState inventory;
+  int pendingGiftGiverId = 0;
+  ItemState pendingGift{};
 };
 
 struct SectorState {

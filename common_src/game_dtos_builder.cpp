@@ -179,6 +179,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
               playerDto.inventory.push_back(std::move(inv));
               playerDto.actualTool =
                   static_cast<ToolTypeDto>(playerState.actualTool);
+              if (playerState.pendingGift.count > 0) {
+                playerDto.pendingGift.giverId = playerState.pendingGiftGiverId;
+                playerDto.pendingGift.gift = {playerState.pendingGift.count, toDto(playerState.pendingGift), static_cast<CropQualityDto>(playerState.pendingGift.quality)};
+              }
             }
             sectorDto.players[pos] = std::move(playerDto);
           }

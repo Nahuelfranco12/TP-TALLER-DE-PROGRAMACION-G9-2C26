@@ -161,7 +161,7 @@ PlantDto ServerProtocol::receive_plant() {
 GiftOfferDto ServerProtocol::receive_gift_offer() {
   GiftOfferDto dto;
   dto.receiverId = protocol.receive_u16();
-  dto.gift = receive_slot();
+  dto.slotIndex = protocol.receive_u8();
   return dto;
 }
 

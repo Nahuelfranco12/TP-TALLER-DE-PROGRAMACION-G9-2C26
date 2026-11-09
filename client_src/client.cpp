@@ -95,8 +95,8 @@ void Client::send_plant(int x, int y, CropTypeDto crop) {
     to_send_queue.try_push(std::make_unique<PlantAction>(x, y, crop));
 }
 
-void Client::send_gift_offer(int receiverId, const InventorySlotDto &gift) {
-    GiftOfferDto dto{.receiverId = receiverId, .gift = gift};
+void Client::send_gift_offer(int receiverId, int slotIndex) {
+    GiftOfferDto dto{.receiverId = receiverId, .slotIndex = slotIndex};
     to_send_queue.try_push(std::make_unique<GiftOfferAction>(dto));
 }
 

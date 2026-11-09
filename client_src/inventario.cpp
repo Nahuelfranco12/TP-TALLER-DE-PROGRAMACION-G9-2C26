@@ -199,3 +199,10 @@ void Inventario::dibujar(Renderer &renderer, int ancho_ventana,
     }
   }
 }
+
+bool Inventario::indice_item_seleccionado(int &indice) const {
+  int item = seleccionado - MAX_HERRAMIENTAS;
+  if (item < 0 || item >= static_cast<int>(casilleros.size())) return false;
+  indice = item;
+  return true;
+}

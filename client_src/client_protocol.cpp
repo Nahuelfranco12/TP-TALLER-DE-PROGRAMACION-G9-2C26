@@ -63,7 +63,7 @@ void ClientProtocol::send_plant_dto(const PlantDto& dto) {
 void ClientProtocol::send_gift_offer_dto(const GiftOfferDto& dto) {
   protocol.send_u8(OP_GIFT_OFFER);
   protocol.send_u16(static_cast<uint16_t>(dto.receiverId));
-  send_slot(dto.gift);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
 }
 void ClientProtocol::send_gift_response_dto(const GiftResponseDto& dto) {
   protocol.send_u8(OP_GIFT_RESPONSE);

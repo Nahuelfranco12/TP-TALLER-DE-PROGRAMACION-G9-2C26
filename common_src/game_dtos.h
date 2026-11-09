@@ -144,7 +144,7 @@ struct InventorySlotDto {
 
 struct GiftOfferDto {
   int receiverId = 0;
-  InventorySlotDto gift; 
+  int slotIndex = 0;
 };
 
 struct PendingGiftDto {
