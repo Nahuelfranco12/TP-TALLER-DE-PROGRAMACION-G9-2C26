@@ -242,6 +242,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
 		if (state.type != zona) {
       zona = state.type;
@@ -343,6 +344,8 @@ int main(int argc, char *argv[]) try {
     }
     personaje.dibujar(renderer, camara_x, camara_y);
     
+    interfaz.dibujar_noche(renderer);
+
     // Mapa del mundo (M)
     if (viendo_mapa) {
       mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona, personaje);

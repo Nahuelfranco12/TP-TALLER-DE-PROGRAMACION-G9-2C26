@@ -5,6 +5,7 @@
 #include <string>
 
 #include "audio.h"
+#include "common_src/game_dtos.h"
 
 class Interfaz {
 private:
@@ -23,6 +24,11 @@ private:
   SDL2pp::Rect boton_codigo;
   bool mostrando_codigo = false;
 
+  size_t hora = 6;
+  size_t minutos = 0;
+  std::string texto_tiempo;
+  SDL2pp::Texture textura_tiempo;
+
   static void dibujar_boton(SDL2pp::Renderer &renderer,
                             const SDL2pp::Rect &boton, SDL2pp::Texture &texto);
 
@@ -32,5 +38,9 @@ public:
   bool click(int x, int y, Audio &audio);
 
   void dibujar(SDL2pp::Renderer &renderer, const Audio &audio);
+
+  void actualizar_tiempo(SDL2pp::Renderer &renderer, const GameTimeDto &tiempo, size_t dia);
+
+  void dibujar_noche(SDL2pp::Renderer &renderer) const;
 };
 #endif

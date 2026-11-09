@@ -15,7 +15,17 @@ const int TAMANIO_LETRA = 16;
 const int MARGEN = 16;
 const int ALTO_BOTON = 32;
 const int RELLENO = 8;
-} // namespace
+const int HORA_ATARDECER = 18;
+const int HORA_NOCHE = 22;
+const int OSCURIDAD_MAXIMA = 170;
+
+std::string dos_digitos(size_t numero) {
+  if (numero < 10) {
+    return "0" + std::to_string(numero);
+  }
+  return std::to_string(numero);
+}
+}
 
 Interfaz::Interfaz(SDL2pp::Renderer &renderer,
                    const std::string &codigo_partida)
@@ -29,7 +39,8 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
           renderer, fuente.RenderUTF8_Blended("Código Multiplayer", BLANCO)),
       texto_codigo(renderer,
                    fuente.RenderUTF8_Blended(
-                       "Código: " + codigo_partida + "  (copiado)", BLANCO)) {}
+                       "Código: " + codigo_partida + "  (copiado)", BLANCO)),
+      textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 06:00", BLANCO)) {}
 
 bool Interfaz::click(int x, int y, Audio &audio) {
   if (boton_codigo.Contains(x, y)) {
@@ -81,9 +92,46 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
     }
     renderer.FillRect(rayita);
   }
-  SDL2pp::Texture &texto = mostrando_codigo ? texto_codigo : texto_boton_codigo;
-  int ancho = texto.GetWidth() + 2 * RELLENO;
-  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho,
-                      ALTO_BOTON);
-  dibujar_boton(renderer, boton_codigo, texto);
+  SDL2pp::Texture *texto = &texto_boton_codigo;
+  if (mostrando_codigo) {
+    texto = &texto_codigo;
+  }
+  int ancho = texto->GetWidth() + 2 * RELLENO;
+  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho, ALTO_BOTON);
+  dibujar_boton(renderer, boton_codigo, *texto);
+
+  int ancho_tiempo = textura_tiempo.GetWidth() + 2 * RELLENO;
+  Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - MARGEN, MARGEN + ALTO_BOTON + 8, ancho_tiempo, ALTO_BOTON);
+  dibujar_boton(renderer, caja_tiempo, textura_tiempo);
+}
+
+void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, size_t dia) {
+  hora = tiempo.hours;
+  minutos = tiempo.minutes;
+
+  std::string nuevo = "Día " + std::to_string(dia) + " " + dos_digitos(hora) + ":" + dos_digitos(minutos);
+  if (nuevo != texto_tiempo) {
+    texto_tiempo = nuevo;
+    textura_tiempo = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
+  }
+}
+
+void Interfaz::dibujar_noche(Renderer &renderer) const {
+  int minutos_del_dia = static_cast<int>(hora) * 60 + static_cast<int>(minutos);
+  int inicio = HORA_ATARDECER * 60;
+  int fin = HORA_NOCHE * 60;
+
+  int alfa = 0;
+  if (hora < 6 || minutos_del_dia >= fin) {
+    alfa = OSCURIDAD_MAXIMA;
+  } else if (minutos_del_dia > inicio) {
+    alfa = OSCURIDAD_MAXIMA * (minutos_del_dia - inicio) / (fin - inicio);
+  }
+  if (alfa == 0) {
+    return;
+  }
+
+  renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+  renderer.SetDrawColor(10, 10, 40, alfa);
+  renderer.FillRect(Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
 }
