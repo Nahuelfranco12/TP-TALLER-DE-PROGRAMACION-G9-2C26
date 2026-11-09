@@ -21,7 +21,15 @@ qt_add_executable(editor
     headers/editor_dtos.h
     headers/vista_responsive.h
     headers/constantes.h
+    headers/mapa_editor.h
+    headers/control_dimensiones.h
+    headers/sprites.h
+    headers/vista_zona.h
 
+    implementaciones/sprites.cpp
+    implementaciones/vista_zona.cpp
+    implementaciones/control_dimensiones.cpp
+    implementaciones/mapa_editor.cpp
     implementaciones/vista_responsive.cpp
     implementaciones/editor_dtos.cpp
     implementaciones/controlador_mapas.cpp

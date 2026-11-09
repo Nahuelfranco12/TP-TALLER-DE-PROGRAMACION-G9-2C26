@@ -11,21 +11,27 @@
 
 #define ANCHO_DISENIO 1280
 #define ALTO_DISENIO 720
+#define CANTIDAD_NIVELES_CAVERNA 10
+#define ANCHO_PREDETERMINADO 20
+#define ALTO_PREDETERMINADO 15
+#define DIMENSION_MINIMA 10
+#define DIMENSION_MAXIMA 50
 
 #define SUELO ":/Mapas/suelo.png"
 #define DUNGEON ":/Mapas/dungeon.png"
+#define PISO_PIEDRA ":/Mapas/cam_piedras.png"
 #define OBJETOS ":/Mapas/objetos.png"
 #define CERCO ":/Mapas/cerco.png"
 #define PIEDRAS ":/Mapas/piedras.png"
 #define ARBOL ":/Mapas/arbol.png"
-#define CASA ":/Edificios/casa.png"
+#define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
 #define CABANIAS ":/Mapas/cabanias.png"
+#define CASA ":/Edificios/casa.png"
 #define SIN_ASSET ""
 #define RUTA_MARNIE ":/Npcs/marnie.png"
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
-#define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
 
 // recortes para el tema de mostrar bien segun el asset
 #define RECORTE_MR {24, 16, 16, 32}
@@ -42,28 +48,31 @@
 #define RECORTE_PARED_CAVERNA {32, 0, 16, 16}
 #define RECORTE_CENTRO_COMUNITARIO {17, 181, 190, 123}
 #define RECORTE_ESCALERA {144, 48, 16, 16}
+#define RECORTE_PISO_PUEBLO {144, 32, 16, 16}
 
 #define TEXTO_PASTO "Pasto"
 #define TEXTO_TIERRA "Tierra"
 #define TEXTO_CAMINO "Camino"
 #define TEXTO_PISO "Piso"
 #define TEXTO_PARED "Pared"
-
 #define TEXTO_CABANIA "Cabaña"
 #define TEXTO_ARBOL "Árbol"
 #define TEXTO_PIEDRA "Piedra"
 #define TEXTO_CERCO "Cerco"
 #define TEXTO_ENTRADA_MINA "Entrada a la mina"
 #define TEXTO_SALIDA_PUEBLO "Salida al pueblo"
-
+#define TEXTO_PISO_PUEBLO "Piso"
 #define TEXTO_ESCALERA "Escalera"
 #define TEXTO_SALIDA_CAVERNA "Salida"
-
 #define TEXTO_MARNIE "Marnie"
 #define TEXTO_CLINT "Clint"
 #define TEXTO_PIERRE "Pierre"
 #define TEXTO_ROBIN "Robin"
 #define TEXTO_CENTRO_COMUNITARIO "Centro comunitario"
 #define TEXTO_SALIDA_GRANJA "Salida a la granja"
+
+#define LADO_TILE 32
+#define COLOR_CUADRICULA QColor(0, 0, 0, 60)
+#define TEXTO_DESCONOCIDO "?"
 
 #endif  // CONSTANTES_H

@@ -6,6 +6,7 @@
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
 #include "editor_dtos.h"
+#include "control_dimensiones.h"
 
 class QWidget;
 
@@ -22,6 +23,14 @@ class ControladorMapas : public ControladorPaginaEditor {
   void cargarPaleta(Zona zona);
   template <typename T>
   void agregarAPaleta(const std::vector<InfoElemento<T>> &elementos);
+
+  ControlDimensiones *dimensiones;
+  Zona zonaActual = Zona::Granja;
+
+  void cambiarDeZona(Zona zona);
+  Dimensiones dimensionesDe(Zona zona) const;
+  void redimensionarZona(Zona zona, Dimensiones nuevas);
+  void dibujarMapa();
 };
 
 #endif  // CONTROLADOR_MAPAS_H_

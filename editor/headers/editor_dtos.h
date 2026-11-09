@@ -5,7 +5,7 @@
 
 enum class Zona { Granja, Caverna, Pueblo };
 
-enum class Terreno { Pasto, Tierra, Camino, Piso, Pared };
+enum class Terreno { Pasto, Tierra, Camino, PisoCaverna, Pared, PisoPueblo };
 
 enum class ElementosGranja {
   Cabania,
@@ -38,9 +38,10 @@ template <typename TipoElemento> struct InfoElemento {
   TipoElemento elemento = 0;
   const char *nombre = 0;
   const char *recurso = 0;
-  Recorte recorte = 0;
+  Recorte recorte;
 };
 
+const InfoElemento<Terreno> *infoTerreno(Terreno terreno);
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona);
 const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja();
 const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna();

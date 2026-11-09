@@ -20,7 +20,7 @@ ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
 }
 
 void ControladorInicioEditor::crearMapa() {
-  datos = DatosEditor{ModoEditor::Crear, QString()};
+  datos = DatosEditor{ModoEditor::Crear, QString(), crearMapaPredeterminado()};
   navegador.irA(ui.pageMapas);
 }
 
@@ -34,4 +34,8 @@ void ControladorInicioEditor::editarMapa() {
   navegador.irA(ui.pageMapas);
 }
 
-void ControladorInicioEditor::limpiarPagina() {}
+void ControladorInicioEditor::limpiarPagina() {
+	ui.vistaGranja->limpiar();
+	ui.vistaCaverna->limpiar();
+	ui.vistaPueblo->limpiar();
+}

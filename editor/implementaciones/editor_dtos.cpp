@@ -3,16 +3,25 @@
 #include "constantes.h"
 
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
-  static const std::vector<InfoElemento<Terreno>> exterior = {
+  static const std::vector<InfoElemento<Terreno>> granja = {
       {Terreno::Pasto, TEXTO_PASTO, SUELO, RECORTE_PASTO},
-      {Terreno::Tierra, TEXTO_TIERRA, SUELO, RECORTE_TIERRA},
-      {Terreno::Camino, TEXTO_CAMINO, SIN_ASSET, {}}};
+      {Terreno::Tierra, TEXTO_TIERRA, SUELO, RECORTE_TIERRA}};
   static const std::vector<InfoElemento<Terreno>> caverna = {
-      {Terreno::Piso, TEXTO_PISO, DUNGEON, RECORTE_PISO_CAVERNA},
+      {Terreno::PisoCaverna, TEXTO_PISO, DUNGEON, RECORTE_PISO_CAVERNA},
       {Terreno::Pared, TEXTO_PARED, DUNGEON, RECORTE_PARED_CAVERNA}};
-  if (zona == Zona::Caverna)
+  static const std::vector<InfoElemento<Terreno>> pueblo = {
+      {Terreno::PisoPueblo, TEXTO_PISO_PUEBLO, PISO_PIEDRA, RECORTE_PISO_PUEBLO}
+  //    {Terreno::Camino, TEXTO_CAMINO, SIN_ASSET, {}}
+  };
+  switch (zona) {
+  case Zona::Granja:
+    return granja;
+  case Zona::Caverna:
     return caverna;
-  return exterior;
+  case Zona::Pueblo:
+    return pueblo;
+  }
+  return granja;
 }
 
 const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
@@ -45,4 +54,12 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
        RUTA_CENTRO_COMUNITARIO, RECORTE_CENTRO_COMUNITARIO},
       {ElementosPueblo::SalidaGranja, TEXTO_SALIDA_GRANJA, SIN_ASSET, {}}};
   return catalogo;
+}
+
+const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
+  for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo})
+    for (const auto &info : terrenosDe(zona))
+      if (info.elemento == terreno)
+        return &info;
+  return nullptr;
 }

@@ -31,7 +31,8 @@
 	    <file alias="cerco.png">../assets/mapas/Fence's copiar.png</file>
 	    <file alias="dungeon.png">../assets/mapas/Dungeon_Tileset.png</file>
 	    <file alias="objetos.png">../assets/mapas/objects_01_16x16.png</file>
-		<file alias="centro_comunitario.png">../assets/mapas/centro_com.png</file>
+        <file alias="centro_comunitario.png">../assets/mapas/centro_com.png</file>
+        <file alias="cam_piedras.png">../assets/mapas/cam_piedras.png</file>
 	</qresource>
     <qresource prefix="/Edificios">
         <file alias="casa.png">../assets/edificios/House.png</file>
