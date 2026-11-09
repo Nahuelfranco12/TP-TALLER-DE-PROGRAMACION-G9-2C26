@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
        <widget class="QPushButton" name="botonEditorCrearMapa">
         <property name="geometry">
          <rect>
-          <x>780</x>
+          <x>900</x>
           <y>140</y>
           <width>301</width>
           <height>71</height>
@@ -60,7 +60,7 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botonEditorMapa">
         <property name="geometry">
          <rect>
-          <x>780</x>
+          <x>900</x>
           <y>280</y>
           <width>301</width>
           <height>71</height>
@@ -86,7 +86,7 @@ QPushButton:pressed {
        <widget class="QLabel" name="cartelMPEditor">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>170</x>
           <y>110</y>
           <width>401</width>
           <height>251</height>
@@ -104,7 +104,7 @@ QPushButton:pressed {
        <widget class="QLabel" name="letraEDITOR">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>170</x>
           <y>350</y>
           <width>411</width>
           <height>141</height>
@@ -122,7 +122,7 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botonEditorSalir">
         <property name="geometry">
          <rect>
-          <x>780</x>
+          <x>900</x>
           <y>420</y>
           <width>301</width>
           <height>71</height>
@@ -167,7 +167,7 @@ QPushButton:pressed {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>301</width>
+             <width>331</width>
              <height>41</height>
             </rect>
            </property>
@@ -184,7 +184,7 @@ font-size: 24px;</string>
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>630</y>
+             <y>660</y>
              <width>101</width>
              <height>41</height>
             </rect>
@@ -210,7 +210,7 @@ QPushButton:pressed {
            <property name="geometry">
             <rect>
              <x>180</x>
-             <y>630</y>
+             <y>660</y>
              <width>101</width>
              <height>41</height>
             </rect>
@@ -237,8 +237,8 @@ QPushButton:pressed {
             <rect>
              <x>0</x>
              <y>50</y>
-             <width>301</width>
-             <height>471</height>
+             <width>321</width>
+             <height>481</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -249,7 +249,7 @@ QPushButton:pressed {
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>540</y>
+             <y>560</y>
              <width>161</width>
              <height>41</height>
             </rect>
@@ -267,7 +267,7 @@ font-size: 24px;</string>
            <property name="geometry">
             <rect>
              <x>250</x>
-             <y>550</y>
+             <y>570</y>
              <width>42</width>
              <height>27</height>
             </rect>
@@ -277,7 +277,7 @@ font-size: 24px;</string>
            <property name="geometry">
             <rect>
              <x>190</x>
-             <y>550</y>
+             <y>570</y>
              <width>42</width>
              <height>27</height>
             </rect>
@@ -287,7 +287,7 @@ font-size: 24px;</string>
            <property name="geometry">
             <rect>
              <x>180</x>
-             <y>530</y>
+             <y>550</y>
              <width>111</width>
              <height>21</height>
             </rect>
@@ -305,7 +305,7 @@ font-size: 15px;</string>
            <property name="geometry">
             <rect>
              <x>100</x>
-             <y>580</y>
+             <y>610</y>
              <width>101</width>
              <height>41</height>
             </rect>
@@ -381,7 +381,13 @@ QPushButton:pressed {
               <item>
                <spacer name="espacioNivelCaverna">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
                 </property>
                </spacer>
               </item>

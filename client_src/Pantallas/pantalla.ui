@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,8 +26,8 @@
        <widget class="QPushButton" name="botNuevaPartida">
         <property name="geometry">
          <rect>
-          <x>630</x>
-          <y>110</y>
+          <x>650</x>
+          <y>130</y>
           <width>300</width>
           <height>80</height>
          </rect>
@@ -52,8 +52,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botUnirsePartida">
         <property name="geometry">
          <rect>
-          <x>940</x>
-          <y>110</y>
+          <x>960</x>
+          <y>130</y>
           <width>300</width>
           <height>80</height>
          </rect>
@@ -78,8 +78,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="botRetomarPartida">
         <property name="geometry">
          <rect>
-          <x>780</x>
-          <y>220</y>
+          <x>800</x>
+          <y>240</y>
           <width>300</width>
           <height>80</height>
          </rect>
@@ -104,8 +104,8 @@ QPushButton:pressed {
        <widget class="QLabel" name="cartelMP">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>70</y>
+          <x>70</x>
+          <y>90</y>
           <width>511</width>
           <height>301</height>
          </rect>
@@ -131,8 +131,8 @@ QPushButton:pressed {
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>811</width>
-          <height>671</height>
+          <width>810</width>
+          <height>730</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -166,7 +166,7 @@ qproperty-alignment: AlignCenter;</string>
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -196,7 +196,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -223,8 +223,8 @@ QPushButton:pressed {
          <rect>
           <x>130</x>
           <y>230</y>
-          <width>491</width>
-          <height>191</height>
+          <width>490</width>
+          <height>260</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -244,8 +244,8 @@ QScrollArea &gt; QWidget &gt; QWidget {
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>491</width>
-           <height>191</height>
+           <width>490</width>
+           <height>260</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -265,8 +265,8 @@ QScrollArea &gt; QWidget &gt; QWidget {
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>811</width>
-          <height>671</height>
+          <width>810</width>
+          <height>730</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -341,7 +341,7 @@ color: #f1b356; </string>
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -372,7 +372,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -699,8 +699,8 @@ QPushButton:pressed {
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>811</width>
-          <height>671</height>
+          <width>810</width>
+          <height>730</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -795,7 +795,7 @@ qproperty-alignment: AlignCenter;</string>
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>490</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -821,7 +821,7 @@ QPushButton:pressed {
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>490</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -851,7 +851,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>400</y>
+          <y>460</y>
           <width>541</width>
           <height>71</height>
          </rect>
@@ -872,7 +872,7 @@ customizar tu personaje!</string>
           <x>100</x>
           <y>260</y>
           <width>541</width>
-          <height>111</height>
+          <height>191</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -893,7 +893,7 @@ QScrollArea &gt; QWidget &gt; QWidget {
            <x>0</x>
            <y>0</y>
            <width>541</width>
-           <height>111</height>
+           <height>191</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -913,8 +913,8 @@ QScrollArea &gt; QWidget &gt; QWidget {
          <rect>
           <x>-20</x>
           <y>-10</y>
-          <width>811</width>
-          <height>671</height>
+          <width>810</width>
+          <height>730</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -977,7 +977,7 @@ QLineEdit:focus, QComboBox:focus {
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -1007,7 +1007,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>490</y>
+          <y>510</y>
           <width>161</width>
           <height>61</height>
          </rect>
