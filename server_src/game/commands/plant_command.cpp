@@ -19,5 +19,9 @@ void PlantCommand::execute(World &world) {
 
     // todo: chequear q la casilla sea arable y tenga la semilla (y gastarla)
 
+    if (!player->spendEnergy(ENERGY_COST_PLANT))
+        return;
+
+
     sector->addEntity(std::make_unique<Crop>(this->target, this->crop), this->target);
 }

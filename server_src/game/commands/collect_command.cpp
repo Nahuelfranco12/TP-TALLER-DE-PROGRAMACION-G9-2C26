@@ -38,6 +38,9 @@ void CollectCommand::execute(World &world) {
   if (!collectable || !collectable->canCollect())
     return;
 
+  if (!player->spendEnergy(collectable->energyCost()))
+    return;
+
   bool should_remove = collectable->removeOnCollect();
 
   auto product = collectable->collect();

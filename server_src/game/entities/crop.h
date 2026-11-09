@@ -62,6 +62,10 @@ public:
         if(!canCollect()) return nullptr;
         return std::make_unique<CropItem>(price(), type, quality());
     }
+
+    double energyCost() const override { return ENERGY_COST_HARVEST_CROP; }
+
+
     void tick() override {
         progress += 1;
     }

@@ -61,6 +61,10 @@ public:
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
 
+  bool hasEnergy(size_t cost);
+  bool spendEnergy(size_t cost);
+  void restoreEnergy(size_t amount);
+
   // state para el serializar el estado del mundo
   PlayerState state() const;
   EntityState entityState() const override {
