@@ -8,7 +8,7 @@ private:
 public:
   FarmSector(size_t width, size_t height)
       : Sector(width, height, IdSector::FARM,
-               Terrain(true, false, TerrainType::DIRT)) {}
+               Terrain(true, false, TerrainType::GRASS)) {}
 
   bool placeAnimal(Position position, AnimalType animalType);
   bool tillSoil(Position position);
