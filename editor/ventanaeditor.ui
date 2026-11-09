@@ -348,16 +348,6 @@ QPushButton:pressed {
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tabCaverna">
-           <attribute name="title">
-            <string>Caverna</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <widget class="VistaZona" name="vistaCaverna"/>
-            </item>
-           </layout>
-          </widget>
           <widget class="QWidget" name="tabGranja">
            <attribute name="title">
             <string>Granja</string>
@@ -365,6 +355,40 @@ QPushButton:pressed {
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
              <widget class="VistaZona" name="vistaGranja"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabCaverna">
+           <attribute name="title">
+            <string>Caverna</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="layoutNivelCaverna">
+              <item>
+               <widget class="QLabel" name="textoNivelCaverna">
+                <property name="styleSheet">
+                 <string notr="true">font-size: 20px;</string>
+                </property>
+                <property name="text">
+                 <string>Nivel</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="valorNivelCaverna"/>
+              </item>
+              <item>
+               <spacer name="espacioNivelCaverna">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="VistaZona" name="vistaCaverna"/>
             </item>
            </layout>
           </widget>

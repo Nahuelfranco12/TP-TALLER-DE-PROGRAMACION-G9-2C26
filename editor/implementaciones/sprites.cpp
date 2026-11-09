@@ -6,8 +6,8 @@
 #include "constantes.h"
 
 namespace {
-QPixmap placeholder(const QString &nombre, int lado) {
-  QPixmap pixmap(lado, lado);
+QPixmap placeholder(const QString &nombre, int ancho, int alto) {
+  QPixmap pixmap(ancho, alto);
   pixmap.fill(COLOR_PLACEHOLDER);
   QPainter pintor(&pixmap);
   pintor.setPen(Qt::white);
@@ -15,16 +15,16 @@ QPixmap placeholder(const QString &nombre, int lado) {
   pintor.end();
   return pixmap;
 }
-}  // namespace
+} // namespace
 
 QPixmap spriteDe(const char *recurso, const Recorte &recorte,
-                 const QString &nombre, int lado) {
+                 const QString &nombre, int ancho, int alto) {
   QPixmap hoja(QString::fromUtf8(recurso));
   if (hoja.isNull())
-    return placeholder(nombre, lado);
+    return placeholder(nombre, ancho, alto);
   QPixmap imagen = hoja;
   if (recorte.ancho != 0)
     imagen = hoja.copy(recorte.x, recorte.y, recorte.ancho, recorte.alto);
-  return imagen.scaled(lado, lado, Qt::KeepAspectRatio,
+  return imagen.scaled(ancho, alto, Qt::KeepAspectRatio,
                        Qt::FastTransformation);
 }

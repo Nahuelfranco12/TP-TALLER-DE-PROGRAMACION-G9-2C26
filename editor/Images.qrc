@@ -28,7 +28,8 @@
 	    <file alias="cabanias.png">../assets/mapas/Tilesets_Cabins.png</file>
 	    <file alias="arbol.png">../assets/mapas/tree1.png</file>
 	    <file alias="piedras.png">../assets/mapas/Road copiar.png</file>
-	    <file alias="cerco.png">../assets/mapas/Fence's copiar.png</file>
+	    <file alias="cerco_frente.png">../assets/mapas/Fence's copiar.png</file>
+	    <file alias="cerco_costado.png">../assets/mapas/Fence's copiar.png</file>
 	    <file alias="dungeon.png">../assets/mapas/Dungeon_Tileset.png</file>
 	    <file alias="objetos.png">../assets/mapas/objects_01_16x16.png</file>
         <file alias="centro_comunitario.png">../assets/mapas/centro_com.png</file>

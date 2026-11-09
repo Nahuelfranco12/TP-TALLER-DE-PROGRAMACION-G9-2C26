@@ -11,7 +11,8 @@ enum class ElementosGranja {
   Cabania,
   Arbol,
   Piedra,
-  Cerco,
+  CercoFrente,
+  CercoCostado,
   EntradaMina,
   SalidaPueblo
 };
@@ -35,9 +36,9 @@ struct Recorte {
 };
 
 template <typename TipoElemento> struct InfoElemento {
-  TipoElemento elemento = 0;
-  const char *nombre = 0;
-  const char *recurso = 0;
+  TipoElemento elemento{};
+  const char *nombre = nullptr;
+  const char *recurso = nullptr;
   Recorte recorte;
 };
 
@@ -46,5 +47,8 @@ const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona);
 const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja();
 const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna();
 const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo();
+const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo);
+const InfoElemento<ElementosCaverna> *infoDe(ElementosCaverna tipo);
+const InfoElemento<ElementosPueblo> *infoDe(ElementosPueblo tipo);
 
 #endif // EDITOR_DTOS_H_

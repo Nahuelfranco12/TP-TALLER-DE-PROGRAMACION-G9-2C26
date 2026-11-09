@@ -1,11 +1,12 @@
 #ifndef EDITOR_MAPA_EDITOR_H_
 #define EDITOR_MAPA_EDITOR_H_
 
+#include <algorithm>
 #include <cstddef>
 #include <stdexcept>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "constantes.h"
 #include "editor_dtos.h"
@@ -20,16 +21,43 @@ inline bool dimensionesValidas(const Dimensiones &d) {
          d.alto >= DIMENSION_MINIMA && d.alto <= DIMENSION_MAXIMA;
 }
 
-template <typename TipoObjeto>
-struct ObjetoColocado {
+template <typename TipoObjeto> struct ObjetoColocado {
   TipoObjeto tipo;
   int x;
   int y;
 };
 
+struct Huella {
+  int ancho;
+  int alto;
+};
+
+Huella huellaDe(ElementosGranja tipo);
+Huella huellaDe(ElementosCaverna tipo);
+Huella huellaDe(ElementosPueblo tipo);
+
+bool esUnico(ElementosGranja tipo);
+bool esUnico(ElementosCaverna tipo);
+bool esUnico(ElementosPueblo tipo);
+
 template <typename TipoObjeto>
-class MapaZona {
- public:
+bool ocupa(const ObjetoColocado<TipoObjeto> &objeto, int x, int y) {
+  Huella huella = huellaDe(objeto.tipo);
+  return x >= objeto.x && x < objeto.x + huella.ancho && y >= objeto.y &&
+         y < objeto.y + huella.alto;
+}
+
+template <typename TipoObjeto>
+bool seSuperponen(TipoObjeto tipo, int x, int y,
+                  const ObjetoColocado<TipoObjeto> &otro) {
+  Huella a = huellaDe(tipo);
+  Huella b = huellaDe(otro.tipo);
+  return x < otro.x + b.ancho && otro.x < x + a.ancho && y < otro.y + b.alto &&
+         otro.y < y + a.alto;
+}
+
+template <typename TipoObjeto> class MapaZona {
+public:
   MapaZona(Dimensiones dimensiones, Terreno pisoBase)
       : dimensiones(dimensiones), pisoBase(pisoBase) {
     if (!dimensionesValidas(dimensiones))
@@ -47,8 +75,46 @@ class MapaZona {
 
   Terreno terrenoEn(int x, int y) const { return terrenos[indice(x, y)]; }
 
+  void setTerreno(int x, int y, Terreno terreno) {
+    terrenos[indice(x, y)] = terreno;
+  }
+
   const std::vector<ObjetoColocado<TipoObjeto>> &objetos() const {
     return objetosColocados;
+  }
+
+  const ObjetoColocado<TipoObjeto> *objetoEn(int x, int y) const {
+    auto objeto = std::find_if(
+        objetosColocados.begin(), objetosColocados.end(),
+        [x, y](const auto &candidato) { return ocupa(candidato, x, y); });
+    if (objeto == objetosColocados.end())
+      return nullptr;
+    return &*objeto;
+  }
+
+  bool colocar(TipoObjeto tipo, int x, int y) {
+    if (!entra(tipo, x, y))
+      return false;
+    bool unico = esUnico(tipo);
+    bool pisaAOtro =
+        std::any_of(objetosColocados.begin(), objetosColocados.end(),
+                    [&](const auto &otro) {
+                      bool seVaAMover = unico && otro.tipo == tipo;
+                      return !seVaAMover && seSuperponen(tipo, x, y, otro);
+                    });
+    if (pisaAOtro)
+      return false;
+    if (unico)
+      std::erase_if(objetosColocados,
+                    [tipo](const auto &objeto) { return objeto.tipo == tipo; });
+    objetosColocados.push_back({tipo, x, y});
+    return true;
+  }
+
+  bool quitarEn(int x, int y) {
+    return std::erase_if(objetosColocados, [x, y](const auto &objeto) {
+             return ocupa(objeto, x, y);
+           }) > 0;
   }
 
   void redimensionar(Dimensiones nuevas) {
@@ -62,14 +128,14 @@ class MapaZona {
     terrenos = std::move(nuevosTerrenos);
     dimensiones = nuevas;
     std::erase_if(objetosColocados, [this](const auto &objeto) {
-      return !contiene(objeto.x, objeto.y);
+      return !entra(objeto.tipo, objeto.x, objeto.y);
     });
   }
 
- private:
+private:
   Dimensiones dimensiones;
   Terreno pisoBase;
-  std::vector<Terreno> terrenos;
+  std::vector<Terreno> terrenos; // fila por fila: indice = y * ancho + x
   std::vector<ObjetoColocado<TipoObjeto>> objetosColocados;
 
   static std::size_t cantidadCeldas(const Dimensiones &d) {
@@ -81,6 +147,12 @@ class MapaZona {
       throw std::out_of_range("Celda fuera de la zona");
     return static_cast<std::size_t>(y * dimensiones.ancho + x);
   }
+
+  bool entra(TipoObjeto tipo, int x, int y) const {
+    Huella huella = huellaDe(tipo);
+    return contiene(x, y) &&
+           contiene(x + huella.ancho - 1, y + huella.alto - 1);
+  }
 };
 
 struct MapaEditor {
@@ -90,8 +162,6 @@ struct MapaEditor {
   MapaZona<ElementosPueblo> pueblo;
 };
 
-MapaEditor crearMapaPredeterminado(Dimensiones granja = {},
-                                   Dimensiones caverna = {},
-                                   Dimensiones pueblo = {});
+MapaEditor crearMapaPredeterminado();
 
-#endif  // EDITOR_MAPA_EDITOR_H_
+#endif // EDITOR_MAPA_EDITOR_H_
