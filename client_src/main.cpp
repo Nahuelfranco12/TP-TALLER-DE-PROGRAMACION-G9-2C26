@@ -138,7 +138,6 @@ int main(int argc, char *argv[]) try {
   SectorStateDto ultimo_estado;
 	// Se repite hasta  que el usuario cierre la ventana
 	bool corriendo = true;
-  bool habia_regalo = false;
 	while (corriendo) {
 		// Proceso eventos
 		SDL_Event evento;
