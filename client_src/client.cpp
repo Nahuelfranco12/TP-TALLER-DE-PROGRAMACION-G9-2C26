@@ -16,6 +16,7 @@
 #include "actions/plant_action.h"
 #include "actions/gift_offer_action.h"
 #include "actions/gift_response_action.h"
+#include "actions/till_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -102,6 +103,9 @@ void Client::send_gift_offer(int receiverId, int slotIndex) {
 
 void Client::send_gift_response(bool accept) {
     to_send_queue.try_push(std::make_unique<GiftResponseAction>(accept));
+}
+void Client::send_till(DirectionDto direction) {
+    to_send_queue.try_push(std::make_unique<TillAction>(direction));
 }
 
 bool Client::try_get_latest_state(SectorStateDto &state) {

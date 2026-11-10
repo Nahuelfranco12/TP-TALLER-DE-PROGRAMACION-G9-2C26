@@ -7,25 +7,10 @@
 
 #include "common_src/game_dtos.h"
 
-enum TipoItem {
-  ITEM_ORO,
-  ITEM_HIERRO,
-  ITEM_LAPISLAZULI,
-  ITEM_CARBON,
-  ITEM_SEMILLA,
-  ITEM_HUEVO,
-  ITEM_LECHE,
-  ITEM_CULTIVO
-};
 enum Herramienta { PICO, REGADERA, PALA, ESPADA };
 
 class Inventario {
 private:
-  struct Casillero {
-    TipoItem tipo;
-    int cantidad;
-  };
-
   SDL2pp::Texture minerales;
   SDL2pp::Texture cultivos;
   SDL2pp::Texture huevo;
@@ -35,7 +20,7 @@ private:
   std::vector<SDL2pp::Texture> digitos;
 
   std::vector<Herramienta> herramientas;
-  std::vector<Casillero> casilleros;
+  std::vector<InventorySlotDto> casilleros;
   int seleccionado;
 
   static SDL2pp::Rect rect_casillero(int i, int ancho_ventana,
@@ -45,7 +30,7 @@ private:
                             SDL2pp::Texture &textura,
                             const SDL2pp::Rect &origen,
                             const SDL2pp::Rect &casillero);
-  void dibujar_item(SDL2pp::Renderer &renderer, const Casillero &casillero,
+  void dibujar_item(SDL2pp::Renderer &renderer, const InventorySlotDto &casillero,
                     const SDL2pp::Rect &lugar);
   void dibujar_herramienta(SDL2pp::Renderer &renderer, Herramienta herramienta,
                            const SDL2pp::Rect &lugar);
@@ -55,12 +40,13 @@ private:
 public:
   explicit Inventario(SDL2pp::Renderer &renderer);
 
-  void agregar(TipoItem tipo, int cantidad);
+  void actualizar(const InventoryDto &inventario);
 
   void seleccionar(int numero);
   bool click(int x, int y, int ancho_ventana, int alto_ventana);
 
   bool herramienta_seleccionada(ToolTypeDto &herramienta) const;
+  bool item_seleccionado(InventorySlotDto &casillero) const;
 
   bool indice_item_seleccionado(int &indice) const;
 

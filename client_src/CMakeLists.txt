@@ -34,7 +34,12 @@ target_sources(taller_client
     actions/mine_action.cpp
     actions/collect_action.cpp
     actions/plant_action.cpp
+    actions/till_action.cpp
+    actions/gift_offer_action.cpp
+    actions/gift_response_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
+    pueblo.cpp
+    mapa_mundo.cpp
     PUBLIC
     # .h files
     client.h
@@ -74,8 +79,9 @@ target_sources(taller_client
     actions/mine_action.h
     actions/collect_action.h
     actions/plant_action.h
-    caverna.h
-    inventario.h
-    alrededores.h
-
+    actions/till_action.h
+    actions/gift_offer_action.h
+    actions/gift_response_action.h
+    pueblo.h
+    mapa_mundo.h
     )

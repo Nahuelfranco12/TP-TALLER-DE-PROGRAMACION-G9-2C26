@@ -40,6 +40,7 @@ public:
   void send_plant_dto(const PlantDto& dto);
   void send_gift_offer_dto(const GiftOfferDto& dto);
   void send_gift_response_dto(const GiftResponseDto& dto);
+  void send_till_dto(const TillDto& dto);
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

@@ -36,6 +36,8 @@ public:
     return nullptr;
   }
 
+  double energyCost() const override { return ENERGY_COST_COLLECT_ANIMAL; }
+
   EntityState entityState() const override {
     EntityState state = Animal::entityState();
     state.animal.is_ready = canCollect();

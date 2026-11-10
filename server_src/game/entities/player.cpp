@@ -37,6 +37,25 @@ void Player::mine(Mineral &mineral) {
   this->inventory.addItem(std::move(item));
 }
 
+bool Player::hasEnergy(size_t cost) {
+  if (this->energy <= 0 || this->energy < cost)
+    return false;
+  return true;
+}
+
+bool Player::spendEnergy(size_t cost) {
+  if (!this->hasEnergy(cost))
+    return false;
+  this->energy -= cost;
+  return true;
+}
+
+void Player::restoreEnergy(size_t amount) {
+  if ((this->energy + amount) >= PLAYER_MAX_ENERGY)
+    this->energy = PLAYER_MAX_ENERGY;
+  this->energy += amount;
+}
+
 PlayerState Player::state() const {
   return PlayerState{this->id,
                      this->position,

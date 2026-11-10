@@ -92,6 +92,19 @@ Position Sector::findFreePosition() const {
   return Position(0, 0);
 }
 
+bool Sector::till(Position pos) {
+  if(pos.x >= this->width || pos.y >= this->height)
+    return false;
+  if(!isEmpty(pos))
+    return false;
+  return this->tiles[pos.x][pos.y].till();
+}
+bool Sector::isTilled(Position pos) const {
+  if (pos.x >= this->width || pos.y >= this->height) 
+    return false;
+  return this->tiles[pos.x][pos.y].isTilled();
+}
+
 SectorState Sector::state() const {
   SectorState state{id, width, height, {}, {}};
 
@@ -105,7 +118,7 @@ SectorState Sector::state() const {
       const Terrain &terrain = tiles[x][y];
       state.tiles[x][y] = {
           terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable(),
-          this->doors.find(Position(x, y)) != this->doors.end()};
+          this->doors.find(Position(x, y)) != this->doors.end(), terrain.isTilled()};
     }
 
   return state;

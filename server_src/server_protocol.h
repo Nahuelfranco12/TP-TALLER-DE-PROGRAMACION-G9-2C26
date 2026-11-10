@@ -40,6 +40,7 @@ public:
   PlantDto receive_plant();
   GiftOfferDto receive_gift_offer();
   GiftResponseDto receive_gift_response();
+  TillDto receive_till();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

@@ -11,7 +11,8 @@
 #include "./game/commands/plant_command.h"
 #include "./game/commands/select_tool_command.h"
 #include "./game/commands/gift_offer_command.h"
-#include "./game/commands/gift_response__command.h"
+#include "./game/commands/gift_response_command.h"
+#include "./game/commands/till_command.h"
 
 class CommandFactory {
 public:
@@ -22,6 +23,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const PlantDto &dto);
   std::unique_ptr<Command> create(int player_id, const GiftOfferDto &dto);
   std::unique_ptr<Command> create(int player_id, const GiftResponseDto &dto);
+  std::unique_ptr<Command> create(int player_id, const TillDto &dto);
   std::unique_ptr<Command> create_join(int player_id,
                                        const PlayerOutfitDto &outfit);
 };

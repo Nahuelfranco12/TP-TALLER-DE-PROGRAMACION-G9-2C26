@@ -34,6 +34,7 @@ public:
   void send_plant(int x, int y, CropTypeDto crop);
   void send_gift_offer(int receiverId, int slotIndex);
   void send_gift_response(bool accept);
+  void send_till(DirectionDto direction);
 
 
   bool try_get_latest_state(SectorStateDto &state);

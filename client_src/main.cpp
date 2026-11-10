@@ -5,6 +5,8 @@
 #include "common_src/game_dtos.h"
 #include "granja.h"
 #include "inventario.h"
+#include "pueblo.h"
+#include "mapa_mundo.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -17,6 +19,7 @@
 
 #include <QApplication>
 #include <QFontDatabase>
+
 #include <exception>
 #include <iostream>
 #include <map>
@@ -48,7 +51,18 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   pantalla.show();
   QApplication::exec();
 }
-} // namespace
+
+// TODO : Revisar funcion, la pongo temporalmente para parsear de semilla a crop
+bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
+  switch (item) {
+  case ItemTypeDto::SEED_STRAWBERRY:  cultivo = CropTypeDto::STRAWBERRY;  return true;
+  case ItemTypeDto::SEED_GREEN_ONION: cultivo = CropTypeDto::GREEN_ONION; return true;
+  case ItemTypeDto::SEED_POTATO:      cultivo = CropTypeDto::POTATO;      return true;
+  case ItemTypeDto::SEED_PUMPKIN:     cultivo = CropTypeDto::PUMPKIN;     return true;
+  default:                            return false;
+  }
+}
+}
 
 int main(int argc, char *argv[]) try {
   if (argc != 3) {
@@ -84,25 +98,30 @@ int main(int argc, char *argv[]) try {
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
   // Mapas
-  SectorStateDto farm, cavern; //, village
+  SectorStateDto farm, cavern, village;
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
       if (sector.type == SectorTypeDto::FARM) farm = sector;
       if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
+      if (sector.type == SectorTypeDto::VILLAGE) village = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
   Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height, 7);
+  Mapa mapa_pueblo(renderer, village.type, village.width, village.height, 42);
   mapa_granja.actualizar(farm.sector);
   mapa_caverna.actualizar(cavern.sector);
-
-  Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
-                          mapa_granja.obtener_alto(), 42);
-
-  // Casas y animales
-  Granja granja(renderer);
-  Caverna caverna(renderer);
+  mapa_pueblo.actualizar(village.sector);
 
   const int TILE = 64;
-  bool en_caverna = false;
+
+  Alrededores alrededores(renderer, mapa_granja.obtener_ancho(), mapa_granja.obtener_alto(), 42);
+
+  Granja granja(renderer);
+  Caverna caverna(renderer);
+  Pueblo pueblo(renderer);
+
+  MapaMundo mapa_mundo(client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
+
+  SectorTypeDto zona = SectorTypeDto::FARM;
   bool viendo_mapa = false;
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
@@ -147,73 +166,72 @@ int main(int argc, char *argv[]) try {
         viendo_mapa = !viendo_mapa;
       }
 
-      // 1 a 4 elegir herramienta
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
-          evento.key.keysym.sym <= SDLK_4) {
+      // 1 a 9 seleccionar herramienta
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 && evento.key.keysym.sym <= SDLK_9) {
         inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
-		ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-		if (inventario.herramienta_seleccionada(herramienta)) {
-		  client.send_select_tool(herramienta);
-		}
-        if (inventario.herramienta_seleccionada(herramienta)) {
-          client.send_select_tool(herramienta);
+		    ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+		    if (inventario.herramienta_seleccionada(herramienta)) {
+		      client.send_select_tool(herramienta);
         }
-      }
+		  }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE &&
-          en_caverna) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
         int frente_y = personaje.obtener_tile_y();
+
+        DirectionDto dir = DirectionDto::Up;
         switch (personaje.obtener_direccion()) {
         case ARRIBA:
+          dir = DirectionDto::Up;
           frente_y--;
           break;
         case ABAJO:
+          dir = DirectionDto::Down;
           frente_y++;
           break;
         case IZQUIERDA:
+          dir = DirectionDto::Left;
           frente_x--;
           break;
         case DERECHA:
+          dir = DirectionDto::Right;
           frente_x++;
           break;
         }
-        if (inventario.tengo_en_la_mano(PICO)) {
-          personaje.picar();
-          int roto = caverna.picar(frente_x, frente_y);
+        InventorySlotDto en_la_mano;
+        CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
 
-          if (roto == 0)
-            inventario.agregar(ITEM_HIERRO, 1);
-          if (roto == 1)
-            inventario.agregar(ITEM_CARBON, 1);
-          if (roto == 2)
-            inventario.agregar(ITEM_LAPISLAZULI, 1);
-          if (roto == 3)
-            inventario.agregar(ITEM_ORO, 1);
+        if (zona == SectorTypeDto::CAVERN) {
+          if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
+            personaje.picar();
+            client.send_mine(dir);
+          }
+        } else if (inventario.tengo_en_la_mano(PALA)) {
+            client.send_till(dir);
+        } else if (inventario.item_seleccionado(en_la_mano) &&
+                   es_semilla(en_la_mano.item, cultivo)) {
+            client.send_plant(frente_x, frente_y, cultivo);
+        } else {
+            client.send_collect(dir);
         }
-      }
-
-      // Cambiar color (O pantalon, V pelo)
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_o) {
-        personaje.cambiar_color_pantalon();
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_v) {
-        personaje.cambiar_color_pelo();
       }
 
       if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
         switch (evento.key.keysym.sym) {
         case SDLK_UP:
+          personaje.mirar(ARRIBA);
           client.send_move(DirectionDto::Up);
           break;
         case SDLK_DOWN:
+          personaje.mirar(ABAJO);
           client.send_move(DirectionDto::Down);
           break;
         case SDLK_LEFT:
+          personaje.mirar(IZQUIERDA);
           client.send_move(DirectionDto::Left);
           break;
         case SDLK_RIGHT:
+          personaje.mirar(DERECHA);
           client.send_move(DirectionDto::Right);
           break;
         default:
@@ -227,24 +245,27 @@ int main(int argc, char *argv[]) try {
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
 
-	  bool ahora_en_caverna = (state.type == SectorTypeDto::CAVERN);
-	  if (ahora_en_caverna != en_caverna) {
-		en_caverna = ahora_en_caverna;
-		if (en_caverna) {
-		  audio.poner_musica_caverna();
-		} else {
-		  audio.poner_musica_granja();
-		}
+		if (state.type != zona) {
+      zona = state.type;
+      switch (zona) {
+        case SectorTypeDto::CAVERN: audio.poner_musica_caverna(); break;
+        case SectorTypeDto::VILLAGE: audio.poner_musica_pueblo(); break;
+        default: audio.poner_musica_granja(); break;
+      }
     }
 
-	if (en_caverna) {
-		mapa_caverna.actualizar(state.sector);
-	} else {
-		mapa_granja.actualizar(state.sector);
+  if (zona == SectorTypeDto::CAVERN) {
+    mapa_caverna.actualizar(state.sector);
+    caverna.actualizar(state.entities);
+  } else if (zona == SectorTypeDto::VILLAGE) {
+    mapa_pueblo.actualizar(state.sector);
+    pueblo.actualizar(state.entities);
+  } else {
+    mapa_granja.actualizar(state.sector);
     granja.actualizar(state.entities);
-	}
+  }
 
-
+    // Actualizar jugadores
     std::set<size_t> presentes;
     const size_t mi_id = static_cast<size_t>(client.get_my_id());
       // players es un mapa: posición -> jugador
@@ -254,6 +275,10 @@ int main(int argc, char *argv[]) try {
         if (jugador.id == mi_id) {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
+          }
+          personaje.agarrar(jugador.actualTool);
+          if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
+            inventario.actualizar(jugador.inventory.front());
           }
           continue;
         }
@@ -267,6 +292,7 @@ int main(int argc, char *argv[]) try {
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        otro->agarrar(jugador.actualTool);
       }
       // Los que ya no vienen en el estado se fueron de la partida
       std::erase_if(otros, [&presentes](const auto &par) {
@@ -285,69 +311,43 @@ int main(int argc, char *argv[]) try {
       par.second->animar(vueltas);
 
     granja.animar(vueltas);
+    caverna.animar(vueltas);
+    pueblo.animar(vueltas);
 
-    // Cámara centrada en el personaje así nunca se sale de la pantalla
-    int camara_x =
-        personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
+    // Cámara centrada en el personaje
+    int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
     int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
 
-    renderer.Clear();
-
-    if (en_caverna) {
-      mapa_caverna.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                           window.GetHeight());
-      caverna.dibujar(renderer, camara_x, camara_y);
-    } else {
-      mapa_granja.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                          window.GetHeight());
-      granja.dibujar(renderer, camara_x, camara_y);
-      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
-                          window.GetHeight());
+    Mapa *mapa_actual = &mapa_granja;
+    if (zona == SectorTypeDto::CAVERN) {
+      mapa_actual = &mapa_caverna;
+    } else if (zona == SectorTypeDto::VILLAGE) {
+      mapa_actual = &mapa_pueblo;
     }
 
-    // Primero los demás jugadores, después el propio para que quede encima
-    for (auto &par : otros)
+    renderer.SetDrawColor(0, 0, 0, 255);
+    renderer.Clear();
+
+    mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+
+    if (zona == SectorTypeDto::CAVERN) {
+      caverna.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::FARM) {
+      granja.dibujar(renderer, camara_x, camara_y);
+      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+    } else {
+      pueblo.dibujar(renderer, camara_x, camara_y);
+    }
+
+    // Primero los demas jugadores
+    for (auto &par : otros) {
       par.second->dibujar(renderer, camara_x, camara_y);
+    }
     personaje.dibujar(renderer, camara_x, camara_y);
-
-    // Mapa completo (M)
+    
+    // Mapa del mundo (M)
     if (viendo_mapa) {
-      const int MARGEN = 40;
-      const int SEPARACION = 30;
-
-      int ancho_total =
-          mapa_granja.obtener_ancho() + mapa_caverna.obtener_ancho();
-      int alto_maximo =
-          std::max(mapa_granja.obtener_alto(), mapa_caverna.obtener_alto());
-      int lado_ancho =
-          (window.GetWidth() - 2 * MARGEN - SEPARACION) / ancho_total;
-      int lado_alto = (window.GetHeight() - 2 * MARGEN) / alto_maximo;
-      int lado = std::min(lado_ancho, lado_alto);
-
-      int ancho_dibujo = lado * ancho_total + SEPARACION;
-      int origen_granja_x = (window.GetWidth() - ancho_dibujo) / 2;
-      int origen_caverna_x =
-          origen_granja_x + mapa_granja.obtener_ancho() * lado + SEPARACION;
-      int origen_y = (window.GetHeight() - alto_maximo * lado) / 2;
-
-      // Fondo oscuro
-      renderer.SetDrawColor(20, 20, 20, 255);
-      renderer.Clear();
-
-      mapa_granja.dibujar_completo(renderer, origen_granja_x, origen_y, lado);
-      granja.dibujar(renderer, -origen_granja_x, -origen_y, lado);
-      mapa_caverna.dibujar_completo(renderer, origen_caverna_x, origen_y, lado);
-      caverna.dibujar(renderer, -origen_caverna_x, -origen_y, lado);
-
-      // Figurita de cada jugador
-      for (const auto &[posicion, jugador] : ultimo_estado.players) {
-        int origen_x = origen_granja_x;
-        if (static_cast<int>(jugador.id) == client.get_my_id() && en_caverna) {
-          origen_x = origen_caverna_x;
-        }
-        personaje.dibujar_quieto(renderer, posicion.x, posicion.y, -origen_x,
-                                 -origen_y, lado);
-      }
+      mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona, personaje);
     }
 
     interfaz.dibujar(renderer, audio);

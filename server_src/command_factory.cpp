@@ -37,6 +37,9 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftOfferDt
 std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftResponseDto &dto) {
     return std::make_unique<GiftResponseCommand>(player_id, dto.accept);
 }
+std::unique_ptr<Command> CommandFactory::create(int player_id, const TillDto &dto) {
+  return std::make_unique<TillCommand>(player_id, dto.direction);
+}
 
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {

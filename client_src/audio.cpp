@@ -12,8 +12,9 @@ Audio::Audio()
     : mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS,
             1024),
       musica_granja("assets/sonidos/musica_granja.ogg"),
-      musica_pueblo("assets/sonidos/musica_pueblo.ogg"),
-      sonido_pasos("assets/sonidos/paso.wav"), suena_granja(true),
+      musica_caverna("assets/sonidos/musica_caverna.ogg"),
+      musica_pueblo("assets/sonidos/musica_pueblo.mp3"),
+      sonido_pasos("assets/sonidos/paso.wav"), musica_actual(0),
       volumen_musica(MIX_MAX_VOLUME / 2), volumen_pasos(MIX_MAX_VOLUME / 2) {
   mixer.SetMusicVolume(volumen_musica);
   sonido_pasos.SetVolume(volumen_pasos);
@@ -21,11 +22,13 @@ Audio::Audio()
 }
 
 void Audio::cambiar_musica() {
-  suena_granja = !suena_granja;
-  if (suena_granja) {
-    mixer.PlayMusic(musica_granja, -1);
+  int siguiente = (musica_actual + 1) % 3;
+  if (siguiente == 0) {
+    poner_musica_granja();
+  } else if (siguiente == 1) {
+    poner_musica_caverna();
   } else {
-    mixer.PlayMusic(musica_pueblo, -1);
+    poner_musica_pueblo();
   }
 }
 
@@ -54,11 +57,17 @@ void Audio::reproducir_paso() { mixer.PlayChannel(-1, sonido_pasos, 0); }
 int Audio::obtener_volumen_musica() const { return volumen_musica; }
 
 void Audio::poner_musica_granja() {
-  suena_granja = true;
+  musica_actual = 0;
   mixer.PlayMusic(musica_granja, -1);
 }
 
 void Audio::poner_musica_caverna() {
-  suena_granja = false;
+  musica_actual = 1;
+  mixer.PlayMusic(musica_caverna, -1);
+}
+
+void Audio::poner_musica_pueblo() {
+  musica_actual = 2;
   mixer.PlayMusic(musica_pueblo, -1);
 }
+

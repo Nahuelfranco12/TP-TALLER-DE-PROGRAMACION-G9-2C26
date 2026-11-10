@@ -4,6 +4,9 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "direccion.h"
+#include "common_src/game_dtos.h"
+
+#include <vector>
 
 // El granjero
 class Personaje {
@@ -14,6 +17,7 @@ private:
   SDL2pp::Texture remeras;
   SDL2pp::Texture pelos;
   SDL2pp::Texture sombreros;
+  std::vector<SDL2pp::Texture> herramientas;
 
   // Ropa y colores
   int pantalon;
@@ -33,9 +37,13 @@ private:
   long vueltas_restantes_paso;
   long vueltas_picando;
 
+  ToolTypeDto en_la_mano;
+
   void dibujar_capas(SDL2pp::Renderer &renderer, int x, int y, int lado,
                      int columna, int fila_cuerpo, Direccion direccion,
                      int rebote);
+
+  void dibujar_herramienta(SDL2pp::Renderer &renderer, int x, int y, int lado);
 
 public:
   // Cargo las texturas
@@ -47,7 +55,11 @@ public:
   // Avanza la animación de caminar
   void animar(long vueltas);
 
+  void mirar(Direccion direccion);
+
   void picar();
+  void agarrar(ToolTypeDto herramienta);
+  bool esta_picando() const { return vueltas_picando > 0; }
 
   // Dónde está (en tiles)
   int obtener_tile_x() const;
@@ -70,6 +82,8 @@ public:
   void cambiar_color_pelo();
   void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
               int nueva_remera);
+
+  void dibujar_icono(SDL2pp::Renderer &renderer, int centro_x, int pie_y, int lado);
 };
 
 #endif

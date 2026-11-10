@@ -14,6 +14,7 @@ struct TerrainState {
   bool transitable;
   bool arable;
   bool isDoor;
+  bool tilled = false;
 };
 
 struct CropState {

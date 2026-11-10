@@ -7,10 +7,11 @@ class Audio {
 private:
   SDL2pp::Mixer mixer;
   SDL2pp::Music musica_granja;
+  SDL2pp::Music musica_caverna;
   SDL2pp::Music musica_pueblo;
   SDL2pp::Chunk sonido_pasos;
 
-  bool suena_granja;
+  int musica_actual;
   int volumen_musica;
   int volumen_pasos;
 
@@ -23,6 +24,7 @@ public:
 
   void poner_musica_granja();
   void poner_musica_caverna();
+  void poner_musica_pueblo();
 
   // Volúmenes
   void bajar_volumen_musica();
