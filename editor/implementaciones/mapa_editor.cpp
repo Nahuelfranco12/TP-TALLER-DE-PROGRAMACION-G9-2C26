@@ -14,39 +14,83 @@ MapaEditor crearMapaPredeterminado() {
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
-  if (tipo == ElementosGranja::Cabania)
-    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CABANIA_ANCHO,
-                                   TAMANIO_OCUPADO_CABANIA_ALTO};
-  if (tipo == ElementosGranja::Arbol1)
-    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
-                                   TAMANIO_OCUPADO_ASSET_NORMAL};
-  if (tipo == ElementosGranja::Arbol2)
-    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ARBOL2,
-                                   TAMANIO_OCUPADO_ARBOL2};
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
-                                 TAMANIO_OCUPADO_ASSET_NORMAL};
+  switch (tipo) {
+  case ElementosGranja::Cabania1:
+  case ElementosGranja::Cabania2:
+  case ElementosGranja::Cabania3:
+  case ElementosGranja::Cabania4:
+  case ElementosGranja::Cabania5:
+  case ElementosGranja::Cabania6:
+    return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
+  case ElementosGranja::Arbol1:
+  case ElementosGranja::Arbol2:
+  // case ElementosGranja::Arbol3:
+  // case ElementosGranja::Arbol4:
+  // case ElementosGranja::Arbol5:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ARBOL_ALTO};
+  case ElementosGranja::Agua:
+    return {TAMANIO_OCUPADO_AGUA_ANCHO, TAMANIO_OCUPADO_AGUA_ALTO};
+  default:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
+  }
 }
 
-CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna) {
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
-                                 TAMANIO_OCUPADO_ASSET_NORMAL};
+CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
+  if (tipo == ElementosCaverna::SalidaCaverna)
+    return {TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
+  return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
-  if (tipo == ElementosPueblo::CentroComunitario)
-    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CENTROCOM_ANCHO,
-                                   TAMANIO_OCUPADO_CENTROCOM_ALTO};
-
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
-                                 TAMANIO_OCUPADO_ASSET_NORMAL};
+  switch (tipo) {
+  case ElementosPueblo::CentroComunitario:
+    return {TAMANIO_OCUPADO_CENTROCOM_ANCHO, TAMANIO_OCUPADO_CENTROCOM_ALTO};
+  case ElementosPueblo::CasaChica:
+    return {TAMANIO_OCUPADO_CASA_CHICA_ANCHO, TAMANIO_OCUPADO_CASA_CHICA_ALTO};
+  case ElementosPueblo::CasaMediana:
+    return {TAMANIO_OCUPADO_CASA_MEDIANA_ANCHO,
+            TAMANIO_OCUPADO_CASA_MEDIANA_ALTO};
+  case ElementosPueblo::FarolNaranja:
+  case ElementosPueblo::FarolAzul:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};
+  case ElementosPueblo::BancoMadera:
+    return {TAMANIO_OCUPADO_BANCO_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
+  default:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
+  }
 }
 
 bool esUnico(ElementosGranja tipo) {
-  return tipo == ElementosGranja::Cabania ||
-         tipo == ElementosGranja::EntradaMina ||
-         tipo == ElementosGranja::SalidaPueblo;
+  switch (tipo) {
+  case ElementosGranja::Cabania1:
+  case ElementosGranja::Cabania2:
+  case ElementosGranja::Cabania3:
+  case ElementosGranja::Cabania4:
+  case ElementosGranja::Cabania5:
+  case ElementosGranja::Cabania6:
+  case ElementosGranja::EntradaMina:
+  case ElementosGranja::SalidaPueblo:
+    return true;
+  default:
+    return false;
+  }
 }
 
-bool esUnico(ElementosCaverna) { return true; }
+bool esUnico(ElementosCaverna tipo) {
+  return tipo == ElementosCaverna::Escalera ||
+         tipo == ElementosCaverna::SalidaCaverna;
+}
 
-bool esUnico(ElementosPueblo) { return true; }
+bool esUnico(ElementosPueblo tipo) {
+  switch (tipo) {
+  case ElementosPueblo::NpcMarnie:
+  case ElementosPueblo::NpcClint:
+  case ElementosPueblo::NpcPierre:
+  case ElementosPueblo::NpcRobin:
+  case ElementosPueblo::CentroComunitario:
+  case ElementosPueblo::SalidaGranja:
+    return true;
+  default:
+    return false;
+  }
+}

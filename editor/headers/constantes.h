@@ -19,85 +19,155 @@
 #define DIMENSION_MINIMA 10
 #define DIMENSION_MAXIMA 50
 
+// Rutas
 #define RUTA_SUELO ":/Mapas/suelo.png"
 #define RUTA_CAVERNA ":/Mapas/dungeon.png"
 #define RUTA_PISO_PIEDRA ":/Mapas/cam_piedras.png"
 #define RUTA_OBJETOS ":/Mapas/objetos.png"
-#define RUTA_CERCO_FRENTE ":/Mapas/cerco_frente.png"
-#define RUTA_CERCO_COSTADO ":/Mapas/cerco_costado.png"
 #define RUTA_PIEDRAS ":/Mapas/piedras.png"
 #define RUTA_ARBOL1 ":/Mapas/arbol1.png"
 #define RUTA_ARBOL2 ":/Mapas/arbol2.png"
+// #define RUTA_ARBOL3 ":/Mapas/arbol3.png"
+// #define RUTA_ARBOL4 ":/Mapas/arbol4.png"
+// #define RUTA_ARBOL5 ":/Mapas/arbol5.png"
+#define RUTA_AGUA ":/Mapas/agua.png"
+#define RUTA_CABANIAS ":/Mapas/cabanias.png"
+#define RUTA_CASAS ":/Mapas/casas.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
-#define RUTA_CASA ":/Edificios/casa.png"
+//#define RUTA_CASA ":/Edificios/casa.png"
 #define SIN_ASSET ""
 #define RUTA_MARNIE ":/Npcs/marnie.png"
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
 
-#define RECORTE_MERNIE_ROBIN                                                   \
-  { 24, 16, 16, 32 }
-#define RECORTE_PC                                                             \
-  { 0, 0, 32, 32 }
-#define RECORTE_CABANIA                                                        \
-  { 144, 0, 80, 104 }
-#define RECORTE_PIEDRA                                                         \
-  { 32, 0, 16, 16 }
-#define RECORTE_CERCO_FRENTE                                                   \
-  { 16, 32, 16, 16 }
-#define RECORTE_CERCO_COSTADO                                                  \
-  { 0, 16, 16, 16 }
-#define RECORTE_ENTRADA_MINA                                                   \
-  { 144, 48, 16, 16 }
-#define RECORTE_SALIDA_PUEBLO                                                  \
-  { 0, 128, 16, 16 }
-#define RECORTE_CENTRO_COMUNITARIO                                             \
-  { 17, 181, 190, 123 }
-#define RECORTE_PASTO                                                          \
-  { 64, 144, 16, 16 }
-#define RECORTE_TIERRA                                                         \
-  { 16, 64, 16, 16 }
-#define RECORTE_PISO_CAVERNA                                                   \
-  { 96, 16, 16, 16 }
-#define RECORTE_PARED_CAVERNA                                                  \
-  { 32, 0, 16, 16 }
-#define RECORTE_ESCALERA                                                       \
-  { 144, 48, 16, 16 }
-#define RECORTE_PISO_PUEBLO                                                    \
-  { 144, 32, 16, 16 }
+// Recortes Pueblo
+#define RECORTE_MERNIE_ROBIN {24, 16, 16, 32}
+#define RECORTE_PISO_PUEBLO {144, 32, 16, 16}
+#define RECORTE_PC {0, 0, 32, 32}
+#define RECORTE_SALIDA_PUEBLO {0, 128, 16, 16}
+#define RECORTE_CENTRO_COMUNITARIO {17, 181, 190, 123}
+#define RECORTE_FAROL_NARANJA {51, 82, 11, 28}
+#define RECORTE_FAROL_AZUL {64, 82, 16, 28}
+#define RECORTE_BANCO_MADERA {36, 59, 25, 19}
+#define RECORTE_BUZON_GRIS {3, 91, 11, 20}
+#define RECORTE_BUZON_AZUL {35, 91, 11, 20}
+//#define RECORTE_CASA_CHICA {33, 37, 95, 124}
+//#define RECORTE_CASA_MEDIANA {161, 29, 159, 132}
 
+// Recortes Granja
+#define RECORTE_CABANIA {144, 0, 80, 104}
+#define RECORTE_CABANIA1 {0, 0, 80, 112}
+#define RECORTE_CABANIA2 {80, 0, 80, 112}
+#define RECORTE_CABANIA3 {160, 0, 80, 112}
+#define RECORTE_CABANIA4 {0, 112, 80, 112}
+#define RECORTE_CABANIA5 {80, 112, 80, 112}
+#define RECORTE_CABANIA6 {160, 112, 80, 112}
+#define RECORTE_PIEDRA {32, 0, 16, 16}
+#define RECORTE_ENTRADA_MINA {144, 48, 16, 16}
+#define RECORTE_PASTO {64, 144, 16, 16}
+#define RECORTE_TIERRA {16, 64, 16, 16}
+#define RECORTE_AGUA {0, 80, 64, 64}
+#define RECORTE_ARBUSTO_REDONDO {112, 160, 16, 16}
+#define RECORTE_ARBUSTO_GRANDE {128, 176, 16, 16}
+#define RECORTE_PIEDRA_GRIS_GRANDE {128, 144, 16, 16}
+#define RECORTE_PIEDRA_GRIS {160, 144, 16, 16}
+#define RECORTE_TRONCO_CAIDO {144, 96, 16, 16}
+#define RECORTE_TRONCO_PARTIDO {128, 112, 16, 16}
+#define RECORTE_BUZON_ROJO {19, 91, 11, 20}
+#define RECORTE_CARTEL_VACIO {0, 112, 16, 16}
+
+// Recortes Caverna
+#define RECORTE_PISO_CAVERNA {96, 16, 16, 16}
+#define RECORTE_PARED_CAVERNA {32, 0, 16, 16}
+#define RECORTE_ESCALERA {144, 48, 16, 16}
+#define RECORTE_PUERTA_CAVERNA {96, 96, 32, 16}
+#define RECORTE_BARRIL {128, 48, 16, 16}
+#define RECORTE_CALAVERA {112, 112, 16, 16}
+#define RECORTE_HUESO {128, 96, 16, 16}
+#define RECORTE_ESCOMBROS {144, 64, 16, 16}
+#define RECORTE_ANTORCHA {0, 144, 16, 16}
+#define RECORTE_CANDELABRO {48, 144, 16, 16}
+#define RECORTE_ESCUDO {64, 112, 16, 16}
+
+// Textos Terrenos
 #define TEXTO_PASTO "Pasto"
 #define TEXTO_TIERRA "Tierra"
 #define TEXTO_PISO "Piso"
 #define TEXTO_PARED "Pared"
-#define TEXTO_CABANIA "Cabaña"
-#define TEXTO_ARBOL "Árbol"
+#define TEXTO_PISO_PUEBLO "Piso"
+
+// Textos Granja
+#define TEXTO_CABANIA1 "Cabaña 1"
+#define TEXTO_CABANIA2 "Cabaña 2"
+#define TEXTO_CABANIA3 "Cabaña 3"
+#define TEXTO_CABANIA4 "Cabaña 4"
+#define TEXTO_CABANIA5 "Cabaña 5"
+#define TEXTO_CABANIA6 "Cabaña 6"
+#define TEXTO_ARBOL1 "Arbol1"
+#define TEXTO_ARBOL2 "Arbol2"
+#define TEXTO_ARBOL3 "Arbol3"
+#define TEXTO_ARBOL4 "Arbol4"
+#define TEXTO_ARBOL5 "Arbol5"
 #define TEXTO_PIEDRA "Piedra"
-//#define TEXTO_CERCO "Cerco"
+#define TEXTO_AGUA "Agua"
+#define TEXTO_ARBUSTO_REDONDO "Arbusto redondo"
+#define TEXTO_ARBUSTO_GRANDE "Arbusto grande"
+#define TEXTO_PIEDRA_GRIS_GRANDE "Piedra gris grande"
+#define TEXTO_PIEDRA_GRIS "Piedra gris"
+#define TEXTO_TRONCO_CAIDO "Tronco caído"
+#define TEXTO_TRONCO_CORTADO "Tronco cortado"
+#define TEXTO_BUZON_ROJO "Buzon rojo"
+#define TEXTO_CARTEL_VACIO "Cartel"
 #define TEXTO_ENTRADA_MINA "Entrada a la mina"
 #define TEXTO_SALIDA_PUEBLO "Salida al pueblo"
-#define TEXTO_PISO_PUEBLO "Piso"
+
+// Textos Caverna
 #define TEXTO_ESCALERA "Escalera"
 #define TEXTO_SALIDA_CAVERNA "Salida"
+#define TEXTO_BARRIL "Barril"
+#define TEXTO_CALAVERA "Calavera"
+#define TEXTO_HUESO "Hueso"
+#define TEXTO_ESCOMBROS "Escombros"
+#define TEXTO_ANTORCHA "Antorcha"
+#define TEXTO_CANDELABRO "Candelabro"
+#define TEXTO_ESCUDO "Escudo"
+
+// Textos Pueblo
 #define TEXTO_MARNIE "Marnie"
 #define TEXTO_CLINT "Clint"
 #define TEXTO_PIERRE "Pierre"
 #define TEXTO_ROBIN "Robin"
 #define TEXTO_CENTRO_COMUNITARIO "Centro comunitario"
 #define TEXTO_SALIDA_GRANJA "Salida a la granja"
+#define TEXTO_FAROL_NARANJA "Farol naranja"
+#define TEXTO_FAROL_AZUL "Farol azul"
+#define TEXTO_BANCO_MADERA "Banco"
+#define TEXTO_BUZON_GRIS "Buzón gris"
+#define TEXTO_BUZON_AZUL "Buzón azul"
+#define TEXTO_CASA_CHICA "Casa chica"
+#define TEXTO_CASA_MEDIANA "Casa mediana"
 
+// Grilla
 #define TAMANIO_CELDA_MAPA 32
-#define COLOR_LINEAS_GRILLA QColor(0, 0, 0, 60)
 #define TEXTO_DESCONOCIDO "?"
 
+// Celdas que ocupa cada elemento (ancho x alto)
 #define TAMANIO_OCUPADO_ASSET_NORMAL 1
 #define TAMANIO_OCUPADO_CABANIA_ANCHO 3
 #define TAMANIO_OCUPADO_CABANIA_ALTO 4
-
 #define TAMANIO_OCUPADO_CENTROCOM_ANCHO 6
 #define TAMANIO_OCUPADO_CENTROCOM_ALTO 4
-
-#define TAMANIO_OCUPADO_ARBOL2 2
+#define TAMANIO_OCUPADO_ARBOL_ALTO 2
+#define TAMANIO_OCUPADO_AGUA_ANCHO 4
+#define TAMANIO_OCUPADO_AGUA_ALTO 4
+#define TAMANIO_OCUPADO_FAROL_ALTO 2
+#define TAMANIO_OCUPADO_BANCO_ANCHO 2
+#define TAMANIO_OCUPADO_CASA_CHICA_ANCHO 3
+#define TAMANIO_OCUPADO_CASA_CHICA_ALTO 4
+#define TAMANIO_OCUPADO_CASA_MEDIANA_ANCHO 5
+#define TAMANIO_OCUPADO_CASA_MEDIANA_ALTO 4
+#define TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO 2
+#define COLOR_LINEAS_GRILLA QColor(0, 0, 0, 60)
 
 #endif // CONSTANTES_H
