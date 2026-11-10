@@ -14,13 +14,13 @@
 
 #define CANTIDAD_NIVELES_CAVERNA 10
 #define PRIMER_NIVEL_CAVERNA 1
-#define ANCHO_PREDETERMINADO 20
-#define ALTO_PREDETERMINADO 15
+#define ANCHO_PREDETERMINADO 25
+#define ALTO_PREDETERMINADO 25
 #define DIMENSION_MINIMA 10
 #define DIMENSION_MAXIMA 50
 
 // Rutas
-#define RUTA_SUELO ":/Mapas/suelo.png"
+#define RUTA_SUELO ":/Mapas/naturaleza.png"
 #define RUTA_CAVERNA ":/Mapas/dungeon.png"
 #define RUTA_PISO_PIEDRA ":/Mapas/cam_piedras.png"
 #define RUTA_OBJETOS ":/Mapas/objetos.png"
@@ -30,7 +30,7 @@
 // #define RUTA_ARBOL3 ":/Mapas/arbol3.png"
 // #define RUTA_ARBOL4 ":/Mapas/arbol4.png"
 // #define RUTA_ARBOL5 ":/Mapas/arbol5.png"
-#define RUTA_AGUA ":/Mapas/agua.png"
+#define RUTA_AGUA ":/Mapas/naturaleza.png"
 #define RUTA_CABANIAS ":/Mapas/cabanias.png"
 #define RUTA_CASAS ":/Mapas/casas.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
@@ -65,7 +65,7 @@
 #define RECORTE_CABANIA6 {160, 112, 80, 112}
 #define RECORTE_PIEDRA {32, 0, 16, 16}
 #define RECORTE_ENTRADA_MINA {144, 48, 16, 16}
-#define RECORTE_PASTO {64, 144, 16, 16}
+#define RECORTE_PASTO {128, 16, 16, 16}
 #define RECORTE_TIERRA {16, 64, 16, 16}
 #define RECORTE_AGUA {0, 80, 64, 64}
 #define RECORTE_ARBUSTO_REDONDO {112, 160, 16, 16}
@@ -149,7 +149,7 @@
 #define TEXTO_CASA_MEDIANA "Casa mediana"
 
 // Grilla
-#define TAMANIO_CELDA_MAPA 32
+#define TAMANIO_CELDA_MAPA 24
 #define TEXTO_DESCONOCIDO "?"
 
 // Celdas que ocupa cada elemento (ancho x alto)
