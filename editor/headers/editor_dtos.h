@@ -12,8 +12,8 @@ enum class ElementosGranja {
   Arbol1,
   Arbol2,
   Piedra,
-  CercoFrente,
-  CercoCostado,
+  //CercoFrente,
+  //CercoCostado,
   EntradaMina,
   SalidaPueblo
 };

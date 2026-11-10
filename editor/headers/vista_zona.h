@@ -50,7 +50,7 @@ void VistaZona::mostrar(const MapaZona<TipoObjeto> &zona) {
           ->setPos(x * TAMANIO_CELDA_MAPA, y * TAMANIO_CELDA_MAPA);
     }
   }
-  dibujarLineasCuadricula(zona.ancho(), zona.alto());
+  //dibujarLineasCuadricula(zona.ancho(), zona.alto());
   for (const auto &objeto : zona.objetos())
     dibujarObjeto(objeto);
   escena->setSceneRect(0, 0, zona.ancho() * TAMANIO_CELDA_MAPA,

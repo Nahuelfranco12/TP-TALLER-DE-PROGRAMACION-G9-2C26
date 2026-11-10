@@ -18,18 +18,18 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
     return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CABANIA_ANCHO,
                                    TAMANIO_OCUPADO_CABANIA_ALTO};
   if (tipo == ElementosGranja::Arbol1)
-    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
-                                   TAMANIO_OCUPADO_NORMAL};
+    return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
+                                   TAMANIO_OCUPADO_ASSET_NORMAL};
   if (tipo == ElementosGranja::Arbol2)
     return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ARBOL2,
                                    TAMANIO_OCUPADO_ARBOL2};
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
-                                 TAMANIO_OCUPADO_NORMAL};
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
+                                 TAMANIO_OCUPADO_ASSET_NORMAL};
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna) {
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
-                                 TAMANIO_OCUPADO_NORMAL};
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
+                                 TAMANIO_OCUPADO_ASSET_NORMAL};
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
@@ -37,8 +37,8 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
     return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_CENTROCOM_ANCHO,
                                    TAMANIO_OCUPADO_CENTROCOM_ALTO};
 
-  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_NORMAL,
-                                 TAMANIO_OCUPADO_NORMAL};
+  return CeldasOcupadasPorObjeto{TAMANIO_OCUPADO_ASSET_NORMAL,
+                                 TAMANIO_OCUPADO_ASSET_NORMAL};
 }
 
 bool esUnico(ElementosGranja tipo) {

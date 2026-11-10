@@ -74,7 +74,7 @@
 #define TEXTO_CABANIA "Cabaña"
 #define TEXTO_ARBOL "Árbol"
 #define TEXTO_PIEDRA "Piedra"
-#define TEXTO_CERCO "Cerco"
+//#define TEXTO_CERCO "Cerco"
 #define TEXTO_ENTRADA_MINA "Entrada a la mina"
 #define TEXTO_SALIDA_PUEBLO "Salida al pueblo"
 #define TEXTO_PISO_PUEBLO "Piso"
@@ -91,7 +91,7 @@
 #define COLOR_LINEAS_GRILLA QColor(0, 0, 0, 60)
 #define TEXTO_DESCONOCIDO "?"
 
-#define TAMANIO_OCUPADO_NORMAL 1
+#define TAMANIO_OCUPADO_ASSET_NORMAL 1
 #define TAMANIO_OCUPADO_CABANIA_ANCHO 3
 #define TAMANIO_OCUPADO_CABANIA_ALTO 4
 

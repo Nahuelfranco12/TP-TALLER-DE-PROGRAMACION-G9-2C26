@@ -168,7 +168,7 @@ QPushButton:pressed {
              <x>0</x>
              <y>0</y>
              <width>331</width>
-             <height>41</height>
+             <height>21</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -236,9 +236,9 @@ QPushButton:pressed {
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>50</y>
+             <y>30</y>
              <width>321</width>
-             <height>481</height>
+             <height>461</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -325,6 +325,34 @@ QPushButton:pressed {
            </property>
            <property name="text">
             <string>Aplicar</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="textoNombreMundo">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>520</y>
+             <width>121</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: black;
+qproperty-alignment: AlignCenter;
+font-size: 15px;</string>
+           </property>
+           <property name="text">
+            <string>Nombre Mundo</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="cajaNombreMapa">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>520</y>
+             <width>171</width>
+             <height>26</height>
+            </rect>
            </property>
           </widget>
          </widget>
