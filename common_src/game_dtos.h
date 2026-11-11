@@ -185,7 +185,7 @@ struct PlayerDto {
 
 struct MineralDto {
   size_t remainingHits;
-}
+};
 
 struct CropDto {
     CropTypeDto type{};
