@@ -67,5 +67,7 @@ PlayerState Player::state() const {
                                        this->outfit.tshirt, this->outfit.pants},
                      this->actualTool != nullptr ? this->actualTool->toolType
                                                  : AvailableTools{},
-                     this->inventory.state()};
+                     this->inventory.state(),
+                     this->pendingGift.giverId,
+                     this->pendingGift.item};
 }

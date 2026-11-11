@@ -30,6 +30,8 @@ target_sources(taller_server
     game/commands/collect_command.cpp
     game/commands/spawn_animal_command.cpp
     game/commands/till_command.cpp
+    game/commands/gift_offer_command.cpp
+    game/commands/gift_response_command.cpp
 
     PUBLIC
     # .h files
@@ -67,5 +69,7 @@ target_sources(taller_server
     game/commands/collect_command.h
     game/commands/spawn_animal_command.h
     game/commands/till_command.h
+    game/commands/gift_offer_command.h
+    game/commands/gift_response_command.h
     game/terrain.h
     )

@@ -142,9 +142,23 @@ struct TileDto {
 };
 
 struct InventorySlotDto {
-  int count;
+  int count = 0;
   ItemTypeDto item;
   CropQualityDto quality{};
+};
+
+struct GiftOfferDto {
+  int receiverId = 0;
+  int slotIndex = 0;
+};
+
+struct PendingGiftDto {
+  int giverId = 0;
+  InventorySlotDto gift; 
+};
+
+struct GiftResponseDto {
+  bool accept = false;
 };
 
 struct InventoryDto {
@@ -166,6 +180,7 @@ struct PlayerDto {
   ToolTypeDto actualTool{};
 
   std::list<InventoryDto> inventory;
+  PendingGiftDto pendingGift;
 };
 
 struct CropDto {
