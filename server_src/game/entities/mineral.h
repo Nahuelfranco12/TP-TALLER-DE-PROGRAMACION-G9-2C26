@@ -6,23 +6,22 @@
 #include "../game_constants.h"
 #include "../inventory/item.h"
 #include "entity.h"
+#include "hittable.h"
 
-class Mineral : public Entity {
+class Mineral : public Entity, public Hittable {
 private:
   MineralTypes mineralType;
 
   double spawnFrequency;
-  MineralPickaxeTime pickaxeTime;
 
 public:
   Mineral(size_t pos_x, size_t pos_y, MineralTypes mineralType,
-          double spawnFrequency, MineralPickaxeTime pickaxeTime)
-      : Entity(pos_x, pos_y, EntityTypes::MINERAL), mineralType(mineralType),
-        spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
+          double spawnFrequency, size_t pickaxeHits)
+      : Entity(pos_x, pos_y, EntityTypes::MINERAL), Hittable(pickaxeHits),
+        mineralType(mineralType), spawnFrequency(spawnFrequency) {}
 
   MineralTypes getMineralType() const { return mineralType; }
   double getSpawnFrequency() const { return spawnFrequency; }
-  MineralPickaxeTime getPickaxeTime() const { return pickaxeTime; }
 
   std::unique_ptr<Item> toItem() const;
   void pickaxeEffect();
