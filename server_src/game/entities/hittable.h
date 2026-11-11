@@ -13,6 +13,9 @@ public:
 
     size_t getHitsLeft() const { return remainingHits; }
 
+    /*
+    * Golpea, en caso de alcanzar los hits necesarios devuelve true.
+    */
     virtual bool hit() {
         if (remainingHits > 0) 
             remainingHits--;
