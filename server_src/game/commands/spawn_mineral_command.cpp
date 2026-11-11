@@ -2,5 +2,5 @@
 
 void SpawnMineralCommand::execute(World &world) {
   world.spawnMineral(this->sectorId, this->position, this->mineralType,
-                     this->spawnFrequency, this->pickaxeTime);
+                     this->spawnFrequency, this->pickaxeHits);
 }

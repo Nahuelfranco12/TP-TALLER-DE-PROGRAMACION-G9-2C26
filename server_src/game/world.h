@@ -31,7 +31,7 @@ public:
   void removePlayer(int id);
 
   bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                    double freq, MineralPickaxeTime pickaxeTime);
+                    double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
 
   Player *getPlayer(int id);

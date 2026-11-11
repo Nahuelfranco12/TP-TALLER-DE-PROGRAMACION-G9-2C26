@@ -34,6 +34,11 @@
 #define SPAWN_FREQ_LAPIZLAZULI 30
 #define SPAWN_FREQ_COAL 80
 
+#define PICKAXE_COUNT_COAL 3
+#define PICKAXE_COUNT_LAPIZLAZULI 4
+#define PICKAXE_COUNT_IRON 6
+#define PICKAXE_COUNT_GOLD 8
+
 #define PRICE_GOLD 80
 #define PRICE_IRON 50
 #define PRICE_LAPIZLAZULI 40
@@ -82,7 +87,6 @@ enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT };
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
-enum class MineralPickaxeTime { LOW, MEDIUM, HIGH, VERY_HIGH };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 

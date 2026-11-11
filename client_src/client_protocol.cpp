@@ -60,6 +60,15 @@ void ClientProtocol::send_plant_dto(const PlantDto& dto) {
   protocol.send_u8(static_cast<uint8_t>(dto.crop));
 }
 
+void ClientProtocol::send_gift_offer_dto(const GiftOfferDto& dto) {
+  protocol.send_u8(OP_GIFT_OFFER);
+  protocol.send_u16(static_cast<uint16_t>(dto.receiverId));
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+}
+void ClientProtocol::send_gift_response_dto(const GiftResponseDto& dto) {
+  protocol.send_u8(OP_GIFT_RESPONSE);
+  protocol.send_u8(dto.accept ? 1 : 0);
+}
 void ClientProtocol::send_till_dto(const TillDto &dto) {
     protocol.send_u8(OP_TILL);
     protocol.send_u8(static_cast<uint8_t>(dto.direction));
@@ -74,6 +83,20 @@ int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
   return protocol.receive_u16();
+}
+
+void ClientProtocol::send_slot(const InventorySlotDto &slot) {
+  protocol.send_u8(static_cast<uint8_t>(slot.item));
+  protocol.send_u8(static_cast<uint8_t>(slot.quality));
+  protocol.send_u16(static_cast<uint16_t>(slot.count));
+}
+
+InventorySlotDto ClientProtocol::receive_slot() {
+  InventorySlotDto slot;
+  slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
+  slot.quality = static_cast<CropQualityDto>(protocol.receive_u8());
+  slot.count = protocol.receive_u16();
+  return slot;
 }
 
 void ClientProtocol::send_create_match(const std::string &name) {
@@ -221,6 +244,8 @@ PlayerDto ClientProtocol::receive_player() {
   for (int i = 0; i < inventory_count; i++) {
     player.inventory.push_back(receive_inventory());
   }
+  player.pendingGift.giverId = protocol.receive_u16();
+  player.pendingGift.gift = receive_slot();
   return player;
 }
 
@@ -230,11 +255,7 @@ InventoryDto ClientProtocol::receive_inventory() {
 
   int slot_count = protocol.receive_u16();
   for (int i = 0; i < slot_count; i++) {
-    InventorySlotDto slot;
-    slot.count = protocol.receive_u16();
-    slot.item = static_cast<ItemTypeDto>(protocol.receive_u8());
-    slot.quality = static_cast<CropQualityDto>(protocol.receive_u8());
-    inventory.slots.push_back(slot);
+    inventory.slots.push_back(receive_slot());
   }
 
   int tool_count = protocol.receive_u16();

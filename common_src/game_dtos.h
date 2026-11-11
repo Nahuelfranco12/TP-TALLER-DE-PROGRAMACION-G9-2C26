@@ -146,9 +146,23 @@ struct TileDto {
 };
 
 struct InventorySlotDto {
-  int count;
+  int count = 0;
   ItemTypeDto item;
   CropQualityDto quality{};
+};
+
+struct GiftOfferDto {
+  int receiverId = 0;
+  int slotIndex = 0;
+};
+
+struct PendingGiftDto {
+  int giverId = 0;
+  InventorySlotDto gift; 
+};
+
+struct GiftResponseDto {
+  bool accept = false;
 };
 
 struct InventoryDto {
@@ -170,6 +184,11 @@ struct PlayerDto {
   ToolTypeDto actualTool{};
 
   std::list<InventoryDto> inventory;
+  PendingGiftDto pendingGift;
+};
+
+struct MineralDto {
+  size_t remainingHits;
 };
 
 struct CropDto {
@@ -180,6 +199,7 @@ struct CropDto {
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false; // x ahora solo se usa si es animal
+  MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{}; // Solo se usa si es cultivo
 };
 

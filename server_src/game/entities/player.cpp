@@ -29,12 +29,14 @@ void Player::mine(Mineral &mineral) {
 
   // TODO: Falta el chequeo de efecto secundario de algunos minerales
 
-  auto item = mineral.toItem();
-  auto removed = this->actualSector->removeEntity(mineral.position);
-  if (!removed)
-    return;
-
-  this->inventory.addItem(std::move(item));
+  if (mineral.hit()) {
+    auto item = mineral.toItem();
+    auto removed = this->actualSector->removeEntity(mineral.position);
+    if (!removed)
+      return;
+  
+    this->inventory.addItem(std::move(item));
+  }
 }
 
 bool Player::hasEnergy(size_t cost) {
@@ -67,5 +69,7 @@ PlayerState Player::state() const {
                                        this->outfit.tshirt, this->outfit.pants},
                      this->actualTool != nullptr ? this->actualTool->toolType
                                                  : AvailableTools{},
-                     this->inventory.state()};
+                     this->inventory.state(),
+                     this->pendingGift.giverId,
+                     this->pendingGift.item};
 }

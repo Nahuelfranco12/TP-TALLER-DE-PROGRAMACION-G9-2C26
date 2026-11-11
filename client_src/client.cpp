@@ -14,6 +14,8 @@
 #include "actions/select_tool_action.h"
 #include "actions/collect_action.h"
 #include "actions/plant_action.h"
+#include "actions/gift_offer_action.h"
+#include "actions/gift_response_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
 
@@ -95,6 +97,14 @@ void Client::send_plant(int x, int y, CropTypeDto crop) {
     to_send_queue.try_push(std::make_unique<PlantAction>(x, y, crop));
 }
 
+void Client::send_gift_offer(int receiverId, int slotIndex) {
+    GiftOfferDto dto{.receiverId = receiverId, .slotIndex = slotIndex};
+    to_send_queue.try_push(std::make_unique<GiftOfferAction>(dto));
+}
+
+void Client::send_gift_response(bool accept) {
+    to_send_queue.try_push(std::make_unique<GiftResponseAction>(accept));
+}
 void Client::send_till(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<TillAction>(direction));
 }
