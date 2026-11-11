@@ -29,6 +29,7 @@ public:
   EntityState entityState() const override {
     EntityState state = Entity::entityState();
     state.mineral.type = this->mineralType;
+    state.mineral.remainingHits = this->getHitsLeft();
     return state;
   }
 };
