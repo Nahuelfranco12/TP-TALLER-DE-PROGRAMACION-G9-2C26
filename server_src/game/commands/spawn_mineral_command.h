@@ -11,14 +11,14 @@ private:
   Position position;
   MineralTypes mineralType;
   double spawnFrequency;
-  MineralPickaxeTime pickaxeTime;
+  size_t pickaxeHits;
 
 public:
   SpawnMineralCommand(IdSector sectorId, Position position,
                       MineralTypes mineralType, double spawnFrequency,
-                      MineralPickaxeTime pickaxeTime)
+                      size_t pickaxeHits)
       : sectorId(sectorId), position(position), mineralType(mineralType),
-        spawnFrequency(spawnFrequency), pickaxeTime(pickaxeTime) {}
+        spawnFrequency(spawnFrequency), pickaxeHits(pickaxeHits) {}
 
   void execute(World &world) override;
 };

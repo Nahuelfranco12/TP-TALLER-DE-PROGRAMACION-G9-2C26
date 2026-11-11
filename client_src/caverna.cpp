@@ -16,6 +16,7 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
   lista_minerales.clear();
   for (const auto &[pos, entidad] : entidades) {
     TipoMineral tipo;
+    size_t golpes = entidad.mineral.remainingHits;
     switch (entidad.type) {
       case EntityTypeDto::MINERAL_IRON:
         tipo = HIERRO;
@@ -37,7 +38,7 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
       tipo,
       static_cast<int>(pos.x),
       static_cast<int>(pos.y),
-      GOLPES_PARA_ROMPER
+      golpes
     });
   }
 }

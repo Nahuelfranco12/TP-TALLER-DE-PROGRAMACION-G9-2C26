@@ -24,6 +24,7 @@ struct CropState {
 
 struct MineralState {
   MineralTypes type{};
+  size_t remainingHits;
 };
 
 struct AnimalState {

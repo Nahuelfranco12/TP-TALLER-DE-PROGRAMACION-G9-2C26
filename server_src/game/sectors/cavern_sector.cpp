@@ -53,26 +53,26 @@ void CavernSector::spawnMinerals() {
     MineralTypes type = config.availableMinerals[typeDist(rng)];
 
     double freq = 1.0;
-    MineralPickaxeTime time = MineralPickaxeTime::MEDIUM;
+    size_t pickaxeHits = PICKAXE_COUNT_COAL;
     switch (type) {
     case MineralTypes::GOLD:
       freq = SPAWN_FREQ_GOLD;
-      time = MineralPickaxeTime::HIGH;
+      pickaxeHits = PICKAXE_COUNT_GOLD;
       break;
     case MineralTypes::IRON:
       freq = SPAWN_FREQ_IRON;
-      time = MineralPickaxeTime::MEDIUM;
+      pickaxeHits = PICKAXE_COUNT_IRON;
       break;
     case MineralTypes::LAPIZLAZULI:
       freq = SPAWN_FREQ_LAPIZLAZULI;
-      time = MineralPickaxeTime::MEDIUM;
+      pickaxeHits = PICKAXE_COUNT_LAPIZLAZULI;
       break;
     case MineralTypes::COAL:
       freq = SPAWN_FREQ_COAL;
-      time = MineralPickaxeTime::LOW;
+      pickaxeHits = PICKAXE_COUNT_COAL;
       break;
     }
-    addEntity(std::make_unique<Mineral>(pos.x, pos.y, type, freq, time), pos);
+    addEntity(std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits), pos);
   }
 }
 

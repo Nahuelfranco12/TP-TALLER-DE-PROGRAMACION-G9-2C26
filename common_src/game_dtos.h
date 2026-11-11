@@ -183,6 +183,10 @@ struct PlayerDto {
   PendingGiftDto pendingGift;
 };
 
+struct MineralDto {
+  size_t remainingHits;
+};
+
 struct CropDto {
     CropTypeDto type{};
     CropGrowthDto growth{};
@@ -191,6 +195,7 @@ struct CropDto {
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false; // x ahora solo se usa si es animal
+  MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{}; // Solo se usa si es cultivo
 };
 

@@ -192,6 +192,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.ready = e.animal.is_ready;
           entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
           entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
+          entityDto.mineral.remainingHits = e.mineral.remainingHits;
           sectorDto.entities[pos] = entityDto;
         }
       }

@@ -17,7 +17,7 @@ private:
     TipoMineral tipo;
     int tile_x;
     int tile_y;
-    int golpes;
+    size_t golpes;
   };
 
   SDL2pp::Texture minerales;

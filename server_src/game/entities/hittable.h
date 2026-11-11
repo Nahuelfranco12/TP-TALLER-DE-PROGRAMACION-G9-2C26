@@ -1,0 +1,26 @@
+#ifndef HITTABLE_H_
+#define HITTABLE_H_
+
+#include <cstddef>
+
+class Hittable {
+private:
+    size_t remainingHits;
+
+public:
+    explicit Hittable(size_t remainingHits) : remainingHits(remainingHits) {}
+    virtual ~Hittable() = default;
+
+    size_t getHitsLeft() const { return remainingHits; }
+
+    /*
+    * Golpea, en caso de alcanzar los hits necesarios devuelve true.
+    */
+    virtual bool hit() {
+        if (remainingHits > 0) 
+            remainingHits--;
+        return remainingHits == 0;
+    }
+};
+
+#endif // HITTABLE_H_
