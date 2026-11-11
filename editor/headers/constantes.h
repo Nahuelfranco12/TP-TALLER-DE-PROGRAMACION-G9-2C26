@@ -20,7 +20,7 @@
 #define DIMENSION_MAXIMA 50
 
 // Rutas
-#define RUTA_SUELO ":/Mapas/naturaleza.png"
+#define RUTA_SUELO ":/Mapas/suelo.png"
 #define RUTA_CAVERNA ":/Mapas/dungeon.png"
 #define RUTA_PISO_PIEDRA ":/Mapas/cam_piedras.png"
 #define RUTA_OBJETOS ":/Mapas/objetos.png"
@@ -54,18 +54,19 @@
 #define RECORTE_BUZON_AZUL {35, 91, 11, 20}
 //#define RECORTE_CASA_CHICA {33, 37, 95, 124}
 //#define RECORTE_CASA_MEDIANA {161, 29, 159, 132}
+#define RECORTE_CASA_ROBIN {24, 16, 16, 32}
 
 // Recortes Granja
-#define RECORTE_CABANIA {144, 0, 80, 104}
-#define RECORTE_CABANIA1 {0, 0, 80, 112}
-#define RECORTE_CABANIA2 {80, 0, 80, 112}
-#define RECORTE_CABANIA3 {160, 0, 80, 112}
-#define RECORTE_CABANIA4 {0, 112, 80, 112}
-#define RECORTE_CABANIA5 {80, 112, 80, 112}
-#define RECORTE_CABANIA6 {160, 112, 80, 112}
+//#define RECORTE_CABANIA {144, 0, 80, 104}
+#define RECORTE_CABANIA1 {160, 0, 80, 112}
+#define RECORTE_CABANIA2 {160, 112, 80, 112}
+#define RECORTE_CABANIA3 {160, 224, 80, 112}
+#define RECORTE_CABANIA4 {160, 336, 80, 112}
+#define RECORTE_CABANIA5 {160, 448, 80, 112}
+//#define RECORTE_CABANIA6 {160, 112, 80, 112}
 #define RECORTE_PIEDRA {32, 0, 16, 16}
 #define RECORTE_ENTRADA_MINA {144, 48, 16, 16}
-#define RECORTE_PASTO {128, 16, 16, 16}
+#define RECORTE_PASTO {64, 144, 16, 16}
 #define RECORTE_TIERRA {16, 64, 16, 16}
 #define RECORTE_AGUA {0, 80, 64, 64}
 #define RECORTE_ARBUSTO_REDONDO {112, 160, 16, 16}
@@ -103,7 +104,7 @@
 #define TEXTO_CABANIA3 "Cabaña 3"
 #define TEXTO_CABANIA4 "Cabaña 4"
 #define TEXTO_CABANIA5 "Cabaña 5"
-#define TEXTO_CABANIA6 "Cabaña 6"
+//#define TEXTO_CABANIA6 "Cabaña 6"
 #define TEXTO_ARBOL1 "Arbol1"
 #define TEXTO_ARBOL2 "Arbol2"
 #define TEXTO_ARBOL3 "Arbol3"
