@@ -77,7 +77,7 @@ void ControladorMapas::cambiarDeZona(Zona zona) {
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  agregarAPaleta(terrenosDe(zona));
+  //agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -138,8 +138,11 @@ void ControladorMapas::aplicarDimensiones() {
     datos.mapa.granja.redimensionar(nuevas);
     break;
   case Zona::Caverna:
-    for (auto &nivel : datos.mapa.nivelesCaverna)
+    for (auto &nivel : datos.mapa.nivelesCaverna) {
+      pintarBorde(nivel, Terreno::PisoCaverna);
       nivel.redimensionar(nuevas);
+      pintarBorde(nivel, Terreno::Pared);
+    }
     break;
   case Zona::Pueblo:
     datos.mapa.pueblo.redimensionar(nuevas);

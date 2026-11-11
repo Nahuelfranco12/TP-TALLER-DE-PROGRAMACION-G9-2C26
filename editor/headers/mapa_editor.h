@@ -155,6 +155,18 @@ private:
   }
 };
 
+template <typename TipoObjeto>
+void pintarBorde(MapaZona<TipoObjeto> &zona, Terreno terreno) {
+  for (int x = 0; x < zona.ancho(); ++x) {
+    zona.pintarTerrenoConCelda(x, 0, terreno);
+    zona.pintarTerrenoConCelda(x, zona.alto() - 1, terreno);
+  }
+  for (int y = 0; y < zona.alto(); ++y) {
+    zona.pintarTerrenoConCelda(0, y, terreno);
+    zona.pintarTerrenoConCelda(zona.ancho() - 1, y, terreno);
+  }
+}
+
 struct MapaEditor {
   std::string nombre;
   MapaZona<ElementosGranja> granja;

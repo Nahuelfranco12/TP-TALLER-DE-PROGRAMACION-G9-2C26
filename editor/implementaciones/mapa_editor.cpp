@@ -1,14 +1,15 @@
 #include "mapa_editor.h"
+#include "constantes.h"
+#include "editor_dtos.h"
 
 #include <utility>
 #include <vector>
 
 MapaEditor crearMapaPredeterminado() {
-  std::vector<MapaZona<ElementosCaverna>> niveles(
-      CANTIDAD_NIVELES_CAVERNA,
-      MapaZona<ElementosCaverna>(Dimensiones{}, Terreno::PisoCaverna));
-  return MapaEditor{
-      "", MapaZona<ElementosGranja>(Dimensiones{}, Terreno::Pasto),
+  MapaZona<ElementosCaverna> nivelBase(Dimensiones{}, Terreno::PisoCaverna);
+  pintarBorde(nivelBase, Terreno::Pared);
+  std::vector<MapaZona<ElementosCaverna>> niveles(CANTIDAD_NIVELES_CAVERNA,nivelBase);
+  return MapaEditor{"", MapaZona<ElementosGranja>(Dimensiones{}, Terreno::Pasto),
       std::move(niveles),
       MapaZona<ElementosPueblo>(Dimensiones{}, Terreno::PisoPueblo)};
 }
@@ -55,6 +56,16 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};
   case ElementosPueblo::BancoMadera:
     return {TAMANIO_OCUPADO_BANCO_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
+  case ElementosPueblo::CasaRobin:
+  case ElementosPueblo::CasaPierre:
+  case ElementosPueblo::CasaMarnie:
+  case ElementosPueblo::CasaClint:
+    return {TAMANIO_ANCHO_CASA_NPC, TAMANIO_ALTO_CASA_NPC};
+  case ElementosPueblo::NpcPierre:
+  case ElementosPueblo::NpcMarnie:
+  case ElementosPueblo::NpcRobin:
+  case ElementosPueblo::NpcClint:
+    return {TAMANIO_ALTO_ANCHO_NPC, TAMANIO_ALTO_ANCHO_NPC};
   default:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
   }
@@ -83,14 +94,18 @@ bool esUnico(ElementosCaverna tipo) {
 
 bool esUnico(ElementosPueblo tipo) {
   switch (tipo) {
-  case ElementosPueblo::NpcMarnie:
-  case ElementosPueblo::NpcClint:
-  case ElementosPueblo::NpcPierre:
-  case ElementosPueblo::NpcRobin:
-  case ElementosPueblo::CentroComunitario:
-  case ElementosPueblo::SalidaGranja:
-    return true;
-  default:
-    return false;
+	  case ElementosPueblo::NpcMarnie:
+	  case ElementosPueblo::NpcClint:
+	  case ElementosPueblo::NpcPierre:
+	  case ElementosPueblo::NpcRobin:
+	  case ElementosPueblo::CasaMarnie:
+	  case ElementosPueblo::CasaClint:
+	  case ElementosPueblo::CasaPierre:
+	  case ElementosPueblo::CasaRobin:
+	  case ElementosPueblo::CentroComunitario:
+	  case ElementosPueblo::SalidaGranja:
+	    return true;
+	  default:
+	    return false;
   }
 }

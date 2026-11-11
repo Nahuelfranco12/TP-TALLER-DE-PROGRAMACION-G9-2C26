@@ -166,15 +166,16 @@ QPushButton:pressed {
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-10</y>
              <width>331</width>
-             <height>21</height>
+             <height>41</height>
             </rect>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color: black;
 qproperty-alignment: AlignCenter;
-font-size: 24px;</string>
+font-size: 35px;
+font-family: &quot;Stardew Valley&quot;;</string>
            </property>
            <property name="text">
             <string>Assets</string>
@@ -191,8 +192,8 @@ font-size: 24px;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
-    border-image: url(:/Botones/boton_normal.png);
-    color: #f1b356; 
+    border-image: url(:/Botones/boton_bw.png);
+    color: white; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
@@ -217,8 +218,8 @@ QPushButton:pressed {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
-    border-image: url(:/Botones/boton_normal.png);
-    color: #f1b356; 
+    border-image: url(:/Botones/boton_bw.png);
+    color: white; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
@@ -257,7 +258,8 @@ QPushButton:pressed {
            <property name="styleSheet">
             <string notr="true">background-color: black;
 qproperty-alignment: AlignCenter;
-font-size: 24px;</string>
+font-size: 30px;
+font-family: &quot;Stardew Valley&quot;;</string>
            </property>
            <property name="text">
             <string>Dimensiones</string>
@@ -312,8 +314,8 @@ font-size: 15px;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
-    border-image: url(:/Botones/boton_normal.png);
-    color: #f1b356; 
+    border-image: url(:/Botones/boton_bw.png);
+    color: white; 
     font-family: &quot;Stardew Valley&quot;;
     font-size: 25px;
     font-weight: bold;
@@ -339,7 +341,8 @@ QPushButton:pressed {
            <property name="styleSheet">
             <string notr="true">background-color: black;
 qproperty-alignment: AlignCenter;
-font-size: 15px;</string>
+font-size: 20px;    
+font-family: &quot;Stardew Valley&quot;;</string>
            </property>
            <property name="text">
             <string>Nombre Mundo</string>
@@ -353,6 +356,10 @@ font-size: 15px;</string>
              <width>171</width>
              <height>26</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color:black;
+background-color:white</string>
            </property>
           </widget>
          </widget>

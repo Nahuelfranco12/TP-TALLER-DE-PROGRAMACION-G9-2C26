@@ -8,7 +8,8 @@ const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
   static const std::vector<InfoElemento<Terreno>> granja = {
       {Terreno::Pasto, TEXTO_PASTO, RUTA_SUELO, RECORTE_PASTO}};
   static const std::vector<InfoElemento<Terreno>> caverna = {
-      {Terreno::PisoCaverna, TEXTO_PISO, RUTA_CAVERNA, RECORTE_PISO_CAVERNA}};
+      {Terreno::PisoCaverna, TEXTO_PISO, RUTA_CAVERNA, RECORTE_PISO_CAVERNA},
+      {Terreno::Pared, TEXTO_PARED, RUTA_CAVERNA, RECORTE_PARED_CAVERNA}};
   static const std::vector<InfoElemento<Terreno>> pueblo = {
       {Terreno::PisoPueblo, TEXTO_PISO_PUEBLO, RUTA_PISO_PIEDRA,
        RECORTE_PISO_PUEBLO}};
@@ -87,14 +88,15 @@ const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna() {
 
 const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
   static const std::vector<InfoElemento<ElementosPueblo>> catalogo = {
-      {ElementosPueblo::NpcMarnie, TEXTO_MARNIE, RUTA_MARNIE,
-       RECORTE_MERNIE_ROBIN},
+      {ElementosPueblo::CasaMarnie, TEXTO_CASA_MARNIE, RUTA_CASA_NPC,RECORTE_CASA_MARNIE},
+      {ElementosPueblo::NpcMarnie, TEXTO_MARNIE, RUTA_MARNIE,RECORTE_MERNIE_ROBIN},
+      {ElementosPueblo::CasaClint, TEXTO_CASA_CLINT, RUTA_CASA_NPC,RECORTE_CASA_CLINT},
       {ElementosPueblo::NpcClint, TEXTO_CLINT, RUTA_CLINT, RECORTE_PC},
+      {ElementosPueblo::CasaPierre, TEXTO_CASA_PIERRE, RUTA_CASA_NPC,RECORTE_CASA_PIERRE},
       {ElementosPueblo::NpcPierre, TEXTO_PIERRE, RUTA_PIERRE, RECORTE_PC},
-      {ElementosPueblo::NpcRobin, TEXTO_ROBIN, RUTA_ROBIN,
-       RECORTE_MERNIE_ROBIN},
-      {ElementosPueblo::CentroComunitario, TEXTO_CENTRO_COMUNITARIO,
-       RUTA_CENTRO_COMUNITARIO, RECORTE_CENTRO_COMUNITARIO},
+      {ElementosPueblo::CasaRobin, TEXTO_CASA_ROBIN, RUTA_CASA_NPC,RECORTE_CASA_ROBIN},
+      {ElementosPueblo::NpcRobin, TEXTO_ROBIN, RUTA_ROBIN,RECORTE_MERNIE_ROBIN},
+      {ElementosPueblo::CentroComunitario, TEXTO_CENTRO_COMUNITARIO,RUTA_CENTRO_COMUNITARIO, RECORTE_CENTRO_COMUNITARIO},
       // {ElementosPueblo::CasaChica, TEXTO_CASA_CHICA, RUTA_CASAS,
       //  RECORTE_CASA_CHICA},
       // {ElementosPueblo::CasaMediana, TEXTO_CASA_MEDIANA, RUTA_CASAS,

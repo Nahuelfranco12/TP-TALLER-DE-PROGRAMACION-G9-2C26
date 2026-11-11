@@ -49,7 +49,11 @@ enum class ElementosPueblo {
   BuzonGris,
   BuzonAzul,
   CasaChica,
-  CasaMediana
+  CasaMediana,
+  CasaMarnie,
+  CasaClint,
+  CasaPierre,
+  CasaRobin
 };
 
 struct Recorte {
