@@ -55,7 +55,8 @@ bool Player::spendEnergy(size_t cost) {
 void Player::restoreEnergy(size_t amount) {
   if ((this->energy + amount) >= PLAYER_MAX_ENERGY)
     this->energy = PLAYER_MAX_ENERGY;
-  this->energy += amount;
+  else
+    this->energy += amount;
 }
 
 PlayerState Player::state() const {
