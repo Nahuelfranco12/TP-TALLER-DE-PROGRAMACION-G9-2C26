@@ -9,10 +9,11 @@
 #include "constantes.h"
 
 namespace {
-template <typename T>
-int cantidadDe(const MapaZona<T> &zona, T tipo) {
-  return static_cast<int>(std::ranges::count_if(
-      zona.objetos(), [tipo](const auto &objeto) { return objeto.tipo == tipo; }));
+template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
+  return static_cast<int>(
+      std::ranges::count_if(zona.objetos(), [tipo](const auto &objeto) {
+        return objeto.tipo == tipo;
+      }));
 }
 
 bool esCabania(ElementosGranja tipo) {
@@ -35,14 +36,21 @@ std::string falta(const std::string &donde, const char *que) {
 
 void validarGranja(const MapaZona<ElementosGranja> &granja,
                    std::vector<std::string> &errores) {
-  int cabanias = static_cast<int>(std::ranges::count_if(granja.objetos(), [](const auto &objeto) { return esCabania(objeto.tipo); }));
+  int cabanias = static_cast<int>(
+      std::ranges::count_if(granja.objetos(), [](const auto &objeto) {
+        return esCabania(objeto.tipo);
+      }));
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
-    errores.push_back(std::string(VALIDACION_TEXTO_ZONA_GRANJA) + VALIDACION_TEXTO_ERROR_CABANIAS +std::to_string(VALIDACION_CABANIAS_MINIMAS) + VALIDACION_TEXTO_CABANIAS_PLURAL);
+    errores.push_back(std::string(VALIDACION_TEXTO_ZONA_GRANJA) +
+                      VALIDACION_TEXTO_ERROR_CABANIAS +
+                      std::to_string(VALIDACION_CABANIAS_MINIMAS) +
+                      VALIDACION_TEXTO_CABANIAS_PLURAL);
   if (cantidadDe(granja, ElementosGranja::SalidaPueblo) == 0)
     errores.push_back(falta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
 }
 
-void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,std::vector<std::string> &errores) {
+void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
+                   std::vector<std::string> &errores) {
   static const std::vector<std::pair<ElementosPueblo, const char *>>
       obligatorios = {
           {ElementosPueblo::NpcMarnie, TEXTO_MARNIE},
@@ -64,7 +72,8 @@ void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,std::vector<std::stri
 void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
   for (std::size_t i = 0; i < niveles.size(); ++i) {
-    std::string nivel = VALIDACION_TEXTO_NIVEL + std::to_string(i + PRIMER_NIVEL_CAVERNA);
+    std::string nivel =
+        VALIDACION_TEXTO_NIVEL + std::to_string(i + PRIMER_NIVEL_CAVERNA);
     if (cantidadDe(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
       errores.push_back(falta(nivel, TEXTO_SALIDA_CAVERNA));
     bool esUltimo = i + 1 == niveles.size();
@@ -72,7 +81,7 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
       errores.push_back(falta(nivel, TEXTO_ESCALERA));
   }
 }
-}
+} // namespace
 
 std::vector<std::string> erroresDe(const MapaEditor &mapa) {
   std::vector<std::string> errores;

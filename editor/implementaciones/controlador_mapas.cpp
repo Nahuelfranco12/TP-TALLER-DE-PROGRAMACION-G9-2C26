@@ -2,18 +2,18 @@
 
 #include <QIcon>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QStringList>
 #include <type_traits>
 #include <vector>
-#include <QMessageBox>
-#include <QStringList>
 
 #include "constantes.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
-#include "vista_zona.h"
 #include "validacion_mapas.h"
+#include "vista_zona.h"
 
 ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
                                    DatosEditor &datos, QObject *parent)
@@ -39,12 +39,14 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
           [this](int nivel) { cambiarDeNivel(nivel); });
   connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
-      this->ui.cajaNombreMapa->setText(QString::fromStdString(this->datos.mapa.nombre));
+      this->ui.cajaNombreMapa->setText(
+          QString::fromStdString(this->datos.mapa.nombre));
       dibujarMapa();
       cambiarDeZona(zonaDe(this->ui.pestanaMapas->currentWidget()));
     }
   });
-  connect(ui.botonExportarPM, &QPushButton::clicked, this,[this]() { exportar(); });
+  connect(ui.botonExportarPM, &QPushButton::clicked, this,
+          [this]() { exportar(); });
 
   ui.vistaGranja->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
     clickEn(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
@@ -56,9 +58,10 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
     clickEn(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
   });
 
-  connect(ui.cajaNombreMapa, &QLineEdit::textChanged, this, [this](const QString &texto) {
+  connect(ui.cajaNombreMapa, &QLineEdit::textChanged, this,
+          [this](const QString &texto) {
             this->datos.mapa.nombre = texto.trimmed().toStdString();
-  });
+          });
 
   cambiarDeZona(zonaDe(ui.pestanaMapas->currentWidget()));
 }
@@ -89,7 +92,7 @@ void ControladorMapas::cambiarDeZona(Zona zona) {
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  //agregarAPaleta(terrenosDe(zona));
+  // agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -199,8 +202,12 @@ void ControladorMapas::exportar() {
     QStringList lineas;
     for (const auto &error : errores)
       lineas.append(QString::fromStdString(error));
-    QMessageBox::warning(ui.centralwidget->window(), VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,lineas.join('\n'));
+    QMessageBox::warning(ui.centralwidget->window(),
+                         VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
+                         lineas.join('\n'));
     return;
   }
-  QMessageBox::information(ui.centralwidget->window(), VALIDACION_TEXTO_TITULO_MAPA_VALIDO,VALIDACION_TEXTO_MAPA_VALIDO);
+  QMessageBox::information(ui.centralwidget->window(),
+                           VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
+                           VALIDACION_TEXTO_MAPA_VALIDO);
 }

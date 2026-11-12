@@ -2,16 +2,18 @@
 #include "constantes.h"
 #include "editor_dtos.h"
 
-#include <utility>
-#include <vector>
 #include <algorithm>
 #include <string>
+#include <utility>
+#include <vector>
 
 MapaEditor crearMapaPredeterminado() {
   MapaZona<ElementosCaverna> nivelBase(Dimensiones{}, Terreno::PisoCaverna);
   pintarBorde(nivelBase, Terreno::Pared);
-  std::vector<MapaZona<ElementosCaverna>> niveles(CANTIDAD_NIVELES_CAVERNA,nivelBase);
-  return MapaEditor{"", MapaZona<ElementosGranja>(Dimensiones{}, Terreno::Pasto),
+  std::vector<MapaZona<ElementosCaverna>> niveles(CANTIDAD_NIVELES_CAVERNA,
+                                                  nivelBase);
+  return MapaEditor{
+      "", MapaZona<ElementosGranja>(Dimensiones{}, Terreno::Pasto),
       std::move(niveles),
       MapaZona<ElementosPueblo>(Dimensiones{}, Terreno::PisoPueblo)};
 }
@@ -27,9 +29,9 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
     return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
   case ElementosGranja::Arbol1:
   case ElementosGranja::Arbol2:
-  // case ElementosGranja::Arbol3:
-  // case ElementosGranja::Arbol4:
-  // case ElementosGranja::Arbol5:
+    // case ElementosGranja::Arbol3:
+    // case ElementosGranja::Arbol4:
+    // case ElementosGranja::Arbol5:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ARBOL_ALTO};
   case ElementosGranja::Agua:
     return {TAMANIO_OCUPADO_AGUA_ANCHO, TAMANIO_OCUPADO_AGUA_ALTO};
@@ -81,7 +83,7 @@ bool esUnico(ElementosGranja tipo) {
   case ElementosGranja::Cabania4:
   case ElementosGranja::Cabania5:
   case ElementosGranja::Cabania6:
-  //case ElementosGranja::EntradaMina:
+  // case ElementosGranja::EntradaMina:
   case ElementosGranja::SalidaPueblo:
     return true;
   default:
@@ -96,19 +98,19 @@ bool esUnico(ElementosCaverna tipo) {
 
 bool esUnico(ElementosPueblo tipo) {
   switch (tipo) {
-	  case ElementosPueblo::NpcMarnie:
-	  case ElementosPueblo::NpcClint:
-	  case ElementosPueblo::NpcPierre:
-	  case ElementosPueblo::NpcRobin:
-	  case ElementosPueblo::CasaMarnie:
-	  case ElementosPueblo::CasaClint:
-	  case ElementosPueblo::CasaPierre:
-	  case ElementosPueblo::CasaRobin:
-	  case ElementosPueblo::CentroComunitario:
-	  case ElementosPueblo::SalidaGranja:
-	  case ElementosPueblo::EntradaMina:
-	    return true;
-	  default:
-	    return false;
+  case ElementosPueblo::NpcMarnie:
+  case ElementosPueblo::NpcClint:
+  case ElementosPueblo::NpcPierre:
+  case ElementosPueblo::NpcRobin:
+  case ElementosPueblo::CasaMarnie:
+  case ElementosPueblo::CasaClint:
+  case ElementosPueblo::CasaPierre:
+  case ElementosPueblo::CasaRobin:
+  case ElementosPueblo::CentroComunitario:
+  case ElementosPueblo::SalidaGranja:
+  case ElementosPueblo::EntradaMina:
+    return true;
+  default:
+    return false;
   }
 }

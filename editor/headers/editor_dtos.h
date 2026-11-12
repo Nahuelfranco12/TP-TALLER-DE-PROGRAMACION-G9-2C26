@@ -29,12 +29,21 @@ enum class ElementosGranja {
   Tocon,
   BuzonRojo,
   CartelVacio,
-  //EntradaMina,
+  // EntradaMina,
   SalidaPueblo
 };
 
-enum class ElementosCaverna { Escalera, SalidaCaverna,
-Barril,Calavera,Hueso,Escombros,Antorchas,Candelabro,Escudo};
+enum class ElementosCaverna {
+  Escalera,
+  SalidaCaverna,
+  Barril,
+  Calavera,
+  Hueso,
+  Escombros,
+  Antorchas,
+  Candelabro,
+  Escudo
+};
 
 enum class ElementosPueblo {
   NpcMarnie,
