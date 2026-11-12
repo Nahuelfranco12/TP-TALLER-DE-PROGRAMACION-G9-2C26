@@ -176,6 +176,10 @@ TillDto ServerProtocol::receive_till() {
   return TillDto{byte_to_direction(protocol.receive_u8())};
 }
 
+WaterDto ServerProtocol::receive_water() {
+  return WaterDto{byte_to_direction(protocol.receive_u8())};
+}
+
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
   switch (direction_byte) {
   case DIR_UP:

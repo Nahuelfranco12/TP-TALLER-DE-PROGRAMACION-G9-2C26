@@ -13,7 +13,7 @@ struct CropConfig {
 };
 
 inline const CropConfig &cropConfig(CropTypes type) {
-  static const CropConfig strawberry{2, 4, 0, 2};
+  static const CropConfig strawberry{2, 1, 0, 2};
   static const CropConfig greenOnion{3, 2, 0, 0};
   static const CropConfig potato{2, 2, 1, 0};
   static const CropConfig pumpkin{1, 7, 0, 0};
