@@ -20,6 +20,8 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
   ui.valorAltoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
   ui.valorNivelCaverna->setRange(PRIMER_NIVEL_CAVERNA,
                                  CANTIDAD_NIVELES_CAVERNA);
+  ui.cajaNombreMapa->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
+  ui.cajaNombreMapa->setPlaceholderText(NOMBRE_PREDETERMINADO_AYUDA);
 
   connect(ui.botonVolverPM, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -34,6 +36,7 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
           [this](int nivel) { cambiarDeNivel(nivel); });
   connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
+      this->ui.cajaNombreMapa->setText(QString::fromStdString(this->datos.mapa.nombre));
       dibujarMapa();
       cambiarDeZona(zonaDe(this->ui.pestanaMapas->currentWidget()));
     }
@@ -49,11 +52,16 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
     clickEn(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
   });
 
+  connect(ui.cajaNombreMapa, &QLineEdit::textChanged, this, [this](const QString &texto) {
+            this->datos.mapa.nombre = texto.trimmed().toStdString();
+  });
+
   cambiarDeZona(zonaDe(ui.pestanaMapas->currentWidget()));
 }
 
 void ControladorMapas::limpiarPagina() {
   datos = DatosEditor{};
+  ui.cajaNombreMapa->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
   ui.vistaGranja->limpiar();

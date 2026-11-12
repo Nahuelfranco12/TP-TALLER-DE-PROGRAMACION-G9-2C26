@@ -20,6 +20,8 @@
 #define ALTO_PREDETERMINADO 25
 #define DIMENSION_MINIMA 10
 #define DIMENSION_MAXIMA 50
+#define MAX_LARGO_NOMBRE_MUNDO 50
+#define NOMBRE_PREDETERMINADO_AYUDA "Nombre del mundo"
 
 // Rutas
 #define RUTA_SUELO ":/Mapas/suelo.png"
