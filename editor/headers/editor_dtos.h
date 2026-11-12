@@ -8,17 +8,42 @@ enum class Zona { Granja, Caverna, Pueblo };
 enum class Terreno { Pasto, Tierra, Camino, PisoCaverna, Pared, PisoPueblo };
 
 enum class ElementosGranja {
-  Cabania,
+  Cabania1,
+  Cabania2,
+  Cabania3,
+  Cabania4,
+  Cabania5,
+  Cabania6,
   Arbol1,
   Arbol2,
+  // Arbol3,
+  // Arbol4,
+  // Arbol5,
   Piedra,
-  CercoFrente,
-  CercoCostado,
-  EntradaMina,
+  Agua,
+  ArbustoRedondo,
+  ArbustoGrande,
+  PiedraGrisGrande,
+  PiedraGris,
+  TroncoTirado,
+  Tocon,
+  BuzonRojo,
+  CartelVacio,
+  // EntradaMina,
   SalidaPueblo
 };
 
-enum class ElementosCaverna { Escalera, SalidaCaverna };
+enum class ElementosCaverna {
+  Escalera,
+  SalidaCaverna,
+  Barril,
+  Calavera,
+  Hueso,
+  Escombros,
+  Antorchas,
+  Candelabro,
+  Escudo
+};
 
 enum class ElementosPueblo {
   NpcMarnie,
@@ -26,7 +51,19 @@ enum class ElementosPueblo {
   NpcPierre,
   NpcRobin,
   CentroComunitario,
-  SalidaGranja
+  SalidaGranja,
+  EntradaMina,
+  FarolNaranja,
+  FarolAzul,
+  BancoMadera,
+  BuzonGris,
+  BuzonAzul,
+  CasaChica,
+  CasaMediana,
+  CasaMarnie,
+  CasaClint,
+  CasaPierre,
+  CasaRobin
 };
 
 struct Recorte {

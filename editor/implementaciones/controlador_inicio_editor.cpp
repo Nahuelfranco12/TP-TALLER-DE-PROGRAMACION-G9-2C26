@@ -16,7 +16,7 @@ ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
   connect(ui.botonEditorMapa, &QPushButton::clicked, this,
           [this]() { editarMapa(); });
   connect(ui.botonEditorSalir, &QPushButton::clicked, this,
-          [this]() { this->ui.botonEditorSalir->window()->close(); });
+          [this]() { this->ui.centralwidget->window()->close(); });
 }
 
 void ControladorInicioEditor::crearMapa() {

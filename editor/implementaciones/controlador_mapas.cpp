@@ -2,14 +2,17 @@
 
 #include <QIcon>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QStringList>
 #include <type_traits>
 #include <vector>
 
 #include "constantes.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
+#include "validacion_mapas.h"
 #include "vista_zona.h"
 
 ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
@@ -20,6 +23,8 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
   ui.valorAltoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
   ui.valorNivelCaverna->setRange(PRIMER_NIVEL_CAVERNA,
                                  CANTIDAD_NIVELES_CAVERNA);
+  ui.cajaNombreMapa->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
+  ui.cajaNombreMapa->setPlaceholderText(NOMBRE_PREDETERMINADO_AYUDA);
 
   connect(ui.botonVolverPM, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -34,10 +39,14 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
           [this](int nivel) { cambiarDeNivel(nivel); });
   connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
+      this->ui.cajaNombreMapa->setText(
+          QString::fromStdString(this->datos.mapa.nombre));
       dibujarMapa();
       cambiarDeZona(zonaDe(this->ui.pestanaMapas->currentWidget()));
     }
   });
+  connect(ui.botonExportarPM, &QPushButton::clicked, this,
+          [this]() { exportar(); });
 
   ui.vistaGranja->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
     clickEn(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
@@ -49,11 +58,17 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
     clickEn(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
   });
 
+  connect(ui.cajaNombreMapa, &QLineEdit::textChanged, this,
+          [this](const QString &texto) {
+            this->datos.mapa.nombre = texto.trimmed().toStdString();
+          });
+
   cambiarDeZona(zonaDe(ui.pestanaMapas->currentWidget()));
 }
 
 void ControladorMapas::limpiarPagina() {
   datos = DatosEditor{};
+  ui.cajaNombreMapa->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
   ui.vistaGranja->limpiar();
@@ -77,7 +92,7 @@ void ControladorMapas::cambiarDeZona(Zona zona) {
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  agregarAPaleta(terrenosDe(zona));
+  // agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -138,8 +153,11 @@ void ControladorMapas::aplicarDimensiones() {
     datos.mapa.granja.redimensionar(nuevas);
     break;
   case Zona::Caverna:
-    for (auto &nivel : datos.mapa.nivelesCaverna)
+    for (auto &nivel : datos.mapa.nivelesCaverna) {
+      pintarBorde(nivel, Terreno::PisoCaverna);
       nivel.redimensionar(nuevas);
+      pintarBorde(nivel, Terreno::Pared);
+    }
     break;
   case Zona::Pueblo:
     datos.mapa.pueblo.redimensionar(nuevas);
@@ -176,4 +194,20 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
     zona.pintarTerrenoConCelda(x, y, static_cast<Terreno>(valor));
   else
     zona.colocar(static_cast<T>(valor), x, y);
+}
+
+void ControladorMapas::exportar() {
+  std::vector<std::string> errores = erroresDe(datos.mapa);
+  if (!errores.empty()) {
+    QStringList lineas;
+    for (const auto &error : errores)
+      lineas.append(QString::fromStdString(error));
+    QMessageBox::warning(ui.centralwidget->window(),
+                         VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
+                         lineas.join('\n'));
+    return;
+  }
+  QMessageBox::information(ui.centralwidget->window(),
+                           VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
+                           VALIDACION_TEXTO_MAPA_VALIDO);
 }

@@ -27,7 +27,9 @@ qt_add_executable(editor
     headers/mapa_editor.h
     headers/sprites.h
     headers/vista_zona.h
+    headers/validacion_mapas.h
 
+    implementaciones/validacion_mapas.cpp
     implementaciones/sprites.cpp
     implementaciones/vista_zona.cpp
     implementaciones/mapa_editor.cpp
