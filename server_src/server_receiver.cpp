@@ -57,6 +57,15 @@ void ServerReceiver::run() {
       case OP_PLANT:
         match->push_command(factory.create(client_id, protocol.receive_plant()));
         break;
+      case OP_TILL:
+        match->push_command(factory.create(client_id, protocol.receive_till()));
+        break;
+      case OP_GIFT_OFFER:
+        match->push_command(factory.create(client_id, protocol.receive_gift_offer()));
+        break;
+      case OP_GIFT_RESPONSE:
+        match->push_command(factory.create(client_id, protocol.receive_gift_response()));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }

@@ -14,6 +14,7 @@ struct TerrainState {
   bool transitable;
   bool arable;
   bool isDoor;
+  bool tilled = false;
 };
 
 struct CropState {
@@ -23,6 +24,7 @@ struct CropState {
 
 struct MineralState {
   MineralTypes type{};
+  size_t remainingHits;
 };
 
 struct AnimalState {
@@ -78,6 +80,8 @@ struct PlayerState {
   AvailableTools actualTool{};
 
   InventoryState inventory;
+  int pendingGiftGiverId = 0;
+  ItemState pendingGift{};
 };
 
 struct SectorState {

@@ -18,9 +18,11 @@ private:
   void send_tiles(const std::vector<std::vector<TileDto>> &tiles);
   void send_player(const PlayerDto &player);
   void send_inventory(const InventoryDto &inventory);
+  void send_slot(const InventorySlotDto &slot);
   void send_position(const GamePositionDto &position);
 
   PlayerOutfitDto receive_outfit();
+  InventorySlotDto receive_slot(); // se usa para recibir regalos
   void send_outfit(const PlayerOutfitDto &outfit);
 
 public:
@@ -36,6 +38,9 @@ public:
   ToolTypeDto receive_select_tool();
   CollectDto receive_collect();
   PlantDto receive_plant();
+  GiftOfferDto receive_gift_offer();
+  GiftResponseDto receive_gift_response();
+  TillDto receive_till();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

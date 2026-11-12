@@ -31,6 +31,16 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const PlantDto &d
     return std::make_unique<PlantCommand>(player_id, target, crop);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftOfferDto &dto) {
+    return std::make_unique<GiftOfferCommand>(player_id, dto.receiverId, dto.slotIndex);
+}
+std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftResponseDto &dto) {
+    return std::make_unique<GiftResponseCommand>(player_id, dto.accept);
+}
+std::unique_ptr<Command> CommandFactory::create(int player_id, const TillDto &dto) {
+  return std::make_unique<TillCommand>(player_id, dto.direction);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
   PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),

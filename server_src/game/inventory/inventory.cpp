@@ -60,3 +60,13 @@ InventoryState Inventory::state() const {
     state.tools.push_back({tool->toolType});
   return state;
 }
+
+bool Inventory::giveSlotTo(int index, Inventory &other) {
+    if (index < 0 || index >= static_cast<int>(items.size())) return false;
+    if (other.items.size() >= MAX_INVENTORY_ITEMS) return false;
+    auto it = items.begin();
+    std::advance(it, index);
+    other.items.push_back(std::move(*it));
+    items.erase(it);
+    return true;
+}

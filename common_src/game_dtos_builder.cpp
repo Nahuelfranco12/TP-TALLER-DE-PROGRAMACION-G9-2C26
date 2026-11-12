@@ -142,7 +142,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
           sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor};
+                                    t.isDoor, t.tilled};
         }
 
       for (const EntityState &e : sectorState.entities) {
@@ -179,6 +179,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
               playerDto.inventory.push_back(std::move(inv));
               playerDto.actualTool =
                   static_cast<ToolTypeDto>(playerState.actualTool);
+              if (playerState.pendingGift.count > 0) {
+                playerDto.pendingGift.giverId = playerState.pendingGiftGiverId;
+                playerDto.pendingGift.gift = {playerState.pendingGift.count, toDto(playerState.pendingGift), static_cast<CropQualityDto>(playerState.pendingGift.quality)};
+              }
             }
             sectorDto.players[pos] = std::move(playerDto);
           }
@@ -188,6 +192,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.ready = e.animal.is_ready;
           entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
           entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
+          entityDto.mineral.remainingHits = e.mineral.remainingHits;
           sectorDto.entities[pos] = entityDto;
         }
       }
@@ -217,7 +222,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
           sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor};
+                                    t.isDoor, t.tilled};
         }
     }
   }

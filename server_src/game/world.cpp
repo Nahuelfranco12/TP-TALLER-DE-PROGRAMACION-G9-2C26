@@ -57,12 +57,12 @@ void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
 void World::removePlayer(int id) { this->players.erase(id); }
 
 bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                         double freq, MineralPickaxeTime pickaxeTime) {
+                         double freq, size_t pickaxeHits) {
   auto it = this->sectors.find(sectorId);
   if (it == this->sectors.end())
     return false;
   auto mineral =
-      std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeTime);
+      std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
   return it->second->addEntity(std::move(mineral), pos);
 }
 

@@ -48,6 +48,8 @@ public:
   bool herramienta_seleccionada(ToolTypeDto &herramienta) const;
   bool item_seleccionado(InventorySlotDto &casillero) const;
 
+  bool indice_item_seleccionado(int &indice) const;
+
   bool tengo_en_la_mano(Herramienta herramienta) const;
 
   void dibujar(SDL2pp::Renderer &renderer, int ancho_ventana, int alto_ventana);

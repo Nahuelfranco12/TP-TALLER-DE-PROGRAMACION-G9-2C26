@@ -16,6 +16,12 @@
 class Sector;  // forward declaration
 class Mineral; // forward declaration
 
+struct PendingGift {
+    int giverId = 0;
+    int slotIndex = 0;
+    ItemState item{};
+};
+
 class Player : public Entity {
 private:
   int id;
@@ -25,6 +31,7 @@ private:
   PlayerOutfit outfit;
 
   Tool *actualTool = nullptr;
+  PendingGift pendingGift{};
   Inventory inventory;
   Sector *actualSector;
 
@@ -60,6 +67,14 @@ public:
   double getEnergy() const { return energy; }
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
+
+  bool hasPendingGift() const { return pendingGift.item.count > 0; }
+  const PendingGift &getPendingGift() const { return pendingGift; }
+  void setPendingGift(const PendingGift &gift) { pendingGift = gift; }
+  void clearPendingGift() { pendingGift = PendingGift{}; }
+  bool hasEnergy(size_t cost);
+  bool spendEnergy(size_t cost);
+  void restoreEnergy(size_t amount);
 
   // state para el serializar el estado del mundo
   PlayerState state() const;

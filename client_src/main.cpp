@@ -175,6 +175,29 @@ int main(int argc, char *argv[]) try {
         }
 		  }
 
+      // G: regalar el item seleccionado al que tengo enfrente
+      // TODO: REVISAR
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_g && evento.key.repeat == 0) {
+        int frente_x = personaje.obtener_tile_x();
+        int frente_y = personaje.obtener_tile_y();
+        switch (personaje.obtener_direccion()) {
+        case ARRIBA:    frente_y--; break;
+        case ABAJO:     frente_y++; break;
+        case IZQUIERDA: frente_x--; break;
+        case DERECHA:   frente_x++; break;
+        }
+        int casillero = 0;
+        auto receptor = ultimo_estado.players.find(GamePositionDto{
+            .x = static_cast<size_t>(frente_x), .y = static_cast<size_t>(frente_y)});
+        if (receptor != ultimo_estado.players.end() && inventario.indice_item_seleccionado(casillero)) {
+          client.send_gift_offer(static_cast<int>(receptor->second.id), casillero);
+        }
+      }
+
+      // Y / N: aceptar o rechazar el regalo
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) client.send_gift_response(true);
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) client.send_gift_response(false);
+
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
         int frente_y = personaje.obtener_tile_y();
@@ -206,11 +229,13 @@ int main(int argc, char *argv[]) try {
             personaje.picar();
             client.send_mine(dir);
           }
+        } else if (inventario.tengo_en_la_mano(PALA)) {
+            client.send_till(dir);
         } else if (inventario.item_seleccionado(en_la_mano) &&
                    es_semilla(en_la_mano.item, cultivo)) {
-          client.send_plant(frente_x, frente_y, cultivo);
+            client.send_plant(frente_x, frente_y, cultivo);
         } else {
-          client.send_collect(dir);
+            client.send_collect(dir);
         }
       }
 

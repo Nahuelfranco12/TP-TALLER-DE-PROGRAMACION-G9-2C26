@@ -134,6 +134,9 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
             if (tile.type == TerrainTypeDto::DIRT) {
                 letra = 'T';
             }
+            if (tile.tilled) {
+                letra = 'X';
+            }
             if (tile.isDoor) {
                 letra = 'e';
             }
