@@ -4,6 +4,8 @@
 
 #include <utility>
 #include <vector>
+#include <algorithm>
+#include <string>
 
 MapaEditor crearMapaPredeterminado() {
   MapaZona<ElementosCaverna> nivelBase(Dimensiones{}, Terreno::PisoCaverna);

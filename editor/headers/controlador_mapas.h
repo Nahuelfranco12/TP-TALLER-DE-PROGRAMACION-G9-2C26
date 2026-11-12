@@ -41,6 +41,8 @@ private:
                Qt::MouseButton boton);
   template <typename T>
   void colocarSeleccionado(MapaZona<T> &zona, int x, int y);
+
+  void exportar();
 };
 
 #endif // CONTROLADOR_MAPAS_H_

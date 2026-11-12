@@ -186,4 +186,17 @@
 #define TAMANIO_ALTO_ANCHO_NPC 2
 #define COLOR_LINEAS_GRILLA QColor(0, 0, 0, 60)
 
+//Validaciones para que se pueda exportar el archivo
+#define VALIDACION_CABANIAS_MINIMAS 3
+#define VALIDACION_TEXTO_ERROR_NOMBRE "No le pusiste nombre al mundo!"
+#define VALIDACION_TEXTO_ERROR_FALTA " Falta"
+#define VALIDACION_TEXTO_ERROR_CABANIAS "Tenes que colocar MINIMO "
+#define VALIDACION_TEXTO_CABANIAS_PLURAL " cabañas"
+#define VALIDACION_TEXTO_ZONA_GRANJA "Granja"
+#define VALIDACION_TEXTO_ZONA_PUEBLO "Pueblo"
+#define VALIDACION_TEXTO_NIVEL "Nivel "
+#define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
+#define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
+#define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
+
 #endif // CONSTANTES_H

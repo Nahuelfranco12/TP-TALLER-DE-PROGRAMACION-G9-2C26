@@ -6,11 +6,14 @@
 #include <QSpinBox>
 #include <type_traits>
 #include <vector>
+#include <QMessageBox>
+#include <QStringList>
 
 #include "constantes.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
 #include "vista_zona.h"
+#include "validacion_mapas.h"
 
 ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
                                    DatosEditor &datos, QObject *parent)
@@ -41,6 +44,7 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
       cambiarDeZona(zonaDe(this->ui.pestanaMapas->currentWidget()));
     }
   });
+  connect(ui.botonExportarPM, &QPushButton::clicked, this,[this]() { exportar(); });
 
   ui.vistaGranja->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
     clickEn(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
@@ -187,4 +191,16 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
     zona.pintarTerrenoConCelda(x, y, static_cast<Terreno>(valor));
   else
     zona.colocar(static_cast<T>(valor), x, y);
+}
+
+void ControladorMapas::exportar() {
+  std::vector<std::string> errores = erroresDe(datos.mapa);
+  if (!errores.empty()) {
+    QStringList lineas;
+    for (const auto &error : errores)
+      lineas.append(QString::fromStdString(error));
+    QMessageBox::warning(ui.centralwidget->window(), VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,lineas.join('\n'));
+    return;
+  }
+  QMessageBox::information(ui.centralwidget->window(), VALIDACION_TEXTO_TITULO_MAPA_VALIDO,VALIDACION_TEXTO_MAPA_VALIDO);
 }
