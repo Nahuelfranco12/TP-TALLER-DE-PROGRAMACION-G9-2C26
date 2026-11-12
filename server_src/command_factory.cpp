@@ -41,6 +41,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const TillDto &dt
   return std::make_unique<TillCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const WaterDto &dto) {
+  return std::make_unique<WaterCommand>(player_id, dto.direction);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
   PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),

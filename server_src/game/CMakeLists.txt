@@ -4,6 +4,7 @@ target_sources(taller_game
     entities/mineral.cpp
     entities/door.cpp
     entities/player.cpp
+    entities/crop.cpp
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
@@ -19,6 +20,7 @@ target_sources(taller_game
     commands/spawn_mineral_command.cpp
     commands/spawn_animal_command.cpp
     commands/plant_command.cpp
+    commands/water_command.cpp
     sectors/sector.cpp
     sectors/cavern_sector.cpp
 )
