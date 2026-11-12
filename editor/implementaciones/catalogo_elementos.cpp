@@ -53,7 +53,7 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
        RECORTE_ARBUSTO_GRANDE},
       {ElementosGranja::TroncoTirado, TEXTO_TRONCO_CAIDO, RUTA_AGUA,
        RECORTE_TRONCO_CAIDO},
-      {ElementosGranja::Tocon, TEXTO_TRONCO_CORTADO, RUTA_AGUA,
+      {ElementosGranja::TroncoPartido, TEXTO_TRONCO_CORTADO, RUTA_AGUA,
        RECORTE_TRONCO_PARTIDO},
       {ElementosGranja::BuzonRojo, TEXTO_BUZON_ROJO, RUTA_OBJETOS,
        RECORTE_BUZON_ROJO},

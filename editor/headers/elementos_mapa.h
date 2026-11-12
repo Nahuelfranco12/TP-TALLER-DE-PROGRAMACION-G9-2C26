@@ -11,7 +11,7 @@ enum class ElementosGranja {
   Cabania3,
   Cabania4,
   Cabania5,
-  Cabania6,
+  //Cabania6,
   Arbol1,
   Arbol2,
   Piedra,
@@ -21,7 +21,7 @@ enum class ElementosGranja {
   PiedraGrisGrande,
   PiedraGris,
   TroncoTirado,
-  Tocon,
+  TroncoPartido,
   BuzonRojo,
   CartelVacio,
   SalidaPueblo
