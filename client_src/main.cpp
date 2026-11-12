@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) try {
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
 
-  MapaMundo mapa_mundo(client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
+  MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
   bool viendo_mapa = false;
