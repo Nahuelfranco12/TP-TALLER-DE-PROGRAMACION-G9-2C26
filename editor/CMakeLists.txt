@@ -21,20 +21,21 @@ qt_add_executable(editor
     headers/navegador.h
     headers/ventanaeditor.h
     headers/controlador_mapas.h
-    headers/editor_dtos.h
     headers/vista_responsive.h
     headers/constantes.h
     headers/mapa_editor.h
     headers/sprites.h
     headers/vista_zona.h
     headers/validacion_mapas.h
+    headers/catalogo_elementos.h
+    headers/elementos_mapa.h
 
+    implementaciones/catalogo_elementos.cpp
     implementaciones/validacion_mapas.cpp
     implementaciones/sprites.cpp
     implementaciones/vista_zona.cpp
     implementaciones/mapa_editor.cpp
     implementaciones/vista_responsive.cpp
-    implementaciones/editor_dtos.cpp
     implementaciones/controlador_mapas.cpp
     implementaciones/controlador_inicio_editor.cpp
     implementaciones/navegador.cpp

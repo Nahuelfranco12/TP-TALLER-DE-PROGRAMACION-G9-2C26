@@ -6,7 +6,7 @@
 
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
-#include "editor_dtos.h"
+#include "catalogo_elementos.h"
 
 class QWidget;
 class VistaZona;

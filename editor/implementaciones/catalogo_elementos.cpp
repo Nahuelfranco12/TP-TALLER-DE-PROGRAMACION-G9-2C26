@@ -1,5 +1,6 @@
-#include "editor_dtos.h"
+#include "catalogo_elementos.h"
 
+#include <initializer_list>
 #include <vector>
 
 #include "constantes.h"
@@ -36,16 +37,10 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
        RECORTE_CABANIA4},
       {ElementosGranja::Cabania5, TEXTO_CABANIA5, RUTA_CABANIAS,
        RECORTE_CABANIA5},
-      //{ElementosGranja::Cabania6, TEXTO_CABANIA6,
-      // RUTA_CABANIAS,RECORTE_CABANIA6}, {ElementosGranja::EntradaMina,
-      // TEXTO_ENTRADA_MINA, RUTA_CAVERNA,RECORTE_ENTRADA_MINA},
       {ElementosGranja::SalidaPueblo, TEXTO_SALIDA_PUEBLO, RUTA_OBJETOS,
        RECORTE_SALIDA_PUEBLO},
       {ElementosGranja::Arbol1, TEXTO_ARBOL1, RUTA_ARBOL1, {}},
       {ElementosGranja::Arbol2, TEXTO_ARBOL2, RUTA_ARBOL2, {}},
-      // {ElementosGranja::Arbol3, TEXTO_ARBOL3, RUTA_ARBOL3, {}},
-      // {ElementosGranja::Arbol4, TEXTO_ARBOL4, RUTA_ARBOL4, {}},
-      // {ElementosGranja::Arbol5, TEXTO_ARBOL5, RUTA_ARBOL5, {}},
       {ElementosGranja::Agua, TEXTO_AGUA, RUTA_AGUA, RECORTE_AGUA},
       {ElementosGranja::Piedra, TEXTO_PIEDRA, RUTA_PIEDRAS, RECORTE_PIEDRA},
       {ElementosGranja::PiedraGrisGrande, TEXTO_PIEDRA_GRIS_GRANDE, RUTA_AGUA,
@@ -107,10 +102,6 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
        RUTA_CENTRO_COMUNITARIO, RECORTE_CENTRO_COMUNITARIO},
       {ElementosPueblo::EntradaMina, TEXTO_ENTRADA_MINA, RUTA_CAVERNA,
        RECORTE_ENTRADA_MINA},
-      // {ElementosPueblo::CasaChica, TEXTO_CASA_CHICA, RUTA_CASAS,
-      //  RECORTE_CASA_CHICA},
-      // {ElementosPueblo::CasaMediana, TEXTO_CASA_MEDIANA, RUTA_CASAS,
-      //  RECORTE_CASA_MEDIANA},
       {ElementosPueblo::SalidaGranja, TEXTO_SALIDA_GRANJA, RUTA_OBJETOS,
        RECORTE_SALIDA_PUEBLO},
       {ElementosPueblo::FarolNaranja, TEXTO_FAROL_NARANJA, RUTA_OBJETOS,

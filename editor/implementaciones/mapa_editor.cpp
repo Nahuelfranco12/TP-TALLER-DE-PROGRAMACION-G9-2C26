@@ -1,6 +1,6 @@
 #include "mapa_editor.h"
 #include "constantes.h"
-#include "editor_dtos.h"
+#include "elementos_mapa.h"
 
 #include <algorithm>
 #include <string>

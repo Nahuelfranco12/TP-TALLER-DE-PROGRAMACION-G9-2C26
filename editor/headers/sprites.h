@@ -4,7 +4,8 @@
 #include <QPixmap>
 #include <QString>
 
-#include "editor_dtos.h"
+//#include "editor_dtos.h"
+#include "catalogo_elementos.h"
 
 QPixmap imagenSpriteDe(const char *rutaSprite, const Recorte &recorte,
                        const QString &nombre, int ancho, int alto);
