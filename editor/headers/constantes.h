@@ -242,4 +242,28 @@
 #define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
 #define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
 
+// Claves para lo que es el mapa, osea la clave que los representa
+#define VERSION_ARCHIVO_MAPA 1
+#define CLAVE_VERSION "version"
+#define CLAVE_NOMBRE "nombre"
+#define CLAVE_GRANJA "granja"
+#define CLAVE_CAVERNA "caverna"
+#define CLAVE_PUEBLO "pueblo"
+#define CLAVE_NIVELES "niveles"
+#define CLAVE_ANCHO "ancho"
+#define CLAVE_ALTO "alto"
+#define CLAVE_OBJETOS "objetos"
+#define CLAVE_TIPO "tipo"
+#define CLAVE_X "x"
+#define CLAVE_Y "y"
+#define TEXTO_ERROR_ESCRIBIR "No se pudo escribir el archivo: "
+#define TEXTO_ERROR_SIN_ID "Hay un elemento sin identificador en el archivo"
+
+// estas son de interfaz
+#define TITULO_GUARDAR "Guardar mapa"
+#define EXTENSION_MAPA ".toml"
+#define TITULO_MAPA_GUARDADO "Mapa guardado"
+#define TEXTO_MAPA_GUARDADO "El mapa se guardó en:\n"
+#define TITULO_ERROR_GUARDAR "No se pudo guardar"
+
 #endif // CONSTANTES_H

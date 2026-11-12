@@ -8,12 +8,16 @@
 #include <QStringList>
 #include <type_traits>
 #include <vector>
+#include <QDir>
+#include <QFileDialog>
+#include <exception>
 
 #include "constantes.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
 #include "validacion_mapas.h"
 #include "vista_zona.h"
+#include "archivo_mapa.h"
 
 ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
                                    DatosEditor &datos, QObject *parent)
@@ -210,4 +214,21 @@ void ControladorMapas::exportar() {
   QMessageBox::information(ui.centralwidget->window(),
                            VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
                            VALIDACION_TEXTO_MAPA_VALIDO);
+  // El mapa es válido: se pide dónde guardarlo.
+  QString ruta = QFileDialog::getSaveFileName(ui.centralwidget->window(),
+                                              TITULO_GUARDAR, QDir::homePath(),
+                                              FILTRO_MAPAS);
+  if (ruta.isEmpty()) // el usuario canceló
+    return;
+  if (!ruta.endsWith(EXTENSION_MAPA))
+    ruta += EXTENSION_MAPA;
+
+  try {
+    escribirMapa(datos.mapa, ruta.toStdString());
+    QMessageBox::information(ui.centralwidget->window(), TITULO_MAPA_GUARDADO,
+                             TEXTO_MAPA_GUARDADO + ruta);
+  } catch (const std::exception &error) {
+    QMessageBox::warning(ui.centralwidget->window(), TITULO_ERROR_GUARDAR,
+                         QString::fromUtf8(error.what()));
+  }
 }

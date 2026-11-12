@@ -10,6 +10,14 @@ set(CMAKE_AUTORCC ON)
 
 qt_standard_project_setup()
 
+include(FetchContent)
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG v3.4.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
+
 qt_add_executable(editor
     main.cpp
     ventanaeditor.ui
@@ -48,8 +56,6 @@ qt_add_executable(editor
 
 target_include_directories(editor PRIVATE headers mapa)
 
-#target_include_directories(editor PRIVATE header mapa)
-
 set_target_properties(editor PROPERTIES
     AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -62,6 +68,7 @@ target_link_libraries(editor
     PRIVATE
         Qt::Core
         Qt::Widgets
+        tomlplusplus::tomlplusplus
 )
 
 install(TARGETS editor RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
