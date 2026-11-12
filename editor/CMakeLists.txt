@@ -23,26 +23,32 @@ qt_add_executable(editor
     headers/controlador_mapas.h
     headers/vista_responsive.h
     headers/constantes.h
-    headers/mapa_editor.h
     headers/sprites.h
     headers/vista_zona.h
-    headers/validacion_mapas.h
     headers/catalogo_elementos.h
-    headers/elementos_mapa.h
+
+    mapa/validacion_mapas.h
+    mapa/mapa_editor.h
+    mapa/elementos_mapa.h
+    mapa/archivo_mapa.h
 
     implementaciones/catalogo_elementos.cpp
-    implementaciones/validacion_mapas.cpp
     implementaciones/sprites.cpp
     implementaciones/vista_zona.cpp
-    implementaciones/mapa_editor.cpp
     implementaciones/vista_responsive.cpp
     implementaciones/controlador_mapas.cpp
     implementaciones/controlador_inicio_editor.cpp
     implementaciones/navegador.cpp
     implementaciones/ventanaeditor.cpp
+
+    mapa/mapa_editor.cpp
+    mapa/validacion_mapas.cpp
+    mapa/archivo_mapa.cpp
 )
 
-target_include_directories(editor PRIVATE headers)
+target_include_directories(editor PRIVATE headers mapa)
+
+#target_include_directories(editor PRIVATE header mapa)
 
 set_target_properties(editor PROPERTIES
     AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}
