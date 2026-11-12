@@ -304,6 +304,8 @@ int main(int argc, char *argv[]) try {
           if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
             inventario.actualizar(jugador.inventory.front());
           }
+          personaje.poner_vida(jugador.life);
+          personaje.poner_energia(jugador.energy);
           continue;
         }
         presentes.insert(jugador.id);
@@ -316,6 +318,8 @@ int main(int argc, char *argv[]) try {
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        otro->poner_vida(jugador.life);
+        otro->poner_energia(jugador.energy);
         otro->agarrar(jugador.actualTool);
       }
       // Los que ya no vienen en el estado se fueron de la partida

@@ -11,10 +11,10 @@ const int ESCALA = 4;
 const int TILE = 16 * ESCALA;
 
 const SDL_Rect MODELOS_PUESTOS[4] = {
-    {80, 176, 160, 144},   // Pierre's
-    {240, 176, 112, 144},  // saloon
-    {0, 176, 80, 129},     // clínica
-    {352, 176, 144, 216},  // alcaldía
+    {240, 176, 112, 144},   // Pierre's
+    {80, 320, 144, 128},    // Clint
+    {192, 640, 192, 160},   // Robin
+    {256, 0, 144, 176},     // Marnie
 };
 }
 
@@ -22,10 +22,10 @@ Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, "assets/edificios/PelicanTown_Buildings.png"),
       vueltas(0) {
 
-    lista_puestos.push_back({1, 1, 0});
-    lista_puestos.push_back({12, 1, 1});
-    lista_puestos.push_back({20, 1, 2});
-    lista_puestos.push_back({26, 1, 3});
+    lista_puestos.push_back({10, 20, 0});
+    lista_puestos.push_back({30, 36, 1});
+    lista_puestos.push_back({29, 3, 2});
+    lista_puestos.push_back({52, 18, 3});
 }
 
 void Pueblo::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
