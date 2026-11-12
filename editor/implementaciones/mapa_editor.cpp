@@ -79,7 +79,7 @@ bool esUnico(ElementosGranja tipo) {
   case ElementosGranja::Cabania4:
   case ElementosGranja::Cabania5:
   case ElementosGranja::Cabania6:
-  case ElementosGranja::EntradaMina:
+  //case ElementosGranja::EntradaMina:
   case ElementosGranja::SalidaPueblo:
     return true;
   default:
@@ -104,6 +104,7 @@ bool esUnico(ElementosPueblo tipo) {
 	  case ElementosPueblo::CasaRobin:
 	  case ElementosPueblo::CentroComunitario:
 	  case ElementosPueblo::SalidaGranja:
+	  case ElementosPueblo::EntradaMina:
 	    return true;
 	  default:
 	    return false;

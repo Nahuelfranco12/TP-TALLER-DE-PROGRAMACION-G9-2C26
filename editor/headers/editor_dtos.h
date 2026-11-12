@@ -29,7 +29,7 @@ enum class ElementosGranja {
   Tocon,
   BuzonRojo,
   CartelVacio,
-  EntradaMina,
+  //EntradaMina,
   SalidaPueblo
 };
 
@@ -43,6 +43,7 @@ enum class ElementosPueblo {
   NpcRobin,
   CentroComunitario,
   SalidaGranja,
+  EntradaMina,
   FarolNaranja,
   FarolAzul,
   BancoMadera,
