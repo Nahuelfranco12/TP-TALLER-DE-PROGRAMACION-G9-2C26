@@ -167,6 +167,8 @@ endif()
 # ---------------
 
 if(TALLER_TESTS)
+    enable_testing()
+
     # Let's use google test
     include(FetchContent)
     FetchContent_Declare(

@@ -1,3 +1,10 @@
 target_sources(taller_tests
     PRIVATE
+    foo.cpp
+    game/position_test.cpp
+    game/sector_test.cpp
+    game/inventory_test.cpp
+    game/entities_world_test.cpp
+    game/commands_test.cpp
+    game/cavern_sector_test.cpp
 )

@@ -21,6 +21,9 @@ target_sources(taller_game
     commands/spawn_animal_command.cpp
     commands/plant_command.cpp
     commands/water_command.cpp
+    commands/till_command.cpp
+    commands/gift_offer_command.cpp
+    commands/gift_response_command.cpp
     sectors/sector.cpp
     sectors/cavern_sector.cpp
 )
