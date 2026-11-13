@@ -11,8 +11,6 @@
 #define ANCHO_DISENIO 1366
 #define ALTO_DISENIO 768
 
-#define TAMANIO_TILE_ORIGINAL 16
-
 #define NOMBRE_PREDETERMINADO_AYUDA "Nombre del mundo"
 
 // Rutas
@@ -25,10 +23,8 @@
 #define RUTA_ARBOL2 ":/Mapas/arbol2.png"
 #define RUTA_AGUA ":/Mapas/naturaleza.png"
 #define RUTA_CABANIAS ":/Mapas/cabanias.png"
-#define RUTA_CASAS ":/Mapas/casas.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
 #define RUTA_CASA_NPC ":/Mapas/casas_npcs.png"
-#define SIN_ASSET ""
 #define RUTA_MARNIE ":/Npcs/marnie.png"
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
@@ -81,8 +77,6 @@
   { 144, 48, 16, 16 }
 #define RECORTE_PASTO                                                          \
   { 64, 144, 16, 16 }
-#define RECORTE_TIERRA                                                         \
-  { 16, 64, 16, 16 }
 #define RECORTE_AGUA                                                           \
   { 0, 80, 64, 64 }
 #define RECORTE_ARBUSTO_REDONDO                                                \
@@ -128,7 +122,6 @@
 
 // Textos Terrenos
 #define TEXTO_PASTO "Pasto"
-#define TEXTO_TIERRA "Tierra"
 #define TEXTO_PISO "Piso"
 #define TEXTO_PARED "Pared"
 #define TEXTO_PISO_PUEBLO "Piso"
@@ -141,9 +134,6 @@
 #define TEXTO_CABANIA5 "Cabaña 5"
 #define TEXTO_ARBOL1 "Arbol1"
 #define TEXTO_ARBOL2 "Arbol2"
-#define TEXTO_ARBOL3 "Arbol3"
-#define TEXTO_ARBOL4 "Arbol4"
-#define TEXTO_ARBOL5 "Arbol5"
 #define TEXTO_PIEDRA "Piedra"
 #define TEXTO_AGUA "Agua"
 #define TEXTO_ARBUSTO_REDONDO "Arbusto redondo"
@@ -170,8 +160,8 @@
 #define TEXTO_BANCO_MADERA "Banco"
 #define TEXTO_BUZON_GRIS "Buzón gris"
 #define TEXTO_BUZON_AZUL "Buzón azul"
-#define TEXTO_CASA_CHICA "Casa chica"
-#define TEXTO_CASA_MEDIANA "Casa mediana"
+//#define TEXTO_CASA_CHICA "Casa chica"
+//#define TEXTO_CASA_MEDIANA "Casa mediana"
 
 // Grilla
 #define TAMANIO_CELDA_MAPA 24
@@ -180,8 +170,8 @@
 
 // Validaciones para que se pueda exportar el archivo
 #define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
-#define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
-#define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
+//#define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
+//#define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
 
 // estas son de interfaz
 #define TITULO_GUARDAR "Guardar mapa"

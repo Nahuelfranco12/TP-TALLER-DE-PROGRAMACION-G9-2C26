@@ -194,8 +194,7 @@ void ControladorMapas::exportar() {
                          lineas.join('\n'));
     return;
   }
-  QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
-                           VALIDACION_TEXTO_MAPA_VALIDO);
+  //QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO, VALIDACION_TEXTO_MAPA_VALIDO);
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
                                               QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
