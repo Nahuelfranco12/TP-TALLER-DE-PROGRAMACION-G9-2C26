@@ -13,8 +13,8 @@ class VistaZona;
 
 class ControladorMapas : public ControladorPaginaEditor {
 public:
-  ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
-                   DatosEditor &datos, QObject *parent = nullptr);
+	ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,Navegador &navegador, DatosEditor &datos,
+		QObject *parent = nullptr);
   void limpiarPagina() override;
 
 private:

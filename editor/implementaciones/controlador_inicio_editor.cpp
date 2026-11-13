@@ -11,17 +11,18 @@
 #include "archivo_mapa.h"
 
 
-ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
+ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
+                                                 Ui::VentanaEditor &ui,
                                                  Navegador &navegador,
                                                  DatosEditor &datos,
                                                  QObject *parent)
-    : ControladorPaginaEditor(ui, navegador, parent), datos(datos) {
+    : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   connect(ui.botonEditorCrearMapa, &QPushButton::clicked, this,
           [this]() { crearMapa(); });
   connect(ui.botonEditorMapa, &QPushButton::clicked, this,
           [this]() { editarMapa(); });
   connect(ui.botonEditorSalir, &QPushButton::clicked, this,
-          [this]() { this->ui.centralwidget->window()->close(); });
+          [this]() { this->ventana.close(); });
 }
 
 void ControladorInicioEditor::crearMapa() {
@@ -30,8 +31,8 @@ void ControladorInicioEditor::crearMapa() {
 }
 
 void ControladorInicioEditor::editarMapa() {
-  QString ruta = QFileDialog::getOpenFileName(
-      ui.centralwidget->window(), TITULO_ABRIR, QDir::homePath(), FILTRO_MAPAS);
+  QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
+                                              QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   try {
@@ -39,7 +40,7 @@ void ControladorInicioEditor::editarMapa() {
     datos = DatosEditor{ruta, std::move(mapa)};
     navegador.irA(ui.pageMapas);
   } catch (const std::exception &error) {
-    QMessageBox::warning(ui.centralwidget->window(), TITULO_ERROR_CARGAR,
+    QMessageBox::warning(&ventana, TITULO_ERROR_CARGAR,
                          QString::fromUtf8(error.what()));
   }
 }

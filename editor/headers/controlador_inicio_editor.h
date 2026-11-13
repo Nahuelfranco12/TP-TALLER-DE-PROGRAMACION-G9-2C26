@@ -3,10 +3,12 @@
 
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
+//#include <qwidget.h>
+#include <QWidget>
 
 class ControladorInicioEditor : public ControladorPaginaEditor {
 public:
-  ControladorInicioEditor(Ui::VentanaEditor &ui, Navegador &navegador,
+  ControladorInicioEditor(QWidget &ventana, Ui::VentanaEditor &ui, Navegador &navegador,
                           DatosEditor &datos, QObject *parent = nullptr);
   void limpiarPagina() override;
 

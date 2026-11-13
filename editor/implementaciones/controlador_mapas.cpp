@@ -19,9 +19,9 @@
 #include "archivo_mapa.h"
 #include "constantes_mapa.h"
 
-ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
-                                   DatosEditor &datos, QObject *parent)
-    : ControladorPaginaEditor(ui, navegador, parent), datos(datos) {
+ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui, Navegador &navegador, DatosEditor &datos,
+                                   QObject *parent)
+    : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   ui.paletaAssets->setIconSize(QSize(TAMANIO_ICONO, TAMANIO_ICONO));
   ui.valorAnchoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
   ui.valorAltoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
@@ -190,17 +190,14 @@ void ControladorMapas::exportar() {
     QStringList lineas;
     for (const auto &error : errores)
       lineas.append(QString::fromStdString(error));
-    QMessageBox::warning(ui.centralwidget->window(),
-                         VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
+    QMessageBox::warning(&ventana, VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
                          lineas.join('\n'));
     return;
   }
-  QMessageBox::information(ui.centralwidget->window(),
-                           VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
+  QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
                            VALIDACION_TEXTO_MAPA_VALIDO);
-  QString ruta = QFileDialog::getSaveFileName(ui.centralwidget->window(),
-                                              TITULO_GUARDAR, QDir::homePath(),
-                                              FILTRO_MAPAS);
+  QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
+                                              QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   if (!ruta.endsWith(EXTENSION_MAPA))
@@ -208,10 +205,10 @@ void ControladorMapas::exportar() {
 
   try {
     escribirMapa(datos.mapa, ruta.toStdString());
-    QMessageBox::information(ui.centralwidget->window(), TITULO_MAPA_GUARDADO,
+    QMessageBox::information(&ventana, TITULO_MAPA_GUARDADO,
                              TEXTO_MAPA_GUARDADO + ruta);
   } catch (const std::exception &error) {
-    QMessageBox::warning(ui.centralwidget->window(), TITULO_ERROR_GUARDAR,
+    QMessageBox::warning(&ventana, TITULO_ERROR_GUARDAR,
                          QString::fromUtf8(error.what()));
   }
 }

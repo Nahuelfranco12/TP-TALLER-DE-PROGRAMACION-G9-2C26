@@ -20,8 +20,8 @@ VentanaEditor::VentanaEditor(QWidget *parent)
                         ui->centralwidget));
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
-  new ControladorInicioEditor(*ui, *navegador, datos, this);
-  new ControladorMapas(*ui, *navegador, datos, this);
+  new ControladorInicioEditor(*this, *ui, *navegador, datos, this);
+  new ControladorMapas(*this, *ui, *navegador, datos, this);
 }
 
 VentanaEditor::~VentanaEditor() { delete ui; }
