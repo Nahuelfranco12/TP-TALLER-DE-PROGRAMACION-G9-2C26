@@ -198,29 +198,33 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) client.send_gift_response(true);
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) client.send_gift_response(false);
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
-        int frente_x = personaje.obtener_tile_x();
-        int frente_y = personaje.obtener_tile_y();
+      int frente_x = personaje.obtener_tile_x();
+      int frente_y = personaje.obtener_tile_y();
 
-        DirectionDto dir = DirectionDto::Up;
-        switch (personaje.obtener_direccion()) {
-        case ARRIBA:
-          dir = DirectionDto::Up;
-          frente_y--;
-          break;
-        case ABAJO:
-          dir = DirectionDto::Down;
-          frente_y++;
-          break;
-        case IZQUIERDA:
-          dir = DirectionDto::Left;
-          frente_x--;
-          break;
-        case DERECHA:
-          dir = DirectionDto::Right;
-          frente_x++;
-          break;
-        }
+      DirectionDto dir = DirectionDto::Up;
+      switch (personaje.obtener_direccion()) {
+      case ARRIBA:
+        dir = DirectionDto::Up;
+        frente_y--;
+        break;
+      case ABAJO:
+        dir = DirectionDto::Down;
+        frente_y++;
+        break;
+      case IZQUIERDA:
+        dir = DirectionDto::Left;
+        frente_x--;
+        break;
+      case DERECHA:
+        dir = DirectionDto::Right;
+        frente_x++;
+        break;
+      }
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c && evento.key.repeat == 0)
+        client.send_cheat_water(dir);
+
+
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;
         CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
 

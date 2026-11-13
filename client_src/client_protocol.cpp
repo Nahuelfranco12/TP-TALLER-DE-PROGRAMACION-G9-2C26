@@ -187,8 +187,11 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     EntityDto entity;
     entity.type = static_cast<EntityTypeDto>(protocol.receive_u8());
     entity.ready = protocol.receive_u8() == 1;
+
     entity.crop.type = static_cast<CropTypeDto>(protocol.receive_u8());
     entity.crop.growth = static_cast<CropGrowthDto>(protocol.receive_u8()); 
+    entity.crop.needsWater = protocol.receive_u8();
+    
     state.entities[position] = entity;
   }
 
