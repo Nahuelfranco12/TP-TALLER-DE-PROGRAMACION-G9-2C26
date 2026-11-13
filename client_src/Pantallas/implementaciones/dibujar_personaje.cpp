@@ -1,5 +1,6 @@
 #include "dibujar_personaje.h"
 #include "constantes_pantallas.h"
+#include <QColor>
 #include <QImage>
 #include <QPainter>
 

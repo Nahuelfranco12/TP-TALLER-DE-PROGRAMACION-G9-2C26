@@ -38,6 +38,7 @@ target_sources(taller_client
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
+    Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
     PUBLIC

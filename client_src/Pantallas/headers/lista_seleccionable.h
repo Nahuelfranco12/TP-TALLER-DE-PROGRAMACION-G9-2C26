@@ -4,8 +4,11 @@
 #include "tarjeta_item.h"
 #include <QList>
 #include <QObject>
-#include <QWidget>
+#include <QString>
 #include <functional>
+
+class QWidget;
+class TarjetaItem;
 
 class ListaSeleccionable : public QObject {
   Q_OBJECT

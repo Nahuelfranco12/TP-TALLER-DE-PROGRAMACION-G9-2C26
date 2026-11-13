@@ -1,8 +1,6 @@
 #include "controlador_retomar_partida.h"
 #include "constantes_pantallas.h"
-#include "dtos_pantallas.h"
 #include "ui_pantalla.h"
-
 
 ControladorRetomarPartida::ControladorRetomarPartida(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,

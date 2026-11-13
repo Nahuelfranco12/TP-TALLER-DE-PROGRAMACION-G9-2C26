@@ -2,7 +2,6 @@
 #define SERVICIO_LOBBY_H_
 
 #include "dtos_pantallas.h"
-#include "partidas_estaticas.h"
 #include <QList>
 #include <QString>
 

@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include <QStack>
-#include <QStackedWidget>
+#include <QWidget>
+
+class QStackedWidget;
 
 class Navegador : public QObject {
   Q_OBJECT

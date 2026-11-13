@@ -8,6 +8,7 @@
 #include "navegador.h"
 #include "ui_pantalla.h"
 #include "vista_responsive.h"
+#include "servicio_lobby.h"
 
 Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Pantalla) {

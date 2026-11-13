@@ -1,4 +1,5 @@
 #include "lista_seleccionable.h"
+#include "tarjeta_item.h"
 #include <QVBoxLayout>
 
 ListaSeleccionable::ListaSeleccionable(QWidget *contenedor, QObject *parent)

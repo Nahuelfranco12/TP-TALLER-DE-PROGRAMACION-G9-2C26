@@ -4,7 +4,6 @@
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
-#include <QList>
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:

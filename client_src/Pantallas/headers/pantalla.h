@@ -3,8 +3,9 @@
 
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
-#include "servicio_lobby.h"
 #include <QMainWindow>
+
+class ServicioLobby;
 
 namespace Ui {
 class Pantalla;

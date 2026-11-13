@@ -1,6 +1,8 @@
 #include "controlador_customizar_personaje.h"
 #include "constantes_pantallas.h"
 #include "ui_pantalla.h"
+#include <QLabel>
+#include <QLineEdit>
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,

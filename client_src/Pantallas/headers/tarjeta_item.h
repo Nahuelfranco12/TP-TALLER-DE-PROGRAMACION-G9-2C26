@@ -2,7 +2,6 @@
 #define TARJETA_ITEM_H_
 
 #include <QFrame>
-#include <QPixmap>
 #include <QString>
 
 #include "dtos_pantallas.h"

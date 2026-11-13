@@ -1,5 +1,6 @@
 #include "servicio_lobby_red.h"
 #include "constantes_pantallas.h"
+#include "partidas_estaticas.h"
 
 #include <QString>
 #include <exception>

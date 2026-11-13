@@ -1,5 +1,6 @@
 #include "controlador_unirse_partida.h"
 #include "ui_pantalla.h"
+#include <QLineEdit>
 
 ControladorUnirsePartida::ControladorUnirsePartida(Ui::Pantalla &ui,
                                                    Navegador &navegador,
