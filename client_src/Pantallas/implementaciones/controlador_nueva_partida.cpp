@@ -1,5 +1,5 @@
 #include "controlador_nueva_partida.h"
-#include "constantes.h"
+#include "constantes_pantallas.h"
 #include "ui_pantalla.h"
 
 ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,

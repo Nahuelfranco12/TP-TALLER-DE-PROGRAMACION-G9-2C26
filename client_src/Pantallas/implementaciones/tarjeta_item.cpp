@@ -70,7 +70,10 @@ void TarjetaItem::mousePressEvent(QMouseEvent *event) {
 }
 
 void TarjetaItem::setSeleccionada(bool estado) {
-  setStyleSheet(estado ? ESTILO_SELECCIONADA : ESTILO_NO_SELECCIONADA);
+  if (estado)
+    setStyleSheet(ESTILO_SELECCIONADA);
+  else
+    setStyleSheet(ESTILO_NO_SELECCIONADA);
 }
 
 QString TarjetaItem::getId() const { return m_id; }

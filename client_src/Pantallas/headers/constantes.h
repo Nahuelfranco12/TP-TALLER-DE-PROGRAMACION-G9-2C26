@@ -1,5 +1,5 @@
-#ifndef CONSTANTES_H
-#define CONSTANTES_H
+#ifndef CONSTANTES_PANTALLAS_H
+#define CONSTANTES_PANTALLAS_H
 
 #define BASE_COORDENADAS 1
 
@@ -51,4 +51,4 @@
 #define TEXTO_SINGLEPLAYER "Singleplayer"
 #define TEXTO_SELECCIONAR "Seleccionar"
 
-#endif // CONSTANTES_H
+#endif // CONSTANTES_PANTALLAS_H

@@ -1,5 +1,5 @@
 #include "controlador_customizar_personaje.h"
-#include "constantes.h"
+#include "constantes_pantallas.h"
 #include "ui_pantalla.h"
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(

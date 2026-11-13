@@ -28,7 +28,9 @@ bool ListaSeleccionable::haySeleccion() const {
 }
 
 QString ListaSeleccionable::seleccionado() const {
-  return haySeleccion() ? tarjetaSeleccionada->getId() : QString();
+  if (!haySeleccion())
+    return QString();
+  return tarjetaSeleccionada->getId();
 }
 
 void ListaSeleccionable::limpiar() {

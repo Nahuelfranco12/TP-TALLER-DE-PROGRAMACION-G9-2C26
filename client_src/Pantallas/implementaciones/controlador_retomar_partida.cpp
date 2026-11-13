@@ -1,5 +1,5 @@
 #include "controlador_retomar_partida.h"
-#include "constantes.h"
+#include "constantes_pantallas.h"
 #include "dtos_pantallas.h"
 #include "ui_pantalla.h"
 
@@ -39,8 +39,9 @@ void ControladorRetomarPartida::actualizarBotonAvanzar() {
 void ControladorRetomarPartida::cargarPartidas() {
   QList<DatosTarjeta> tarjetas;
   for (const PartidaGuardada &partida : servicio.partidasGuardadas()) {
-    QString modo =
-        partida.esMultiplayer ? TEXTO_MULTIPLAYER : TEXTO_SINGLEPLAYER;
+    QString modo = TEXTO_SINGLEPLAYER;
+    if (partida.esMultiplayer)
+      modo = TEXTO_MULTIPLAYER;
     tarjetas.append(DatosTarjeta{
         partida.id, dibujante.dibujar(partida.personaje, ESCALA_TARJETA),
         partida.nombrePartida, partida.personaje.nombre, modo,

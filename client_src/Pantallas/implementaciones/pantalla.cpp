@@ -1,5 +1,5 @@
 #include "pantalla.h"
-#include "constantes.h"
+#include "constantes_pantallas.h"
 #include "controlador_customizar_personaje.h"
 #include "controlador_menu_principal.h"
 #include "controlador_nueva_partida.h"
