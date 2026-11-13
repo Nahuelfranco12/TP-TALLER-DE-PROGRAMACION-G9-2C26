@@ -1,5 +1,5 @@
-#ifndef DIBUJAR_PERSONAJE_H
-#define DIBUJAR_PERSONAJE_H
+#ifndef DIBUJAR_PERSONAJE_H_
+#define DIBUJAR_PERSONAJE_H_
 
 #include "dtos_pantallas.h"
 #include <QList>
@@ -34,4 +34,4 @@ private:
   QPixmap hojaRemera;
 };
 
-#endif // DIBUJAR_PERSONAJE_H
+#endif // DIBUJAR_PERSONAJE_H_

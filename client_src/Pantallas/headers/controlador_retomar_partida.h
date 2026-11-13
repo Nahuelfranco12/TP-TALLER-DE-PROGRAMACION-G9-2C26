@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_RETOMAR_PARTIDA_H
-#define CONTROLADOR_RETOMAR_PARTIDA_H
+#ifndef CONTROLADOR_RETOMAR_PARTIDA_H_
+#define CONTROLADOR_RETOMAR_PARTIDA_H_
 
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
@@ -23,4 +23,4 @@ private:
   void cargarPartidas();
 };
 
-#endif // CONTROLADOR_RETOMAR_PARTIDA_H
+#endif // CONTROLADOR_RETOMAR_PARTIDA_H_

@@ -1,5 +1,5 @@
-#ifndef LISTA_SELECCIONABLE_H
-#define LISTA_SELECCIONABLE_H
+#ifndef LISTA_SELECCIONABLE_H_
+#define LISTA_SELECCIONABLE_H_
 
 #include "tarjeta_item.h"
 #include <QList>
@@ -30,4 +30,4 @@ private:
   void seleccionar(TarjetaItem *tarjeta);
 };
 
-#endif // LISTA_SELECCIONABLE_H
+#endif // LISTA_SELECCIONABLE_H_

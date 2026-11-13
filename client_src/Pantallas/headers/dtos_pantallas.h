@@ -1,5 +1,5 @@
-#ifndef DTOS_PANTALLAS_H
-#define DTOS_PANTALLAS_H
+#ifndef DTOS_PANTALLAS_H_
+#define DTOS_PANTALLAS_H_
 
 #include <QPixmap>
 #include <QString>
@@ -54,4 +54,4 @@ struct PartidaGuardada {
   bool esMultiplayer = false;
 };
 
-#endif // DTOS_PANTALLAS_H
+#endif // DTOS_PANTALLAS_H_

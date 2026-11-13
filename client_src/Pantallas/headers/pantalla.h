@@ -1,5 +1,5 @@
-#ifndef PANTALLA_H
-#define PANTALLA_H
+#ifndef PANTALLA_H_
+#define PANTALLA_H_
 
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
@@ -22,4 +22,4 @@ private:
   DatosPartida datosPartida;
   DibujarPersonaje dibujante;
 };
-#endif // PANTALLA_H
+#endif // PANTALLA_H_

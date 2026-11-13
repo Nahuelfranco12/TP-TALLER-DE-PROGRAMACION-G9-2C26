@@ -1,6 +1,7 @@
 #ifndef CONTROLADOR_PAGINA_H
 #define CONTROLADOR_PAGINA_H
 
+#include "constantes_pantallas.h"
 #include "navegador.h"
 #include "servicio_lobby.h"
 #include <QApplication>
@@ -30,7 +31,7 @@ protected:
       QApplication::quit();
       return;
     }
-    QMessageBox::warning(botonJugar->window(), "No se pudo entrar",
+    QMessageBox::warning(botonJugar->window(), TITULO_ERROR_JUGAR,
                          resultado.mensajeError);
     actualizarBotonAvanzar();
   }

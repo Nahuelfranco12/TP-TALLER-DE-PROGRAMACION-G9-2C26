@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
-#define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
+#ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
+#define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
 
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
@@ -32,4 +32,4 @@ private:
   ServicioLobby &servicio;
 };
 
-#endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
+#endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_

@@ -1,13 +1,8 @@
 #include "servicio_lobby_red.h"
+#include "constantes_pantallas.h"
 
 #include <QString>
 #include <exception>
-
-namespace {
-const char *ERROR_CODIGO = "No existe una partida con ese código.";
-const char *ERROR_NO_DISPONIBLE = "Esta opción todavía no está disponible.";
-const char *ERROR_CONEXION = "Se perdió la conexión con el servidor: ";
-} // namespace
 
 ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 
@@ -29,7 +24,7 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
       break;
     case ModoPartida::Retomar:
     case ModoPartida::Ninguno:
-      return ResultadoLobby{false, "", ERROR_NO_DISPONIBLE};
+      return ResultadoLobby{false, QString(), ERROR_LOBBY_NO_DISPONIBLE};
     }
     PlayerOutfitDto outfit{
         static_cast<PlayerHatsDto>(datos.personaje.ropa.gorro),
@@ -38,14 +33,14 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
         static_cast<PlayerPantsDto>(datos.personaje.ropa.pantalon)};
     if (!client.join_match(codigoAUnirse, datos.personaje.nombre.toStdString(),
                            outfit))
-      return ResultadoLobby{false, "", ERROR_CODIGO};
+      return ResultadoLobby{false, QString(), ERROR_LOBBY_CODIGO};
 
     enPartida = true;
     codigoPartida = codigoAUnirse;
     personaje = datos.personaje;
     return ResultadoLobby{true, QString::fromStdString(codigoAUnirse), ""};
   } catch (const std::exception &e) {
-    return ResultadoLobby{false, "", QString(ERROR_CONEXION) + e.what()};
+    return ResultadoLobby{false, "", QString(ERROR_LOBBY_CONEXION) + e.what()};
   }
 }
 

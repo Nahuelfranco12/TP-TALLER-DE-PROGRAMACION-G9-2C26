@@ -15,7 +15,7 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
   ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
   ui->verticalLayout->removeWidget(ui->stackedWidget);
   ui->stackedWidget->setParent(nullptr);
-  ui->verticalLayout->setContentsMargins(0, 0, 0, 0);
+  ui->verticalLayout->setContentsMargins(QMargins());
   ui->verticalLayout->addWidget(
       new VistaEscalada(ui->stackedWidget, QSize(ANCHO_DISENIO, ALTO_DISENIO),
                         ui->centralwidget));

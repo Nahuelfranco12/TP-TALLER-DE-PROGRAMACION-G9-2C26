@@ -1,5 +1,5 @@
-#ifndef CONSTANTES_QT_H
-#define CONSTANTES_QT_H
+#ifndef CONSTANTES_QT_H_
+#define CONSTANTES_QT_H_
 
 #define TITULO_ABRIR "Abrir mapa"
 #define FILTRO_MAPAS "Mapas (*.toml)"
@@ -182,4 +182,4 @@
 // sobre editar mapas
 #define TITULO_ERROR_CARGAR "No se pudo abrir el mapa"
 
-#endif // CONSTANTES_QT_H
+#endif // CONSTANTES_QT_H_

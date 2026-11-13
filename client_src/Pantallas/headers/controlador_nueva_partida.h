@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_NUEVA_PARTIDA_H
-#define CONTROLADOR_NUEVA_PARTIDA_H
+#ifndef CONTROLADOR_NUEVA_PARTIDA_H_
+#define CONTROLADOR_NUEVA_PARTIDA_H_
 
 #include "controlador_pagina.h"
 #include "dtos_pantallas.h"
@@ -20,4 +20,4 @@ private:
   void cargarMundos();
 };
 
-#endif // CONTROLADOR_NUEVA_PARTIDA_H
+#endif // CONTROLADOR_NUEVA_PARTIDA_H_

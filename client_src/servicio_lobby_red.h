@@ -1,5 +1,5 @@
-#ifndef SERVICIO_LOBBY_RED_H
-#define SERVICIO_LOBBY_RED_H
+#ifndef SERVICIO_LOBBY_RED_H_
+#define SERVICIO_LOBBY_RED_H_
 
 #include <string>
 
@@ -26,4 +26,4 @@ private:
   DatosPersonaje personaje;
 };
 
-#endif // SERVICIO_LOBBY_RED_H
+#endif // SERVICIO_LOBBY_RED_H_

@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_MENU_PRINCIPAL_H
-#define CONTROLADOR_MENU_PRINCIPAL_H
+#ifndef CONTROLADOR_MENU_PRINCIPAL_H_
+#define CONTROLADOR_MENU_PRINCIPAL_H_
 
 #include "controlador_pagina.h"
 
@@ -11,4 +11,4 @@ public:
   void actualizarBotonAvanzar() override;
 };
 
-#endif // CONTROLADOR_MENU_PRINCIPAL_H
+#endif // CONTROLADOR_MENU_PRINCIPAL_H_

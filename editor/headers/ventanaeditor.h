@@ -1,5 +1,5 @@
-#ifndef VENTANAEDITOR_H
-#define VENTANAEDITOR_H
+#ifndef VENTANAEDITOR_H_
+#define VENTANAEDITOR_H_
 
 #include "datos_editor.h"
 #include <QMainWindow>
@@ -19,4 +19,4 @@ private:
   Ui::VentanaEditor *ui;
   DatosEditor datos;
 };
-#endif // VENTANAEDITOR_H
+#endif // VENTANAEDITOR_H_

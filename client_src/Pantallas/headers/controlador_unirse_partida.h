@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_UNIRSE_PARTIDA_H
-#define CONTROLADOR_UNIRSE_PARTIDA_H
+#ifndef CONTROLADOR_UNIRSE_PARTIDA_H_
+#define CONTROLADOR_UNIRSE_PARTIDA_H_
 
 #include "controlador_pagina.h"
 #include "dtos_pantallas.h"
@@ -16,4 +16,4 @@ private:
   DatosPartida &datosPartida;
 };
 
-#endif // CONTROLADOR_UNIRSE_PARTIDA_H
+#endif // CONTROLADOR_UNIRSE_PARTIDA_H_
