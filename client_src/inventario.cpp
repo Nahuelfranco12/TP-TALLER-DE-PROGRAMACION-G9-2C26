@@ -32,7 +32,7 @@ Inventario::Inventario(Renderer &renderer)
   }
 
   iconos_herramienta.emplace_back(renderer, "assets/inventario/pickaxe.png");
-  iconos_herramienta.emplace_back(renderer, "assets/inventario/basket.png");
+  iconos_herramienta.emplace_back(renderer, "assets/inventario/watering_can.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/shovel.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/sword.png");
 
@@ -120,6 +120,41 @@ void Inventario::dibujar_numero(Renderer &renderer, int numero,
   }
 }
 
+void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad, const Rect &lugar) {
+  SDL2pp::Color color(0, 0, 0, 255);
+  switch (calidad) {
+    case CropQualityDto::GOOD:
+      color = SDL2pp::Color(205, 127, 50, 255);
+      break;
+    case CropQualityDto::EXCELENT:
+      color = SDL2pp::Color(200, 200, 215, 255);
+      break;
+    case CropQualityDto::INCREDIBLE:
+      color = SDL2pp::Color(240, 200, 40, 255);
+      break;
+    case CropQualityDto::PERFECT:
+      color = SDL2pp::Color(170, 90, 220, 255);
+      break;
+    default:
+      return;
+  }
+
+  // Estrellita
+  int x = lugar.x + 3;
+  int y = lugar.y + 3;
+
+  // Borde negro
+  renderer.SetDrawColor(0, 0, 0, 255);
+  renderer.FillRect(Rect(x - 1, y + 2, 10, 4));
+  renderer.FillRect(Rect(x + 2, y - 1, 4, 10));
+
+  renderer.SetDrawColor(color);
+  renderer.FillRect(Rect(x, y + 3, 8, 2));
+  renderer.FillRect(Rect(x + 3, y, 2, 8));
+  renderer.FillRect(Rect(x + 2, y + 2, 4, 4));
+
+}
+
 void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casillero,
                               const Rect &lugar) {
   switch (casillero.item) {
@@ -171,6 +206,7 @@ void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casill
   default:
     break;
   }
+  dibujar_calidad(renderer, casillero.quality, lugar);
   dibujar_numero(renderer, casillero.count, lugar);
 }
 
@@ -226,4 +262,8 @@ void Inventario::actualizar(const InventoryDto &inventario) {
       break;
     casilleros.push_back(slot);
   }
+}
+
+void Inventario::dibujar_regalo(Renderer &renderer, const InventorySlotDto &regalo, const Rect &lugar) {
+  dibujar_item(renderer, regalo, lugar);
 }

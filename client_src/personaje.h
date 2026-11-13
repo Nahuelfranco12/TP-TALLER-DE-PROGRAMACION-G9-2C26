@@ -39,11 +39,16 @@ private:
 
   ToolTypeDto en_la_mano;
 
+  double vida;
+  double energia;
+
   void dibujar_capas(SDL2pp::Renderer &renderer, int x, int y, int lado,
                      int columna, int fila_cuerpo, Direccion direccion,
                      int rebote);
 
   void dibujar_herramienta(SDL2pp::Renderer &renderer, int x, int y, int lado);
+
+  void dibujar_barra(SDL2pp::Renderer &renderer, int x, int y, double valor, const SDL2pp::Color &color) const;
 
 public:
   // Cargo las texturas
@@ -59,6 +64,8 @@ public:
 
   void picar();
   void agarrar(ToolTypeDto herramienta);
+  void poner_vida(double nueva_vida);
+  void poner_energia(double nueva_energia);
   bool esta_picando() const { return vueltas_picando > 0; }
 
   // Dónde está (en tiles)

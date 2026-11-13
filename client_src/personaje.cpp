@@ -1,6 +1,7 @@
 #include "personaje.h"
 
 #include <SDL2/SDL.h>
+#include <algorithm>
 
 using SDL2pp::NullOpt;
 using SDL2pp::Rect;
@@ -31,6 +32,13 @@ const long VUELTAS_POR_PASO = 16;
 const int PASOS_ANIMACION[4] = {0, 1, 0, 2}; // columnas
 const long VUELTAS_POR_CUADRO = 9;           // 9 x 16 ms = 0.15
 
+// Vida y energía
+const double VALOR_MAXIMO = 100.0;
+const int ANCHO_BARRA = 48;
+const int ALTO_BARRA = 6;
+const SDL2pp::Color AMARILLO = {240, 200, 40, 255};
+const SDL2pp::Color VERDE = {70, 190, 70, 255};
+
 const int CUADROS_PICAR = 5;
 const long VUELTAS_POR_CUADRO_PICAR = 5;
 const long DURACION_PICAR = CUADROS_PICAR * VUELTAS_POR_CUADRO_PICAR;
@@ -49,7 +57,7 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
       sombreros(renderer, "assets/personaje/StardewValley_Character_Hats.png"),
       pantalon(0), remera(5), pelo(3), sombrero(2), color_pantalon(0),
       color_pelo(1), tile_x(0), tile_y(0), mirando(ABAJO), vueltas_caminando(0),
-      vueltas_restantes_paso(0), vueltas_picando(0) {
+      vueltas_restantes_paso(0), vueltas_picando(0), en_la_mano(ToolTypeDto::PICKAXE), vida(VALOR_MAXIMO), energia(VALOR_MAXIMO) {
   // Colores iniciales
   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
                          COLORES[color_pantalon][2]);
@@ -59,7 +67,7 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
   herramientas.emplace_back(renderer, "assets/inventario/sword.png");
   herramientas.emplace_back(renderer, "assets/inventario/pickaxe.png");
   herramientas.emplace_back(renderer, "assets/inventario/shovel.png");
-  herramientas.emplace_back(renderer, "assets/inventario/basket.png");
+  herramientas.emplace_back(renderer, "assets/inventario/watering_can.png");
 }
 
 void Personaje::cambiar_color_pantalon() {
@@ -129,6 +137,14 @@ void Personaje::agarrar(ToolTypeDto herramienta) {
   en_la_mano = herramienta;
 }
 
+void Personaje::poner_vida(double nueva_vida) {
+  vida = nueva_vida;
+}
+
+void Personaje::poner_energia(double nueva_energia) {
+  energia = nueva_energia;
+}
+
 int Personaje::obtener_tile_x() const { return tile_x; }
 
 Direccion Personaje::obtener_direccion() const { return mirando; }
@@ -164,6 +180,12 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   int y = tile_y * TILE - TILE - camara_y;
   dibujar_capas(renderer, x, y, TILE, columna, fila_cuerpo, mirando, rebote);
   dibujar_herramienta(renderer, x, y, TILE);
+
+  int barra_x = x + TILE / 2 - ANCHO_BARRA / 2;
+  int barra_vida_y = y - 2 * ALTO_BARRA - 4;
+  int barra_energia_y = y - ALTO_BARRA -2;
+  dibujar_barra(renderer, barra_x, barra_vida_y, vida, AMARILLO);
+  dibujar_barra(renderer, barra_x, barra_energia_y, energia, VERDE);
 }
 
 void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
@@ -264,4 +286,23 @@ void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) 
   }
 
   renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt, flip);
+}
+
+void Personaje::dibujar_barra(Renderer &renderer, int barra_x, int barra_y, double valor, const SDL2pp::Color &color) const {
+  int lleno = static_cast<int>(ANCHO_BARRA * valor / VALOR_MAXIMO);
+  lleno = std::clamp(lleno, 0, ANCHO_BARRA);
+
+  // Borde negro
+  renderer.SetDrawColor(0, 0, 0, 255);
+  renderer.FillRect(Rect(barra_x - 1, barra_y - 1, ANCHO_BARRA + 2, ALTO_BARRA + 2));
+
+  // Fondo gris
+  renderer.SetDrawColor(70, 70, 70, 255);
+  renderer.FillRect(Rect(barra_x, barra_y, ANCHO_BARRA, ALTO_BARRA));
+
+  // Lo que queda de vida
+  if (lleno > 0) {
+    renderer.SetDrawColor(color);
+    renderer.FillRect(Rect(barra_x, barra_y, lleno, ALTO_BARRA));
+  }
 }

@@ -25,6 +25,7 @@ private:
     int tile_x;
     int tile_y;
     bool mira_a_la_izquierda;
+    bool listo;
   };
 
   struct Cultivo {
@@ -39,6 +40,8 @@ private:
   SDL2pp::Texture gallina;
   SDL2pp::Texture cultivos;
   SDL2pp::Texture suelo;
+  SDL2pp::Texture huevo;
+  SDL2pp::Texture leche;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
@@ -49,6 +52,7 @@ private:
   void dibujar_casa(SDL2pp::Renderer &renderer, const Casa &casa, int camara_x, int camara_y, int lado);
   void dibujar_cultivo(SDL2pp::Renderer &renderer, const Cultivo &cultivo, int camara_x, int camara_y, int lado);
   void dibujar_animal(SDL2pp::Renderer &renderer, const Animal &animal, int camara_x, int camara_y, int lado);
+  void dibujar_producto(SDL2pp::Renderer &renderer, SDL2pp::Texture &producto, int centro_x, int arriba_y, int lado);
 
 public:
   explicit Granja(SDL2pp::Renderer &renderer);

@@ -12,6 +12,10 @@ void ServerSender::run() {
     bool map_sent = false;
     while (should_keep_running()) {
       WorldState state = to_send_queue.pop();
+      WorldState newer_state;
+      while (to_send_queue.try_pop(newer_state)) {
+          state = std::move(newer_state);
+      }
       std::optional<SectorStateDto> dto = builder.build(state, client_id);
       if (!dto) {
         continue;

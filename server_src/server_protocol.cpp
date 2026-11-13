@@ -35,6 +35,7 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.needsWater));
+    protocol.send_u8(static_cast<uint8_t>(entity.mineral.remainingHits));
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
