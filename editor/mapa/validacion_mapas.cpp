@@ -17,7 +17,8 @@ template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
       }));
 }
 
-std::string conEncabezado(const std::string &lugar, const std::string &mensaje) {
+std::string conEncabezado(const std::string &lugar,
+                          const std::string &mensaje) {
   return lugar + VALIDACION_TEXTO_SEPARADOR + mensaje;
 }
 
@@ -32,11 +33,11 @@ void validarGranja(const MapaZona<ElementosGranja> &granja,
         return esCabania(objeto.tipo);
       }));
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
-    errores.push_back(conEncabezado(
-        VALIDACION_TEXTO_ZONA_GRANJA,
-        VALIDACION_TEXTO_CABANIAS_INICIO +
-            std::to_string(VALIDACION_CABANIAS_MINIMAS) +
-            VALIDACION_TEXTO_CABANIAS_FIN));
+    errores.push_back(
+        conEncabezado(VALIDACION_TEXTO_ZONA_GRANJA,
+                      VALIDACION_TEXTO_CABANIAS_INICIO +
+                          std::to_string(VALIDACION_CABANIAS_MINIMAS) +
+                          VALIDACION_TEXTO_CABANIAS_FIN));
   if (cantidadDe(granja, ElementosGranja::SalidaPueblo) == 0)
     errores.push_back(falta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
 }

@@ -1,13 +1,13 @@
 #include "archivo_mapa.h"
 
+#include <cstdint>
 #include <fstream>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <toml++/toml.hpp>
 #include <utility>
 #include <vector>
-#include <cstdint>
-#include <optional>
 
 #include "constantes_mapa.h"
 
@@ -97,8 +97,8 @@ template <typename T> toml::table tablaDe(const MapaZona<T> &zona) {
                      {CLAVE_OBJETOS, objetosDe(zona)}};
 }
 
-toml::table tablaCaverna(
-    const std::vector<MapaZona<ElementosCaverna>> &niveles) {
+toml::table
+tablaCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles) {
   toml::table caverna{{CLAVE_ANCHO, niveles.front().ancho()},
                       {CLAVE_ALTO, niveles.front().alto()}};
   toml::array listaNiveles;
@@ -174,8 +174,7 @@ MapaZona<T> cargarZona(const toml::table &raiz, const char *clave,
   return zona;
 }
 
-std::vector<MapaZona<ElementosCaverna>> cargarCaverna(
-    const toml::table &raiz) {
+std::vector<MapaZona<ElementosCaverna>> cargarCaverna(const toml::table &raiz) {
   const toml::table &caverna = leerTabla(raiz, CLAVE_CAVERNA);
   Dimensiones dimensiones = leerDimensiones(caverna, CLAVE_CAVERNA);
   const toml::array *niveles = caverna[CLAVE_NIVELES].as_array();
@@ -185,8 +184,8 @@ std::vector<MapaZona<ElementosCaverna>> cargarCaverna(
   std::vector<MapaZona<ElementosCaverna>> resultado;
   int numero = PRIMER_NIVEL_CAVERNA;
   for (const toml::node &nodo : *niveles) {
-    std::string donde =
-        std::string(CLAVE_CAVERNA) + TEXTO_NIVEL_ARCHIVO + std::to_string(numero);
+    std::string donde = std::string(CLAVE_CAVERNA) + TEXTO_NIVEL_ARCHIVO +
+                        std::to_string(numero);
     const toml::table *tablaNivel = nodo.as_table();
     if (tablaNivel == nullptr)
       throw std::runtime_error(TEXTO_ERROR_CAMPO + donde);
@@ -197,7 +196,6 @@ std::vector<MapaZona<ElementosCaverna>> cargarCaverna(
   }
   return resultado;
 }
-
 
 } // namespace
 
@@ -225,7 +223,8 @@ MapaEditor cargarMapa(const std::string &ruta) {
                              std::string(error.description()));
   }
 
-  std::optional<std::int64_t> version = raiz[CLAVE_VERSION].value<std::int64_t>();
+  std::optional<std::int64_t> version =
+      raiz[CLAVE_VERSION].value<std::int64_t>();
   if (!version || *version != VERSION_ARCHIVO_MAPA)
     throw std::runtime_error(TEXTO_ERROR_VERSION);
 
@@ -234,8 +233,7 @@ MapaEditor cargarMapa(const std::string &ruta) {
     throw std::runtime_error(TEXTO_ERROR_CAMPO + std::string(CLAVE_NOMBRE));
 
   return MapaEditor{
-      *nombre,
-      cargarZona<ElementosGranja>(raiz, CLAVE_GRANJA, Zona::Granja),
+      *nombre, cargarZona<ElementosGranja>(raiz, CLAVE_GRANJA, Zona::Granja),
       cargarCaverna(raiz),
       cargarZona<ElementosPueblo>(raiz, CLAVE_PUEBLO, Zona::Pueblo)};
 }

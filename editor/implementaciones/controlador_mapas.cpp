@@ -1,25 +1,26 @@
 #include "controlador_mapas.h"
 
+#include <QDir>
+#include <QFileDialog>
 #include <QIcon>
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStringList>
-#include <vector>
-#include <QDir>
-#include <QFileDialog>
 #include <exception>
+#include <vector>
 
+#include "archivo_mapa.h"
+#include "constantes_mapa.h"
 #include "constantes_qt.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
 #include "validacion_mapas.h"
 #include "vista_zona.h"
-#include "archivo_mapa.h"
-#include "constantes_mapa.h"
 
-ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui, Navegador &navegador, DatosEditor &datos,
+ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
+                                   Navegador &navegador, DatosEditor &datos,
                                    QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   ui.paletaAssets->setIconSize(QSize(TAMANIO_ICONO, TAMANIO_ICONO));
@@ -91,7 +92,7 @@ Zona ControladorMapas::zonaDe(QWidget *pestania) const {
 void ControladorMapas::cambiarDeZona(Zona zona) {
   zonaActual = zona;
   cargarPaleta(zona);
-  mostrarDimensiones(dimensionesDe(datos.mapa,zona));
+  mostrarDimensiones(dimensionesDe(datos.mapa, zona));
 }
 
 void ControladorMapas::cargarPaleta(Zona zona) {
@@ -194,7 +195,8 @@ void ControladorMapas::exportar() {
                          lineas.join('\n'));
     return;
   }
-  //QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO, VALIDACION_TEXTO_MAPA_VALIDO);
+  // QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
+  // VALIDACION_TEXTO_MAPA_VALIDO);
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
                                               QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())

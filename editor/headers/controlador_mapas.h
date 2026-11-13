@@ -4,17 +4,18 @@
 #include <cstddef>
 #include <vector>
 
+#include "catalogo_elementos.h"
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
-#include "catalogo_elementos.h"
 
 class QWidget;
 class VistaZona;
 
 class ControladorMapas : public ControladorPaginaEditor {
 public:
-	ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,Navegador &navegador, DatosEditor &datos,
-		QObject *parent = nullptr);
+  ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
+                   Navegador &navegador, DatosEditor &datos,
+                   QObject *parent = nullptr);
   void limpiarPagina() override;
 
 private:

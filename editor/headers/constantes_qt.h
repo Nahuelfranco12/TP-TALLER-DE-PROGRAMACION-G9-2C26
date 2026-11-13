@@ -89,7 +89,7 @@
   { 160, 144, 16, 16 }
 #define RECORTE_TRONCO_CAIDO                                                   \
   { 144, 96, 16, 16 }
-#define RECORTE_TOCON                                                 \
+#define RECORTE_TOCON                                                          \
   { 128, 112, 16, 16 }
 #define RECORTE_BUZON_ROJO                                                     \
   { 19, 91, 11, 20 }
@@ -179,7 +179,7 @@
 #define TEXTO_MAPA_GUARDADO "El mapa se guardó en:\n"
 #define TITULO_ERROR_GUARDAR "No se pudo guardar"
 
-//sobre editar mapas
+// sobre editar mapas
 #define TITULO_ERROR_CARGAR "No se pudo abrir el mapa"
 
 #endif // CONSTANTES_QT_H

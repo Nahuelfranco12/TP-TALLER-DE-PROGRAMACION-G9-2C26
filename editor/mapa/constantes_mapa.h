@@ -77,7 +77,8 @@
 #define TEXTO_ERROR_TIPO "Elemento desconocido: "
 #define TEXTO_ERROR_DIMENSIONES "Dimensiones fuera de rango en: "
 #define TEXTO_ERROR_OBJETO "Un objeto no entra o pisa a otro en: "
-#define TEXTO_ERROR_NIVELES "La caverna no tiene la cantidad de niveles esperada."
+#define TEXTO_ERROR_NIVELES                                                    \
+  "La caverna no tiene la cantidad de niveles esperada."
 #define TEXTO_NIVEL_ARCHIVO " nivel "
 
-#endif  // CONSTANTES_MAPA_H_
+#endif // CONSTANTES_MAPA_H_

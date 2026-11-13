@@ -1,10 +1,11 @@
 #include "catalogo_elementos.h"
 
+#include <algorithm>
 #include <initializer_list>
 #include <vector>
 
-#include "constantes_qt.h"
 #include "constantes_mapa.h"
+#include "constantes_qt.h"
 
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
   static const std::vector<InfoElemento<Terreno>> granja = {
@@ -54,8 +55,7 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
        RECORTE_ARBUSTO_GRANDE},
       {ElementosGranja::TroncoCaido, TEXTO_TRONCO_CAIDO, RUTA_AGUA,
        RECORTE_TRONCO_CAIDO},
-      {ElementosGranja::Tocon, TEXTO_TOCON, RUTA_AGUA,
-       RECORTE_TOCON},
+      {ElementosGranja::Tocon, TEXTO_TOCON, RUTA_AGUA, RECORTE_TOCON},
       {ElementosGranja::BuzonRojo, TEXTO_BUZON_ROJO, RUTA_OBJETOS,
        RECORTE_BUZON_ROJO},
       {ElementosGranja::CartelVacio, TEXTO_CARTEL_VACIO, RUTA_OBJETOS,
@@ -119,10 +119,15 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
 }
 
 const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
-  for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo})
-    for (const auto &info : terrenosDe(zona))
-      if (info.elemento == terreno)
-        return &info;
+  for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo}) {
+    const auto &terrenos = terrenosDe(zona);
+    auto encontrado =
+        std::ranges::find_if(terrenos, [terreno](const auto &info) {
+          return info.elemento == terreno;
+        });
+    if (encontrado != terrenos.end())
+      return &*encontrado;
+  }
   return nullptr;
 }
 
@@ -130,9 +135,10 @@ namespace {
 template <typename T>
 const InfoElemento<T> *buscar(const std::vector<InfoElemento<T>> &catalogo,
                               T tipo) {
-  for (const auto &info : catalogo)
-    if (info.elemento == tipo)
-      return &info;
+  auto encontrado = std::ranges::find_if(
+      catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
+  if (encontrado != catalogo.end())
+    return &*encontrado;
   return nullptr;
 }
 } // namespace

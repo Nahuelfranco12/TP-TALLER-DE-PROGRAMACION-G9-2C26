@@ -13,8 +13,8 @@ class VentanaEditor;
 
 class ControladorPaginaEditor : public QObject {
 public:
-  ControladorPaginaEditor(QWidget &ventana, Ui::VentanaEditor &ui, Navegador &navegador,
-                          QObject *parent)
+  ControladorPaginaEditor(QWidget &ventana, Ui::VentanaEditor &ui,
+                          Navegador &navegador, QObject *parent)
       : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
   virtual void limpiarPagina() = 0;
 

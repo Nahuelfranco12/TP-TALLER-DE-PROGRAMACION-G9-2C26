@@ -1,15 +1,14 @@
 #include <QDir>
 #include <QFileDialog>
-#include <QPushButton>
 #include <QMessageBox>
+#include <QPushButton>
 #include <exception>
 #include <utility>
 
+#include "archivo_mapa.h"
 #include "constantes_qt.h"
 #include "controlador_inicio_editor.h"
 #include "ui_ventanaeditor.h"
-#include "archivo_mapa.h"
-
 
 ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
                                                  Ui::VentanaEditor &ui,

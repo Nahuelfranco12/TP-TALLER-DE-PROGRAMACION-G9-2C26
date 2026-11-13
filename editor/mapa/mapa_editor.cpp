@@ -26,8 +26,7 @@ MapaEditor crearMapaPredeterminado() {
   std::vector<MapaZona<ElementosCaverna>> niveles(
       CANTIDAD_NIVELES_CAVERNA, crearNivelCaverna(Dimensiones{}));
   return MapaEditor{
-      "",
-      MapaZona<ElementosGranja>(Dimensiones{}, pisoBaseDe(Zona::Granja)),
+      "", MapaZona<ElementosGranja>(Dimensiones{}, pisoBaseDe(Zona::Granja)),
       std::move(niveles),
       MapaZona<ElementosPueblo>(Dimensiones{}, pisoBaseDe(Zona::Pueblo))};
 }
