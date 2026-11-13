@@ -39,6 +39,7 @@
 #define COORDENADAS_GORROS {{13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, {33, 4}}
 #define COORDENADAS_PANTALONES {{1, 1}, {1, 25}, {1, 61}, {1, 73}}
 #define COORDENADAS_REMERAS {{1, 10}, {5, 4}, {9, 5}, {5, 12}, {25, 9}}
+#define OPCION_POR_DEFECTO 0
 
 // estos son los colores con los que pinto el pelo y los pantalones
 #define COLOR_PANTALON QColor(60, 90, 200)

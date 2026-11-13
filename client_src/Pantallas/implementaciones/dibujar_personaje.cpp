@@ -20,15 +20,22 @@ QPixmap colorear(const QPixmap &pieza, const QColor &color) {
   pintor.setCompositionMode(QPainter::CompositionMode_Multiply);
   pintor.fillRect(coloreada.rect(), color);
   pintor.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-  pintor.drawImage(0, 0, original);
+  pintor.drawImage(QPoint(), original);
   pintor.end();
   return QPixmap::fromImage(coloreada);
+}
+
+const CoordenadaSprite &opcionValida(const QList<CoordenadaSprite> &opciones,
+                                     int indice) {
+  if (indice < 0 || indice >= opciones.size())
+    return opciones[OPCION_POR_DEFECTO];
+  return opciones[indice];
 }
 } // namespace
 
 DibujarPersonaje::DibujarPersonaje()
-    : pelos(COORDENADAS_PELOS),gorros(COORDENADAS_GORROS),
-    pantalones(COORDENADAS_PANTALONES), remeras(COORDENADAS_REMERAS) {
+    : pelos(COORDENADAS_PELOS), gorros(COORDENADAS_GORROS),
+      pantalones(COORDENADAS_PANTALONES), remeras(COORDENADAS_REMERAS) {
   hojaCuerpo.load(TIPOS_CUERPO);
   hojaPelo.load(TIPOS_PELO);
   hojaGorro.load(TIPOS_GORRO);
@@ -46,17 +53,31 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
 
   pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_CUERPO_EN_HOJA, Y_CUERPO_EN_HOJA,
                                             ANCHO_CUERPO, ALTO_CUERPO));
-  pintor.drawPixmap(cuerpo,colorear(recortarCelda(hojaPantalon, pantalones[personaje.ropa.pantalon],
-  ANCHO_PANTALON, ALTO_PANTALON),COLOR_PANTALON));
-  pintor.drawPixmap(cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
-  recortarCelda(hojaRemera, remeras[personaje.ropa.remera], ANCHO_REMERA, ALTO_REMERA));
-  pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_BRAZOS, Y_CUERPO_EN_HOJA, ANCHO_CUERPO, ALTO_CUERPO));
-  pintor.drawPixmap(cuerpo,colorear(recortarCelda(hojaPelo, pelos[personaje.ropa.pelo],
-ANCHO_PELO, ALTO_PELO),COLOR_PELO));
-  pintor.drawPixmap(QPoint(),recortarCelda(hojaGorro, gorros[personaje.ropa.gorro],ANCHO_GORRO, ALTO_GORRO));
+  pintor.drawPixmap(
+      cuerpo,
+      colorear(recortarCelda(hojaPantalon,
+                             opcionValida(pantalones, personaje.ropa.pantalon),
+                             ANCHO_PANTALON, ALTO_PANTALON),
+               COLOR_PANTALON));
+  pintor.drawPixmap(
+      cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
+      recortarCelda(hojaRemera, opcionValida(remeras, personaje.ropa.remera),
+                    ANCHO_REMERA, ALTO_REMERA));
+  pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_BRAZOS, Y_CUERPO_EN_HOJA,
+                                            ANCHO_CUERPO, ALTO_CUERPO));
+  pintor.drawPixmap(
+      cuerpo,
+      colorear(recortarCelda(hojaPelo, opcionValida(pelos, personaje.ropa.pelo),
+                             ANCHO_PELO, ALTO_PELO),
+               COLOR_PELO));
+  pintor.drawPixmap(
+      QPoint(),
+      recortarCelda(hojaGorro, opcionValida(gorros, personaje.ropa.gorro),
+                    ANCHO_GORRO, ALTO_GORRO));
   pintor.end();
 
-  return lienzo.scaled(ANCHO_LIENZO * escala, ALTO_LIENZO * escala,Qt::KeepAspectRatio, Qt::FastTransformation);
+  return lienzo.scaled(ANCHO_LIENZO * escala, ALTO_LIENZO * escala,
+                       Qt::KeepAspectRatio, Qt::FastTransformation);
 }
 
 const QList<CoordenadaSprite> &DibujarPersonaje::opcionesPelo() const {

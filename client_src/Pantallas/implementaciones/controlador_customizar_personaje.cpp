@@ -41,6 +41,8 @@ void ControladorCustomizarPersonaje::limpiarPagina() {
 void ControladorCustomizarPersonaje::cambiarOpcion(int &indiceActual,
                                                    int cantidadOpciones,
                                                    int direccion) {
+  if (cantidadOpciones <= 0)
+    return;
   indiceActual =
       (indiceActual + direccion + cantidadOpciones) % cantidadOpciones;
   actualizarPrevisualizacion();
