@@ -1,22 +1,27 @@
 #include <QDir>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QPushButton>
+#include <exception>
+#include <utility>
 
-#include "constantes.h"
+#include "archivo_mapa.h"
+#include "constantes_qt.h"
 #include "controlador_inicio_editor.h"
 #include "ui_ventanaeditor.h"
 
-ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
+ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
+                                                 Ui::VentanaEditor &ui,
                                                  Navegador &navegador,
                                                  DatosEditor &datos,
                                                  QObject *parent)
-    : ControladorPaginaEditor(ui, navegador, parent), datos(datos) {
+    : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   connect(ui.botonEditorCrearMapa, &QPushButton::clicked, this,
           [this]() { crearMapa(); });
   connect(ui.botonEditorMapa, &QPushButton::clicked, this,
           [this]() { editarMapa(); });
   connect(ui.botonEditorSalir, &QPushButton::clicked, this,
-          [this]() { this->ui.botonEditorSalir->window()->close(); });
+          [this]() { this->ventana.close(); });
 }
 
 void ControladorInicioEditor::crearMapa() {
@@ -25,14 +30,18 @@ void ControladorInicioEditor::crearMapa() {
 }
 
 void ControladorInicioEditor::editarMapa() {
-  QString ruta =
-      QFileDialog::getOpenFileName(ui.pageInicioEditor->window(), TITULO_ABRIR,
-                                   QDir::homePath(), FILTRO_MAPAS);
+  QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
+                                              QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
-  datos = DatosEditor{};
-  datos.rutaArchivo = ruta;
-  navegador.irA(ui.pageMapas);
+  try {
+    MapaEditor mapa = cargarMapa(ruta.toStdString());
+    datos = DatosEditor{ruta, std::move(mapa)};
+    navegador.irA(ui.pageMapas);
+  } catch (const std::exception &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_CARGAR,
+                         QString::fromUtf8(error.what()));
+  }
 }
 
 void ControladorInicioEditor::limpiarPagina() {}

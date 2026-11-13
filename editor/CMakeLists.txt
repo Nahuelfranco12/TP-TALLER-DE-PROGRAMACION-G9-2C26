@@ -10,33 +10,67 @@ set(CMAKE_AUTORCC ON)
 
 qt_standard_project_setup()
 
+include(FetchContent)
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG v3.4.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
+
+set(FLAGS_EDITOR
+    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror
+)
+
+add_library(editor_mapa STATIC
+    mapa/archivo_mapa.h
+    mapa/constantes_mapa.h
+    mapa/elementos_mapa.h
+    mapa/mapa_editor.h
+    mapa/validacion_mapas.h
+
+    mapa/archivo_mapa.cpp
+    mapa/mapa_editor.cpp
+    mapa/validacion_mapas.cpp
+)
+
+target_include_directories(editor_mapa PUBLIC mapa)
+
+set_target_properties(editor_mapa PROPERTIES
+    AUTOMOC OFF
+    AUTOUIC OFF
+    AUTORCC OFF
+)
+
+target_compile_options(editor_mapa PRIVATE ${FLAGS_EDITOR})
+
+target_link_libraries(editor_mapa PRIVATE tomlplusplus::tomlplusplus)
+
 qt_add_executable(editor
     main.cpp
     ventanaeditor.ui
     Images.qrc
 
+    headers/catalogo_elementos.h
+    headers/constantes_qt.h
     headers/controlador_inicio_editor.h
+    headers/controlador_mapas.h
     headers/controlador_pagina_editor.h
     headers/datos_editor.h
     headers/navegador.h
-    headers/ventanaeditor.h
-    headers/controlador_mapas.h
-    headers/editor_dtos.h
-    headers/vista_responsive.h
-    headers/constantes.h
-    headers/mapa_editor.h
     headers/sprites.h
+    headers/ventanaeditor.h
+    headers/vista_responsive.h
     headers/vista_zona.h
 
-    implementaciones/sprites.cpp
-    implementaciones/vista_zona.cpp
-    implementaciones/mapa_editor.cpp
-    implementaciones/vista_responsive.cpp
-    implementaciones/editor_dtos.cpp
-    implementaciones/controlador_mapas.cpp
+    implementaciones/catalogo_elementos.cpp
     implementaciones/controlador_inicio_editor.cpp
+    implementaciones/controlador_mapas.cpp
     implementaciones/navegador.cpp
+    implementaciones/sprites.cpp
     implementaciones/ventanaeditor.cpp
+    implementaciones/vista_responsive.cpp
+    implementaciones/vista_zona.cpp
 )
 
 target_include_directories(editor PRIVATE headers)
@@ -45,12 +79,11 @@ set_target_properties(editor PROPERTIES
     AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_compile_options(editor PRIVATE
-    -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror
-)
+target_compile_options(editor PRIVATE ${FLAGS_EDITOR})
 
 target_link_libraries(editor
     PRIVATE
+        editor_mapa
         Qt::Core
         Qt::Widgets
 )

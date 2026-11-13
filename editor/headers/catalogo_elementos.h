@@ -1,33 +1,9 @@
-#ifndef EDITOR_DTOS_H_
-#define EDITOR_DTOS_H_
+#ifndef CATALOGO_ELEMENTOS_H_
+#define CATALOGO_ELEMENTOS_H_
 
 #include <vector>
 
-enum class Zona { Granja, Caverna, Pueblo };
-
-enum class Terreno { Pasto, Tierra, Camino, PisoCaverna, Pared, PisoPueblo };
-
-enum class ElementosGranja {
-  Cabania,
-  Arbol1,
-  Arbol2,
-  Piedra,
-  CercoFrente,
-  CercoCostado,
-  EntradaMina,
-  SalidaPueblo
-};
-
-enum class ElementosCaverna { Escalera, SalidaCaverna };
-
-enum class ElementosPueblo {
-  NpcMarnie,
-  NpcClint,
-  NpcPierre,
-  NpcRobin,
-  CentroComunitario,
-  SalidaGranja
-};
+#include "elementos_mapa.h"
 
 struct Recorte {
   int x = 0;
@@ -53,4 +29,4 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja();
 const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna();
 const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo();
 
-#endif // EDITOR_DTOS_H_
+#endif // CATALOGO_ELEMENTOS_H_
