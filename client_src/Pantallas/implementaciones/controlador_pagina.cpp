@@ -3,6 +3,13 @@
 #include <QApplication>
 #include <QMessageBox>
 
+void ControladorPagina::conectarVolver(QPushButton *boton) {
+  connect(boton, &QPushButton::clicked, this, [this]() {
+    limpiarPagina();
+    navegador.volver();
+  });
+}
+
 void ControladorPagina::intentarJugar(ServicioLobby &servicio,
                                       const DatosPartida &datos,
                                       QPushButton *botonJugar) {

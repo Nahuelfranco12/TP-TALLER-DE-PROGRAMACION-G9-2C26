@@ -18,10 +18,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(QWidget &ventana,
 
   ui.botSiguiente->setEnabled(false);
 
-  connect(ui.botVolver, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
-  });
+  conectarVolver(ui.botVolver);
 
   connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });

@@ -25,6 +25,7 @@ private:
   DatosPersonaje personajeElegido() const;
 
   void conectarBotonesFlechas();
+  void conectarFlechas(QPushButton *anterior, QPushButton *siguiente,int &indice, const QList<CoordenadaSprite> &opciones);
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
   const DibujarPersonaje &dibujar;

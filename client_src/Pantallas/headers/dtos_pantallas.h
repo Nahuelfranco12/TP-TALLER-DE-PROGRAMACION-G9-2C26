@@ -38,7 +38,6 @@ struct DatosTarjeta {
 
 struct ResultadoLobby {
   bool ok = false;
-  QString codigoPartida;
   QString mensajeError;
 };
 

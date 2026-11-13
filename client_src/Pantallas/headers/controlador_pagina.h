@@ -5,7 +5,7 @@
 #include "servicio_lobby.h"
 #include <QObject>
 #include <QPushButton>
-#include <qwidget.h>
+#include <qpushbutton.h>
 
 namespace Ui {
 class Pantalla;
@@ -22,6 +22,7 @@ protected:
   QWidget &ventana;
   Ui::Pantalla &ui;
   Navegador &navegador;
+  void conectarVolver(QPushButton *boton);
   void intentarJugar(ServicioLobby &servicio, const DatosPartida &datos,
                      QPushButton *botonJugar);
 };

@@ -15,10 +15,7 @@ ControladorRetomarPartida::ControladorRetomarPartida(
 
   ui.botJugarRP->setEnabled(false);
 
-  connect(ui.botVolverRP, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
-  });
+  conectarVolver(ui.botVolverRP);
 
   partidas->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
 
