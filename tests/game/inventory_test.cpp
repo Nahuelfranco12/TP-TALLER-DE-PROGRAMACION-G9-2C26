@@ -64,4 +64,34 @@ TEST(InventoryTest, GivesAnExistingSlotToAnotherInventory)
               static_cast<int>(CropTypes::POTATO));
 }
 
+TEST(InventoryTest, StackFilledMaxCapacity)
+{
+    Inventory inventory;
+    
+    for (size_t i = 0; i < MAX_INVETORY_STACK; i++)
+        EXPECT_TRUE(inventory.addItem(std::make_unique<MineralItem>(PRICE_COAL,
+                                                            MineralTypes::COAL)));
+    InventoryState state = inventory.state();
+    ASSERT_EQ(state.items.size(), 1);
+    EXPECT_EQ(state.items.front().count, MAX_INVETORY_STACK);
+}
+
+TEST(InventoryTest, StackTryFillMoreThanMaxCapacity)
+{
+    Inventory inventory;
+
+    for (size_t i = 0; i < MAX_INVETORY_STACK; i++)
+        ASSERT_TRUE(inventory.addItem(
+            std::make_unique<MineralItem>(PRICE_COAL, MineralTypes::COAL)));
+
+    ASSERT_TRUE(inventory.addItem(
+        std::make_unique<MineralItem>(PRICE_COAL, MineralTypes::COAL)));
+
+    InventoryState state = inventory.state();
+
+    ASSERT_EQ(state.items.size(), 2);
+    EXPECT_EQ(state.items[0].count, MAX_INVETORY_STACK);
+    EXPECT_EQ(state.items[1].count, 1);
+}
+
 } // namespace
