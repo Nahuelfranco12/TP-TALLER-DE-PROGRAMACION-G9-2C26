@@ -143,14 +143,17 @@ int main(int argc, char *argv[]) try {
 		SDL_Event evento;
 		while (SDL_PollEvent(&evento)) {
 			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
-					if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
-						ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-						if (inventario.herramienta_seleccionada(herramienta)) {
-							client.send_select_tool(herramienta);
-						}
-					}
-				}
+				bool acepto = false;
+        if (interfaz.click_regalo(evento.button.x, evento.button.y, acepto)) {
+          client.send_gift_response(acepto);
+        } else if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
+          if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
+            ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+            if (inventario.herramienta_seleccionada(herramienta)) {
+              client.send_select_tool(herramienta);
+            }
+          }
+        }
 			}
 
       if (evento.type == SDL_QUIT) {
@@ -195,8 +198,14 @@ int main(int argc, char *argv[]) try {
       }
 
       // Y / N: aceptar o rechazar el regalo
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) client.send_gift_response(true);
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) client.send_gift_response(false);
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) {
+        client.send_gift_response(true);
+        interfaz.cerrar_regalo();
+      }
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) {
+        client.send_gift_response(false);
+        interfaz.cerrar_regalo();
+      }  
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
@@ -306,6 +315,7 @@ int main(int argc, char *argv[]) try {
           }
           personaje.poner_vida(jugador.life);
           personaje.poner_energia(jugador.energy);
+          interfaz.actualizar_regalo(jugador.pendingGift);
           continue;
         }
         presentes.insert(jugador.id);
@@ -381,6 +391,11 @@ int main(int argc, char *argv[]) try {
     }
 
     interfaz.dibujar(renderer, audio);
+
+    if (interfaz.hay_regalo_pendiente()) {
+      interfaz.dibujar_regalo(renderer);
+      inventario.dibujar_regalo(renderer, interfaz.regalo_pendiente(), interfaz.lugar_icono_regalo());
+    }
 
     if (!viendo_mapa) {
       inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());

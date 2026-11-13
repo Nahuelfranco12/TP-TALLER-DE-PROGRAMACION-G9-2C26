@@ -263,3 +263,7 @@ void Inventario::actualizar(const InventoryDto &inventario) {
     casilleros.push_back(slot);
   }
 }
+
+void Inventario::dibujar_regalo(Renderer &renderer, const InventorySlotDto &regalo, const Rect &lugar) {
+  dibujar_item(renderer, regalo, lugar);
+}

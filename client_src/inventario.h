@@ -55,6 +55,8 @@ public:
   bool tengo_en_la_mano(Herramienta herramienta) const;
 
   void dibujar(SDL2pp::Renderer &renderer, int ancho_ventana, int alto_ventana);
+
+  void dibujar_regalo(SDL2pp::Renderer &renderer, const InventorySlotDto &regalo, const SDL2pp::Rect &lugar);
 };
 
 #endif

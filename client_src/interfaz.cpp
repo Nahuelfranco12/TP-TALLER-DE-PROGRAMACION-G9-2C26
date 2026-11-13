@@ -40,7 +40,10 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
       texto_codigo(renderer,
                    fuente.RenderUTF8_Blended(
                        "Código: " + codigo_partida + "  (copiado)", BLANCO)),
-      textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 06:00", BLANCO)) {}
+      textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 1 06:00", BLANCO)),
+      texto_regalo(renderer, fuente.RenderUTF8_Blended("¡Te ofrecen un regalo!", BLANCO)),
+      texto_aceptar(renderer, fuente.RenderUTF8_Blended("Aceptar", BLANCO)),
+      texto_rechazar(renderer, fuente.RenderUTF8_Blended("Rechazar", BLANCO)) {}
 
 bool Interfaz::click(int x, int y, Audio &audio) {
   if (boton_codigo.Contains(x, y)) {
@@ -134,4 +137,60 @@ void Interfaz::dibujar_noche(Renderer &renderer) const {
   renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   renderer.SetDrawColor(10, 10, 40, alfa);
   renderer.FillRect(Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
+}
+
+void Interfaz::actualizar_regalo(const PendingGiftDto &pendiente) {
+  hay_regalo = pendiente.gift.count > 0;
+  regalo = pendiente.gift;
+}
+
+bool Interfaz::hay_regalo_pendiente() const {
+  return hay_regalo;
+}
+
+const InventorySlotDto &Interfaz::regalo_pendiente() const {
+  return regalo;
+}
+
+Rect Interfaz::lugar_icono_regalo() const {
+  return icono_regalo;
+}
+
+void Interfaz::cerrar_regalo() {
+  hay_regalo = false;
+}
+
+bool Interfaz::click_regalo(int x, int y, bool &acepto) {
+  if (!hay_regalo) {
+    return false;
+  }
+  if (boton_aceptar.Contains(x, y)) {
+    acepto = true;
+  } else if (boton_rechazar.Contains(x, y)) {
+    acepto = false;
+  } else {
+    return false;
+  }
+  cerrar_regalo();
+  return true;
+}
+
+void Interfaz::dibujar_regalo(Renderer &renderer) {
+  const int ANCHO = 280;
+  const int ALTO = 140;
+  caja_regalo = Rect((renderer.GetOutputWidth() - ANCHO) / 2, (renderer.GetOutputHeight() - ALTO) / 2, ANCHO, ALTO);
+  renderer.SetDrawColor(40, 30, 20, 240);
+  renderer.FillRect(caja_regalo);
+  renderer.SetDrawColor(230, 230, 230, 255);
+  renderer.DrawRect(caja_regalo);
+
+  renderer.Copy(texto_regalo, NullOpt, Rect(caja_regalo.x + (ANCHO - texto_regalo.GetWidth()) / 2, caja_regalo.y + 10, texto_regalo.GetWidth(), texto_regalo.GetHeight()));
+
+  icono_regalo = Rect(caja_regalo.x + (ANCHO -44) / 2, caja_regalo.y + 40, 44, 44);
+
+  boton_aceptar = Rect(caja_regalo.x + 20, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
+  boton_rechazar = Rect(caja_regalo.x + ANCHO - 130, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
+
+  dibujar_boton(renderer, boton_aceptar, texto_aceptar);
+  dibujar_boton(renderer, boton_rechazar, texto_rechazar);
 }
