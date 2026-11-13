@@ -222,13 +222,16 @@
 
 // Validaciones para que se pueda exportar el archivo
 #define VALIDACION_CABANIAS_MINIMAS 3
-#define VALIDACION_TEXTO_ERROR_NOMBRE "No le pusiste nombre al mundo!"
-#define VALIDACION_TEXTO_ERROR_FALTA " Falta"
-#define VALIDACION_TEXTO_ERROR_CABANIAS "Tenes que colocar MINIMO "
-#define VALIDACION_TEXTO_CABANIAS_PLURAL " cabañas"
 #define VALIDACION_TEXTO_ZONA_GRANJA "Granja"
 #define VALIDACION_TEXTO_ZONA_PUEBLO "Pueblo"
-#define VALIDACION_TEXTO_NIVEL "Nivel "
+#define VALIDACION_TEXTO_ZONA_CAVERMA "Caverna"
+#define VALIDACION_TEXTO_SEPARADOR ": "
+#define VALIDACION_TEXTO_FALTA "falta "
+#define VALIDACION_TEXTO_NIVEL ", nivel "
+#define VALIDACION_TEXTO_CABANIAS_INICIO "tenes que colocar al menos "
+#define VALIDACION_TEXTO_CABANIAS_FIN " cabañas"
+
+#define VALIDACION_TEXTO_ERROR_NOMBRE "No le pusiste nombre al mundo!"
 #define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
 #define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
 #define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"

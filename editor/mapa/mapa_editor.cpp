@@ -1,6 +1,5 @@
 #include "mapa_editor.h"
 #include "constantes.h"
-#include "elementos_mapa.h"
 
 #include <algorithm>
 #include <string>
@@ -25,7 +24,6 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
   case ElementosGranja::Cabania3:
   case ElementosGranja::Cabania4:
   case ElementosGranja::Cabania5:
-  //case ElementosGranja::Cabania6:
     return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
   case ElementosGranja::Arbol1:
   case ElementosGranja::Arbol2:
