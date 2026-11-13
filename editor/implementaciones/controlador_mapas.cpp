@@ -11,12 +11,13 @@
 #include <QFileDialog>
 #include <exception>
 
-#include "constantes.h"
+#include "constantes_qt.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
 #include "validacion_mapas.h"
 #include "vista_zona.h"
 #include "archivo_mapa.h"
+#include "constantes_mapa.h"
 
 ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
                                    DatosEditor &datos, QObject *parent)

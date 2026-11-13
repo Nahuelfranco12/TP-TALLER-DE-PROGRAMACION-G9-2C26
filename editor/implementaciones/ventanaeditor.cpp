@@ -1,6 +1,6 @@
 #include "ventanaeditor.h"
 
-#include "constantes.h"
+#include "constantes_qt.h"
 #include "controlador_inicio_editor.h"
 #include "controlador_mapas.h"
 #include "navegador.h"

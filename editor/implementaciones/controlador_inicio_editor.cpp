@@ -5,7 +5,7 @@
 #include <exception>
 #include <utility>
 
-#include "constantes.h"
+#include "constantes_qt.h"
 #include "controlador_inicio_editor.h"
 #include "ui_ventanaeditor.h"
 #include "archivo_mapa.h"

@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "constantes.h"
+#include "constantes_mapa.h"
 #include "elementos_mapa.h"
 
 struct Dimensiones {

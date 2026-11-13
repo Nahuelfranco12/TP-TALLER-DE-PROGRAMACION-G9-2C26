@@ -1,5 +1,5 @@
 #include "controlador_customizar_personaje.h"
-#include "constantes.h"
+#include "constantes_qt.h"
 #include "ui_pantalla.h"
 //#include <QDebug>
 

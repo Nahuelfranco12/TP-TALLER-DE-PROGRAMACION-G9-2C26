@@ -8,7 +8,7 @@
 #include <functional>
 #include <map>
 
-#include "constantes.h"
+#include "constantes_qt.h"
 #include "mapa_editor.h"
 #include "sprites.h"
 #include "catalogo_elementos.h"

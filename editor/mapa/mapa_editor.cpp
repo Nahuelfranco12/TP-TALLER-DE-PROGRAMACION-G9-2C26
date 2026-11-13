@@ -1,5 +1,5 @@
 #include "mapa_editor.h"
-#include "constantes.h"
+#include "constantes_mapa.h"
 
 #include <algorithm>
 #include <string>

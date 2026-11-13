@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "constantes.h"
+#include "constantes_mapa.h"
 
 namespace {
 template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {

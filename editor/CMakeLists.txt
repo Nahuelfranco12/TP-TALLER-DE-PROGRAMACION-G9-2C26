@@ -30,7 +30,7 @@ qt_add_executable(editor
     headers/ventanaeditor.h
     headers/controlador_mapas.h
     headers/vista_responsive.h
-    headers/constantes.h
+    headers/constantes_qt.h
     headers/sprites.h
     headers/vista_zona.h
     headers/catalogo_elementos.h
@@ -39,6 +39,7 @@ qt_add_executable(editor
     mapa/mapa_editor.h
     mapa/elementos_mapa.h
     mapa/archivo_mapa.h
+    mapa/constantes_mapa.h
 
     implementaciones/catalogo_elementos.cpp
     implementaciones/sprites.cpp

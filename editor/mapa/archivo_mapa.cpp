@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <optional>
 
-#include "constantes.h"
+#include "constantes_mapa.h"
 
 namespace {
 template <typename T> using TablaIds = std::vector<std::pair<T, const char *>>;

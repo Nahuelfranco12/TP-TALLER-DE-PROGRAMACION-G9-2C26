@@ -3,7 +3,8 @@
 #include <initializer_list>
 #include <vector>
 
-#include "constantes.h"
+#include "constantes_qt.h"
+#include "constantes_mapa.h"
 
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
   static const std::vector<InfoElemento<Terreno>> granja = {
