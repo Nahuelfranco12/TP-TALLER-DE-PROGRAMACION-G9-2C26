@@ -9,7 +9,6 @@
 #include <map>
 
 #include "constantes.h"
-//#include "editor_dtos.h"
 #include "mapa_editor.h"
 #include "sprites.h"
 #include "catalogo_elementos.h"

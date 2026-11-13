@@ -214,11 +214,10 @@ void ControladorMapas::exportar() {
   QMessageBox::information(ui.centralwidget->window(),
                            VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
                            VALIDACION_TEXTO_MAPA_VALIDO);
-  // El mapa es válido: se pide dónde guardarlo.
   QString ruta = QFileDialog::getSaveFileName(ui.centralwidget->window(),
                                               TITULO_GUARDAR, QDir::homePath(),
                                               FILTRO_MAPAS);
-  if (ruta.isEmpty()) // el usuario canceló
+  if (ruta.isEmpty())
     return;
   if (!ruta.endsWith(EXTENSION_MAPA))
     ruta += EXTENSION_MAPA;

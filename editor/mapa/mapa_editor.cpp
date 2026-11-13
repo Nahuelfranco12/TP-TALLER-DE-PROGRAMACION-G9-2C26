@@ -29,9 +29,6 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
     return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
   case ElementosGranja::Arbol1:
   case ElementosGranja::Arbol2:
-    // case ElementosGranja::Arbol3:
-    // case ElementosGranja::Arbol4:
-    // case ElementosGranja::Arbol5:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ARBOL_ALTO};
   case ElementosGranja::Agua:
     return {TAMANIO_OCUPADO_AGUA_ANCHO, TAMANIO_OCUPADO_AGUA_ALTO};
@@ -82,8 +79,6 @@ bool esUnico(ElementosGranja tipo) {
   case ElementosGranja::Cabania3:
   case ElementosGranja::Cabania4:
   case ElementosGranja::Cabania5:
-  //case ElementosGranja::Cabania6:
-  // case ElementosGranja::EntradaMina:
   case ElementosGranja::SalidaPueblo:
     return true;
   default:

@@ -10,7 +10,6 @@
 
 #include "constantes.h"
 #include "elementos_mapa.h"
-//#include "catalogo_elementos.h"
 
 struct Dimensiones {
   int ancho = ANCHO_PREDETERMINADO;

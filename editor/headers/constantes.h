@@ -31,15 +31,11 @@
 #define RUTA_PIEDRAS ":/Mapas/piedras.png"
 #define RUTA_ARBOL1 ":/Mapas/arbol1.png"
 #define RUTA_ARBOL2 ":/Mapas/arbol2.png"
-// #define RUTA_ARBOL3 ":/Mapas/arbol3.png"
-// #define RUTA_ARBOL4 ":/Mapas/arbol4.png"
-// #define RUTA_ARBOL5 ":/Mapas/arbol5.png"
 #define RUTA_AGUA ":/Mapas/naturaleza.png"
 #define RUTA_CABANIAS ":/Mapas/cabanias.png"
 #define RUTA_CASAS ":/Mapas/casas.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
 #define RUTA_CASA_NPC ":/Mapas/casas_npcs.png"
-//#define RUTA_CASA ":/Edificios/casa.png"
 #define SIN_ASSET ""
 #define RUTA_MARNIE ":/Npcs/marnie.png"
 #define RUTA_CLINT ":/Npcs/clint.png"
@@ -67,8 +63,6 @@
   { 3, 91, 11, 20 }
 #define RECORTE_BUZON_AZUL                                                     \
   { 35, 91, 11, 20 }
-//#define RECORTE_CASA_CHICA {33, 37, 95, 124}
-//#define RECORTE_CASA_MEDIANA {161, 29, 159, 132}
 #define RECORTE_CASA_ROBIN                                                     \
   { 192, 640, 192, 160 }
 #define RECORTE_CASA_MARNIE                                                    \
@@ -79,7 +73,6 @@
   { 80, 320, 144, 128 }
 
 // Recortes Granja
-//#define RECORTE_CABANIA {144, 0, 80, 104}
 #define RECORTE_CABANIA1                                                       \
   { 160, 0, 80, 112 }
 #define RECORTE_CABANIA2                                                       \
@@ -90,7 +83,6 @@
   { 160, 336, 80, 112 }
 #define RECORTE_CABANIA5                                                       \
   { 160, 448, 80, 112 }
-//#define RECORTE_CABANIA6 {160, 112, 80, 112}
 #define RECORTE_PIEDRA                                                         \
   { 32, 0, 16, 16 }
 #define RECORTE_ENTRADA_MINA                                                   \
@@ -155,7 +147,6 @@
 #define TEXTO_CABANIA3 "Cabaña 3"
 #define TEXTO_CABANIA4 "Cabaña 4"
 #define TEXTO_CABANIA5 "Cabaña 5"
-//#define TEXTO_CABANIA6 "Cabaña 6"
 #define TEXTO_ARBOL1 "Arbol1"
 #define TEXTO_ARBOL2 "Arbol2"
 #define TEXTO_ARBOL3 "Arbol3"

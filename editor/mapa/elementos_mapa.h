@@ -11,7 +11,6 @@ enum class ElementosGranja {
   Cabania3,
   Cabania4,
   Cabania5,
-  //Cabania6,
   Arbol1,
   Arbol2,
   Piedra,
