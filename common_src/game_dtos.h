@@ -194,6 +194,7 @@ struct MineralDto {
 struct CropDto {
     CropTypeDto type{};
     CropGrowthDto growth{};
+    bool needsWater;
 };
 
 struct EntityDto {

@@ -20,6 +20,7 @@ struct TerrainState {
 struct CropState {
   CropTypes type{};
   CropGrowth growth{};
+  bool needsWater;
 };
 
 struct MineralState {

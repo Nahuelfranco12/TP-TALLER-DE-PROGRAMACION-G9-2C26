@@ -30,7 +30,7 @@ Crop::Crop(Position position, CropTypes type)
     : Entity(position.x, position.y, EntityTypes::CROP), type(type),
       config(cropConfig(type)), extraHarvestsLeft(config.extraHarvests),
       luck(rollLuck()) {
-  // Recien plantada: necesita agua desde el primer momento.
+  // Recien plantada
   sinceWatered = waterIntervalTicks();
 }
 
@@ -120,5 +120,6 @@ EntityState Crop::entityState() const {
   EntityState state = Entity::entityState();
   state.crop.type = type;
   state.crop.growth = growth();
+  state.crop.needsWater = needsWater();
   return state;
 }

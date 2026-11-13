@@ -30,8 +30,11 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     send_position(position);
     protocol.send_u8(static_cast<uint8_t>(entity.type));
     protocol.send_u8(entity.ready ? 1 : 0);
+
+    // TODO: revisar
     protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
+    protocol.send_u8(static_cast<uint8_t>(entity.crop.needsWater));
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));

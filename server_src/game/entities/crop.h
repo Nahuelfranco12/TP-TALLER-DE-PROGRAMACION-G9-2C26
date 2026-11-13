@@ -48,15 +48,19 @@ public:
   */
   bool canCollect() const override { return fullyGrown(); }
   std::unique_ptr<Item> collect() override;
-  // CollectCommand la llama ANTES de collect().
   bool removeOnCollect() const override { return extraHarvestsLeft == 0; }
   double energyCost() const override { return ENERGY_COST_HARVEST_CROP; }
+
+  /*
+  * Cheat
+  */
+  void forceWater() { sinceWatered = 0; }
+  void forceGrow() { growthTicks = totalGrowthTicks(); }
 
   /*
   * Entity
   */
   void tick() override;
-  EntityState entityState() const override;
-};
+  EntityState entityState() const override;};
 
 #endif // CROP_H_
