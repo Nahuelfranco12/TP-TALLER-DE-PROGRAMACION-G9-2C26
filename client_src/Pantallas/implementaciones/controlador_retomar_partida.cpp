@@ -1,5 +1,5 @@
 #include "controlador_retomar_partida.h"
-#include "constantes_qt.h"
+#include "constantes.h"
 #include "dtos_pantallas.h"
 //#include "partidas_estaticas.h"
 #include "ui_pantalla.h"
