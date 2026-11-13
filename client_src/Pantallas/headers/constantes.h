@@ -20,11 +20,6 @@
 // estas son para escalar los sprites y que se vean bien
 #define ESCALA_PREVISUALIZACION 6
 
-// esto es para el recorte y que ocupen bien los tamaños
-#define ALTO_RECORTE_PELO 16
-#define ALTO_RECORTE_PANTALON 16
-#define OFFSET_Y_PANTALON 16
-
 #define DIRECCION_ANTERIOR -1
 #define DIRECCION_SIGUIENTE 1
 

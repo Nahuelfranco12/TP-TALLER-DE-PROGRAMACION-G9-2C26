@@ -24,7 +24,6 @@ private:
 
   DatosPersonaje personajeElegido() const;
 
-  // void inicializarListas();
   void conectarBotonesFlechas();
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);

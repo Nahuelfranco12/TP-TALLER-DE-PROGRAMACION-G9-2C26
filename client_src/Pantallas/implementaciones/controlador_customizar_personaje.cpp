@@ -1,7 +1,6 @@
 #include "controlador_customizar_personaje.h"
 #include "constantes.h"
 #include "ui_pantalla.h"
-//#include <QDebug>
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
@@ -86,7 +85,6 @@ void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
   });
   connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
     this->datosPartida.personaje = personajeElegido();
-    // const DatosPersonaje &p = this->datosPartida.personaje;
     intentarJugar(servicio, this->datosPartida, this->ui.botJugar);
   });
 }

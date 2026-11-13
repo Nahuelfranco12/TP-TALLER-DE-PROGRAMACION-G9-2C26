@@ -1,10 +1,8 @@
 #include "controlador_retomar_partida.h"
 #include "constantes.h"
 #include "dtos_pantallas.h"
-//#include "partidas_estaticas.h"
 #include "ui_pantalla.h"
 
-//#include <QDebug>
 
 ControladorRetomarPartida::ControladorRetomarPartida(
     Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
