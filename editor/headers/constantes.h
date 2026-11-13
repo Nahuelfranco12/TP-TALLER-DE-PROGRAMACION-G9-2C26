@@ -266,4 +266,16 @@
 #define TEXTO_MAPA_GUARDADO "El mapa se guardó en:\n"
 #define TITULO_ERROR_GUARDAR "No se pudo guardar"
 
+//sobre editar mapas
+#define TEXTO_ERROR_LEER "No se pudo leer el archivo: "
+#define TEXTO_ERROR_VERSION "Version de archivo no soportada."
+#define TEXTO_ERROR_CAMPO "Falta un dato o es invalido: "
+#define TEXTO_ERROR_TIPO "Elemento desconocido: "
+#define TEXTO_ERROR_DIMENSIONES "Dimensiones fuera de rango en: "
+#define TEXTO_ERROR_OBJETO "Un objeto no entra o pisa a otro en: "
+#define TEXTO_ERROR_NIVELES "La caverna no tiene la cantidad de niveles esperada."
+#define TEXTO_NIVEL_ARCHIVO " nivel "
+#define TITULO_ERROR_CARGAR "No se pudo abrir el mapa"
+
+
 #endif // CONSTANTES_H

@@ -1,10 +1,15 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QMessageBox>
+#include <exception>
+#include <utility>
 
 #include "constantes.h"
 #include "controlador_inicio_editor.h"
 #include "ui_ventanaeditor.h"
+#include "archivo_mapa.h"
+
 
 ControladorInicioEditor::ControladorInicioEditor(Ui::VentanaEditor &ui,
                                                  Navegador &navegador,
@@ -25,14 +30,18 @@ void ControladorInicioEditor::crearMapa() {
 }
 
 void ControladorInicioEditor::editarMapa() {
-  QString ruta =
-      QFileDialog::getOpenFileName(ui.pageInicioEditor->window(), TITULO_ABRIR,
-                                   QDir::homePath(), FILTRO_MAPAS);
+  QString ruta = QFileDialog::getOpenFileName(
+      ui.centralwidget->window(), TITULO_ABRIR, QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
-  datos = DatosEditor{};
-  datos.rutaArchivo = ruta;
-  navegador.irA(ui.pageMapas);
+  try {
+    MapaEditor mapa = cargarMapa(ruta.toStdString());
+    datos = DatosEditor{ruta, std::move(mapa)};
+    navegador.irA(ui.pageMapas);
+  } catch (const std::exception &error) {
+    QMessageBox::warning(ui.centralwidget->window(), TITULO_ERROR_CARGAR,
+                         QString::fromUtf8(error.what()));
+  }
 }
 
 void ControladorInicioEditor::limpiarPagina() {}
