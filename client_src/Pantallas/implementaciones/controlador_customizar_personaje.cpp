@@ -5,9 +5,10 @@
 #include <QLineEdit>
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
-    Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
-    const DibujarPersonaje &dibujar, ServicioLobby &servicio, QObject *parent)
-    : ControladorPagina(ui, navegador, parent), dibujar(dibujar),
+    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    DatosPartida &datosPartida, const DibujarPersonaje &dibujar,
+    ServicioLobby &servicio, QObject *parent)
+    : ControladorPagina(ventana, ui, navegador, parent), dibujar(dibujar),
       datosPartida(datosPartida), servicio(servicio) {
   ui.botJugar->setEnabled(false);
   connect(ui.botVolverPersonaje, &QPushButton::clicked, this, [this]() {

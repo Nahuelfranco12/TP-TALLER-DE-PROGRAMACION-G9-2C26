@@ -9,9 +9,11 @@
 #include "ui_pantalla.h"
 #include "vista_responsive.h"
 #include "servicio_lobby.h"
+#include <QFontDatabase>
 
 Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Pantalla) {
+  QFontDatabase::addApplicationFont(RUTA_FUENTE);
   ui->setupUi(this);
   ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
   ui->verticalLayout->removeWidget(ui->stackedWidget);
@@ -22,13 +24,14 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
                         ui->centralwidget));
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
-  new ControladorMenuPrincipal(*ui, *navegador, this);
-  new ControladorNuevaPartida(*ui, *navegador, datosPartida, servicio, this);
-  new ControladorUnirsePartida(*ui, *navegador, datosPartida, this);
-  new ControladorRetomarPartida(*ui, *navegador, datosPartida, dibujante,
-                                servicio, this);
-  new ControladorCustomizarPersonaje(*ui, *navegador, datosPartida, dibujante,
-                                     servicio, this);
+  new ControladorMenuPrincipal(*this, *ui, *navegador, this);
+  new ControladorNuevaPartida(*this, *ui, *navegador, datosPartida, servicio,
+                              this);
+  new ControladorUnirsePartida(*this, *ui, *navegador, datosPartida, this);
+  new ControladorRetomarPartida(*this, *ui, *navegador, datosPartida,
+                                dibujante, servicio, this);
+  new ControladorCustomizarPersonaje(*this, *ui, *navegador, datosPartida,
+                                     dibujante, servicio, this);
 }
 
 Pantalla::~Pantalla() { delete ui; }

@@ -3,10 +3,11 @@
 
 #include "controlador_pagina.h"
 #include "dtos_pantallas.h"
+#include <qwidget.h>
 
 class ControladorUnirsePartida : public ControladorPagina {
 public:
-  ControladorUnirsePartida(Ui::Pantalla &ui, Navegador &navegador,
+  ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
                            DatosPartida &datosPartida,
                            QObject *parent = nullptr);
   void limpiarPagina() override;

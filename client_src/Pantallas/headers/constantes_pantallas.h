@@ -32,6 +32,8 @@
 #define TIPOS_CUERPO                                                           \
   ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
 
+#define RUTA_FUENTE ":/fuentes/assets/fuentes/Stardew_Valley.otf"
+
 // estas son las coordenadas de las ropas y demas que usa el personaje
 #define COORDENADAS_PELOS {{1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, {4, 12}}
 #define COORDENADAS_GORROS {{13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, {33, 4}}

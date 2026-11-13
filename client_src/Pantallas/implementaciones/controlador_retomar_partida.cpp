@@ -3,10 +3,11 @@
 #include "ui_pantalla.h"
 
 ControladorRetomarPartida::ControladorRetomarPartida(
-    Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
-    const DibujarPersonaje &dibujante, ServicioLobby &servicio, QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
-      dibujante(dibujante), servicio(servicio) {
+    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    DatosPartida &datosPartida, const DibujarPersonaje &dibujante,
+    ServicioLobby &servicio, QObject *parent)
+    : ControladorPagina(ventana, ui, navegador, parent),
+      datosPartida(datosPartida), dibujante(dibujante), servicio(servicio) {
 
   partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
 

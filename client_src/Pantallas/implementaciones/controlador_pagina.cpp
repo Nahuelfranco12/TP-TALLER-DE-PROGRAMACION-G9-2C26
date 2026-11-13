@@ -12,7 +12,6 @@ void ControladorPagina::intentarJugar(ServicioLobby &servicio,
     QApplication::quit();
     return;
   }
-  QMessageBox::warning(botonJugar->window(), TITULO_ERROR_JUGAR,
-                       resultado.mensajeError);
+  QMessageBox::warning(&ventana, TITULO_ERROR_JUGAR, resultado.mensajeError);
   actualizarBotonAvanzar();
 }

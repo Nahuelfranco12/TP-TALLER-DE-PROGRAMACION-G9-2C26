@@ -2,11 +2,13 @@
 #include "ui_pantalla.h"
 #include <QLineEdit>
 
-ControladorUnirsePartida::ControladorUnirsePartida(Ui::Pantalla &ui,
+ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
+                                                   Ui::Pantalla &ui,
                                                    Navegador &navegador,
                                                    DatosPartida &datosPartida,
                                                    QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida) {
+    : ControladorPagina(ventana, ui, navegador, parent),
+      datosPartida(datosPartida) {
   ui.botSiguienteUP->setEnabled(false);
   connect(ui.botVolverUP, &QPushButton::clicked, this, [this]() {
     limpiarPagina();

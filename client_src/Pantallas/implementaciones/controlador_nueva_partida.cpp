@@ -3,13 +3,14 @@
 #include "ui_pantalla.h"
 #include <QLineEdit>
 
-ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
+ControladorNuevaPartida::ControladorNuevaPartida(QWidget &ventana,
+                                                 Ui::Pantalla &ui,
                                                  Navegador &navegador,
                                                  DatosPartida &datosPartida,
                                                  ServicioLobby &servicio,
                                                  QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
-      servicio(servicio) {
+    : ControladorPagina(ventana, ui, navegador, parent),
+      datosPartida(datosPartida), servicio(servicio) {
 
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 
