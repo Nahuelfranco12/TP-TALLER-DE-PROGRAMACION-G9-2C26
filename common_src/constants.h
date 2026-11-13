@@ -31,6 +31,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_GIFT_RESPONSE 13
 #define OP_TILL 14
 #define OP_WATER 15
+#define OP_CHEAT_WATER 16
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

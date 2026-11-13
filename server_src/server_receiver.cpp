@@ -69,6 +69,9 @@ void ServerReceiver::run() {
       case OP_GIFT_RESPONSE:
         match->push_command(factory.create(client_id, protocol.receive_gift_response()));
         break;
+      case OP_CHEAT_WATER:
+        match->push_command(factory.create_cheat_water(client_id, protocol.receive_cheat_water()));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }

@@ -113,6 +113,10 @@ void Client::send_water(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<WaterAction>(direction));
 }
 
+void Client::send_cheat_water(DirectionDto direction) {
+    to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+}
+
 bool Client::try_get_latest_state(SectorStateDto &state) {
   bool has_been_received = false;
   SectorStateDto next_state;
