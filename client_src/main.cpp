@@ -26,6 +26,8 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <cmath>
+#include <cstdlib>
 
 #include <SDL.h>
 #include <SDL2pp/SDL2pp.hh>
@@ -143,14 +145,59 @@ int main(int argc, char *argv[]) try {
 		SDL_Event evento;
 		while (SDL_PollEvent(&evento)) {
 			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				bool acepto = false;
-        if (interfaz.click_regalo(evento.button.x, evento.button.y, acepto)) {
+				int mouse_x = evento.button.x;
+        int mouse_y = evento.button.y;
+        int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
+        int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
+        bool acepto = false;
+
+        if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
-        } else if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
-          if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
+        } else if (pueblo.hay_tienda_abierta()) {
+          switch (pueblo.click_tienda(mouse_x, mouse_y)) {
+            case Pueblo::COMPRAR:
+              // TODO
+              break;
+            case Pueblo::VENDER:
+              // TODO
+              break;
+            case Pueblo::HABLAR:
+              // TODO
+              break;
+            case Pueblo::SALIR:
+              pueblo.cerrar_tienda();
+              break;
+            default:
+              break;
+          }
+        } else if (zona == SectorTypeDto::VILLAGE && pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
+          // Se abre la tienda del npc
+        } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
+          if (inventario.click(mouse_x, mouse_y, window.GetWidth(), window.GetHeight())) {
             ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
             if (inventario.herramienta_seleccionada(herramienta)) {
               client.send_select_tool(herramienta);
+            }
+          } else {
+            int casillero = 0;
+            if (inventario.indice_item_seleccionado(casillero)) {
+              int tile_x = static_cast<int>(std::floor((mouse_x + camara_x) / double(TILE)));
+              int tile_y = static_cast<int>(std::floor((mouse_y + camara_y) / double(TILE)));
+
+              for (const auto &[posicion, jugador] : ultimo_estado.players) {
+                int px = static_cast<int>(posicion.x);
+                int py = static_cast<int>(posicion.y);
+
+                bool lo_toque = px == tile_x && (py == tile_y || py == tile_y + 1);
+
+                int distancia = std::abs(px - personaje.obtener_tile_x()) + std::abs(py - personaje.obtener_tile_y());
+
+                bool es_otro = static_cast<int>(jugador.id) != client.get_my_id();
+
+                if (lo_toque && es_otro && distancia == 1) {
+                  client.send_gift_offer(static_cast<int>(jugador.id), casillero);
+                }
+              }
             }
           }
         }
@@ -161,7 +208,11 @@ int main(int argc, char *argv[]) try {
       }
       // Si el usuario presiona ESC, se cierra la ventana
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_ESCAPE) {
-        corriendo = false;
+        if (pueblo.hay_tienda_abierta()) {
+          pueblo.cerrar_tienda();
+        } else {
+          corriendo = false;
+        }
       }
 
       // M abre y cierra mapa
@@ -177,25 +228,6 @@ int main(int argc, char *argv[]) try {
 		      client.send_select_tool(herramienta);
         }
 		  }
-
-      // G: regalar el item seleccionado al que tengo enfrente
-      // TODO: REVISAR
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_g && evento.key.repeat == 0) {
-        int frente_x = personaje.obtener_tile_x();
-        int frente_y = personaje.obtener_tile_y();
-        switch (personaje.obtener_direccion()) {
-        case ARRIBA:    frente_y--; break;
-        case ABAJO:     frente_y++; break;
-        case IZQUIERDA: frente_x--; break;
-        case DERECHA:   frente_x++; break;
-        }
-        int casillero = 0;
-        auto receptor = ultimo_estado.players.find(GamePositionDto{
-            .x = static_cast<size_t>(frente_x), .y = static_cast<size_t>(frente_y)});
-        if (receptor != ultimo_estado.players.end() && inventario.indice_item_seleccionado(casillero)) {
-          client.send_gift_offer(static_cast<int>(receptor->second.id), casillero);
-        }
-      }
 
       // Y / N: aceptar o rechazar el regalo
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) {
@@ -248,7 +280,7 @@ int main(int argc, char *argv[]) try {
         }
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
+      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 && !pueblo.hay_tienda_abierta()) {
         switch (evento.key.keysym.sym) {
         case SDLK_UP:
           personaje.mirar(ARRIBA);
@@ -279,6 +311,7 @@ int main(int argc, char *argv[]) try {
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
 		if (state.type != zona) {
+      pueblo.cerrar_tienda();
       zona = state.type;
       switch (zona) {
         case SectorTypeDto::CAVERN: audio.poner_musica_caverna(); break;
@@ -384,6 +417,8 @@ int main(int argc, char *argv[]) try {
     personaje.dibujar(renderer, camara_x, camara_y);
     
     interfaz.dibujar_noche(renderer);
+
+    pueblo.dibujar_tienda(renderer, personaje);
 
     // Mapa del mundo (M)
     if (viendo_mapa) {

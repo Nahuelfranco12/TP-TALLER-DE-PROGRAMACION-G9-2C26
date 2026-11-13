@@ -67,7 +67,7 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
   herramientas.emplace_back(renderer, "assets/inventario/sword.png");
   herramientas.emplace_back(renderer, "assets/inventario/pickaxe.png");
   herramientas.emplace_back(renderer, "assets/inventario/shovel.png");
-  herramientas.emplace_back(renderer, "assets/inventario/basket.png");
+  herramientas.emplace_back(renderer, "assets/inventario/watering_can.png");
 }
 
 void Personaje::cambiar_color_pantalon() {

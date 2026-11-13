@@ -32,7 +32,7 @@ Inventario::Inventario(Renderer &renderer)
   }
 
   iconos_herramienta.emplace_back(renderer, "assets/inventario/pickaxe.png");
-  iconos_herramienta.emplace_back(renderer, "assets/inventario/basket.png");
+  iconos_herramienta.emplace_back(renderer, "assets/inventario/watering_can.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/shovel.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/sword.png");
 
