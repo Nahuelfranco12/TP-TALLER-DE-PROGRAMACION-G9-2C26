@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "constantes.h"
-#include "editor_dtos.h"
+#include "constantes_mapa.h"
+#include "elementos_mapa.h"
 
 struct Dimensiones {
   int ancho = ANCHO_PREDETERMINADO;
@@ -39,6 +39,7 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo);
 bool esUnico(ElementosGranja tipo);
 bool esUnico(ElementosCaverna tipo);
 bool esUnico(ElementosPueblo tipo);
+bool esCabania(ElementosGranja tipo);
 
 template <typename TipoObjeto>
 bool ocupa(const ObjetoColocado<TipoObjeto> &objeto, int x, int y) {
@@ -81,15 +82,6 @@ public:
 
   const std::vector<ObjetoColocado<TipoObjeto>> &objetos() const {
     return objetosColocados;
-  }
-
-  const ObjetoColocado<TipoObjeto> *objetoEnCelda(int x, int y) const {
-    auto objeto = std::find_if(
-        objetosColocados.begin(), objetosColocados.end(),
-        [x, y](const auto &candidato) { return ocupa(candidato, x, y); });
-    if (objeto == objetosColocados.end())
-      return nullptr;
-    return &*objeto;
   }
 
   bool colocar(TipoObjeto tipo, int x, int y) {
@@ -167,6 +159,10 @@ void pintarBorde(MapaZona<TipoObjeto> &zona, Terreno terreno) {
   }
 }
 
+Terreno pisoBaseDe(Zona zona);
+
+MapaZona<ElementosCaverna> crearNivelCaverna(Dimensiones dimensiones);
+
 struct MapaEditor {
   std::string nombre;
   MapaZona<ElementosGranja> granja;
@@ -175,5 +171,7 @@ struct MapaEditor {
 };
 
 MapaEditor crearMapaPredeterminado();
+Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona);
+void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas);
 
 #endif // EDITOR_MAPA_EDITOR_H_

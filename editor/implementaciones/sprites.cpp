@@ -3,7 +3,7 @@
 #include <QColor>
 #include <QPainter>
 
-#include "constantes.h"
+#include "constantes_qt.h"
 
 namespace {
 QPixmap placeholder(const QString &nombre, int ancho, int alto) {

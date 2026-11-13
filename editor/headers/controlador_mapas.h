@@ -4,17 +4,18 @@
 #include <cstddef>
 #include <vector>
 
+#include "catalogo_elementos.h"
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
-#include "editor_dtos.h"
 
 class QWidget;
 class VistaZona;
 
 class ControladorMapas : public ControladorPaginaEditor {
 public:
-  ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
-                   DatosEditor &datos, QObject *parent = nullptr);
+  ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
+                   Navegador &navegador, DatosEditor &datos,
+                   QObject *parent = nullptr);
   void limpiarPagina() override;
 
 private:
@@ -31,7 +32,6 @@ private:
   MapaZona<ElementosCaverna> &cavernaActual();
   void cambiarDeNivel(int nivel);
 
-  Dimensiones dimensionesDe(Zona zona) const;
   void mostrarDimensiones(Dimensiones dimensiones);
   void aplicarDimensiones();
 
