@@ -30,8 +30,8 @@ const TablaIds<ElementosGranja> &tablaIds(ElementosGranja) {
       {ElementosGranja::PiedraGris, "PiedraGris"},
       {ElementosGranja::ArbustoRedondo, "ArbustoRedondo"},
       {ElementosGranja::ArbustoGrande, "ArbustoGrande"},
-      {ElementosGranja::TroncoTirado, "TroncoTirado"},
-      {ElementosGranja::TroncoPartido, "Tocon"},
+      {ElementosGranja::TroncoCaido, "TroncoCaido"},
+      {ElementosGranja::Tocon, "Tocon"},
       {ElementosGranja::BuzonRojo, "BuzonRojo"},
       {ElementosGranja::CartelVacio, "CartelVacio"}};
   return tabla;
@@ -45,7 +45,7 @@ const TablaIds<ElementosCaverna> &tablaIds(ElementosCaverna) {
       {ElementosCaverna::Calavera, "Calavera"},
       {ElementosCaverna::Hueso, "Hueso"},
       {ElementosCaverna::Escombros, "Escombros"},
-      {ElementosCaverna::Antorchas, "Antorchas"},
+      {ElementosCaverna::Antorcha, "Antorcha"},
       {ElementosCaverna::Candelabro, "Candelabro"},
       {ElementosCaverna::Escudo, "Escudo"}};
   return tabla;

@@ -111,7 +111,7 @@
   { 160, 144, 16, 16 }
 #define RECORTE_TRONCO_CAIDO                                                   \
   { 144, 96, 16, 16 }
-#define RECORTE_TRONCO_PARTIDO                                                 \
+#define RECORTE_TOCON                                                 \
   { 128, 112, 16, 16 }
 #define RECORTE_BUZON_ROJO                                                     \
   { 19, 91, 11, 20 }
@@ -168,7 +168,7 @@
 #define TEXTO_PIEDRA_GRIS_GRANDE "Piedra gris grande"
 #define TEXTO_PIEDRA_GRIS "Piedra gris"
 #define TEXTO_TRONCO_CAIDO "Tronco caído"
-#define TEXTO_TRONCO_CORTADO "Tronco cortado"
+#define TEXTO_TOCON "Tronco cortado"
 #define TEXTO_BUZON_ROJO "Buzon rojo"
 #define TEXTO_CARTEL_VACIO "Cartel"
 #define TEXTO_ENTRADA_MINA "Entrada a la mina"

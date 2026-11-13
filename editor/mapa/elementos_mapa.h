@@ -20,8 +20,8 @@ enum class ElementosGranja {
   ArbustoGrande,
   PiedraGrisGrande,
   PiedraGris,
-  TroncoTirado,
-  TroncoPartido,
+  TroncoCaido,
+  Tocon,
   BuzonRojo,
   CartelVacio,
   SalidaPueblo
@@ -34,7 +34,7 @@ enum class ElementosCaverna {
   Calavera,
   Hueso,
   Escombros,
-  Antorchas,
+  Antorcha,
   Candelabro,
   Escudo
 };
