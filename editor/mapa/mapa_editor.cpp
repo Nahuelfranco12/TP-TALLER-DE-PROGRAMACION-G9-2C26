@@ -1,20 +1,65 @@
 #include "mapa_editor.h"
 #include "constantes_mapa.h"
 
-#include <algorithm>
-#include <string>
 #include <utility>
 #include <vector>
 
+Terreno pisoBaseDe(Zona zona) {
+  switch (zona) {
+  case Zona::Granja:
+    return Terreno::Pasto;
+  case Zona::Caverna:
+    return Terreno::PisoCaverna;
+  case Zona::Pueblo:
+    return Terreno::PisoPueblo;
+  }
+  return Terreno::Pasto;
+}
+
+MapaZona<ElementosCaverna> crearNivelCaverna(Dimensiones dimensiones) {
+  MapaZona<ElementosCaverna> nivel(dimensiones, pisoBaseDe(Zona::Caverna));
+  pintarBorde(nivel, Terreno::Pared);
+  return nivel;
+}
+
 MapaEditor crearMapaPredeterminado() {
-  MapaZona<ElementosCaverna> nivelBase(Dimensiones{}, Terreno::PisoCaverna);
-  pintarBorde(nivelBase, Terreno::Pared);
-  std::vector<MapaZona<ElementosCaverna>> niveles(CANTIDAD_NIVELES_CAVERNA,
-                                                  nivelBase);
+  std::vector<MapaZona<ElementosCaverna>> niveles(
+      CANTIDAD_NIVELES_CAVERNA, crearNivelCaverna(Dimensiones{}));
   return MapaEditor{
-      "", MapaZona<ElementosGranja>(Dimensiones{}, Terreno::Pasto),
+      "",
+      MapaZona<ElementosGranja>(Dimensiones{}, pisoBaseDe(Zona::Granja)),
       std::move(niveles),
-      MapaZona<ElementosPueblo>(Dimensiones{}, Terreno::PisoPueblo)};
+      MapaZona<ElementosPueblo>(Dimensiones{}, pisoBaseDe(Zona::Pueblo))};
+}
+
+Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
+  switch (zona) {
+  case Zona::Granja:
+    return mapa.granja.tamanio();
+  case Zona::Caverna:
+    return mapa.nivelesCaverna.front().tamanio();
+  case Zona::Pueblo:
+    return mapa.pueblo.tamanio();
+  }
+  return Dimensiones{};
+}
+
+void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
+  switch (zona) {
+  case Zona::Granja:
+    mapa.granja.redimensionar(nuevas);
+    break;
+  case Zona::Caverna:
+    for (auto &nivel : mapa.nivelesCaverna) {
+      pintarBorde(nivel, pisoBaseDe(Zona::Caverna));
+      nivel.redimensionar(nuevas);
+      pintarBorde(nivel, Terreno::Pared);
+    }
+    break;
+  case Zona::Pueblo:
+    mapa.pueblo.redimensionar(nuevas);
+    break;
+  }
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {

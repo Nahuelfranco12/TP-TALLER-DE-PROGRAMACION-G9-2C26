@@ -31,7 +31,6 @@ private:
   MapaZona<ElementosCaverna> &cavernaActual();
   void cambiarDeNivel(int nivel);
 
-  Dimensiones dimensionesDe(Zona zona) const;
   void mostrarDimensiones(Dimensiones dimensiones);
   void aplicarDimensiones();
 

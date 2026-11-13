@@ -158,6 +158,10 @@ void pintarBorde(MapaZona<TipoObjeto> &zona, Terreno terreno) {
   }
 }
 
+Terreno pisoBaseDe(Zona zona);
+
+MapaZona<ElementosCaverna> crearNivelCaverna(Dimensiones dimensiones);
+
 struct MapaEditor {
   std::string nombre;
   MapaZona<ElementosGranja> granja;
@@ -166,5 +170,7 @@ struct MapaEditor {
 };
 
 MapaEditor crearMapaPredeterminado();
+Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona);
+void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas);
 
 #endif // EDITOR_MAPA_EDITOR_H_

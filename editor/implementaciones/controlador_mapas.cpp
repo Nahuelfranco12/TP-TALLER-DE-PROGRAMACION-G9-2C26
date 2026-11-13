@@ -91,7 +91,7 @@ Zona ControladorMapas::zonaDe(QWidget *pestania) const {
 void ControladorMapas::cambiarDeZona(Zona zona) {
   zonaActual = zona;
   cargarPaleta(zona);
-  mostrarDimensiones(dimensionesDe(zona));
+  mostrarDimensiones(dimensionesDe(datos.mapa,zona));
 }
 
 void ControladorMapas::cargarPaleta(Zona zona) {
@@ -130,18 +130,6 @@ MapaZona<ElementosCaverna> &ControladorMapas::cavernaActual() {
 void ControladorMapas::cambiarDeNivel(int nivel) {
   nivelCaverna = static_cast<std::size_t>(nivel - PRIMER_NIVEL_CAVERNA);
   ui.vistaCaverna->mostrar(cavernaActual());
-}
-
-Dimensiones ControladorMapas::dimensionesDe(Zona zona) const {
-  switch (zona) {
-  case Zona::Granja:
-    return datos.mapa.granja.tamanio();
-  case Zona::Caverna:
-    return datos.mapa.nivelesCaverna.front().tamanio();
-  case Zona::Pueblo:
-    return datos.mapa.pueblo.tamanio();
-  }
-  return Dimensiones{};
 }
 
 void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {

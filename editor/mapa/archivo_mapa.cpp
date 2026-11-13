@@ -167,9 +167,9 @@ void cargarObjetos(const toml::table &tabla, MapaZona<T> &zona,
 
 template <typename T>
 MapaZona<T> cargarZona(const toml::table &raiz, const char *clave,
-                       Terreno pisoBase) {
+                       Zona tipoZona) {
   const toml::table &tabla = leerTabla(raiz, clave);
-  MapaZona<T> zona(leerDimensiones(tabla, clave), pisoBase);
+  MapaZona<T> zona(leerDimensiones(tabla, clave), pisoBaseDe(tipoZona));
   cargarObjetos(tabla, zona, clave);
   return zona;
 }
@@ -190,8 +190,7 @@ std::vector<MapaZona<ElementosCaverna>> cargarCaverna(
     const toml::table *tablaNivel = nodo.as_table();
     if (tablaNivel == nullptr)
       throw std::runtime_error(TEXTO_ERROR_CAMPO + donde);
-    MapaZona<ElementosCaverna> nivel(dimensiones, Terreno::PisoCaverna);
-    pintarBorde(nivel, Terreno::Pared);
+    MapaZona<ElementosCaverna> nivel = crearNivelCaverna(dimensiones);
     cargarObjetos(*tablaNivel, nivel, donde);
     resultado.push_back(std::move(nivel));
     ++numero;
@@ -236,7 +235,7 @@ MapaEditor cargarMapa(const std::string &ruta) {
 
   return MapaEditor{
       *nombre,
-      cargarZona<ElementosGranja>(raiz, CLAVE_GRANJA, Terreno::Pasto),
+      cargarZona<ElementosGranja>(raiz, CLAVE_GRANJA, Zona::Granja),
       cargarCaverna(raiz),
-      cargarZona<ElementosPueblo>(raiz, CLAVE_PUEBLO, Terreno::PisoPueblo)};
+      cargarZona<ElementosPueblo>(raiz, CLAVE_PUEBLO, Zona::Pueblo)};
 }
