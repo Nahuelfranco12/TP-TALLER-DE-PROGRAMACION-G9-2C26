@@ -16,7 +16,6 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
   lista_minerales.clear();
   for (const auto &[pos, entidad] : entidades) {
     TipoMineral tipo;
-    size_t golpes = entidad.mineral.remainingHits;
     switch (entidad.type) {
       case EntityTypeDto::MINERAL_IRON:
         tipo = HIERRO;
@@ -34,24 +33,20 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
         continue;
     }
 
+    size_t golpes = entidad.mineral.remainingHits;
+    size_t etapa = 0;
+    if (golpes == 2) {
+      etapa = 1;
+    } else if (golpes == 1) {
+      etapa = 2;
+    }
+
     lista_minerales.push_back({
       tipo,
       static_cast<int>(pos.x),
       static_cast<int>(pos.y),
-      golpes
+      etapa
     });
-  }
-}
-
-void Caverna::picar(int tile_x, int tile_y) {
-  for (size_t i = 0; i < lista_minerales.size(); i++) {
-    Mineral &mineral = lista_minerales[i];
-
-    if (mineral.tile_x == tile_x && mineral.tile_y == tile_y) {
-      if (mineral.golpes < GOLPES_PARA_ROMPER - 1)
-        mineral.golpes++;
-      return;
-    }
   }
 }
 
