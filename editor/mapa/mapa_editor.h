@@ -39,6 +39,7 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo);
 bool esUnico(ElementosGranja tipo);
 bool esUnico(ElementosCaverna tipo);
 bool esUnico(ElementosPueblo tipo);
+bool esCabania(ElementosGranja tipo);
 
 template <typename TipoObjeto>
 bool ocupa(const ObjetoColocado<TipoObjeto> &objeto, int x, int y) {

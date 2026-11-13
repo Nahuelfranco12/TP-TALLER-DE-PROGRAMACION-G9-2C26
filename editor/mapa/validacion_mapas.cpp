@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "constantes_mapa.h"
+#include "mapa_editor.h"
 
 namespace {
 template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
@@ -14,19 +15,6 @@ template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
       std::ranges::count_if(zona.objetos(), [tipo](const auto &objeto) {
         return objeto.tipo == tipo;
       }));
-}
-
-bool esCabania(ElementosGranja tipo) {
-  switch (tipo) {
-  case ElementosGranja::Cabania1:
-  case ElementosGranja::Cabania2:
-  case ElementosGranja::Cabania3:
-  case ElementosGranja::Cabania4:
-  case ElementosGranja::Cabania5:
-    return true;
-  default:
-    return false;
-  }
 }
 
 std::string conEncabezado(const std::string &lugar, const std::string &mensaje) {

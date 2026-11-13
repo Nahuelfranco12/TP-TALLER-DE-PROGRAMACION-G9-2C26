@@ -62,14 +62,23 @@ void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
   }
 }
 
-CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
+bool esCabania(ElementosGranja tipo) {
   switch (tipo) {
   case ElementosGranja::Cabania1:
   case ElementosGranja::Cabania2:
   case ElementosGranja::Cabania3:
   case ElementosGranja::Cabania4:
   case ElementosGranja::Cabania5:
+    return true;
+  default:
+    return false;
+  }
+}
+
+CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
+  if (esCabania(tipo))
     return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
+  switch (tipo) {
   case ElementosGranja::Arbol1:
   case ElementosGranja::Arbol2:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ARBOL_ALTO};
@@ -78,6 +87,10 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
   default:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
   }
+}
+
+bool esUnico(ElementosGranja tipo) {
+  return esCabania(tipo) || tipo == ElementosGranja::SalidaPueblo;
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
@@ -107,20 +120,6 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
     return {TAMANIO_ALTO_ANCHO_NPC, TAMANIO_ALTO_ANCHO_NPC};
   default:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
-  }
-}
-
-bool esUnico(ElementosGranja tipo) {
-  switch (tipo) {
-  case ElementosGranja::Cabania1:
-  case ElementosGranja::Cabania2:
-  case ElementosGranja::Cabania3:
-  case ElementosGranja::Cabania4:
-  case ElementosGranja::Cabania5:
-  case ElementosGranja::SalidaPueblo:
-    return true;
-  default:
-    return false;
   }
 }
 
