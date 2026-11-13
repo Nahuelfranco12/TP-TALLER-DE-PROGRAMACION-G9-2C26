@@ -45,11 +45,6 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::CentroComunitario:
     return {TAMANIO_OCUPADO_CENTROCOM_ANCHO, TAMANIO_OCUPADO_CENTROCOM_ALTO};
-  case ElementosPueblo::CasaChica:
-    return {TAMANIO_OCUPADO_CASA_CHICA_ANCHO, TAMANIO_OCUPADO_CASA_CHICA_ALTO};
-  case ElementosPueblo::CasaMediana:
-    return {TAMANIO_OCUPADO_CASA_MEDIANA_ANCHO,
-            TAMANIO_OCUPADO_CASA_MEDIANA_ALTO};
   case ElementosPueblo::FarolNaranja:
   case ElementosPueblo::FarolAzul:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};

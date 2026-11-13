@@ -6,7 +6,6 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStringList>
-#include <type_traits>
 #include <vector>
 #include <QDir>
 #include <QFileDialog>
@@ -119,7 +118,6 @@ void ControladorMapas::agregarAPaleta(
                                    TAMANIO_ICONO, TAMANIO_ICONO);
     auto *item = new QListWidgetItem(QIcon(icono), nombre);
     item->setData(ROL_VALOR, static_cast<int>(info.elemento));
-    item->setData(ROL_ES_TERRENO, std::is_same_v<T, Terreno>);
     ui.paletaAssets->addItem(item);
   }
 }
@@ -194,10 +192,7 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
   if (item == nullptr)
     return;
   int valor = item->data(ROL_VALOR).toInt();
-  if (item->data(ROL_ES_TERRENO).toBool())
-    zona.pintarTerrenoConCelda(x, y, static_cast<Terreno>(valor));
-  else
-    zona.colocar(static_cast<T>(valor), x, y);
+  zona.colocar(static_cast<T>(valor), x, y);
 }
 
 void ControladorMapas::exportar() {

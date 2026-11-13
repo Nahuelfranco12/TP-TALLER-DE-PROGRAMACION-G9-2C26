@@ -3,7 +3,7 @@
 
 enum class Zona { Granja, Caverna, Pueblo };
 
-enum class Terreno { Pasto, Tierra, Camino, PisoCaverna, Pared, PisoPueblo };
+enum class Terreno { Pasto, PisoCaverna, Pared, PisoPueblo };
 
 enum class ElementosGranja {
   Cabania1,
@@ -51,8 +51,6 @@ enum class ElementosPueblo {
   BancoMadera,
   BuzonGris,
   BuzonAzul,
-  CasaChica,
-  CasaMediana,
   CasaMarnie,
   CasaClint,
   CasaPierre,

@@ -83,15 +83,6 @@ public:
     return objetosColocados;
   }
 
-  const ObjetoColocado<TipoObjeto> *objetoEnCelda(int x, int y) const {
-    auto objeto = std::find_if(
-        objetosColocados.begin(), objetosColocados.end(),
-        [x, y](const auto &candidato) { return ocupa(candidato, x, y); });
-    if (objeto == objetosColocados.end())
-      return nullptr;
-    return &*objeto;
-  }
-
   bool colocar(TipoObjeto tipo, int x, int y) {
     if (!entra(tipo, x, y))
       return false;
