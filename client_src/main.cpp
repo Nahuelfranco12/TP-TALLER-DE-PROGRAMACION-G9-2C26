@@ -25,6 +25,8 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <cmath>
+#include <cstdlib>
 
 #include <SDL.h>
 #include <SDL2pp/SDL2pp.hh>
@@ -116,7 +118,7 @@ int main(int argc, char *argv[]) try {
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
 
-  MapaMundo mapa_mundo(client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
+  MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
   bool viendo_mapa = false;
@@ -140,14 +142,62 @@ int main(int argc, char *argv[]) try {
 		SDL_Event evento;
 		while (SDL_PollEvent(&evento)) {
 			if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
-				if (!interfaz.click(evento.button.x, evento.button.y, audio)) {
-					if (inventario.click(evento.button.x, evento.button.y, window.GetWidth(), window.GetHeight())) {
-						ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
-						if (inventario.herramienta_seleccionada(herramienta)) {
-							client.send_select_tool(herramienta);
-						}
-					}
-				}
+				int mouse_x = evento.button.x;
+        int mouse_y = evento.button.y;
+        int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
+        int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
+        bool acepto = false;
+
+        if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
+          client.send_gift_response(acepto);
+        } else if (pueblo.hay_tienda_abierta()) {
+          switch (pueblo.click_tienda(mouse_x, mouse_y)) {
+            case Pueblo::COMPRAR:
+              // TODO
+              break;
+            case Pueblo::VENDER:
+              // TODO
+              break;
+            case Pueblo::HABLAR:
+              // TODO
+              break;
+            case Pueblo::SALIR:
+              pueblo.cerrar_tienda();
+              break;
+            default:
+              break;
+          }
+        } else if (zona == SectorTypeDto::VILLAGE && pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
+          // Se abre la tienda del npc
+        } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
+          if (inventario.click(mouse_x, mouse_y, window.GetWidth(), window.GetHeight())) {
+            ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
+            if (inventario.herramienta_seleccionada(herramienta)) {
+              client.send_select_tool(herramienta);
+            }
+          } else {
+            int casillero = 0;
+            if (inventario.indice_item_seleccionado(casillero)) {
+              int tile_x = static_cast<int>(std::floor((mouse_x + camara_x) / double(TILE)));
+              int tile_y = static_cast<int>(std::floor((mouse_y + camara_y) / double(TILE)));
+
+              for (const auto &[posicion, jugador] : ultimo_estado.players) {
+                int px = static_cast<int>(posicion.x);
+                int py = static_cast<int>(posicion.y);
+
+                bool lo_toque = px == tile_x && (py == tile_y || py == tile_y + 1);
+
+                int distancia = std::abs(px - personaje.obtener_tile_x()) + std::abs(py - personaje.obtener_tile_y());
+
+                bool es_otro = static_cast<int>(jugador.id) != client.get_my_id();
+
+                if (lo_toque && es_otro && distancia == 1) {
+                  client.send_gift_offer(static_cast<int>(jugador.id), casillero);
+                }
+              }
+            }
+          }
+        }
 			}
 
       if (evento.type == SDL_QUIT) {
@@ -155,7 +205,11 @@ int main(int argc, char *argv[]) try {
       }
       // Si el usuario presiona ESC, se cierra la ventana
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_ESCAPE) {
-        corriendo = false;
+        if (pueblo.hay_tienda_abierta()) {
+          pueblo.cerrar_tienda();
+        } else {
+          corriendo = false;
+        }
       }
 
       // M abre y cierra mapa
@@ -172,28 +226,15 @@ int main(int argc, char *argv[]) try {
         }
 		  }
 
-      // G: regalar el item seleccionado al que tengo enfrente
-      // TODO: REVISAR
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_g && evento.key.repeat == 0) {
-        int frente_x = personaje.obtener_tile_x();
-        int frente_y = personaje.obtener_tile_y();
-        switch (personaje.obtener_direccion()) {
-        case ARRIBA:    frente_y--; break;
-        case ABAJO:     frente_y++; break;
-        case IZQUIERDA: frente_x--; break;
-        case DERECHA:   frente_x++; break;
-        }
-        int casillero = 0;
-        auto receptor = ultimo_estado.players.find(GamePositionDto{
-            .x = static_cast<size_t>(frente_x), .y = static_cast<size_t>(frente_y)});
-        if (receptor != ultimo_estado.players.end() && inventario.indice_item_seleccionado(casillero)) {
-          client.send_gift_offer(static_cast<int>(receptor->second.id), casillero);
-        }
-      }
-
       // Y / N: aceptar o rechazar el regalo
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) client.send_gift_response(true);
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) client.send_gift_response(false);
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) {
+        client.send_gift_response(true);
+        interfaz.cerrar_regalo();
+      }
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) {
+        client.send_gift_response(false);
+        interfaz.cerrar_regalo();
+      }  
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         int frente_x = personaje.obtener_tile_x();
@@ -236,7 +277,7 @@ int main(int argc, char *argv[]) try {
         }
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0) {
+      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 && !pueblo.hay_tienda_abierta()) {
         switch (evento.key.keysym.sym) {
         case SDLK_UP:
           personaje.mirar(ARRIBA);
@@ -264,8 +305,10 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
 		if (state.type != zona) {
+      pueblo.cerrar_tienda();
       zona = state.type;
       switch (zona) {
         case SectorTypeDto::CAVERN: audio.poner_musica_caverna(); break;
@@ -300,6 +343,10 @@ int main(int argc, char *argv[]) try {
           if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
             inventario.actualizar(jugador.inventory.front());
           }
+          personaje.poner_vida(jugador.life);
+          personaje.poner_energia(jugador.energy);
+          interfaz.actualizar_monedas(renderer, jugador.coins);
+          interfaz.actualizar_regalo(jugador.pendingGift);
           continue;
         }
         presentes.insert(jugador.id);
@@ -312,6 +359,8 @@ int main(int argc, char *argv[]) try {
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        otro->poner_vida(jugador.life);
+        otro->poner_energia(jugador.energy);
         otro->agarrar(jugador.actualTool);
       }
       // Los que ya no vienen en el estado se fueron de la partida
@@ -364,6 +413,10 @@ int main(int argc, char *argv[]) try {
       par.second->dibujar(renderer, camara_x, camara_y);
     }
     personaje.dibujar(renderer, camara_x, camara_y);
+    
+    interfaz.dibujar_noche(renderer);
+
+    pueblo.dibujar_tienda(renderer, personaje);
 
     // Mapa del mundo (M)
     if (viendo_mapa) {
@@ -371,6 +424,11 @@ int main(int argc, char *argv[]) try {
     }
 
     interfaz.dibujar(renderer, audio);
+
+    if (interfaz.hay_regalo_pendiente()) {
+      interfaz.dibujar_regalo(renderer);
+      inventario.dibujar_regalo(renderer, interfaz.regalo_pendiente(), interfaz.lugar_icono_regalo());
+    }
 
     if (!viendo_mapa) {
       inventario.dibujar(renderer, window.GetWidth(), window.GetHeight());

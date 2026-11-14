@@ -32,8 +32,6 @@ public:
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 
-  void picar(int tile_x, int tile_y);
-
   void animar(long vueltas_pasadas);
 
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado = 64);

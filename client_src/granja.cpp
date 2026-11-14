@@ -21,6 +21,7 @@ const int VACA_LADO = 32;
 const int GALLINA_LADO = 16;
 const int CUADROS_ANIMACION = 4;
 const long VUELTAS_POR_CUADRO_ANIMAL = 20; // 20 x 16 ms = 0.3 s
+const long VUELTAS_POR_SALTO = 20;
 
 const int CULTIVO_LADO = 16;
 const int ULTIMA_ETAPA[4] = {5, 5, 6, 5};
@@ -36,6 +37,8 @@ Granja::Granja(Renderer &renderer)
       gallina(renderer, "assets/animales/Chicken Blonde  Green.png"),
       cultivos(renderer, "assets/cultivos/Spring Crops.png"),
       suelo(renderer, "assets/mapas/ground_01_16x16.png"),
+      huevo(renderer, "assets/inventario/egg.png"),
+      leche(renderer, "assets/inventario/milk.png"),
       vueltas(0) {
 
   // Por ahora fijos
@@ -88,12 +91,18 @@ void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
     int y = animal.tile_y * lado - lado - camara_y;
     Rect destino(x, y, VACA_LADO * lado / 16, VACA_LADO * lado / 16);
     renderer.Copy(vaca, origen, destino, 0.0, NullOpt, flip);
+    if (animal.listo) {
+      dibujar_producto(renderer, leche, x + destino.w / 2, y, lado);
+    }
   } else {
     Rect origen(cuadro * GALLINA_LADO, 0, GALLINA_LADO, GALLINA_LADO);
     int x = animal.tile_x * lado - camara_x;
     int y = animal.tile_y * lado - camara_y;
     Rect destino(x, y, GALLINA_LADO * lado / 16, GALLINA_LADO * lado / 16);
     renderer.Copy(gallina, origen, destino, 0.0, NullOpt, flip);
+    if (animal.listo) {
+      dibujar_producto(renderer, huevo, x + destino.w / 2, y, lado);
+    }
   }
 }
 
@@ -117,13 +126,26 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
     int x = static_cast<int>(pos.x);
     int y = static_cast<int>(pos.y);
     if (entidad.type == EntityTypeDto::COW) {
-      lista_animales.push_back({VACA, x, y, false});
+      lista_animales.push_back({VACA, x, y, false, entidad.ready});
     } else if (entidad.type == EntityTypeDto::CHICKEN) {
-      lista_animales.push_back({GALLINA, x, y, false});
+      lista_animales.push_back({GALLINA, x, y, false, entidad.ready});
     } else if (entidad.type == EntityTypeDto::CROP) {
       TipoCultivo tipo = static_cast<TipoCultivo>(entidad.crop.type);
       int etapa = static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] / 3;
       lista_cultivos.push_back({tipo, x, y, etapa});
     }
   }
+}
+
+void Granja::dibujar_producto(SDL2pp::Renderer &renderer, SDL2pp::Texture &producto, int centro_x, int arriba_y, int lado) {
+  int ancho = producto.GetWidth() * lado / 24;
+  int alto = producto.GetHeight() * lado / 24;
+
+  int salto = 0;
+  if((vueltas / VUELTAS_POR_SALTO) % 2 == 1) {
+    salto = lado / 16;
+  }
+
+  Rect destino(centro_x - ancho / 2, arriba_y - alto - salto, ancho, alto);
+  renderer.Copy(producto, NullOpt, destino);
 }
