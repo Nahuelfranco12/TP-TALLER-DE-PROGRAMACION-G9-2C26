@@ -46,6 +46,13 @@ const char *TITULOS[4] = {
     "Rancho de Marnie",
 };
 
+const char *FONDOS_TIENDAS[4] = {
+  "assets/tiendas/pierre.png", 
+  "assets/tiendas/clint.jpeg",
+  "assets/tiendas/robin.jpg",
+  "assets/tiendas/marnie.jpg",
+};
+
 const char *TEXTOS_BOTONES[4] = {"Comprar", "Vender", "Hablar", "Salir"};
 
 const int ALTO_BOTON = 36;
@@ -63,7 +70,6 @@ int tile_de_pixel(int pixel) {
 
 Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, "assets/edificios/PelicanTown_Buildings.png"),
-      fondo_tienda(renderer, "assets/tiendas/tienda.png"),
       fuente("assets/fuentes/DejaVuSans-Bold.ttf", 20),
       vueltas(0),
       tienda_abierta(-1) {
@@ -89,6 +95,9 @@ Pueblo::Pueblo(Renderer &renderer)
       texto_botones.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
     }
     botones.resize(4);
+    for (const char *archivo : FONDOS_TIENDAS) {
+      fondos_tiendas.emplace_back(renderer, archivo);
+    }
 }
 
 void Pueblo::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
@@ -173,12 +182,12 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
     renderer.SetDrawColor(0, 0, 0, 200);
     renderer.FillRect(Rect(0, 0, ancho_ventana, alto_ventana));
 
-    double escala = std::min((ancho_ventana - 40) / double(fondo_tienda.GetWidth()),
-                             (alto_ventana - 140) / double(fondo_tienda.GetHeight()));
-    int ancho = static_cast<int>(fondo_tienda.GetWidth() * escala);
-    int alto = static_cast<int>(fondo_tienda.GetHeight() * escala);
+    Texture &fondo = fondos_tiendas[tienda_abierta];
+    double escala = std::min((ancho_ventana - 40) / double(fondo.GetWidth()), (alto_ventana - 140) / double(fondo.GetHeight()));
+    int ancho = static_cast<int>(fondo.GetWidth() * escala);
+    int alto = static_cast<int>(fondo.GetHeight() * escala);
     Rect habitacion((ancho_ventana - ancho) / 2, (alto_ventana - alto) / 2, ancho, alto);
-    renderer.Copy(fondo_tienda, NullOpt, habitacion);
+  renderer.Copy(fondo, NullOpt, habitacion);
 
     int centro_x = ancho_ventana / 2;
     int pie_y = habitacion.y + habitacion.h / 2 + LADO_PERSONAJES;

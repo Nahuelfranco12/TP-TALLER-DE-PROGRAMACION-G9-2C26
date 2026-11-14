@@ -41,6 +41,7 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
                    fuente.RenderUTF8_Blended(
                        "Código: " + codigo_partida + "  (copiado)", BLANCO)),
       textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 1 06:00", BLANCO)),
+      textura_monedas(renderer, fuente.RenderUTF8_Blended("Monedas: 0", BLANCO)),
       texto_regalo(renderer, fuente.RenderUTF8_Blended("¡Te ofrecen un regalo!", BLANCO)),
       texto_aceptar(renderer, fuente.RenderUTF8_Blended("Aceptar", BLANCO)),
       texto_rechazar(renderer, fuente.RenderUTF8_Blended("Rechazar", BLANCO)) {}
@@ -106,6 +107,10 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
   int ancho_tiempo = textura_tiempo.GetWidth() + 2 * RELLENO;
   Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - MARGEN, MARGEN + ALTO_BOTON + 8, ancho_tiempo, ALTO_BOTON);
   dibujar_boton(renderer, caja_tiempo, textura_tiempo);
+
+  int ancho_monedas = textura_monedas.GetWidth() + 2 * RELLENO;
+  Rect caja_monedas(renderer.GetOutputWidth() - ancho_monedas - MARGEN, MARGEN + 2 * (ALTO_BOTON + 8), ancho_monedas, ALTO_BOTON);
+  dibujar_boton(renderer, caja_monedas, textura_monedas);
 }
 
 void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, size_t dia) {
@@ -117,6 +122,15 @@ void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, 
     texto_tiempo = nuevo;
     textura_tiempo = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
   }
+}
+
+void Interfaz::actualizar_monedas(Renderer &renderer, size_t nuevas_monedas) {
+  if (nuevas_monedas == monedas) {
+    return;
+  }
+  monedas = nuevas_monedas;
+  std::string texto = "Monedas: " + std::to_string(monedas);
+  textura_monedas = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
 }
 
 void Interfaz::dibujar_noche(Renderer &renderer) const {

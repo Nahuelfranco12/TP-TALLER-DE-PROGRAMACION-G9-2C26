@@ -29,7 +29,7 @@ private:
 
     SDL2pp::Texture edificios;
     std::vector<SDL2pp::Texture> sprites_npcs;
-    SDL2pp::Texture fondo_tienda;
+    std::vector<SDL2pp::Texture> fondos_tiendas;
     SDL2pp::Font fuente;
     std::vector<SDL2pp::Texture> titulos;
     std::vector<SDL2pp::Texture> texto_botones;

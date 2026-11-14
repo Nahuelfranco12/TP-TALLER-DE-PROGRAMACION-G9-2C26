@@ -29,6 +29,9 @@ private:
   std::string texto_tiempo;
   SDL2pp::Texture textura_tiempo;
 
+  size_t monedas = 0;
+  SDL2pp::Texture textura_monedas;
+
   bool hay_regalo = false;
   InventorySlotDto regalo;
   SDL2pp::Texture texto_regalo;
@@ -62,5 +65,7 @@ public:
   bool click_regalo(int x, int y, bool &acepto);
 
   void dibujar_regalo(SDL2pp::Renderer &renderer);
+
+  void actualizar_monedas(SDL2pp::Renderer &renderer, size_t nuevas_monedas);
 };
 #endif
