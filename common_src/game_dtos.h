@@ -112,6 +112,10 @@ struct TillDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct WaterDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
@@ -190,6 +194,7 @@ struct MineralDto {
 struct CropDto {
     CropTypeDto type{};
     CropGrowthDto growth{};
+    bool needsWater;
 };
 
 struct EntityDto {

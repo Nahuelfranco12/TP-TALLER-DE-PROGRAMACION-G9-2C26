@@ -74,6 +74,20 @@ void ClientProtocol::send_till_dto(const TillDto &dto) {
     protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
+void ClientProtocol::send_water_dto(const WaterDto &dto) {
+    protocol.send_u8(OP_WATER);
+    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+}
+
+void ClientProtocol::send_water_cheat(const WaterDto &dto) {
+    protocol.send_u8(OP_CHEAT_WATER);
+    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+}
+
+void ClientProtocol::send_growth_cheat() {
+    protocol.send_u8(OP_CHEAT_GROWTH);
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");
@@ -177,8 +191,11 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     EntityDto entity;
     entity.type = static_cast<EntityTypeDto>(protocol.receive_u8());
     entity.ready = protocol.receive_u8() == 1;
+
     entity.crop.type = static_cast<CropTypeDto>(protocol.receive_u8());
     entity.crop.growth = static_cast<CropGrowthDto>(protocol.receive_u8()); 
+    entity.crop.needsWater = protocol.receive_u8();
+    
     entity.mineral.remainingHits = protocol.receive_u8();
     state.entities[position] = entity;
   }

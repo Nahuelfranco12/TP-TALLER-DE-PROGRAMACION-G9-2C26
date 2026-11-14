@@ -1,15 +1,20 @@
 target_sources(taller_game
     PRIVATE
+
     world.cpp
+
     entities/mineral.cpp
     entities/door.cpp
     entities/player.cpp
+    entities/crop.cpp
+
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
     inventory/crop_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
+
     commands/move_command.cpp
     commands/join_command.cpp
     commands/leave_command.cpp
@@ -19,6 +24,10 @@ target_sources(taller_game
     commands/spawn_mineral_command.cpp
     commands/spawn_animal_command.cpp
     commands/plant_command.cpp
+    commands/water_command.cpp
+
+    commands/cheats/cheat_water_crop_command.cpp
+
     sectors/sector.cpp
     sectors/cavern_sector.cpp
 )

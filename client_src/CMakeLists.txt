@@ -35,8 +35,10 @@ target_sources(taller_client
     actions/collect_action.cpp
     actions/plant_action.cpp
     actions/till_action.cpp
+    actions/water_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
+    actions/cheat_growth_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
@@ -81,8 +83,10 @@ target_sources(taller_client
     actions/collect_action.h
     actions/plant_action.h
     actions/till_action.h
+    actions/water_action.h
     actions/gift_offer_action.h
     actions/gift_response_action.h
+    actions/cheat_growth_action.h
     pueblo.h
     mapa_mundo.h
     )

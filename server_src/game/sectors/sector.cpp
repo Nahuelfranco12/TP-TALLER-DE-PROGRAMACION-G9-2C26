@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "../cheatable/growth_cheat.h"
+
 MoveResult Sector::move(Position origin, Position destine) {
   if (!canMoveTo(destine)) {
     auto it = this->entities.find(origin);
@@ -57,6 +59,14 @@ bool Sector::addDoor(std::unique_ptr<Door> door, Position pos) {
   auto [it, inserted] = this->doors.try_emplace(pos, std::move(door));
   return inserted;
 }
+
+void Sector::growthCheatAll() {
+  for (auto &[pos, entity] : this->entities) {
+    if (auto *cheatable = dynamic_cast<IGrowthCheat *>(entity.get()))
+      cheatable->growthCheat();
+  }
+}
+
 
 std::unique_ptr<Entity> Sector::removeEntity(Position pos) {
   auto it = this->entities.find(pos);

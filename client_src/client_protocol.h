@@ -41,6 +41,9 @@ public:
   void send_gift_offer_dto(const GiftOfferDto& dto);
   void send_gift_response_dto(const GiftResponseDto& dto);
   void send_till_dto(const TillDto& dto);
+  void send_water_dto(const WaterDto& dto);
+  void send_water_cheat(const WaterDto &dto);
+  void send_growth_cheat();
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

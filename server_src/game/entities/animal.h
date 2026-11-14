@@ -2,9 +2,10 @@
 #define ANIMAL_H_
 
 #include "../game_constants.h"
+#include "../cheatable/growth_cheat.h"
 #include "entity.h"
 
-class Animal : public Entity {
+class Animal : public Entity, public IGrowthCheat {
 private:
   AnimalType animalType;
 

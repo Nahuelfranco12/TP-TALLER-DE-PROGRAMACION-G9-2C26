@@ -190,8 +190,12 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           EntityDto entityDto;
           entityDto.type = *type;
           entityDto.ready = e.animal.is_ready;
+
+          // TODO: revisar
           entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
           entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
+          entityDto.crop.needsWater = e.crop.needsWater;
+          
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           sectorDto.entities[pos] = entityDto;
         }
