@@ -1,7 +1,6 @@
 #include "controlador_mapas.h"
 
 #include <QCursor>
-#include <QDir>
 #include <QFileDialog>
 #include <QIcon>
 #include <QListWidgetItem>
@@ -195,7 +194,7 @@ void ControladorMapas::exportar() {
   }
 
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
-                                              QDir::homePath(), FILTRO_MAPAS);
+                                              carpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   if (!ruta.endsWith(EXTENSION_MAPA))
