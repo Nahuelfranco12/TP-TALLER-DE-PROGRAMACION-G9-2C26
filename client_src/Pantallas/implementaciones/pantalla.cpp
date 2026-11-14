@@ -6,13 +6,15 @@
 #include "controlador_retomar_partida.h"
 #include "controlador_unirse_partida.h"
 #include "navegador.h"
+#include "servicio_lobby.h"
 #include "ui_pantalla.h"
 #include "vista_responsive.h"
-#include "servicio_lobby.h"
+#include <QCoreApplication>
 #include <QFontDatabase>
+#include <QList>
 
 Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::Pantalla) {
+    : QMainWindow(parent), ui(std::make_unique<Ui::Pantalla>()) {
   QFontDatabase::addApplicationFont(RUTA_FUENTE);
   ui->setupUi(this);
   ui->stackedWidget->setCurrentWidget(ui->pageMenuPrincipal);
@@ -24,14 +26,18 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
                         ui->centralwidget));
 
   Navegador *navegador = new Navegador(ui->stackedWidget, this);
-  new ControladorMenuPrincipal(*this, *ui, *navegador, this);
-  new ControladorNuevaPartida(*this, *ui, *navegador, datosPartida, servicio,
-                              this);
-  new ControladorUnirsePartida(*this, *ui, *navegador, datosPartida, this);
-  new ControladorRetomarPartida(*this, *ui, *navegador, datosPartida,
-                                dibujante, servicio, this);
-  new ControladorCustomizarPersonaje(*this, *ui, *navegador, datosPartida,
-                                     dibujante, servicio, this);
+  const QList<ControladorPagina *> controladores = {
+      new ControladorMenuPrincipal(*this, *ui, *navegador, this),
+      new ControladorNuevaPartida(*this, *ui, *navegador, datosPartida,
+                                  servicio, this),
+      new ControladorUnirsePartida(*this, *ui, *navegador, datosPartida, this),
+      new ControladorRetomarPartida(*this, *ui, *navegador, datosPartida,
+                                    dibujante, servicio, this),
+      new ControladorCustomizarPersonaje(*this, *ui, *navegador, datosPartida,
+                                         dibujante, servicio, this)};
+  for (ControladorPagina *controlador : controladores)
+    connect(controlador, &ControladorPagina::partidaIniciada, this,
+            &QCoreApplication::quit);
 }
 
-Pantalla::~Pantalla() { delete ui; }
+Pantalla::~Pantalla() = default;

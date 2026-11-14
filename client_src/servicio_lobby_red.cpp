@@ -19,6 +19,8 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     switch (datos.modo) {
     case ModoPartida::Nueva:
       codigoAUnirse = client.create_match(datos.nombrePartida.toStdString());
+      if (codigoAUnirse.empty())
+        return ResultadoLobby{false, ERROR_LOBBY_CREAR};
       break;
     case ModoPartida::Unirse:
       codigoAUnirse = datos.codigoUnirsePartida.toStdString();
@@ -33,8 +35,11 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
         static_cast<PlayerTShirtsDto>(datos.personaje.ropa.remera),
         static_cast<PlayerPantsDto>(datos.personaje.ropa.pantalon)};
     if (!client.join_match(codigoAUnirse, datos.personaje.nombre.toStdString(),
-                           outfit))
+                           outfit)) {
+      if (datos.modo == ModoPartida::Nueva)
+        return ResultadoLobby{false, ERROR_LOBBY_ENTRAR_CREADA};
       return ResultadoLobby{false, ERROR_LOBBY_CODIGO};
+    }
 
     enPartida = true;
     codigoPartida = codigoAUnirse;

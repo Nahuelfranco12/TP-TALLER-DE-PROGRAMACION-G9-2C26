@@ -1,6 +1,5 @@
 #include "controlador_pagina.h"
 #include "constantes_pantallas.h"
-#include <QApplication>
 #include <QMessageBox>
 
 void ControladorPagina::conectarVolver(QPushButton *boton) {
@@ -16,7 +15,7 @@ void ControladorPagina::intentarJugar(ServicioLobby &servicio,
   botonJugar->setEnabled(false);
   ResultadoLobby resultado = servicio.jugar(datos);
   if (resultado.ok) {
-    QApplication::quit();
+    emit partidaIniciada();
     return;
   }
   QMessageBox::warning(&ventana, TITULO_ERROR_JUGAR, resultado.mensajeError);

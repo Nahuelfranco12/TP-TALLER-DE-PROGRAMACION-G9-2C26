@@ -4,6 +4,7 @@
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
 #include <QMainWindow>
+#include <memory>
 
 class ServicioLobby;
 
@@ -19,7 +20,7 @@ public:
   ~Pantalla() override;
 
 private:
-  Ui::Pantalla *ui;
+  std::unique_ptr<Ui::Pantalla> ui;
   DatosPartida datosPartida;
   DibujarPersonaje dibujante;
 };

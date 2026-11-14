@@ -5,18 +5,23 @@
 #include "servicio_lobby.h"
 #include <QObject>
 #include <QPushButton>
-#include <qpushbutton.h>
+#include <qtmetamacros.h>
 
 namespace Ui {
 class Pantalla;
 }
 
 class ControladorPagina : public QObject {
+	Q_OBJECT
+
 public:
   ControladorPagina(QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador, QObject *parent)
       : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
   virtual void limpiarPagina() = 0;
   virtual void actualizarBotonAvanzar() = 0;
+
+signals:
+	void partidaIniciada();
 
 protected:
   QWidget &ventana;

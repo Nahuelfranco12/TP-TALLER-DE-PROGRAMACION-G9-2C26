@@ -89,5 +89,7 @@
 #define ERROR_LOBBY_CODIGO "No existe una partida con ese código."
 #define ERROR_LOBBY_NO_DISPONIBLE "Esta opción todavía no está disponible."
 #define ERROR_LOBBY_CONEXION "Se perdió la conexión con el servidor: "
+#define ERROR_LOBBY_CREAR "No se pudo crear la partida."
+#define ERROR_LOBBY_ENTRAR_CREADA "Se creó la partida, pero no se pudo entrar."
 
 #endif // CONSTANTES_PANTALLAS_H_
