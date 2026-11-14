@@ -1,8 +1,11 @@
 #ifndef CONTROLADOR_PAGINA_EDITOR_H_
 #define CONTROLADOR_PAGINA_EDITOR_H_
 
+#include <QDir>
 #include <QObject>
+#include <QString>
 
+#include "constantes_qt.h"
 #include "navegador.h"
 
 class QWidget;
@@ -16,12 +19,18 @@ public:
   ControladorPaginaEditor(QWidget &ventana, Ui::VentanaEditor &ui,
                           Navegador &navegador, QObject *parent)
       : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
-  virtual void limpiarPagina() = 0;
 
 protected:
   QWidget &ventana;
   Ui::VentanaEditor &ui;
   Navegador &navegador;
+
+  static QString carpetaMapas() {
+    QDir actual = QDir::current();
+    actual.mkpath(CARPETA_MAPAS);
+    return actual.absoluteFilePath(CARPETA_MAPAS);
+  }
 };
+
 
 #endif // CONTROLADOR_PAGINA_EDITOR_H_

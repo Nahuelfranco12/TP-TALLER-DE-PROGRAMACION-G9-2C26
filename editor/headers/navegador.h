@@ -1,5 +1,5 @@
-#ifndef NAVEGADOR_H
-#define NAVEGADOR_H
+#ifndef NAVEGADOR_H_
+#define NAVEGADOR_H_
 
 #include <QObject>
 #include <QStack>
@@ -22,4 +22,4 @@ private:
   QStack<QWidget *> historial;
 };
 
-#endif // NAVEGADOR_H
+#endif // NAVEGADOR_H_

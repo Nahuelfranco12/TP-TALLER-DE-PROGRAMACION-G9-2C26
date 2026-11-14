@@ -1,14 +1,14 @@
-#ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
-#define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
+#ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
+#define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
 
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
-#include <QList>
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
-  ControladorCustomizarPersonaje(Ui::Pantalla &ui, Navegador &navegador,
+  ControladorCustomizarPersonaje(QWidget &ventana, Ui::Pantalla &ui,
+                                 Navegador &navegador,
                                  DatosPartida &datosPartida,
                                  const DibujarPersonaje &dibujar,
                                  ServicioLobby &servicio,
@@ -24,8 +24,9 @@ private:
 
   DatosPersonaje personajeElegido() const;
 
-  // void inicializarListas();
   void conectarBotonesFlechas();
+  void conectarFlechas(QPushButton *anterior, QPushButton *siguiente,
+                       int &indice, const QList<CoordenadaSprite> &opciones);
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
   const DibujarPersonaje &dibujar;
@@ -33,4 +34,4 @@ private:
   ServicioLobby &servicio;
 };
 
-#endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H
+#endif // CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_

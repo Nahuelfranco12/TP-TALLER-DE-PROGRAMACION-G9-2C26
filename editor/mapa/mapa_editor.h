@@ -62,7 +62,7 @@ public:
   MapaZona(Dimensiones dimensiones, Terreno pisoBase)
       : dimensiones(dimensiones), pisoBase(pisoBase) {
     if (!dimensionesValidas(dimensiones))
-      throw std::invalid_argument("Dimensiones de zona fuera de rango");
+      throw std::invalid_argument(ERROR_DIMENSIONES_FUERA_DE_RANGO);
     terrenos.assign(cantidadCeldas(dimensiones), pisoBase);
   }
 
@@ -111,7 +111,7 @@ public:
 
   void redimensionar(Dimensiones nuevas) {
     if (!dimensionesValidas(nuevas))
-      throw std::invalid_argument("Dimensiones de zona fuera de rango");
+      throw std::invalid_argument(ERROR_DIMENSIONES_FUERA_DE_RANGO);
     std::vector<Terreno> nuevosTerrenos(cantidadCeldas(nuevas), pisoBase);
     for (int y = 0; y < nuevas.alto && y < dimensiones.alto; ++y)
       for (int x = 0; x < nuevas.ancho && x < dimensiones.ancho; ++x)

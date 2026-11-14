@@ -24,6 +24,9 @@ build-client:
 build-server:
 	cmake --build build/ --target taller_server $(EXTRA_COMPILE)
 
+build-editor:
+	cmake --build build/ --target editor $(EXTRA_COMPILE)
+
 # Compila y muestra solo las líneas con error
 errors:
 	cmake --build build/ $(EXTRA_COMPILE) 2>&1 | grep -E "error|Error" | head -40 || true
@@ -37,6 +40,9 @@ run-server: build-server
 
 run-client: build-client
 	./build/taller_client $(HOST) $(PORT)
+
+run-editor: build-editor
+	./build/editor/editor
 
 all: clean run-tests
 

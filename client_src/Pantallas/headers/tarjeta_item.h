@@ -1,8 +1,7 @@
-#ifndef TARJETA_ITEM_H
-#define TARJETA_ITEM_H
+#ifndef TARJETA_ITEM_H_
+#define TARJETA_ITEM_H_
 
 #include <QFrame>
-#include <QPixmap>
 #include <QString>
 
 #include "dtos_pantallas.h"
@@ -26,4 +25,4 @@ private:
   QString m_id;
 };
 
-#endif // TARJETA_ITEM_H
+#endif // TARJETA_ITEM_H_

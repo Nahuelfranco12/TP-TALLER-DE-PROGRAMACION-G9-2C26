@@ -166,7 +166,7 @@ qproperty-alignment: AlignCenter;</string>
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -196,7 +196,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -252,6 +252,22 @@ QScrollArea &gt; QWidget &gt; QWidget {
           <string notr="true"/>
          </property>
         </widget>
+       </widget>
+       <widget class="QLabel" name="mapasAMostrarRP">
+        <property name="geometry">
+         <rect>
+          <x>700</x>
+          <y>100</y>
+          <width>511</width>
+          <height>501</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="pageCustomizarPersonaje">
@@ -341,7 +357,7 @@ color: #f1b356; </string>
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -372,7 +388,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -901,6 +917,22 @@ QScrollArea &gt; QWidget &gt; QWidget {
          </property>
         </widget>
        </widget>
+       <widget class="QLabel" name="mapasAMostrar">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>130</y>
+          <width>511</width>
+          <height>501</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="pageUnirsePartida">
        <property name="styleSheet">
@@ -977,7 +1009,7 @@ QLineEdit:focus, QComboBox:focus {
         <property name="geometry">
          <rect>
           <x>450</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>
@@ -1007,7 +1039,7 @@ QPushButton:disabled {
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>510</y>
+          <y>550</y>
           <width>161</width>
           <height>61</height>
          </rect>

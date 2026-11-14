@@ -44,6 +44,8 @@ Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
 }
 
 void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
+  if (!dimensionesValidas(nuevas))
+    throw std::invalid_argument(ERROR_DIMENSIONES_FUERA_DE_RANGO);
   switch (zona) {
   case Zona::Granja:
     mapa.granja.redimensionar(nuevas);

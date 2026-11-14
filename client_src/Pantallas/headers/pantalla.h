@@ -1,10 +1,12 @@
-#ifndef PANTALLA_H
-#define PANTALLA_H
+#ifndef PANTALLA_H_
+#define PANTALLA_H_
 
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
-#include "servicio_lobby.h"
 #include <QMainWindow>
+#include <memory>
+
+class ServicioLobby;
 
 namespace Ui {
 class Pantalla;
@@ -18,8 +20,8 @@ public:
   ~Pantalla() override;
 
 private:
-  Ui::Pantalla *ui;
+  std::unique_ptr<Ui::Pantalla> ui;
   DatosPartida datosPartida;
   DibujarPersonaje dibujante;
 };
-#endif // PANTALLA_H
+#endif // PANTALLA_H_

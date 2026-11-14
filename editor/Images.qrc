@@ -27,9 +27,6 @@
         <file alias="cam_piedras.png">../assets/mapas/cam_piedras2.png</file>
         <file alias="casas_npcs.png">../assets/mapas/PelicanTown_Buildings.png</file>
     </qresource>
-    <qresource prefix="/Edificios">
-        <file alias="casa.png">../assets/edificios/House.png</file>
-    </qresource>
     <qresource prefix="/Npcs">
         <file alias="marnie.png">../assets/npcs/marnie.png</file>
         <file alias="clint.png">../assets/npcs/clint.png</file>

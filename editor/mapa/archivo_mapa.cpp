@@ -16,59 +16,59 @@ template <typename T> using TablaIds = std::vector<std::pair<T, const char *>>;
 
 const TablaIds<ElementosGranja> &tablaIds(ElementosGranja) {
   static const TablaIds<ElementosGranja> tabla = {
-      {ElementosGranja::Cabania1, "Cabania1"},
-      {ElementosGranja::Cabania2, "Cabania2"},
-      {ElementosGranja::Cabania3, "Cabania3"},
-      {ElementosGranja::Cabania4, "Cabania4"},
-      {ElementosGranja::Cabania5, "Cabania5"},
-      {ElementosGranja::SalidaPueblo, "SalidaPueblo"},
-      {ElementosGranja::Arbol1, "Arbol1"},
-      {ElementosGranja::Arbol2, "Arbol2"},
-      {ElementosGranja::Agua, "Agua"},
-      {ElementosGranja::Piedra, "Piedra"},
-      {ElementosGranja::PiedraGrisGrande, "PiedraGrisGrande"},
-      {ElementosGranja::PiedraGris, "PiedraGris"},
-      {ElementosGranja::ArbustoRedondo, "ArbustoRedondo"},
-      {ElementosGranja::ArbustoGrande, "ArbustoGrande"},
-      {ElementosGranja::TroncoCaido, "TroncoCaido"},
-      {ElementosGranja::Tocon, "Tocon"},
-      {ElementosGranja::BuzonRojo, "BuzonRojo"},
-      {ElementosGranja::CartelVacio, "CartelVacio"}};
+      {ElementosGranja::Cabania1, ID_CABANIA1},
+      {ElementosGranja::Cabania2, ID_CABANIA2},
+      {ElementosGranja::Cabania3, ID_CABANIA3},
+      {ElementosGranja::Cabania4, ID_CABANIA4},
+      {ElementosGranja::Cabania5, ID_CABANIA5},
+      {ElementosGranja::SalidaPueblo, ID_SALIDA_PUEBLO},
+      {ElementosGranja::Arbol1, ID_ARBOL1},
+      {ElementosGranja::Arbol2, ID_ARBOL2},
+      {ElementosGranja::Agua, ID_AGUA},
+      {ElementosGranja::Piedra, ID_PIEDRA},
+      {ElementosGranja::PiedraGrisGrande, ID_PIEDRA_GRIS_GRANDE},
+      {ElementosGranja::PiedraGris, ID_PIEDRA_GRIS},
+      {ElementosGranja::ArbustoRedondo, ID_ARBUSTO_REDONDO},
+      {ElementosGranja::ArbustoGrande, ID_ARBUSTO_GRANDE},
+      {ElementosGranja::TroncoCaido, ID_TRONCO_CAIDO},
+      {ElementosGranja::Tocon, ID_TOCON},
+      {ElementosGranja::BuzonRojo, ID_BUZON_ROJO},
+      {ElementosGranja::CartelVacio, ID_CARTEL_VACIO}};
   return tabla;
 }
 
 const TablaIds<ElementosCaverna> &tablaIds(ElementosCaverna) {
   static const TablaIds<ElementosCaverna> tabla = {
-      {ElementosCaverna::Escalera, "Escalera"},
-      {ElementosCaverna::SalidaCaverna, "SalidaCaverna"},
-      {ElementosCaverna::Barril, "Barril"},
-      {ElementosCaverna::Calavera, "Calavera"},
-      {ElementosCaverna::Hueso, "Hueso"},
-      {ElementosCaverna::Escombros, "Escombros"},
-      {ElementosCaverna::Antorcha, "Antorcha"},
-      {ElementosCaverna::Candelabro, "Candelabro"},
-      {ElementosCaverna::Escudo, "Escudo"}};
+      {ElementosCaverna::Escalera, ID_ESCALERA},
+      {ElementosCaverna::SalidaCaverna, ID_SALIDA_CAVERNA},
+      {ElementosCaverna::Barril, ID_BARRIL},
+      {ElementosCaverna::Calavera, ID_CALAVERA},
+      {ElementosCaverna::Hueso, ID_HUESO},
+      {ElementosCaverna::Escombros, ID_ESCOMBROS},
+      {ElementosCaverna::Antorcha, ID_ANTORCHA},
+      {ElementosCaverna::Candelabro, ID_CANDELABRO},
+      {ElementosCaverna::Escudo, ID_ESCUDO}};
   return tabla;
 }
 
 const TablaIds<ElementosPueblo> &tablaIds(ElementosPueblo) {
   static const TablaIds<ElementosPueblo> tabla = {
-      {ElementosPueblo::NpcMarnie, "NpcMarnie"},
-      {ElementosPueblo::NpcClint, "NpcClint"},
-      {ElementosPueblo::NpcPierre, "NpcPierre"},
-      {ElementosPueblo::NpcRobin, "NpcRobin"},
-      {ElementosPueblo::CasaMarnie, "CasaMarnie"},
-      {ElementosPueblo::CasaClint, "CasaClint"},
-      {ElementosPueblo::CasaPierre, "CasaPierre"},
-      {ElementosPueblo::CasaRobin, "CasaRobin"},
-      {ElementosPueblo::CentroComunitario, "CentroComunitario"},
-      {ElementosPueblo::SalidaGranja, "SalidaGranja"},
-      {ElementosPueblo::EntradaMina, "EntradaMina"},
-      {ElementosPueblo::FarolNaranja, "FarolNaranja"},
-      {ElementosPueblo::FarolAzul, "FarolAzul"},
-      {ElementosPueblo::BancoMadera, "BancoMadera"},
-      {ElementosPueblo::BuzonGris, "BuzonGris"},
-      {ElementosPueblo::BuzonAzul, "BuzonAzul"}};
+      {ElementosPueblo::NpcMarnie, ID_NPC_MARNIE},
+      {ElementosPueblo::NpcClint, ID_NPC_CLINT},
+      {ElementosPueblo::NpcPierre, ID_NPC_PIERRE},
+      {ElementosPueblo::NpcRobin, ID_NPC_ROBIN},
+      {ElementosPueblo::CasaMarnie, ID_CASA_MARNIE},
+      {ElementosPueblo::CasaClint, ID_CASA_CLINT},
+      {ElementosPueblo::CasaPierre, ID_CASA_PIERRE},
+      {ElementosPueblo::CasaRobin, ID_CASA_ROBIN},
+      {ElementosPueblo::CentroComunitario, ID_CENTRO_COMUNITARIO},
+      {ElementosPueblo::SalidaGranja, ID_SALIDA_GRANJA},
+      {ElementosPueblo::EntradaMina, ID_ENTRADA_MINA},
+      {ElementosPueblo::FarolNaranja, ID_FAROL_NARANJA},
+      {ElementosPueblo::FarolAzul, ID_FAROL_AZUL},
+      {ElementosPueblo::BancoMadera, ID_BANCO_MADERA},
+      {ElementosPueblo::BuzonGris, ID_BUZON_GRIS},
+      {ElementosPueblo::BuzonAzul, ID_BUZON_AZUL}};
   return tabla;
 }
 
@@ -108,7 +108,6 @@ tablaCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles) {
   return caverna;
 }
 
-// Elemento que corresponde a un texto del archivo. Lanza si no existe.
 template <typename T> T tipoDesdeId(const std::string &id) {
   for (const auto &[elemento, texto] : tablaIds(T{}))
     if (id == texto)
@@ -116,16 +115,16 @@ template <typename T> T tipoDesdeId(const std::string &id) {
   throw std::runtime_error(TEXTO_ERROR_TIPO + id);
 }
 
-// Lee un entero obligatorio de una tabla. `donde` es para el mensaje de error.
 int leerEntero(const toml::table &tabla, const char *clave,
                const std::string &donde) {
   std::optional<std::int64_t> valor = tabla[clave].value<std::int64_t>();
   if (!valor)
     throw std::runtime_error(TEXTO_ERROR_CAMPO + donde + "." + clave);
+  if (!std::in_range<int>(*valor))
+    throw std::runtime_error(TEXTO_ERROR_RANGO + donde + "." + clave);
   return static_cast<int>(*valor);
 }
 
-// Lee una subtabla obligatoria (por ejemplo, [granja]).
 const toml::table &leerTabla(const toml::table &tabla, const char *clave) {
   const toml::table *subtabla = tabla[clave].as_table();
   if (subtabla == nullptr)
@@ -142,8 +141,6 @@ Dimensiones leerDimensiones(const toml::table &tabla,
   return dimensiones;
 }
 
-// Coloca en la zona los objetos de la lista. Usa colocar(), así que se
-// vuelven a chequear las reglas: que entren y que no se pisen.
 template <typename T>
 void cargarObjetos(const toml::table &tabla, MapaZona<T> &zona,
                    const std::string &donde) {
