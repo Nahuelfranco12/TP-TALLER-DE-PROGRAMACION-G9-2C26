@@ -4,24 +4,25 @@
 #include <cstddef>
 #include <vector>
 
+#include "catalogo_elementos.h"
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
-#include "editor_dtos.h"
 
 class QWidget;
 class VistaZona;
 
 class ControladorMapas : public ControladorPaginaEditor {
 public:
-  ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
-                   DatosEditor &datos, QObject *parent = nullptr);
-  void limpiarPagina() override;
+  ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
+                   Navegador &navegador, DatosEditor &datos,
+                   QObject *parent = nullptr);
 
 private:
   DatosEditor &datos;
   Zona zonaActual = Zona::Granja;
   std::size_t nivelCaverna = 0;
 
+  void limpiarPagina();
   Zona zonaDe(QWidget *pestania) const;
   void cambiarDeZona(Zona zona);
   void cargarPaleta(Zona zona);
@@ -31,7 +32,6 @@ private:
   MapaZona<ElementosCaverna> &cavernaActual();
   void cambiarDeNivel(int nivel);
 
-  Dimensiones dimensionesDe(Zona zona) const;
   void mostrarDimensiones(Dimensiones dimensiones);
   void aplicarDimensiones();
 
@@ -40,7 +40,7 @@ private:
   void clickEn(MapaZona<T> &zona, VistaZona *vista, int x, int y,
                Qt::MouseButton boton);
   template <typename T>
-  void colocarSeleccionado(MapaZona<T> &zona, int x, int y);
+  void colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista, int x, int y);
 
   void exportar();
 };

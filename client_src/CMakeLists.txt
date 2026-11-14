@@ -38,6 +38,7 @@ target_sources(taller_client
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
+    Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
     PUBLIC
@@ -68,7 +69,7 @@ target_sources(taller_client
     Pantallas/headers/controlador_unirse_partida.h
     Pantallas/headers/controlador_retomar_partida.h
     Pantallas/headers/controlador_customizar_personaje.h
-    Pantallas/headers/constantes.h
+    Pantallas/headers/constantes_pantallas.h
     Pantallas/headers/dtos_pantallas.h
     Pantallas/headers/dibujar_personaje.h
     Pantallas/headers/servicio_lobby.h

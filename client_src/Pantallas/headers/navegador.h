@@ -1,9 +1,11 @@
-#ifndef NAVEGADOR_H
-#define NAVEGADOR_H
+#ifndef NAVEGADOR_H_
+#define NAVEGADOR_H_
 
 #include <QObject>
 #include <QStack>
-#include <QStackedWidget>
+#include <QWidget>
+
+class QStackedWidget;
 
 class Navegador : public QObject {
   Q_OBJECT
@@ -22,4 +24,4 @@ private:
   QStack<QWidget *> historial;
 };
 
-#endif // NAVEGADOR_H
+#endif // NAVEGADOR_H_

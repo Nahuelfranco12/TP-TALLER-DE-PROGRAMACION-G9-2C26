@@ -1,14 +1,14 @@
-#ifndef VENTANAEDITOR_H
-#define VENTANAEDITOR_H
+#ifndef VENTANAEDITOR_H_
+#define VENTANAEDITOR_H_
+
+#include <memory>
 
 #include "datos_editor.h"
 #include <QMainWindow>
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
 class VentanaEditor;
 }
-QT_END_NAMESPACE
 
 class VentanaEditor : public QMainWindow {
   Q_OBJECT
@@ -18,7 +18,7 @@ public:
   ~VentanaEditor() override;
 
 private:
-  Ui::VentanaEditor *ui;
+  std::unique_ptr<Ui::VentanaEditor> ui;
   DatosEditor datos;
 };
-#endif // VENTANAEDITOR_H
+#endif // VENTANAEDITOR_H_

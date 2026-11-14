@@ -1,23 +1,30 @@
 #include "controlador_mapas.h"
 
+#include <QCursor>
+#include <QFileDialog>
 #include <QIcon>
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStringList>
-#include <type_traits>
+#include <QToolTip>
+#include <exception>
+#include <stdexcept>
 #include <vector>
 
-#include "constantes.h"
+#include "archivo_mapa.h"
+#include "constantes_mapa.h"
+#include "constantes_qt.h"
 #include "sprites.h"
 #include "ui_ventanaeditor.h"
 #include "validacion_mapas.h"
 #include "vista_zona.h"
 
-ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
-                                   DatosEditor &datos, QObject *parent)
-    : ControladorPaginaEditor(ui, navegador, parent), datos(datos) {
+ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
+                                   Navegador &navegador, DatosEditor &datos,
+                                   QObject *parent)
+    : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   ui.paletaAssets->setIconSize(QSize(TAMANIO_ICONO, TAMANIO_ICONO));
   ui.valorAnchoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
   ui.valorAltoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
@@ -67,7 +74,6 @@ ControladorMapas::ControladorMapas(Ui::VentanaEditor &ui, Navegador &navegador,
 }
 
 void ControladorMapas::limpiarPagina() {
-  datos = DatosEditor{};
   ui.cajaNombreMapa->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
@@ -87,12 +93,11 @@ Zona ControladorMapas::zonaDe(QWidget *pestania) const {
 void ControladorMapas::cambiarDeZona(Zona zona) {
   zonaActual = zona;
   cargarPaleta(zona);
-  mostrarDimensiones(dimensionesDe(zona));
+  mostrarDimensiones(dimensionesDe(datos.mapa, zona));
 }
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  // agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -115,7 +120,6 @@ void ControladorMapas::agregarAPaleta(
                                    TAMANIO_ICONO, TAMANIO_ICONO);
     auto *item = new QListWidgetItem(QIcon(icono), nombre);
     item->setData(ROL_VALOR, static_cast<int>(info.elemento));
-    item->setData(ROL_ES_TERRENO, std::is_same_v<T, Terreno>);
     ui.paletaAssets->addItem(item);
   }
 }
@@ -129,18 +133,6 @@ void ControladorMapas::cambiarDeNivel(int nivel) {
   ui.vistaCaverna->mostrar(cavernaActual());
 }
 
-Dimensiones ControladorMapas::dimensionesDe(Zona zona) const {
-  switch (zona) {
-  case Zona::Granja:
-    return datos.mapa.granja.tamanio();
-  case Zona::Caverna:
-    return datos.mapa.nivelesCaverna.front().tamanio();
-  case Zona::Pueblo:
-    return datos.mapa.pueblo.tamanio();
-  }
-  return Dimensiones{};
-}
-
 void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
   ui.valorAnchoMapa->setValue(dimensiones.ancho);
   ui.valorAltoMapa->setValue(dimensiones.alto);
@@ -148,20 +140,13 @@ void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
 
 void ControladorMapas::aplicarDimensiones() {
   Dimensiones nuevas{ui.valorAnchoMapa->value(), ui.valorAltoMapa->value()};
-  switch (zonaActual) {
-  case Zona::Granja:
-    datos.mapa.granja.redimensionar(nuevas);
-    break;
-  case Zona::Caverna:
-    for (auto &nivel : datos.mapa.nivelesCaverna) {
-      pintarBorde(nivel, Terreno::PisoCaverna);
-      nivel.redimensionar(nuevas);
-      pintarBorde(nivel, Terreno::Pared);
-    }
-    break;
-  case Zona::Pueblo:
-    datos.mapa.pueblo.redimensionar(nuevas);
-    break;
+  try {
+    redimensionar(datos.mapa, zonaActual, nuevas);
+  } catch (const std::invalid_argument &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_DIMENSIONES,
+                         QString::fromUtf8(error.what()));
+    mostrarDimensiones(dimensionesDe(datos.mapa, zonaActual));
+    return;
   }
   dibujarMapa();
 }
@@ -180,20 +165,21 @@ void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
   if (boton == Qt::RightButton)
     zona.quitarEn(x, y);
   else if (boton == Qt::LeftButton)
-    colocarSeleccionado(zona, x, y);
+    colocarSeleccionado(zona, vista, x, y);
   vista->mostrar(zona);
 }
 
 template <typename T>
-void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
+void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
+                                           int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();
-  if (item == nullptr)
+  if (item == nullptr) {
+    QToolTip::showText(QCursor::pos(), TEXTO_ELEGIR_ELEMENTO, vista);
     return;
+  }
   int valor = item->data(ROL_VALOR).toInt();
-  if (item->data(ROL_ES_TERRENO).toBool())
-    zona.pintarTerrenoConCelda(x, y, static_cast<Terreno>(valor));
-  else
-    zona.colocar(static_cast<T>(valor), x, y);
+  if (!zona.colocar(static_cast<T>(valor), x, y))
+    QToolTip::showText(QCursor::pos(), TEXTO_NO_SE_PUEDE_COLOCAR, vista);
 }
 
 void ControladorMapas::exportar() {
@@ -202,12 +188,24 @@ void ControladorMapas::exportar() {
     QStringList lineas;
     for (const auto &error : errores)
       lineas.append(QString::fromStdString(error));
-    QMessageBox::warning(ui.centralwidget->window(),
-                         VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
+    QMessageBox::warning(&ventana, VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
                          lineas.join('\n'));
     return;
   }
-  QMessageBox::information(ui.centralwidget->window(),
-                           VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
-                           VALIDACION_TEXTO_MAPA_VALIDO);
+
+  QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
+                                              carpetaMapas(), FILTRO_MAPAS);
+  if (ruta.isEmpty())
+    return;
+  if (!ruta.endsWith(EXTENSION_MAPA))
+    ruta += EXTENSION_MAPA;
+
+  try {
+    escribirMapa(datos.mapa, ruta.toStdString());
+    QMessageBox::information(&ventana, TITULO_MAPA_GUARDADO,
+                             TEXTO_MAPA_GUARDADO + ruta);
+  } catch (const std::exception &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_GUARDAR,
+                         QString::fromUtf8(error.what()));
+  }
 }

@@ -6,7 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "constantes.h"
+#include "constantes_mapa.h"
+#include "mapa_editor.h"
 
 namespace {
 template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
@@ -16,22 +17,13 @@ template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
       }));
 }
 
-bool esCabania(ElementosGranja tipo) {
-  switch (tipo) {
-  case ElementosGranja::Cabania1:
-  case ElementosGranja::Cabania2:
-  case ElementosGranja::Cabania3:
-  case ElementosGranja::Cabania4:
-  case ElementosGranja::Cabania5:
-    return true;
-  default:
-    return false;
-  }
+std::string conEncabezado(const std::string &lugar,
+                          const std::string &mensaje) {
+  return lugar + VALIDACION_TEXTO_SEPARADOR + mensaje;
 }
 
-// Arma un mensaje del estilo "Pueblo: falta Marnie".
-std::string falta(const std::string &donde, const char *que) {
-  return donde + VALIDACION_TEXTO_ERROR_FALTA + que;
+std::string falta(const std::string &lugar, const char *nombre) {
+  return conEncabezado(lugar, std::string(VALIDACION_TEXTO_FALTA) + nombre);
 }
 
 void validarGranja(const MapaZona<ElementosGranja> &granja,
@@ -41,10 +33,11 @@ void validarGranja(const MapaZona<ElementosGranja> &granja,
         return esCabania(objeto.tipo);
       }));
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
-    errores.push_back(std::string(VALIDACION_TEXTO_ZONA_GRANJA) +
-                      VALIDACION_TEXTO_ERROR_CABANIAS +
-                      std::to_string(VALIDACION_CABANIAS_MINIMAS) +
-                      VALIDACION_TEXTO_CABANIAS_PLURAL);
+    errores.push_back(
+        conEncabezado(VALIDACION_TEXTO_ZONA_GRANJA,
+                      VALIDACION_TEXTO_CABANIAS_INICIO +
+                          std::to_string(VALIDACION_CABANIAS_MINIMAS) +
+                          VALIDACION_TEXTO_CABANIAS_FIN));
   if (cantidadDe(granja, ElementosGranja::SalidaPueblo) == 0)
     errores.push_back(falta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
 }
@@ -72,8 +65,9 @@ void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
 void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
   for (std::size_t i = 0; i < niveles.size(); ++i) {
-    std::string nivel =
-        VALIDACION_TEXTO_NIVEL + std::to_string(i + PRIMER_NIVEL_CAVERNA);
+    std::string nivel = std::string(VALIDACION_TEXTO_ZONA_CAVERMA) +
+                        VALIDACION_TEXTO_NIVEL +
+                        std::to_string(i + PRIMER_NIVEL_CAVERNA);
     if (cantidadDe(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
       errores.push_back(falta(nivel, TEXTO_SALIDA_CAVERNA));
     bool esUltimo = i + 1 == niveles.size();

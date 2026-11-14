@@ -18,7 +18,6 @@
 #include <iostream>
 
 #include <QApplication>
-#include <QFontDatabase>
 
 #include <exception>
 #include <iostream>
@@ -47,8 +46,6 @@ const int REMERAS_SDL[] = {9, 19, 36, 27, 104};
 
 void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   QApplication app(argc, argv);
-  QFontDatabase::addApplicationFont(
-      ":/fuentes/assets/fuentes/Stardew_Valley.otf");
   Pantalla pantalla(servicio);
   pantalla.show();
   QApplication::exec();

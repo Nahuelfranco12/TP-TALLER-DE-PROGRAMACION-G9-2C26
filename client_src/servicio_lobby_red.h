@@ -1,5 +1,5 @@
-#ifndef SERVICIO_LOBBY_RED_H
-#define SERVICIO_LOBBY_RED_H
+#ifndef SERVICIO_LOBBY_RED_H_
+#define SERVICIO_LOBBY_RED_H_
 
 #include <string>
 
@@ -14,7 +14,6 @@ public:
   QList<PartidaGuardada> partidasGuardadas() override;
   ResultadoLobby jugar(const DatosPartida &datos) override;
 
-  // Para main, cuando se cierra el lobby
   bool estaEnPartida() const;
   const std::string &codigo() const;
   const DatosPersonaje &personajeElegido() const;
@@ -26,4 +25,4 @@ private:
   DatosPersonaje personaje;
 };
 
-#endif // SERVICIO_LOBBY_RED_H
+#endif // SERVICIO_LOBBY_RED_H_
