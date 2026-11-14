@@ -18,7 +18,6 @@
         <file alias="assets/Pantallas/01-background_inicio.jpg">../../assets/Pantallas/01-background_inicio.jpg</file>
     </qresource>
     <qresource prefix="/ropas">
-        <file alias="assets/ropas/StardewValley_Character_Accessories.png">../../assets/personaje/StardewValley_Character_Accessories.png</file>
         <file alias="assets/ropas/StardewValley_Character_Farmer Base.png">../../assets/personaje/StardewValley_Character_Farmer Base.png</file>
         <file alias="assets/ropas/StardewValley_Character_Hairstyles.png">../../assets/personaje/StardewValley_Character_Hairstyles.png</file>
         <file alias="assets/ropas/StardewValley_Character_Hats.png">../../assets/personaje/StardewValley_Character_Hats.png</file>
@@ -30,8 +29,6 @@
         <file alias="assets/cartel/cartel_stardew_valley.png">../../assets/cartel/cartel_stardew_valley.png</file>
     </qresource>
     <qresource prefix="/fuentes">
-        <file alias="assets/fuentes/Stardew_Valley.ttf">../../assets/fuentes/Stardew_Valley.ttf</file>
-        <file alias="assets/fuentes/Fonts Magazine.txt">../../assets/fuentes/Fonts Magazine.txt</file>
         <file alias="assets/fuentes/Stardew_Valley.otf">../../assets/fuentes/Stardew_Valley.otf</file>
     </qresource>
 </RCC>

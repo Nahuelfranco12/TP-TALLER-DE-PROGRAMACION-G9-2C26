@@ -7,6 +7,7 @@
 #include "constantes_mapa.h"
 #include "constantes_qt.h"
 
+namespace {
 const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
   static const std::vector<InfoElemento<Terreno>> granja = {
       {Terreno::Pasto, TEXTO_PASTO, RUTA_SUELO, RECORTE_PASTO}};
@@ -26,6 +27,17 @@ const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
   }
   return granja;
 }
+
+template <typename T>
+const InfoElemento<T> *buscar(const std::vector<InfoElemento<T>> &catalogo,
+                              T tipo) {
+  auto encontrado = std::ranges::find_if(
+      catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
+  if (encontrado != catalogo.end())
+    return &*encontrado;
+  return nullptr;
+}
+} // namespace
 
 const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
   static const std::vector<InfoElemento<ElementosGranja>> catalogo = {
@@ -130,18 +142,6 @@ const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
   }
   return nullptr;
 }
-
-namespace {
-template <typename T>
-const InfoElemento<T> *buscar(const std::vector<InfoElemento<T>> &catalogo,
-                              T tipo) {
-  auto encontrado = std::ranges::find_if(
-      catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
-  if (encontrado != catalogo.end())
-    return &*encontrado;
-  return nullptr;
-}
-} // namespace
 
 const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo) {
   return buscar(catalogoGranja(), tipo);

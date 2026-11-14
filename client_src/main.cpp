@@ -18,7 +18,6 @@
 #include <iostream>
 
 #include <QApplication>
-#include <QFontDatabase>
 
 #include <exception>
 #include <iostream>
@@ -45,8 +44,6 @@ const int REMERAS_SDL[] = {9, 19, 36, 27, 104};
 
 void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   QApplication app(argc, argv);
-  QFontDatabase::addApplicationFont(
-      ":/fuentes/assets/fuentes/Stardew_Valley.otf");
   Pantalla pantalla(servicio);
   pantalla.show();
   QApplication::exec();
@@ -367,7 +364,7 @@ int main(int argc, char *argv[]) try {
       par.second->dibujar(renderer, camara_x, camara_y);
     }
     personaje.dibujar(renderer, camara_x, camara_y);
-    
+
     // Mapa del mundo (M)
     if (viendo_mapa) {
       mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona, personaje);

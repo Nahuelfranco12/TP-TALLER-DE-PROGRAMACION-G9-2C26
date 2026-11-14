@@ -1,10 +1,8 @@
-#ifndef CONTROLADOR_PAGINA_H
-#define CONTROLADOR_PAGINA_H
+#ifndef CONTROLADOR_PAGINA_H_
+#define CONTROLADOR_PAGINA_H_
 
 #include "navegador.h"
 #include "servicio_lobby.h"
-#include <QApplication>
-#include <QMessageBox>
 #include <QObject>
 #include <QPushButton>
 
@@ -13,27 +11,25 @@ class Pantalla;
 }
 
 class ControladorPagina : public QObject {
+  Q_OBJECT
+
 public:
-  ControladorPagina(Ui::Pantalla &ui, Navegador &navegador, QObject *parent)
-      : QObject(parent), ui(ui), navegador(navegador) {}
+  ControladorPagina(QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+                    QObject *parent)
+      : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
   virtual void limpiarPagina() = 0;
   virtual void actualizarBotonAvanzar() = 0;
 
+signals:
+  void partidaIniciada();
+
 protected:
+  QWidget &ventana;
   Ui::Pantalla &ui;
   Navegador &navegador;
+  void conectarVolver(QPushButton *boton);
   void intentarJugar(ServicioLobby &servicio, const DatosPartida &datos,
-                     QPushButton *botonJugar) {
-    botonJugar->setEnabled(false);
-    ResultadoLobby resultado = servicio.jugar(datos);
-    if (resultado.ok) {
-      QApplication::quit();
-      return;
-    }
-    QMessageBox::warning(botonJugar->window(), "No se pudo entrar",
-                         resultado.mensajeError);
-    actualizarBotonAvanzar();
-  }
+                     QPushButton *botonJugar);
 };
 
-#endif // CONTROLADOR_PAGINA_H
+#endif // CONTROLADOR_PAGINA_H_

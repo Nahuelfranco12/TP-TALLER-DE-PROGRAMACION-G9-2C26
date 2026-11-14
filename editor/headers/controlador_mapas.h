@@ -16,13 +16,13 @@ public:
   ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
                    Navegador &navegador, DatosEditor &datos,
                    QObject *parent = nullptr);
-  void limpiarPagina() override;
 
 private:
   DatosEditor &datos;
   Zona zonaActual = Zona::Granja;
   std::size_t nivelCaverna = 0;
 
+  void limpiarPagina();
   Zona zonaDe(QWidget *pestania) const;
   void cambiarDeZona(Zona zona);
   void cargarPaleta(Zona zona);
@@ -40,7 +40,7 @@ private:
   void clickEn(MapaZona<T> &zona, VistaZona *vista, int x, int y,
                Qt::MouseButton boton);
   template <typename T>
-  void colocarSeleccionado(MapaZona<T> &zona, int x, int y);
+  void colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista, int x, int y);
 
   void exportar();
 };

@@ -1,5 +1,5 @@
-#ifndef CONSTANTES_QT_H
-#define CONSTANTES_QT_H
+#ifndef CONSTANTES_QT_H_
+#define CONSTANTES_QT_H_
 
 #define TITULO_ABRIR "Abrir mapa"
 #define FILTRO_MAPAS "Mapas (*.toml)"
@@ -160,8 +160,6 @@
 #define TEXTO_BANCO_MADERA "Banco"
 #define TEXTO_BUZON_GRIS "Buzón gris"
 #define TEXTO_BUZON_AZUL "Buzón azul"
-//#define TEXTO_CASA_CHICA "Casa chica"
-//#define TEXTO_CASA_MEDIANA "Casa mediana"
 
 // Grilla
 #define TAMANIO_CELDA_MAPA 24
@@ -170,8 +168,6 @@
 
 // Validaciones para que se pueda exportar el archivo
 #define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
-//#define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
-//#define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
 
 // estas son de interfaz
 #define TITULO_GUARDAR "Guardar mapa"
@@ -182,4 +178,7 @@
 // sobre editar mapas
 #define TITULO_ERROR_CARGAR "No se pudo abrir el mapa"
 
-#endif // CONSTANTES_QT_H
+#define TEXTO_NO_SE_PUEDE_COLOCAR "No entra ahí o pisa otro objeto"
+#define TEXTO_ELEGIR_ELEMENTO "Elegí un elemento de la paleta"
+
+#endif // CONSTANTES_QT_H_

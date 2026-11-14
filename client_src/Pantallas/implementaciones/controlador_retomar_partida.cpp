@@ -1,16 +1,13 @@
 #include "controlador_retomar_partida.h"
-#include "constantes.h"
-#include "dtos_pantallas.h"
-//#include "partidas_estaticas.h"
+#include "constantes_pantallas.h"
 #include "ui_pantalla.h"
 
-//#include <QDebug>
-
 ControladorRetomarPartida::ControladorRetomarPartida(
-    Ui::Pantalla &ui, Navegador &navegador, DatosPartida &datosPartida,
-    const DibujarPersonaje &dibujante, ServicioLobby &servicio, QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
-      dibujante(dibujante), servicio(servicio) {
+    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    DatosPartida &datosPartida, const DibujarPersonaje &dibujante,
+    ServicioLobby &servicio, QObject *parent)
+    : ControladorPagina(ventana, ui, navegador, parent),
+      datosPartida(datosPartida), dibujante(dibujante), servicio(servicio) {
 
   partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
 
@@ -18,10 +15,7 @@ ControladorRetomarPartida::ControladorRetomarPartida(
 
   ui.botJugarRP->setEnabled(false);
 
-  connect(ui.botVolverRP, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
-  });
+  conectarVolver(ui.botVolverRP);
 
   partidas->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
 
@@ -41,8 +35,9 @@ void ControladorRetomarPartida::actualizarBotonAvanzar() {
 void ControladorRetomarPartida::cargarPartidas() {
   QList<DatosTarjeta> tarjetas;
   for (const PartidaGuardada &partida : servicio.partidasGuardadas()) {
-    QString modo =
-        partida.esMultiplayer ? TEXTO_MULTIPLAYER : TEXTO_SINGLEPLAYER;
+    QString modo = TEXTO_SINGLEPLAYER;
+    if (partida.esMultiplayer)
+      modo = TEXTO_MULTIPLAYER;
     tarjetas.append(DatosTarjeta{
         partida.id, dibujante.dibujar(partida.personaje, ESCALA_TARJETA),
         partida.nombrePartida, partida.personaje.nombre, modo,

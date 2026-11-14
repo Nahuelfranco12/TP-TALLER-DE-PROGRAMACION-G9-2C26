@@ -1,5 +1,5 @@
-#ifndef CONTROLADOR_RETOMAR_PARTIDA_H
-#define CONTROLADOR_RETOMAR_PARTIDA_H
+#ifndef CONTROLADOR_RETOMAR_PARTIDA_H_
+#define CONTROLADOR_RETOMAR_PARTIDA_H_
 
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
@@ -8,8 +8,8 @@
 
 class ControladorRetomarPartida : public ControladorPagina {
 public:
-  ControladorRetomarPartida(Ui::Pantalla &ui, Navegador &navegador,
-                            DatosPartida &datosPartida,
+  ControladorRetomarPartida(QWidget &ventana, Ui::Pantalla &ui,
+                            Navegador &navegador, DatosPartida &datosPartida,
                             const DibujarPersonaje &dibujante,
                             ServicioLobby &servicio, QObject *parent = nullptr);
   void limpiarPagina() override;
@@ -23,4 +23,4 @@ private:
   void cargarPartidas();
 };
 
-#endif // CONTROLADOR_RETOMAR_PARTIDA_H
+#endif // CONTROLADOR_RETOMAR_PARTIDA_H_

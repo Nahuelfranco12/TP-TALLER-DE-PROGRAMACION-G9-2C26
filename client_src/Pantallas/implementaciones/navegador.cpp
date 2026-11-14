@@ -1,4 +1,5 @@
 #include "navegador.h"
+#include <QStackedWidget>
 
 Navegador::Navegador(QStackedWidget *stack, QObject *parent)
     : QObject(parent), stack(stack) {}

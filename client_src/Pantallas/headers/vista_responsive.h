@@ -1,5 +1,5 @@
-#ifndef VISTA_RESPONSIVE_H
-#define VISTA_RESPONSIVE_H
+#ifndef VISTA_RESPONSIVE_H_
+#define VISTA_RESPONSIVE_H_
 
 #include <QGraphicsView>
 
@@ -17,4 +17,4 @@ private:
   QGraphicsProxyWidget *proxy;
 };
 
-#endif // VISTA_RESPONSIVE_H
+#endif // VISTA_RESPONSIVE_H_

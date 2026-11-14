@@ -1,8 +1,7 @@
-#ifndef SERVICIO_LOBBY_H
-#define SERVICIO_LOBBY_H
+#ifndef SERVICIO_LOBBY_H_
+#define SERVICIO_LOBBY_H_
 
 #include "dtos_pantallas.h"
-#include "partidas_estaticas.h"
 #include <QList>
 #include <QString>
 
@@ -14,4 +13,4 @@ public:
   virtual ResultadoLobby jugar(const DatosPartida &datos) = 0;
 };
 
-#endif // SERVICIO_LOBBY_H
+#endif // SERVICIO_LOBBY_H_

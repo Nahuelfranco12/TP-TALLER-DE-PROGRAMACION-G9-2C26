@@ -1,5 +1,6 @@
 #include "controlador_mapas.h"
 
+#include <QCursor>
 #include <QDir>
 #include <QFileDialog>
 #include <QIcon>
@@ -8,7 +9,9 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStringList>
+#include <QToolTip>
 #include <exception>
+#include <stdexcept>
 #include <vector>
 
 #include "archivo_mapa.h"
@@ -72,7 +75,6 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
 }
 
 void ControladorMapas::limpiarPagina() {
-  datos = DatosEditor{};
   ui.cajaNombreMapa->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
@@ -97,7 +99,6 @@ void ControladorMapas::cambiarDeZona(Zona zona) {
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  // agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -140,20 +141,13 @@ void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
 
 void ControladorMapas::aplicarDimensiones() {
   Dimensiones nuevas{ui.valorAnchoMapa->value(), ui.valorAltoMapa->value()};
-  switch (zonaActual) {
-  case Zona::Granja:
-    datos.mapa.granja.redimensionar(nuevas);
-    break;
-  case Zona::Caverna:
-    for (auto &nivel : datos.mapa.nivelesCaverna) {
-      pintarBorde(nivel, Terreno::PisoCaverna);
-      nivel.redimensionar(nuevas);
-      pintarBorde(nivel, Terreno::Pared);
-    }
-    break;
-  case Zona::Pueblo:
-    datos.mapa.pueblo.redimensionar(nuevas);
-    break;
+  try {
+    redimensionar(datos.mapa, zonaActual, nuevas);
+  } catch (const std::invalid_argument &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_DIMENSIONES,
+                         QString::fromUtf8(error.what()));
+    mostrarDimensiones(dimensionesDe(datos.mapa, zonaActual));
+    return;
   }
   dibujarMapa();
 }
@@ -172,17 +166,21 @@ void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
   if (boton == Qt::RightButton)
     zona.quitarEn(x, y);
   else if (boton == Qt::LeftButton)
-    colocarSeleccionado(zona, x, y);
+    colocarSeleccionado(zona, vista, x, y);
   vista->mostrar(zona);
 }
 
 template <typename T>
-void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
+void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
+                                           int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();
-  if (item == nullptr)
+  if (item == nullptr) {
+    QToolTip::showText(QCursor::pos(), TEXTO_ELEGIR_ELEMENTO, vista);
     return;
+  }
   int valor = item->data(ROL_VALOR).toInt();
-  zona.colocar(static_cast<T>(valor), x, y);
+  if (!zona.colocar(static_cast<T>(valor), x, y))
+    QToolTip::showText(QCursor::pos(), TEXTO_NO_SE_PUEDE_COLOCAR, vista);
 }
 
 void ControladorMapas::exportar() {
@@ -195,8 +193,7 @@ void ControladorMapas::exportar() {
                          lineas.join('\n'));
     return;
   }
-  // QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
-  // VALIDACION_TEXTO_MAPA_VALIDO);
+
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
                                               QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())

@@ -1,14 +1,13 @@
 #include "controlador_nueva_partida.h"
-#include "constantes.h"
+#include "constantes_pantallas.h"
 #include "ui_pantalla.h"
+#include <QLineEdit>
 
-ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
-                                                 Navegador &navegador,
-                                                 DatosPartida &datosPartida,
-                                                 ServicioLobby &servicio,
-                                                 QObject *parent)
-    : ControladorPagina(ui, navegador, parent), datosPartida(datosPartida),
-      servicio(servicio) {
+ControladorNuevaPartida::ControladorNuevaPartida(
+    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    DatosPartida &datosPartida, ServicioLobby &servicio, QObject *parent)
+    : ControladorPagina(ventana, ui, navegador, parent),
+      datosPartida(datosPartida), servicio(servicio) {
 
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 
@@ -16,10 +15,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(Ui::Pantalla &ui,
 
   ui.botSiguiente->setEnabled(false);
 
-  connect(ui.botVolver, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
-  });
+  conectarVolver(ui.botVolver);
 
   connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
@@ -45,7 +41,8 @@ void ControladorNuevaPartida::cargarMundos() {
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : servicio.mundos())
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(mundo.rutaImagen),
-                                 mundo.nombreMundo, "", "", ELEGIR_MAPA});
+                                 mundo.nombreMundo, QString(), QString(),
+                                 ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }
 
