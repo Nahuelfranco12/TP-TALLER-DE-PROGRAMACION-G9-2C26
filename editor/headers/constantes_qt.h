@@ -160,8 +160,6 @@
 #define TEXTO_BANCO_MADERA "Banco"
 #define TEXTO_BUZON_GRIS "Buzón gris"
 #define TEXTO_BUZON_AZUL "Buzón azul"
-//#define TEXTO_CASA_CHICA "Casa chica"
-//#define TEXTO_CASA_MEDIANA "Casa mediana"
 
 // Grilla
 #define TAMANIO_CELDA_MAPA 24
@@ -170,8 +168,6 @@
 
 // Validaciones para que se pueda exportar el archivo
 #define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
-//#define VALIDACION_TEXTO_TITULO_MAPA_VALIDO "Titulo del mapa valido"
-//#define VALIDACION_TEXTO_MAPA_VALIDO "El mapa tiene todo lo necesario"
 
 // estas son de interfaz
 #define TITULO_GUARDAR "Guardar mapa"

@@ -10,6 +10,7 @@
 #include <QStringList>
 #include <exception>
 #include <vector>
+#include <stdexcept>
 
 #include "archivo_mapa.h"
 #include "constantes_mapa.h"
@@ -97,7 +98,6 @@ void ControladorMapas::cambiarDeZona(Zona zona) {
 
 void ControladorMapas::cargarPaleta(Zona zona) {
   ui.paletaAssets->clear();
-  // agregarAPaleta(terrenosDe(zona));
   switch (zona) {
   case Zona::Granja:
     agregarAPaleta(catalogoGranja());
@@ -140,20 +140,13 @@ void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
 
 void ControladorMapas::aplicarDimensiones() {
   Dimensiones nuevas{ui.valorAnchoMapa->value(), ui.valorAltoMapa->value()};
-  switch (zonaActual) {
-  case Zona::Granja:
-    datos.mapa.granja.redimensionar(nuevas);
-    break;
-  case Zona::Caverna:
-    for (auto &nivel : datos.mapa.nivelesCaverna) {
-      pintarBorde(nivel, Terreno::PisoCaverna);
-      nivel.redimensionar(nuevas);
-      pintarBorde(nivel, Terreno::Pared);
-    }
-    break;
-  case Zona::Pueblo:
-    datos.mapa.pueblo.redimensionar(nuevas);
-    break;
+  try {
+    redimensionar(datos.mapa, zonaActual, nuevas);
+  } catch (const std::invalid_argument &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_DIMENSIONES,
+                         QString::fromUtf8(error.what()));
+    mostrarDimensiones(dimensionesDe(datos.mapa, zonaActual));
+    return;
   }
   dibujarMapa();
 }
@@ -195,8 +188,7 @@ void ControladorMapas::exportar() {
                          lineas.join('\n'));
     return;
   }
-  // QMessageBox::information(&ventana, VALIDACION_TEXTO_TITULO_MAPA_VALIDO,
-  // VALIDACION_TEXTO_MAPA_VALIDO);
+
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
                                               QDir::homePath(), FILTRO_MAPAS);
   if (ruta.isEmpty())

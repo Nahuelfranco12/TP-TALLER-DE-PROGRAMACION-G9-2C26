@@ -3,7 +3,6 @@
 
 #include "controlador_pagina_editor.h"
 #include "datos_editor.h"
-//#include <qwidget.h>
 #include <QWidget>
 
 class ControladorInicioEditor : public ControladorPaginaEditor {
