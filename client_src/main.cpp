@@ -357,6 +357,7 @@ int main(int argc, char *argv[]) try {
           }
           personaje.poner_vida(jugador.life);
           personaje.poner_energia(jugador.energy);
+          interfaz.actualizar_monedas(renderer, jugador.coins);
           interfaz.actualizar_regalo(jugador.pendingGift);
           continue;
         }
