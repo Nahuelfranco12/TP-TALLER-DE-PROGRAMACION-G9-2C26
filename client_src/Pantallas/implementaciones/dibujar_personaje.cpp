@@ -59,10 +59,10 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
                              opcionValida(pantalones, personaje.ropa.pantalon),
                              ANCHO_PANTALON, ALTO_PANTALON),
                COLOR_PANTALON));
-  pintor.drawPixmap(
-      cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
-      recortarCelda(hojaRemera, opcionValida(remeras, personaje.ropa.remera),
-                    ANCHO_REMERA, ALTO_REMERA));
+  pintor.drawPixmap(cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
+                    recortarCelda(hojaRemera,
+                                  opcionValida(remeras, personaje.ropa.remera),
+                                  ANCHO_REMERA, ALTO_REMERA));
   pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_BRAZOS, Y_CUERPO_EN_HOJA,
                                             ANCHO_CUERPO, ALTO_CUERPO));
   pintor.drawPixmap(
@@ -70,10 +70,10 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
       colorear(recortarCelda(hojaPelo, opcionValida(pelos, personaje.ropa.pelo),
                              ANCHO_PELO, ALTO_PELO),
                COLOR_PELO));
-  pintor.drawPixmap(
-      QPoint(),
-      recortarCelda(hojaGorro, opcionValida(gorros, personaje.ropa.gorro),
-                    ANCHO_GORRO, ALTO_GORRO));
+  pintor.drawPixmap(QPoint(),
+                    recortarCelda(hojaGorro,
+                                  opcionValida(gorros, personaje.ropa.gorro),
+                                  ANCHO_GORRO, ALTO_GORRO));
   pintor.end();
 
   return lienzo.scaled(ANCHO_LIENZO * escala, ALTO_LIENZO * escala,

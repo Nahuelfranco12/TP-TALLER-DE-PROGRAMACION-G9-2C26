@@ -43,5 +43,3 @@ void ControladorInicioEditor::editarMapa() {
                          QString::fromUtf8(error.what()));
   }
 }
-
-void ControladorInicioEditor::limpiarPagina() {}

@@ -16,7 +16,6 @@ public:
   ControladorPaginaEditor(QWidget &ventana, Ui::VentanaEditor &ui,
                           Navegador &navegador, QObject *parent)
       : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
-  virtual void limpiarPagina() = 0;
 
 protected:
   QWidget &ventana;

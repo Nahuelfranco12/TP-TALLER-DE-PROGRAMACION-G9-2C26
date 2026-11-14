@@ -3,12 +3,9 @@
 #include "ui_pantalla.h"
 #include <QLineEdit>
 
-ControladorNuevaPartida::ControladorNuevaPartida(QWidget &ventana,
-                                                 Ui::Pantalla &ui,
-                                                 Navegador &navegador,
-                                                 DatosPartida &datosPartida,
-                                                 ServicioLobby &servicio,
-                                                 QObject *parent)
+ControladorNuevaPartida::ControladorNuevaPartida(
+    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    DatosPartida &datosPartida, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), servicio(servicio) {
 

@@ -26,8 +26,9 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
       codigoAUnirse = datos.codigoUnirsePartida.toStdString();
       break;
     case ModoPartida::Retomar:
-    case ModoPartida::Ninguno:
       return ResultadoLobby{false, ERROR_LOBBY_NO_DISPONIBLE};
+    case ModoPartida::Ninguno:
+      return ResultadoLobby{false, ERROR_LOBBY_SIN_MODO};
     }
     PlayerOutfitDto outfit{
         static_cast<PlayerHatsDto>(datos.personaje.ropa.gorro),

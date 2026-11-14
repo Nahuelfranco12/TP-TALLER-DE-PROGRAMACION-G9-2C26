@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "constantes_mapa.h"
-#include "constantes_qt.h"
 
 namespace {
 template <typename T> using TablaIds = std::vector<std::pair<T, const char *>>;
@@ -121,6 +120,8 @@ int leerEntero(const toml::table &tabla, const char *clave,
   std::optional<std::int64_t> valor = tabla[clave].value<std::int64_t>();
   if (!valor)
     throw std::runtime_error(TEXTO_ERROR_CAMPO + donde + "." + clave);
+  if (!std::in_range<int>(*valor))
+    throw std::runtime_error(TEXTO_ERROR_RANGO + donde + "." + clave);
   return static_cast<int>(*valor);
 }
 

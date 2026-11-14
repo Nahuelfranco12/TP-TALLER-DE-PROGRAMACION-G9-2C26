@@ -10,10 +10,7 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida) {
   ui.botSiguienteUP->setEnabled(false);
-  connect(ui.botVolverUP, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
-  });
+  conectarVolver(ui.botVolverUP);
   connect(ui.campoCodigoPartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
   connect(ui.botSiguienteUP, &QPushButton::clicked, this, [this]() {

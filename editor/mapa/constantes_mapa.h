@@ -131,4 +131,6 @@
 #define ID_BUZON_GRIS "BuzonGris"
 #define ID_BUZON_AZUL "BuzonAzul"
 
+#define TEXTO_ERROR_RANGO "Valor fuera de rango en "
+
 #endif // CONSTANTES_MAPA_H_

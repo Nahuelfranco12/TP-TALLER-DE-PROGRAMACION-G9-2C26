@@ -7,7 +7,7 @@
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
-	ControladorCustomizarPersonaje(QWidget &ventana, Ui::Pantalla &ui,
+  ControladorCustomizarPersonaje(QWidget &ventana, Ui::Pantalla &ui,
                                  Navegador &navegador,
                                  DatosPartida &datosPartida,
                                  const DibujarPersonaje &dibujar,
@@ -25,7 +25,8 @@ private:
   DatosPersonaje personajeElegido() const;
 
   void conectarBotonesFlechas();
-  void conectarFlechas(QPushButton *anterior, QPushButton *siguiente,int &indice, const QList<CoordenadaSprite> &opciones);
+  void conectarFlechas(QPushButton *anterior, QPushButton *siguiente,
+                       int &indice, const QList<CoordenadaSprite> &opciones);
   void actualizarPrevisualizacion();
   void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
   const DibujarPersonaje &dibujar;

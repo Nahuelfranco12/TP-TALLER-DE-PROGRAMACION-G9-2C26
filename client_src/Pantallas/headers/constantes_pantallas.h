@@ -35,10 +35,22 @@
 #define RUTA_FUENTE ":/fuentes/assets/fuentes/Stardew_Valley.otf"
 
 // estas son las coordenadas de las ropas y demas que usa el personaje
-#define COORDENADAS_PELOS {{1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, {4, 12}}
-#define COORDENADAS_GORROS {{13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, {33, 4}}
-#define COORDENADAS_PANTALONES {{1, 1}, {1, 25}, {1, 61}, {1, 73}}
-#define COORDENADAS_REMERAS {{1, 10}, {5, 4}, {9, 5}, {5, 12}, {25, 9}}
+#define COORDENADAS_PELOS                                                      \
+  {                                                                            \
+    {1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, { 4, 12 }                       \
+  }
+#define COORDENADAS_GORROS                                                     \
+  {                                                                            \
+    {13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, { 33, 4 }                     \
+  }
+#define COORDENADAS_PANTALONES                                                 \
+  {                                                                            \
+    {1, 1}, {1, 25}, {1, 61}, { 1, 73 }                                        \
+  }
+#define COORDENADAS_REMERAS                                                    \
+  {                                                                            \
+    {1, 10}, {5, 4}, {9, 5}, {5, 12}, { 25, 9 }                                \
+  }
 #define OPCION_POR_DEFECTO 0
 
 // estos son los colores con los que pinto el pelo y los pantalones
@@ -70,11 +82,14 @@
 #define ALTO_TARJETA 80
 #define TAMANIO_IMAGEN_TARJETA 64
 #define ESTILO_TARJETA_TITULO                                                  \
-  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 18px; border: none;"
+  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 18px; border: "   \
+  "none;"
 #define ESTILO_TARJETA_SUBTITULO                                               \
-  "color: white; font-family: 'Stardew Valley'; font-size: 14px; border: none;"
+  "color: white; font-family: 'Stardew Valley'; font-size: 14px; border: "     \
+  "none;"
 #define ESTILO_TARJETA_EXTRA                                                   \
-  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 14px; border: none;"
+  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 14px; border: "   \
+  "none;"
 #define ESTILO_TARJETA_BOTON                                                   \
   "background-color: #f1b356; color: #3b2010; font-weight: bold; "             \
   "border-radius: 3px; padding: 5px;"
@@ -91,5 +106,6 @@
 #define ERROR_LOBBY_CONEXION "Se perdió la conexión con el servidor: "
 #define ERROR_LOBBY_CREAR "No se pudo crear la partida."
 #define ERROR_LOBBY_ENTRAR_CREADA "Se creó la partida, pero no se pudo entrar."
+#define ERROR_LOBBY_SIN_MODO "No se eligió cómo jugar la partida."
 
 #endif // CONSTANTES_PANTALLAS_H_

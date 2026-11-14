@@ -10,7 +10,6 @@ public:
   ControladorInicioEditor(QWidget &ventana, Ui::VentanaEditor &ui,
                           Navegador &navegador, DatosEditor &datos,
                           QObject *parent = nullptr);
-  void limpiarPagina() override;
 
 private:
   DatosEditor &datos;

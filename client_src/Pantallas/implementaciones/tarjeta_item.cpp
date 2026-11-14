@@ -23,22 +23,24 @@ TarjetaItem::TarjetaItem(const DatosTarjeta &datos, QWidget *parent)
   QHBoxLayout *layoutPrincipal = new QHBoxLayout(this);
 
   QLabel *labelImagen = new QLabel(this);
-  labelImagen->setPixmap(
-      datos.imagen.scaled(TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA, Qt::KeepAspectRatio));
+  labelImagen->setPixmap(datos.imagen.scaled(
+      TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA, Qt::KeepAspectRatio));
   labelImagen->setFixedSize(TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA);
   labelImagen->setStyleSheet(ESTILO_SIN_BORDE);
   layoutPrincipal->addWidget(labelImagen);
 
   QVBoxLayout *layoutTextos = new QVBoxLayout();
-  layoutTextos->addWidget(crearLabel(datos.titulo, ESTILO_TARJETA_TITULO, this));
+  layoutPrincipal->addLayout(layoutTextos);
+  layoutTextos->addWidget(
+      crearLabel(datos.titulo, ESTILO_TARJETA_TITULO, this));
   if (!datos.subtitulo.isEmpty())
     layoutTextos->addWidget(
         crearLabel(datos.subtitulo, ESTILO_TARJETA_SUBTITULO, this));
-  layoutPrincipal->addLayout(layoutTextos);
 
   if (!datos.textoExtra.isEmpty())
-    layoutPrincipal->addWidget(crearLabel(datos.textoExtra, ESTILO_TARJETA_EXTRA, this),
-                               0, Qt::AlignRight);
+    layoutPrincipal->addWidget(
+        crearLabel(datos.textoExtra, ESTILO_TARJETA_EXTRA, this), 0,
+        Qt::AlignRight);
 
   QPushButton *boton = new QPushButton(datos.textoBoton, this);
   boton->setStyleSheet(ESTILO_TARJETA_BOTON);

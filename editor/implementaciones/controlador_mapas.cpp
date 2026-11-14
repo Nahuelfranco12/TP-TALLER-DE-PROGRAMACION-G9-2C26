@@ -1,5 +1,6 @@
 #include "controlador_mapas.h"
 
+#include <QCursor>
 #include <QDir>
 #include <QFileDialog>
 #include <QIcon>
@@ -8,9 +9,10 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStringList>
+#include <QToolTip>
 #include <exception>
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 #include "archivo_mapa.h"
 #include "constantes_mapa.h"
@@ -73,7 +75,6 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
 }
 
 void ControladorMapas::limpiarPagina() {
-  datos = DatosEditor{};
   ui.cajaNombreMapa->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
@@ -165,17 +166,21 @@ void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
   if (boton == Qt::RightButton)
     zona.quitarEn(x, y);
   else if (boton == Qt::LeftButton)
-    colocarSeleccionado(zona, x, y);
+    colocarSeleccionado(zona, vista, x, y);
   vista->mostrar(zona);
 }
 
 template <typename T>
-void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, int x, int y) {
+void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
+                                           int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();
-  if (item == nullptr)
+  if (item == nullptr) {
+    QToolTip::showText(QCursor::pos(), TEXTO_ELEGIR_ELEMENTO, vista);
     return;
+  }
   int valor = item->data(ROL_VALOR).toInt();
-  zona.colocar(static_cast<T>(valor), x, y);
+  if (!zona.colocar(static_cast<T>(valor), x, y))
+    QToolTip::showText(QCursor::pos(), TEXTO_NO_SE_PUEDE_COLOCAR, vista);
 }
 
 void ControladorMapas::exportar() {

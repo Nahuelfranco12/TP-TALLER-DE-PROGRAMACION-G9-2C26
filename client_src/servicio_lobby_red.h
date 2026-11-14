@@ -14,7 +14,6 @@ public:
   QList<PartidaGuardada> partidasGuardadas() override;
   ResultadoLobby jugar(const DatosPartida &datos) override;
 
-  // Para main, cuando se cierra el lobby
   bool estaEnPartida() const;
   const std::string &codigo() const;
   const DatosPersonaje &personajeElegido() const;

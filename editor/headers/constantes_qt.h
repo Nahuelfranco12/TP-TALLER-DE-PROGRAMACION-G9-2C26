@@ -178,4 +178,7 @@
 // sobre editar mapas
 #define TITULO_ERROR_CARGAR "No se pudo abrir el mapa"
 
+#define TEXTO_NO_SE_PUEDE_COLOCAR "No entra ahí o pisa otro objeto"
+#define TEXTO_ELEGIR_ELEMENTO "Elegí un elemento de la paleta"
+
 #endif // CONSTANTES_QT_H_

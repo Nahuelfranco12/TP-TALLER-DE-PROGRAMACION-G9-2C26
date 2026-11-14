@@ -8,13 +8,13 @@
 #include "vista_responsive.h"
 
 VentanaEditor::VentanaEditor(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::VentanaEditor) {
+    : QMainWindow(parent), ui(std::make_unique<Ui::VentanaEditor>()) {
   ui->setupUi(this);
   ui->stackedWidget->setCurrentWidget(ui->pageInicioEditor);
 
   ui->horizontalLayout->removeWidget(ui->stackedWidget);
   ui->stackedWidget->setParent(nullptr);
-  ui->horizontalLayout->setContentsMargins(0, 0, 0, 0);
+  ui->horizontalLayout->setContentsMargins(QMargins());
   ui->horizontalLayout->addWidget(
       new VistaEscalada(ui->stackedWidget, QSize(ANCHO_DISENIO, ALTO_DISENIO),
                         ui->centralwidget));
@@ -24,4 +24,4 @@ VentanaEditor::VentanaEditor(QWidget *parent)
   new ControladorMapas(*this, *ui, *navegador, datos, this);
 }
 
-VentanaEditor::~VentanaEditor() { delete ui; }
+VentanaEditor::~VentanaEditor() = default;

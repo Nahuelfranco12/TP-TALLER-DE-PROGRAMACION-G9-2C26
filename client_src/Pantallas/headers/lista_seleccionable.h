@@ -1,7 +1,7 @@
 #ifndef LISTA_SELECCIONABLE_H_
 #define LISTA_SELECCIONABLE_H_
 
-#include "tarjeta_item.h"
+#include "dtos_pantallas.h"
 #include <QList>
 #include <QObject>
 #include <QString>
