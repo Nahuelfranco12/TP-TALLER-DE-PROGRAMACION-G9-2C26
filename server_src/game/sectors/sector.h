@@ -40,6 +40,8 @@ public:
   bool addDoor(std::unique_ptr<Door> door, Position pos);
   // std::unique_ptr<Door> removeDoor(Position pos);
 
+  void growthCheatAll();
+
   /*
    * getters
    */

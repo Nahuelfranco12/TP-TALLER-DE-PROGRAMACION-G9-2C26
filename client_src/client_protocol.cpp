@@ -84,6 +84,10 @@ void ClientProtocol::send_water_cheat(const WaterDto &dto) {
     protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
+void ClientProtocol::send_growth_cheat() {
+    protocol.send_u8(OP_CHEAT_GROWTH);
+}
+
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
     throw std::runtime_error("Mensaje inesperado");

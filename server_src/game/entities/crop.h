@@ -10,8 +10,9 @@
 #include "crop_config.h"
 #include "entity.h"
 #include "waterable.h"
+#include "../cheatable/growth_cheat.h"
 
-class Crop : public Entity, public ICollectable, public IWaterable {
+class Crop : public Entity, public ICollectable, public IWaterable, public IGrowthCheat {
 private:
   CropTypes type;
   const CropConfig &config;
@@ -55,7 +56,11 @@ public:
   * Cheat
   */
   void forceWater() { sinceWatered = 0; }
-  void forceGrow() { growthTicks = totalGrowthTicks(); }
+
+  /*
+  * IGrowthCheat
+  */
+  void growthCheat() override { growthTicks = totalGrowthTicks(); }
 
   /*
   * Entity

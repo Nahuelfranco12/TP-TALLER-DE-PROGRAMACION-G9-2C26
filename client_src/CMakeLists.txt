@@ -38,6 +38,7 @@ target_sources(taller_client
     actions/water_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
+    actions/cheat_growth_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     pueblo.cpp
     mapa_mundo.cpp
@@ -84,6 +85,7 @@ target_sources(taller_client
     actions/water_action.h
     actions/gift_offer_action.h
     actions/gift_response_action.h
+    actions/cheat_growth_action.h
     pueblo.h
     mapa_mundo.h
     )

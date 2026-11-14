@@ -37,6 +37,7 @@ public:
   void send_till(DirectionDto direction);
   void send_water(DirectionDto direction);
   void send_cheat_water(DirectionDto direction);
+  void send_cheat_growth();
 
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;

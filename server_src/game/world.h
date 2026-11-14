@@ -39,6 +39,8 @@ public:
 
   Sector *getSector(IdSector id);
 
+  void growthCheatAll();
+
   GameTime currentTime() const;
   WorldState state() const;
 

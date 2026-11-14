@@ -18,6 +18,7 @@
 #include "actions/gift_response_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
+#include "actions/cheat_growth_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -115,6 +116,10 @@ void Client::send_water(DirectionDto direction) {
 
 void Client::send_cheat_water(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+}
+
+void Client::send_cheat_growth() {
+    to_send_queue.try_push(std::make_unique<CheatGrowthAction>());
 }
 
 bool Client::try_get_latest_state(SectorStateDto &state) {

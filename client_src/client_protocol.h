@@ -43,6 +43,7 @@ public:
   void send_till_dto(const TillDto& dto);
   void send_water_dto(const WaterDto& dto);
   void send_water_cheat(const WaterDto &dto);
+  void send_growth_cheat();
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

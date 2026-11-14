@@ -261,9 +261,12 @@ int main(int argc, char *argv[]) try {
         frente_x++;
         break;
       }
+
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c && evento.key.repeat == 0)
         client.send_cheat_water(dir);
 
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_COMMA && evento.key.repeat == 0)
+        client.send_cheat_growth();
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE && evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;

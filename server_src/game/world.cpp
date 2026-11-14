@@ -99,6 +99,11 @@ Sector *World::getSector(IdSector id) {
   return (it != this->sectors.end()) ? it->second.get() : nullptr;
 }
 
+void World::growthCheatAll() {
+  for (auto &[id, sector] : sectors)
+    sector->growthCheatAll();
+}
+
 GameTime World::currentTime() const {
   size_t GAME_TOTAL_MINUTES = DAY_DURATION_HOUR * 60;
   
