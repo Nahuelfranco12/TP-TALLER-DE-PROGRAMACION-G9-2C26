@@ -22,12 +22,14 @@ TarjetaItem::TarjetaItem(const DatosTarjeta &datos, QWidget *parent)
 
   QHBoxLayout *layoutPrincipal = new QHBoxLayout(this);
 
-  QLabel *labelImagen = new QLabel(this);
-  labelImagen->setPixmap(datos.imagen.scaled(
-      TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA, Qt::KeepAspectRatio));
-  labelImagen->setFixedSize(TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA);
-  labelImagen->setStyleSheet(ESTILO_SIN_BORDE);
-  layoutPrincipal->addWidget(labelImagen);
+  if (!datos.imagen.isNull()) {
+    QLabel *labelImagen = new QLabel(this);
+    labelImagen->setPixmap(datos.imagen.scaled(
+        TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA, Qt::KeepAspectRatio));
+    labelImagen->setFixedSize(TAMANIO_IMAGEN_TARJETA, TAMANIO_IMAGEN_TARJETA);
+    labelImagen->setStyleSheet(ESTILO_SIN_BORDE);
+    layoutPrincipal->addWidget(labelImagen);
+  }
 
   QVBoxLayout *layoutTextos = new QVBoxLayout();
   layoutPrincipal->addLayout(layoutTextos);

@@ -3,7 +3,9 @@
 namespace {
 const QString IMAGEN_PRUEBA =
     ":/pantallas/assets/Pantallas/02-nueva_partida_background.jpg";
-}
+const QString IMAGEN_MAPA_PRUEBA =
+    ":/pantallas/assets/Pantallas/fondo_noche.png";
+} // namespace
 
 QList<PartidaGuardada> obtenerPartidasDePrueba() {
   return {
@@ -16,7 +18,7 @@ QList<PartidaGuardada> obtenerPartidasDePrueba() {
 
 QList<MundoMock> obtenerMundosDePrueba() {
   return {
-      {"Granja1", IMAGEN_PRUEBA},
-      {"Granja2", IMAGEN_PRUEBA},
+      {"Granja1", IMAGEN_MAPA_PRUEBA},
+      {"Granja2", IMAGEN_MAPA_PRUEBA},
   };
 }
