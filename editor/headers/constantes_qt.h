@@ -29,6 +29,7 @@
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
+#define CARPETA_MAPAS "maps"
 
 // Recortes Pueblo
 #define RECORTE_PISO_PUEBLO                                                    \

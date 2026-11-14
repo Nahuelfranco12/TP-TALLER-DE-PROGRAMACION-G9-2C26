@@ -1,7 +1,9 @@
 #include "controlador_nueva_partida.h"
 #include "constantes_pantallas.h"
 #include "ui_pantalla.h"
+#include <QLabel>
 #include <QLineEdit>
+#include <QPixmap>
 
 ControladorNuevaPartida::ControladorNuevaPartida(
     QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
@@ -12,6 +14,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(
   mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
 
   cargarMundos();
+  ocultarMapa();
 
   ui.botSiguiente->setEnabled(false);
 
@@ -20,7 +23,10 @@ ControladorNuevaPartida::ControladorNuevaPartida(
   connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
 
-  mundos->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
+  mundos->setAlSeleccionar([this]() {
+    actualizarBotonAvanzar();
+    mostrarMapaSeleccionado();
+  });
 
   connect(ui.botSiguiente, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Nueva;
@@ -38,16 +44,38 @@ void ControladorNuevaPartida::actualizarBotonAvanzar() {
 }
 
 void ControladorNuevaPartida::cargarMundos() {
+  datosMundos = servicio.mundos();
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : servicio.mundos())
-    tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(mundo.rutaImagen),
+  for (const MundoMock &mundo : datosMundos)
+    tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
                                  mundo.nombreMundo, QString(), QString(),
                                  ELEGIR_MAPA});
   mundos->cargar(tarjetas);
 }
 
+void ControladorNuevaPartida::mostrarMapaSeleccionado() {
+  QString id = mundos->seleccionado();
+  for (const MundoMock &mundo : datosMundos) {
+    if (mundo.nombreMundo == id) {
+      QPixmap mapa(mundo.rutaImagen);
+      ui.mapasAMostrar->setPixmap(
+          mapa.scaled(ui.mapasAMostrar->contentsRect().size(),
+                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
+      ui.mapasAMostrar->setVisible(true);
+      return;
+    }
+  }
+  ocultarMapa();
+}
+
+void ControladorNuevaPartida::ocultarMapa() {
+  ui.mapasAMostrar->clear();
+  ui.mapasAMostrar->setVisible(false);
+}
+
 void ControladorNuevaPartida::limpiarPagina() {
   mundos->deseleccionar();
+  ocultarMapa();
   ui.campoNOmbrePartida->clear();
   actualizarBotonAvanzar();
   datosPartida = DatosPartida{};

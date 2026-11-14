@@ -31,7 +31,7 @@ void ControladorInicioEditor::crearMapa() {
 
 void ControladorInicioEditor::editarMapa() {
   QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
-                                              QDir::homePath(), FILTRO_MAPAS);
+                                              carpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   try {
