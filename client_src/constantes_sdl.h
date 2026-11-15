@@ -2,6 +2,13 @@
 #define CONSTANTES_SDL_H_
 
 // Ventana y loop
+#define CANTIDAD_ARGUMENTOS 3
+#define ARGUMENTO_HOST 1
+#define ARGUMENTO_PUERTO 2
+#define VENTANA_ANCHO 640
+#define VENTANA_ALTO 480
+#define RENDERER_DRIVER_POR_DEFECTO (-1)
+#define LOOP_PERIODO_MS 16  // 60 vueltas por segundo
 
 // Mapa: tiles, escala y generación de decoración
 #define TAMANIO_TILE_ASSET 16
@@ -9,6 +16,10 @@
 #define TAMANIO_TILE (TAMANIO_TILE_ASSET * ESCALA_SPRITES)
 #define MAPA_MARGEN 30
 #define MAPA_DADO_DECORACION_MAXIMO 9
+#define SEMILLA_GRANJA 42
+#define SEMILLA_CAVERNA 7
+#define SEMILLA_PUEBLO 42
+#define SEMILLA_ALREDEDORES 42
 
 // Letras de la grilla del mapa
 #define LETRA_PASTO '.'
@@ -111,6 +122,12 @@
 #define PERSONAJE_DURACION_PICAR \
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
 
+// Ropa elegida en el lobby: índice de Qt -> índice en las hojas de SDL
+#define ROPA_SOMBREROS_SDL {45, 4, 40, 61, 121, 99}
+#define ROPA_PELOS_SDL {9, 10, 33, 69, 21, 27}
+#define ROPA_PANTALONES_SDL {0, 2, 5, 6}
+#define ROPA_REMERAS_SDL {9, 19, 36, 27, 104}
+
 // Barras de vida y energía (px)
 #define BARRA_VALOR_MAXIMO 100.0
 #define BARRA_ANCHO 48
@@ -141,6 +158,21 @@
 #define HUD_RAYITA_Y 22
 #define HUD_RAYITA_ANCHO 8
 #define HUD_RAYITA_ALTO 20
+
+// Teclas
+#define TECLA_SALIR SDLK_ESCAPE
+#define TECLA_MAPA SDLK_m
+#define TECLA_PRIMER_CASILLERO SDLK_1
+#define TECLA_ULTIMO_CASILLERO SDLK_9
+#define TECLA_ACEPTAR_REGALO SDLK_y
+#define TECLA_RECHAZAR_REGALO SDLK_n
+#define TECLA_CHEAT_RIEGO SDLK_c
+#define TECLA_CHEAT_CRECIMIENTO SDLK_COMMA
+#define TECLA_ACCION SDLK_SPACE
+#define TECLA_ARRIBA SDLK_UP
+#define TECLA_ABAJO SDLK_DOWN
+#define TECLA_IZQUIERDA SDLK_LEFT
+#define TECLA_DERECHA SDLK_RIGHT
 
 // Cartel de regalo (px)
 #define REGALO_ANCHO 280
@@ -374,6 +406,7 @@
 #define COLOR_BARRA_ENERGIA {70, 190, 70, COLOR_ALFA_OPACO}
 #define COLOR_BARRA_BORDE {0, 0, 0, COLOR_ALFA_OPACO}
 #define COLOR_BARRA_FONDO {70, 70, 70, COLOR_ALFA_OPACO}
+#define COLOR_FONDO_JUEGO {0, 0, 0, COLOR_ALFA_OPACO}
 
 // Textos visibles
 #define TEXTO_JUEGO_MUSICA "Música"
@@ -406,6 +439,10 @@
 #define TEXTOS_BOTONES_TIENDA                                           \
   {TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,         \
    TEXTO_JUEGO_SALIR}
+#define TEXTO_JUEGO_USO "Uso: "
+#define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
+#define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "
+#define TEXTO_JUEGO_CONEXION_PERDIDA "Se perdió la conexión con el servidor."
 
 // Audio
 #define AUDIO_TAMANIO_BUFFER 1024
@@ -418,5 +455,7 @@
 #define AUDIO_MUSICA_CAVERNA 1
 #define AUDIO_MUSICA_PUEBLO 2
 #define AUDIO_CANTIDAD_MUSICAS 3
+
+#define REGALO_DISTANCIA 1
 
 #endif  // CONSTANTES_SDL_H_

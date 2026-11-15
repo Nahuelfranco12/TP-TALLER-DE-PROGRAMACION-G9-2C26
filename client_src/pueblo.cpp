@@ -200,6 +200,6 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
                            y + (TIENDA_ALTO_BOTON - texto.GetHeight()) / 2,
                            texto.GetWidth(), texto.GetHeight()));
 
-        x += botones[i].w + SEPARACION_BOTONES_TIENDA_PLACEHOLDER;
+        x += botones[i].w + TIENDA_SEPARACION_BOTONES;
     }
 }
