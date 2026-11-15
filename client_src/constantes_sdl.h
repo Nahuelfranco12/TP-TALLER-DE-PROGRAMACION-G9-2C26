@@ -34,9 +34,75 @@
 #define BOSQUE_MARGEN 4
 #define BOSQUE_SOMBRA 200
 
+// Mapa general, tecla M (medidas en tiles salvo que diga px)
+#define MUNDO_MARGEN 8
+#define MUNDO_SEPARACION 14
+#define MUNDO_PASILLO 10
+#define MUNDO_BAJADA_PUEBLO 24
+#define MUNDO_MARGEN_PANTALLA 16
+#define MUNDO_TILES_DIFUMINADO 3
+#define MUNDO_BLOQUE_PASTO 4
+#define MUNDO_ENTRE_ARBOLES 2
+#define MUNDO_SEMILLA 42
+#define MUNDO_DADO_MAXIMO 9
+#define MUNDO_PROBABILIDAD_ARBOL 7
+#define MUNDO_PROBABILIDAD_PINO 4
+#define MUNDO_ARBOL_TILES 3
+#define MUNDO_FIGURA_TILES 4
+#define MUNDO_FIGURA_MINIMA 12
+
+// Granja
+#define GRANJA_CASA_TILE_X 2
+#define GRANJA_CASA_TILE_Y 1
+#define GRANJA_CASA_MODELO 0
+#define ANIMAL_CUADROS_ANIMACION 4
+#define ANIMAL_VUELTAS_POR_CUADRO 20  // 20 x 16 ms = 0,3 s
+#define PRODUCTO_VUELTAS_POR_SALTO 20
+#define PRODUCTO_SALTO 1
+#define CULTIVO_ULTIMA_ETAPA {5, 5, 6, 5}
+#define CULTIVO_CRECIMIENTO_MAXIMO 3
+
 // Caverna: golpes restantes de un mineral
 #define CAVERNA_GOLPES_GOLPEADO 2
 #define CAVERNA_GOLPES_CASI_ROTO 1
+
+// Personaje: ropa inicial, caminar y picar
+#define PERSONAJE_PANTALON_INICIAL 0
+#define PERSONAJE_REMERA_INICIAL 5
+#define PERSONAJE_PELO_INICIAL 3
+#define PERSONAJE_SOMBRERO_INICIAL 2
+#define PERSONAJE_COLOR_PANTALON_INICIAL 0
+#define PERSONAJE_COLOR_PELO_INICIAL 1
+#define PERSONAJE_VUELTAS_POR_PASO 16
+#define PERSONAJE_CUADROS_CAMINAR 4
+#define PERSONAJE_VUELTAS_POR_CUADRO 9  // 9 x 16 ms = 0,15 s
+#define PERSONAJE_REBOTE 1
+#define PERSONAJE_CUADROS_PICAR 5
+#define PERSONAJE_VUELTAS_POR_CUADRO_PICAR 5
+#define PERSONAJE_DURACION_PICAR \
+  (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
+
+// Barras de vida y energía (px)
+#define BARRA_VALOR_MAXIMO 100.0
+#define BARRA_ANCHO 48
+#define BARRA_ALTO 6
+#define BARRA_SEPARACION 2
+#define BARRA_BORDE 1
+
+// Paleta de colores de la ropa
+#define COLOR_ROPA_AZUL {60, 90, 200}
+#define COLOR_ROPA_MARRON {150, 80, 30}
+#define COLOR_ROPA_NEGRO {40, 30, 20}
+#define COLOR_ROPA_RUBIO {230, 190, 90}
+#define COLOR_ROPA_ROJO {200, 60, 40}
+#define COLOR_ROPA_VERDE {70, 150, 70}
+#define COLOR_ROPA_BLANCO {230, 230, 230}
+#define COLOR_ROPA_VIOLETA {150, 80, 200}
+#define PALETA_ROPA                                                     \
+  {COLOR_ROPA_AZUL,  COLOR_ROPA_MARRON, COLOR_ROPA_NEGRO,               \
+   COLOR_ROPA_RUBIO, COLOR_ROPA_ROJO,   COLOR_ROPA_VERDE,               \
+   COLOR_ROPA_BLANCO, COLOR_ROPA_VIOLETA}
+#define PALETA_ROPA_CANTIDAD 8
 
 // Rutas de assets
 #define RUTA_ASSETS "assets/"
@@ -49,12 +115,32 @@
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO \
   RUTA_ASSETS "mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES RUTA_ASSETS "caverna/ore.png"
+#define RUTA_CASAS RUTA_ASSETS "edificios/House.png"
+#define RUTA_VACA RUTA_ASSETS "animales/Female Cow Brown.png"
+#define RUTA_GALLINA RUTA_ASSETS "animales/Chicken Blonde  Green.png"
+#define RUTA_CULTIVOS RUTA_ASSETS "cultivos/Spring Crops.png"
+#define RUTA_HUEVO RUTA_ASSETS "inventario/egg.png"
+#define RUTA_LECHE RUTA_ASSETS "inventario/milk.png"
+#define RUTA_ESPADA RUTA_ASSETS "inventario/sword.png"
+#define RUTA_PICO RUTA_ASSETS "inventario/pickaxe.png"
+#define RUTA_PALA RUTA_ASSETS "inventario/shovel.png"
+#define RUTA_REGADERA RUTA_ASSETS "inventario/watering_can.png"
+#define RUTA_PERSONAJE_CUERPO \
+  RUTA_ASSETS "personaje/StardewValley_Character_Farmer Base.png"
+#define RUTA_PERSONAJE_PANTALONES \
+  RUTA_ASSETS "personaje/StardewValley_Character_Pants.png"
+#define RUTA_PERSONAJE_REMERAS \
+  RUTA_ASSETS "personaje/StardewValley_Character_Shirts.png"
+#define RUTA_PERSONAJE_PELOS \
+  RUTA_ASSETS "personaje/StardewValley_Character_Hairstyles.png"
+#define RUTA_PERSONAJE_SOMBREROS \
+  RUTA_ASSETS "personaje/StardewValley_Character_Hats.png"
 #define RUTA_MUSICA_GRANJA RUTA_ASSETS "sonidos/musica_granja.ogg"
 #define RUTA_MUSICA_CAVERNA RUTA_ASSETS "sonidos/musica_caverna.ogg"
 #define RUTA_MUSICA_PUEBLO RUTA_ASSETS "sonidos/musica_pueblo.mp3"
 #define RUTA_SONIDO_PASO RUTA_ASSETS "sonidos/paso.wav"
 
-// Sprites: recortes en los tilesets (columna y fila en tiles, o píxeles)
+// Sprites: suelo (columna y fila en tiles del tileset)
 #define SUELO_DEFECTO_COLUMNA 4
 #define SUELO_DEFECTO_FILA 9
 #define SUELO_BORDE_CAVERNA_COLUMNA 8
@@ -74,6 +160,7 @@
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
 
+// Sprites: recortes del mapa (px)
 #define SPRITE_PUERTA_X 514
 #define SPRITE_PUERTA_Y 370
 #define SPRITE_PUERTA_ANCHO 30
@@ -82,7 +169,10 @@
 #define SPRITE_PISO_PUEBLO_Y 368
 #define SPRITE_FLORES_X 160
 #define SPRITE_FLORES_Y 276
+#define SPRITE_PASTO_OSCURO_X 16
+#define SPRITE_PASTO_OSCURO_Y 144
 
+// Sprites: minerales (px)
 #define SPRITE_MINERAL_CELDA 32
 #define SPRITE_MINERAL_ANCHO 32
 #define SPRITE_MINERAL_ALTO 28
@@ -90,9 +180,58 @@
 #define SPRITE_MINERAL_ETAPA_GOLPEADO 1
 #define SPRITE_MINERAL_ETAPA_CASI_ROTO 2
 
+// Sprites: granja (px)
+#define SPRITE_MODELOS_CASAS {{144, 0, 80, 104}, {0, 0, 80, 96}}
+#define SPRITE_VACA_LADO 32
+#define SPRITE_GALLINA_LADO 16
+#define SPRITE_CULTIVO_LADO 16
+#define SPRITE_CULTIVO_FILAS_POR_TIPO 2
+#define SPRITE_CULTIVO_FILA_PLANTA 1
+
+// Sprites: personaje (px)
+#define SPRITE_PERSONAJE_ANCHO 16
+#define SPRITE_PERSONAJE_ALTO 32
+#define SPRITE_PERSONAJE_PASOS {0, 1, 0, 2}
+#define SPRITE_PERSONAJE_FILAS_PICAR {11, 8, 6}
+#define SPRITE_BRAZOS_X 96
+#define SPRITE_PANTALONES_POR_FILA 10
+#define SPRITE_PANTALONES_ANCHO_BLOQUE 192
+#define SPRITE_PANTALONES_ALTO_BLOQUE 688
+#define SPRITE_REMERAS_POR_FILA 16
+#define SPRITE_REMERA_LADO 8
+#define SPRITE_REMERA_ALTO_BLOQUE 32
+#define SPRITE_REMERA_FILA_ABAJO 0
+#define SPRITE_REMERA_FILA_DERECHA 8
+#define SPRITE_REMERA_FILA_IZQUIERDA 16
+#define SPRITE_REMERA_FILA_ARRIBA 24
+#define SPRITE_REMERA_X 4
+#define SPRITE_REMERA_Y 15
+#define SPRITE_PELOS_POR_FILA 16
+#define SPRITE_PELO_ALTO_BLOQUE 96
+#define SPRITE_SOMBREROS_POR_FILA 12
+#define SPRITE_SOMBRERO_LADO 20
+#define SPRITE_SOMBRERO_ALTO_BLOQUE 80
+#define SPRITE_SOMBRERO_FILA_ABAJO 0
+#define SPRITE_SOMBRERO_FILA_DERECHA 20
+#define SPRITE_SOMBRERO_FILA_IZQUIERDA 40
+#define SPRITE_SOMBRERO_FILA_ARRIBA 60
+#define SPRITE_SOMBRERO_X (-2)
+#define SPRITE_SOMBRERO_Y (-4)
+#define SPRITE_MANO_DERECHA_X 9
+#define SPRITE_MANO_IZQUIERDA_X 7
+#define SPRITE_MANO_Y 16
+#define ICONO_PIXELES_POR_TILE 24
+
 // Colores
+#define COLOR_ALFA_OPACO 255
 #define COLOR_SOMBRA_MARGEN 150
 #define COLOR_SIN_TINTE 255
+#define COLOR_MUNDO_FONDO {18, 22, 18, COLOR_ALFA_OPACO}
+#define COLOR_MUNDO_DIFUMINADO {54, 124, 66, COLOR_ALFA_OPACO}
+#define COLOR_BARRA_VIDA {240, 200, 40, COLOR_ALFA_OPACO}
+#define COLOR_BARRA_ENERGIA {70, 190, 70, COLOR_ALFA_OPACO}
+#define COLOR_BARRA_BORDE {0, 0, 0, COLOR_ALFA_OPACO}
+#define COLOR_BARRA_FONDO {70, 70, 70, COLOR_ALFA_OPACO}
 
 // HUD: posiciones y tamaños
 
