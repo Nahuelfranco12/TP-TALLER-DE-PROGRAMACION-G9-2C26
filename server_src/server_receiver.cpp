@@ -82,8 +82,7 @@ void ServerReceiver::run() {
             client_id, protocol.receive_cheat_water()));
         break;
       case OP_CHAT: {
-        ChatDto chat = protocol.receive_chat();
-        std::cout << "CHAT de " << client_id << ": " << chat.text << std::endl; //lo agrego para probar
+        match->push_command(factory.create(client_id, protocol.receive_chat()));
         break;
       }
       case OP_CHEAT_GROWTH:

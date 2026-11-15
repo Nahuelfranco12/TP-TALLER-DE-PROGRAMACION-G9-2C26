@@ -63,7 +63,7 @@ public:
 
   void selectTool(AvailableTools tool);
   Tool *getSelectedTool();
-
+  int getId() const { return id; }
   const std::string &getName() const {return name;}
   // getters
   Sector *getActualSector() { return actualSector; }
