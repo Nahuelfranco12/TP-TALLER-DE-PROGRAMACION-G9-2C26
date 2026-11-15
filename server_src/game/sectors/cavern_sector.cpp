@@ -6,11 +6,17 @@
 #include <memory>
 #include <random>
 #include <utility>
+#include <algorithm>
 
 bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
-  if (entity->getType() == EntityTypes::PLAYER && playerCount() == 0)
-    reset();
-  return Sector::addEntity(std::move(entity), pos);
+    if (entity->getType() == EntityTypes::PLAYER && playerCount() == 0)
+        reset();
+
+    if (entity->getType() == EntityTypes::PLAYER && !isEmpty(pos)) {
+        pos = randomFreePosition();
+    }
+
+    return Sector::addEntity(std::move(entity), pos);
 }
 
 void CavernSector::initEntities() {
@@ -73,22 +79,47 @@ void CavernSector::spawnMinerals() {
       pickaxeHits = PICKAXE_COUNT_COAL;
       break;
     }
+
     addEntity(std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits), pos);
   }
 }
 
 void CavernSector::spawnEnemies() {
-  std::uniform_int_distribution<size_t> countDist(config.minEnemies,
-                                                  config.maxEnemies);
+  std::uniform_int_distribution<size_t> groupCountDist(config.minEnemyGroups,
+                                                        config.maxEnemyGroups);
+  std::uniform_int_distribution<size_t> typeDist(0, config.availableEnemies.size() - 1);
 
-  std::uniform_int_distribution<size_t> typeDist(
-      0, static_cast<size_t>(EnemyType::COUNT) - 1);
-  int count = countDist(rng);
-  for (int i = 0; i < count; i++) { 
-    EnemyType randType = static_cast<EnemyType>(typeDist(rng)); 
-    Position pos = randomFreePosition();
-    addEntity(this->enemiesFactory.createEnemy(randType, pos), pos);
+  size_t groupCount = groupCountDist(rng);
+  for (size_t i = 0; i < groupCount; i++) {
+    const EnemySpawnConfig &spawnCfg = config.availableEnemies[typeDist(rng)];
+    std::uniform_int_distribution<size_t> sizeDist(spawnCfg.minGroup, spawnCfg.maxGroup);
+    spawnEnemyGroup(spawnCfg.type, sizeDist(rng));
   }
+}
+
+void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
+  Position center = randomFreePosition();
+  for (size_t i = 0; i < count; i++) {
+    Position pos = (i == 0) ? center : randomNearPosition(center, 2);
+    auto enemy = enemiesFactory.createEnemy(type, pos);
+
+    if (enemy) {
+      Sector::addEntity(std::move(enemy), pos);
+    }
+  }
+}
+
+Position CavernSector::randomNearPosition(Position center, int radius) {
+  std::uniform_int_distribution<int> offsetDist(-radius, radius);
+  for (size_t attempts = 0; attempts < 50; attempts++) {
+    int nx = std::clamp(static_cast<int>(center.x) + offsetDist(rng), 0, static_cast<int>(width  - 1));
+    int ny = std::clamp(static_cast<int>(center.y) + offsetDist(rng), 0, static_cast<int>(height - 1));
+      
+    Position pos(static_cast<size_t>(nx), static_cast<size_t>(ny));
+    if (isEmpty(pos))
+      return pos;
+  }
+  return randomFreePosition();
 }
 
 Position CavernSector::randomFreePosition() {
