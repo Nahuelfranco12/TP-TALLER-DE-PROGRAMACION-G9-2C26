@@ -42,6 +42,7 @@ public:
   void send_gift_response_dto(const GiftResponseDto &dto);
   void send_till_dto(const TillDto &dto);
   void send_water_dto(const WaterDto &dto);
+  void send_attack_dto(const AttackDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
 

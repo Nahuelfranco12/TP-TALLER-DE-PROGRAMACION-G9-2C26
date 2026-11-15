@@ -6,24 +6,28 @@
 #include "../world.h"
 
 void PlantCommand::execute(World &world) {
-    Player *player = world.getPlayer(this->playerId);
-    if(!player) 
-        return;
-    
-    if (!player->position.isAdjacentTo(this->target)) return;
+  Player *player = world.getPlayer(this->playerId);
+  if (!player)
+    return;
 
-    Sector *sector = player->getActualSector();
-    if (!sector) return;
-    
-    if (!sector->isTilled(this->target)) return;
+  if (!player->position.isAdjacentTo(this->target))
+    return;
 
-    if (sector->getEntity(this->target)) return;
+  Sector *sector = player->getActualSector();
+  if (!sector)
+    return;
 
-    // todo: chequear q la casilla sea arable y tenga la semilla (y gastarla)
+  if (!sector->isTilled(this->target))
+    return;
 
-    if (!player->spendEnergy(ENERGY_COST_PLANT))
-        return;
+  if (sector->getEntity(this->target))
+    return;
 
+  // todo: chequear q la casilla sea arable y tenga la semilla (y gastarla)
 
-    sector->addEntity(std::make_unique<Crop>(this->target, this->crop), this->target);
+  if (!player->spendEnergy(ENERGY_COST_PLANT))
+    return;
+
+  sector->addEntity(std::make_unique<Crop>(this->target, this->crop),
+                    this->target);
 }

@@ -42,6 +42,7 @@ public:
   GiftResponseDto receive_gift_response();
   TillDto receive_till();
   WaterDto receive_water();
+  AttackDto receive_attack();
   WaterDto receive_cheat_water();
 
   // Protocolo de menú

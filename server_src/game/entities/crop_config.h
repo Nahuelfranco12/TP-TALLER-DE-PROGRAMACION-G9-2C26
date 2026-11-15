@@ -19,14 +19,14 @@ inline const CropConfig &cropConfig(CropTypes type) {
   static const CropConfig pumpkin{1, 7, 0, 0};
 
   switch (type) {
-    case CropTypes::STRAWBERRY:
-        return strawberry;
-    case CropTypes::GREEN_ONION:
-        return greenOnion;
-    case CropTypes::POTATO:
-        return potato;
-    case CropTypes::PUMPKIN:
-        return pumpkin;
+  case CropTypes::STRAWBERRY:
+    return strawberry;
+  case CropTypes::GREEN_ONION:
+    return greenOnion;
+  case CropTypes::POTATO:
+    return potato;
+  case CropTypes::PUMPKIN:
+    return pumpkin;
   }
   return pumpkin;
 }

@@ -55,22 +55,31 @@ void ServerReceiver::run() {
             factory.create(client_id, protocol.receive_collect()));
         break;
       case OP_PLANT:
-        match->push_command(factory.create(client_id, protocol.receive_plant()));
+        match->push_command(
+            factory.create(client_id, protocol.receive_plant()));
         break;
       case OP_TILL:
         match->push_command(factory.create(client_id, protocol.receive_till()));
         break;
       case OP_WATER:
-        match->push_command(factory.create(client_id, protocol.receive_water()));
+        match->push_command(
+            factory.create(client_id, protocol.receive_water()));
         break;
       case OP_GIFT_OFFER:
-        match->push_command(factory.create(client_id, protocol.receive_gift_offer()));
+        match->push_command(
+            factory.create(client_id, protocol.receive_gift_offer()));
         break;
       case OP_GIFT_RESPONSE:
-        match->push_command(factory.create(client_id, protocol.receive_gift_response()));
+        match->push_command(
+            factory.create(client_id, protocol.receive_gift_response()));
+        break;
+      case OP_ATTACK:
+        match->push_command(
+            factory.create(client_id, protocol.receive_attack()));
         break;
       case OP_CHEAT_WATER:
-        match->push_command(factory.create_cheat_water(client_id, protocol.receive_cheat_water()));
+        match->push_command(factory.create_cheat_water(
+            client_id, protocol.receive_cheat_water()));
         break;
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../common_src/constants.h"
+#include "actions/attack_action.h"
 #include "actions/cheat_growth_action.h"
 #include "actions/collect_action.h"
 #include "actions/gift_offer_action.h"
@@ -60,6 +61,10 @@ void Client::send_till(DirectionDto direction) {
 
 void Client::send_water(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+}
+
+void Client::send_attack(DirectionDto direction) {
+  to_send_queue.try_push(std::make_unique<AttackAction>(direction));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {

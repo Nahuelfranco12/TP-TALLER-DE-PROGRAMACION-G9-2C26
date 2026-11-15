@@ -4,10 +4,12 @@
 
 class GiftResponseCommand : public Command {
 private:
-    int receiverId;
-    bool accept;
+  int receiverId;
+  bool accept;
+
 public:
-    GiftResponseCommand(int receiverId, bool accept) : receiverId(receiverId), accept(accept) {}
-    void execute(World &world) override;
+  GiftResponseCommand(int receiverId, bool accept)
+      : receiverId(receiverId), accept(accept) {}
+  void execute(World &world) override;
 };
 #endif

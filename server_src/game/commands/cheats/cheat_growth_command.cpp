@@ -4,6 +4,4 @@
 
 #include "cheat_growth_command.h"
 
-void CheatGrowthCommand::execute(World &world) {
-  world.growthCheatAll();
-}
+void CheatGrowthCommand::execute(World &world) { world.growthCheatAll(); }

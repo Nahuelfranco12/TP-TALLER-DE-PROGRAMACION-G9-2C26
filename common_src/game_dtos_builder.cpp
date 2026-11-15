@@ -86,6 +86,22 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
                                             : EntityTypeDto::CHICKEN;
   case EntityTypes::CROP:
     return EntityTypeDto::CROP;
+  case EntityTypes::ENEMY:
+    switch (e.enemy.type) {
+    case EnemyType::SKELETON:
+      return EntityTypeDto::SKELETON;
+    case EnemyType::ORC:
+      return EntityTypeDto::ORC;
+    case EnemyType::VAMPIRE_MALE:
+      return EntityTypeDto::VAMPIRE_MALE;
+    case EnemyType::VAMPIRE_FEMALE:
+      return EntityTypeDto::VAMPIRE_FEMALE;
+    case EnemyType::TRAP_FLAME:
+      return EntityTypeDto::TRAP_FLAME;
+    case EnemyType::TRAP_PINCH:
+      return EntityTypeDto::TRAP_PINCH;
+    }
+    break;
   default:
     break;
   }
@@ -210,6 +226,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.crop.needsWater = e.crop.needsWater;
 
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
+          entityDto.enemy.alive = e.enemy.is_alive;
           sectorDto.entities[pos] = entityDto;
         }
       }

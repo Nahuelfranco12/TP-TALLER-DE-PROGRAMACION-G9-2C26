@@ -7,6 +7,9 @@ target_sources(taller_game
     entities/door.cpp
     entities/player.cpp
     entities/crop.cpp
+    entities/enemy.cpp
+    entities/enemies_factory.cpp
+    entities/vampire.cpp
 
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
@@ -25,6 +28,7 @@ target_sources(taller_game
     commands/spawn_animal_command.cpp
     commands/plant_command.cpp
     commands/water_command.cpp
+    commands/attack_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
 

@@ -33,14 +33,20 @@ struct AnimalState {
   bool is_ready = false;
 };
 
+struct EnemyState {
+  EnemyType type{};
+  bool is_alive = true;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
   int playerId =
-      INVALID_PLAYER_ID;      // INVALID_PLAYER_ID en caso de no ser jugador.
+      INVALID_PLAYER_ID;  // INVALID_PLAYER_ID en caso de no ser jugador.
   MineralState mineral{}; // en caso de ser mineral.
-  AnimalState animal{};    // en caso de ser animal.
-  CropState crop{}; // en caso de ser mineral
+  AnimalState animal{};   // en caso de ser animal.
+  CropState crop{};       // en caso de ser mineral
+  EnemyState enemy{};     // en caso de ser enemigo
 
   // TODO: cultivos y npcs
 };

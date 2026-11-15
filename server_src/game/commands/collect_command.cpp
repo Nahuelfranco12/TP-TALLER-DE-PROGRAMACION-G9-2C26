@@ -46,7 +46,7 @@ void CollectCommand::execute(World &world) {
   auto product = collectable->collect();
   player->getInventory().addItem(std::move(product));
 
-  if(should_remove) {
+  if (should_remove) {
     sector->removeEntity(target);
   }
 }

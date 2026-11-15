@@ -25,27 +25,39 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<CollectCommand>(player_id, dto.direction);
 }
 
-std::unique_ptr<Command> CommandFactory::create(int player_id, const PlantDto &dto) {
-    Position target(dto.target.x, dto.target.y);
-    CropTypes crop = static_cast<CropTypes>(dto.crop);
-    return std::make_unique<PlantCommand>(player_id, target, crop);
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const PlantDto &dto) {
+  Position target(dto.target.x, dto.target.y);
+  CropTypes crop = static_cast<CropTypes>(dto.crop);
+  return std::make_unique<PlantCommand>(player_id, target, crop);
 }
 
-std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftOfferDto &dto) {
-    return std::make_unique<GiftOfferCommand>(player_id, dto.receiverId, dto.slotIndex);
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const GiftOfferDto &dto) {
+  return std::make_unique<GiftOfferCommand>(player_id, dto.receiverId,
+                                            dto.slotIndex);
 }
-std::unique_ptr<Command> CommandFactory::create(int player_id, const GiftResponseDto &dto) {
-    return std::make_unique<GiftResponseCommand>(player_id, dto.accept);
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const GiftResponseDto &dto) {
+  return std::make_unique<GiftResponseCommand>(player_id, dto.accept);
 }
-std::unique_ptr<Command> CommandFactory::create(int player_id, const TillDto &dto) {
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const TillDto &dto) {
   return std::make_unique<TillCommand>(player_id, dto.direction);
 }
 
-std::unique_ptr<Command> CommandFactory::create(int player_id, const WaterDto &dto) {
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const WaterDto &dto) {
   return std::make_unique<WaterCommand>(player_id, dto.direction);
 }
 
-std::unique_ptr<Command> CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const AttackDto &dto) {
+  return std::make_unique<AttackCommand>(player_id, dto.direction);
+}
+
+std::unique_ptr<Command>
+CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
   return std::make_unique<CheatWaterCropCommand>(player_id, dto.direction);
 }
 

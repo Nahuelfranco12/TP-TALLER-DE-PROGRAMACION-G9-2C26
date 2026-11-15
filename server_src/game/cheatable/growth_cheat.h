@@ -3,9 +3,9 @@
 
 class IGrowthCheat {
 public:
-    virtual ~IGrowthCheat() = default;
+  virtual ~IGrowthCheat() = default;
 
-    virtual void growthCheat() = 0;
+  virtual void growthCheat() = 0;
 };
 
 #endif // GROWTH_CHEAT_H_

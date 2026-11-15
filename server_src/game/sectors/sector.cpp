@@ -1,8 +1,12 @@
 #include "sector.h"
 
+#include <cstdlib>
+#include <iostream>
 #include <utility>
 
 #include "../cheatable/growth_cheat.h"
+#include "../entities/enemy.h"
+#include "../entities/player.h"
 
 MoveResult Sector::move(Position origin, Position destine) {
   if (!canMoveTo(destine)) {
@@ -67,7 +71,6 @@ void Sector::growthCheatAll() {
   }
 }
 
-
 std::unique_ptr<Entity> Sector::removeEntity(Position pos) {
   auto it = this->entities.find(pos);
   if (it == this->entities.end())
@@ -103,14 +106,14 @@ Position Sector::findFreePosition() const {
 }
 
 bool Sector::till(Position pos) {
-  if(pos.x >= this->width || pos.y >= this->height)
+  if (pos.x >= this->width || pos.y >= this->height)
     return false;
-  if(!isEmpty(pos))
+  if (!isEmpty(pos))
     return false;
   return this->tiles[pos.x][pos.y].till();
 }
 bool Sector::isTilled(Position pos) const {
-  if (pos.x >= this->width || pos.y >= this->height) 
+  if (pos.x >= this->width || pos.y >= this->height)
     return false;
   return this->tiles[pos.x][pos.y].isTilled();
 }
@@ -128,14 +131,71 @@ SectorState Sector::state() const {
       const Terrain &terrain = tiles[x][y];
       state.tiles[x][y] = {
           terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable(),
-          this->doors.find(Position(x, y)) != this->doors.end(), terrain.isTilled()};
+          this->doors.find(Position(x, y)) != this->doors.end(),
+          terrain.isTilled()};
     }
 
   return state;
+}
+
+bool Sector::closestPlayer(Position origin, int maxDistance,
+                           Position &closestPosition) const {
+  bool foundAny = false;
+  int closestDistance = maxDistance + 1;
+
+  for (const auto &[playerPosition, entity] : entities) {
+    const Player *player = dynamic_cast<const Player *>(entity.get());
+    if (!player || player->isUnconscious())
+      continue;
+
+    int distance = std::abs(static_cast<int>(playerPosition.x) -
+                            static_cast<int>(origin.x)) +
+                   std::abs(static_cast<int>(playerPosition.y) -
+                            static_cast<int>(origin.y));
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestPosition = playerPosition;
+      foundAny = true;
+    }
+  }
+  return foundAny;
+}
+
+void Sector::apply(Position origin, const Decision &decision) {
+  Enemy *enemy = dynamic_cast<Enemy *>(getEntity(origin));
+  if (!enemy || enemy->isDead())
+    return;
+  Position target = origin.next(decision.direction);
+
+  switch (decision.type) {
+  case DecisionType::MOVE:
+    if (this->doors.find(target) == this->doors.end())
+      move(origin, target);
+    break;
+  case DecisionType::ATTACK: {
+    Player *player = dynamic_cast<Player *>(getEntity(target));
+    if (player)
+      player->takeDamage(enemy->getDamage());
+    break;
+  }
+  case DecisionType::NONE:
+    break;
+  }
 }
 
 void Sector::tick() {
   for (auto &[pos, entity] : this->entities) {
     entity->tick();
   }
+
+  std::map<Position, Decision> decisions;
+  for (auto &[pos, entity] : this->entities) {
+    Enemy *enemy = dynamic_cast<Enemy *>(entity.get());
+    if (enemy)
+      decisions[pos] = enemy->decide(*this);
+  }
+
+  for (const auto &[pos, decision] : decisions)
+    apply(pos, decision);
 }

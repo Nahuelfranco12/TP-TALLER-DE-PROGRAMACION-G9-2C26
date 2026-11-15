@@ -1,11 +1,11 @@
 #ifndef COW_H_
 #define COW_H_
 
+#include "../cheatable/growth_cheat.h"
 #include "../game_constants.h"
 #include "../inventory/cow_milk.h"
 #include "animal.h"
 #include "collectable.h"
-#include "../cheatable/growth_cheat.h"
 
 #include <memory>
 
@@ -40,11 +40,9 @@ public:
   double energyCost() const override { return ENERGY_COST_COLLECT_ANIMAL; }
 
   /*
-  * IGrowthCheat
-  */
-  void growthCheat() override {
-    progress = ticksToBeReady;
-  }
+   * IGrowthCheat
+   */
+  void growthCheat() override { progress = ticksToBeReady; }
 
   EntityState entityState() const override {
     EntityState state = Animal::entityState();

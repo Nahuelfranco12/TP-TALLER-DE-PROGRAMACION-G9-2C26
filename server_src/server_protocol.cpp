@@ -36,6 +36,7 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.needsWater));
     protocol.send_u8(static_cast<uint8_t>(entity.mineral.remainingHits));
+    protocol.send_u8(entity.enemy.alive ? 1 : 0);
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
@@ -182,6 +183,10 @@ TillDto ServerProtocol::receive_till() {
 
 WaterDto ServerProtocol::receive_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
+}
+
+AttackDto ServerProtocol::receive_attack() {
+  return AttackDto{byte_to_direction(protocol.receive_u8())};
 }
 
 WaterDto ServerProtocol::receive_cheat_water() {

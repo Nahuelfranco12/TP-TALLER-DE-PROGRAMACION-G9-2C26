@@ -3,6 +3,8 @@
 
 #include <cstddef>
 
+#include "../../common_src/game_dtos.h"
+
 class Position {
 public:
   size_t x;
@@ -24,6 +26,25 @@ public:
     size_t dx = (x > other.x) ? x - other.x : other.x - x;
     size_t dy = (y > other.y) ? y - other.y : other.y - y;
     return (dx + dy) == 1;
+  }
+
+  Position next(DirectionDto direction) const {
+    Position result(x, y);
+    switch (direction) {
+    case DirectionDto::Up:
+      result.y = y - 1;
+      break;
+    case DirectionDto::Down:
+      result.y = y + 1;
+      break;
+    case DirectionDto::Left:
+      result.x = x - 1;
+      break;
+    case DirectionDto::Right:
+      result.x = x + 1;
+      break;
+    }
+    return result;
   }
 };
 

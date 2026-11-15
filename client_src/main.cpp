@@ -307,7 +307,9 @@ int main(int argc, char *argv[]) try {
         InventorySlotDto en_la_mano;
         CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
 
-        if (zona == SectorTypeDto::CAVERN) {
+        if (inventario.tengo_en_la_mano(ESPADA)) {
+          client.send_attack(dir);
+        } else if (zona == SectorTypeDto::CAVERN) {
           if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
             personaje.picar();
             client.send_mine(dir);

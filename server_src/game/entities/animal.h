@@ -1,8 +1,8 @@
 #ifndef ANIMAL_H_
 #define ANIMAL_H_
 
-#include "../game_constants.h"
 #include "../cheatable/growth_cheat.h"
+#include "../game_constants.h"
 #include "entity.h"
 
 class Animal : public Entity, public IGrowthCheat {

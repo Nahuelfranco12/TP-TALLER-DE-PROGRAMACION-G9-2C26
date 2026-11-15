@@ -80,6 +80,11 @@ enum class EntityTypeDto {
   COW,
   CHICKEN,
   SKELETON,
+  ORC,
+  VAMPIRE_MALE,
+  VAMPIRE_FEMALE,
+  TRAP_PINCH,
+  TRAP_FLAME,
   MINERAL_GOLD,
   MINERAL_IRON,
   MINERAL_LAPIZLAZULI,
@@ -113,6 +118,10 @@ struct TillDto {
 };
 
 struct WaterDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
+struct AttackDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
@@ -197,11 +206,16 @@ struct CropDto {
   bool needsWater;
 };
 
+struct EnemyDto {
+  bool alive = true;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false;   // x ahora solo se usa si es animal
   MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{};       // Solo se usa si es cultivo
+  EnemyDto enemy{};
 };
 
 struct GameTimeDto {
