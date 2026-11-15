@@ -44,6 +44,7 @@ void Gameloop::run() {
       process_commands();
       world.tick();
       clients.send_to_all(make_world_state());
+      world.clearChat();
 
       auto time_2 = std::chrono::steady_clock::now();
       auto rest = tickrate - (time_2 - time_1);

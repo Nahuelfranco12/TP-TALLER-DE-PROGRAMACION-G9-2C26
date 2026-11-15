@@ -35,7 +35,7 @@ target_sources(taller_server
     game/commands/till_command.cpp
     game/commands/gift_offer_command.cpp
     game/commands/gift_response_command.cpp
-
+    game/commands/chat_command.cpp
     game/commands/cheats/cheat_growth_command.cpp
     game/commands/cheats/cheat_water_crop_command.cpp
 
@@ -82,6 +82,7 @@ target_sources(taller_server
     game/commands/till_command.h
     game/commands/gift_offer_command.h
     game/commands/gift_response_command.h
+    game/commands/chat_command.h
     game/commands/cheats/cheat_growth_command.h
     game/commands/cheats/cheat_water_crop_command.h
 

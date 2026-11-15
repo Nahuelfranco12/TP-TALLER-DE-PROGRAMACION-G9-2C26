@@ -26,6 +26,7 @@ struct PendingGift {
 class Player : public Entity {
 private:
   int id;
+  std::string name;
   double life;
   double energy;
   int coins;
@@ -37,9 +38,9 @@ private:
   Sector *actualSector;
 
 public:
-  Player(size_t pos_x, size_t pos_y, int id, Sector *actualSector,
+  Player(size_t pos_x, size_t pos_y, int id, const std::string &name, Sector *actualSector,
          PlayerOutfit outfit)
-      : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), life(100),
+      : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), name(name), life(100),
         energy(100), coins(rand() % 100 + 1), outfit(outfit), inventory(),
         actualSector(actualSector) {
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
@@ -62,7 +63,8 @@ public:
 
   void selectTool(AvailableTools tool);
   Tool *getSelectedTool();
-
+  int getId() const { return id; }
+  const std::string &getName() const {return name;}
   // getters
   Sector *getActualSector() { return actualSector; }
   void setActualSector(Sector *s) { actualSector = s; }
