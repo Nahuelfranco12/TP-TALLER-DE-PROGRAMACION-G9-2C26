@@ -125,6 +125,10 @@ struct AttackDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct ChatDto {
+  std::string text;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;

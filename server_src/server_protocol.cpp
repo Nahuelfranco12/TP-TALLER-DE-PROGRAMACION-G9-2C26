@@ -193,6 +193,12 @@ WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }
 
+ChatDto ServerProtocol::receive_chat() {
+    ChatDto dto;
+    dto.text = protocol.receive_string();
+    return dto;
+}
+
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {
   switch (direction_byte) {
   case DIR_UP:

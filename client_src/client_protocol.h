@@ -43,6 +43,7 @@ public:
   void send_till_dto(const TillDto &dto);
   void send_water_dto(const WaterDto &dto);
   void send_attack_dto(const AttackDto &dto);
+  void send_chat_dto(const ChatDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
 

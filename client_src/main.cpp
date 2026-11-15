@@ -288,6 +288,9 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c &&
           evento.key.repeat == 0)
         client.send_cheat_water(dir);
+      
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_t && evento.key.repeat == 0)
+        client.send_chat("Hola, gente!");
 
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_COMMA &&
           evento.key.repeat == 0)
