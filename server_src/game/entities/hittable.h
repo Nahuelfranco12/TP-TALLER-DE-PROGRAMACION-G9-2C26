@@ -16,9 +16,10 @@ public:
     /*
     * Golpea, en caso de alcanzar los hits necesarios devuelve true.
     */
-    virtual bool hit() {
-        if (remainingHits > 0) 
-            remainingHits--;
+    virtual bool hit(size_t damage = 1) {
+        remainingHits -= damage;
+        if(remainingHits < 0)
+            remainingHits = 0;
         return remainingHits == 0;
     }
 
