@@ -52,7 +52,8 @@ public:
 
   void dibujar(SDL2pp::Renderer &renderer, const Audio &audio);
 
-  void actualizar_tiempo(SDL2pp::Renderer &renderer, const GameTimeDto &tiempo, size_t dia);
+  void actualizar_tiempo(SDL2pp::Renderer &renderer, const GameTimeDto &tiempo,
+                         size_t dia);
 
   void dibujar_noche(SDL2pp::Renderer &renderer) const;
 

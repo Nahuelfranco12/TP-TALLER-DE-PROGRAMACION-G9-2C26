@@ -9,8 +9,7 @@ private:
   int playerId;
 
 public:
-  CheatGrowthCommand(int playerId)
-      : playerId(playerId) {}
+  CheatGrowthCommand(int playerId) : playerId(playerId) {}
 
   void execute(World &world) override;
 };

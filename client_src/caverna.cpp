@@ -20,47 +20,53 @@ const FormatoEnemigo FORMATO_VAMPIRO{32, 29};
 const int PIXELES_POR_TILE = 16;
 
 const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
-}
+} // namespace
 
 Caverna::Caverna(Renderer &renderer)
-  : minerales(renderer, "assets/caverna/ore.png"),
-  esqueleto(renderer, "assets/enemigos/enemies-skeleton1_idle.png"),
-  orco_quieto(renderer, "assets/enemigos/enemies-orc1_idle.png"),
-  vampiro_quieto(renderer, "assets/enemigos/enemies-vampire_idle.png"),
-  vueltas(0) {}
+    : minerales(renderer, "assets/caverna/ore.png"),
+      esqueleto(renderer, "assets/enemigos/enemies-skeleton1_idle.png"),
+      orco_quieto(renderer, "assets/enemigos/enemies-orc1_idle.png"),
+      vampiro_quieto(renderer, "assets/enemigos/enemies-vampire_idle.png"),
+      vueltas(0) {}
 
-void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
+void Caverna::actualizar(
+    const std::map<GamePositionDto, EntityDto> &entidades) {
   lista_minerales.clear();
   lista_enemigos.clear();
   for (const auto &[pos, entidad] : entidades) {
     if (entidad.type == EntityTypeDto::SKELETON) {
-      lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
+      lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x),
+                                static_cast<int>(pos.y), entidad.enemy.alive});
       continue;
     } else if (entidad.type == EntityTypeDto::ORC) {
-      lista_enemigos.push_back({ORCO, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
+      lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
+                                static_cast<int>(pos.y), entidad.enemy.alive});
       continue;
-    } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE || entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
-      TipoEnemigo tipo = entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
-      lista_enemigos.push_back({tipo, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
+    } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
+               entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
+      TipoEnemigo tipo =
+          entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
+      lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
+                                static_cast<int>(pos.y), entidad.enemy.alive});
       continue;
     }
 
     TipoMineral tipo;
     switch (entidad.type) {
-      case EntityTypeDto::MINERAL_IRON:
-        tipo = HIERRO;
-        break;
-      case EntityTypeDto::MINERAL_COAL:
-        tipo = CARBON;
-        break;
-      case EntityTypeDto::MINERAL_LAPIZLAZULI:
-        tipo = LAPISLAZULI;
-        break;
-      case EntityTypeDto::MINERAL_GOLD:
-        tipo = ORO;
-        break;
-      default:
-        continue;
+    case EntityTypeDto::MINERAL_IRON:
+      tipo = HIERRO;
+      break;
+    case EntityTypeDto::MINERAL_COAL:
+      tipo = CARBON;
+      break;
+    case EntityTypeDto::MINERAL_LAPIZLAZULI:
+      tipo = LAPISLAZULI;
+      break;
+    case EntityTypeDto::MINERAL_GOLD:
+      tipo = ORO;
+      break;
+    default:
+      continue;
     }
 
     size_t golpes = entidad.mineral.remainingHits;
@@ -71,29 +77,28 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
       etapa = 2;
     }
 
-    lista_minerales.push_back({
-      tipo,
-      static_cast<int>(pos.x),
-      static_cast<int>(pos.y),
-      etapa
-    });
+    lista_minerales.push_back(
+        {tipo, static_cast<int>(pos.x), static_cast<int>(pos.y), etapa});
   }
 }
 
-void Caverna::animar(long vueltas_pasadas) {vueltas += vueltas_pasadas;}
+void Caverna::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
-void Caverna::dibujar_mineral(Renderer &renderer, const Mineral &mineral, int camara_x, int camara_y, int lado) {
-  Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ANCHO, MINERAL_ANCHO, MINERAL_ALTO);
+void Caverna::dibujar_mineral(Renderer &renderer, const Mineral &mineral,
+                              int camara_x, int camara_y, int lado) {
+  Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ANCHO,
+              MINERAL_ANCHO, MINERAL_ALTO);
   int x = mineral.tile_x * lado - camara_x;
   int y = mineral.tile_y * lado - camara_y;
   Rect destino(x, y, lado, MINERAL_ALTO * lado / MINERAL_ANCHO);
   renderer.Copy(minerales, origen, destino);
 }
 
-void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo, int camara_x, int camara_y, int lado) {
-  if(!enemigo.vivo) 
+void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
+                              int camara_x, int camara_y, int lado) {
+  if (!enemigo.vivo)
     return;
-  
+
   SDL2pp::Texture *textura = &esqueleto;
   FormatoEnemigo formato = FORMATO_ESQUELETO;
   switch (enemigo.tipo) {
@@ -101,7 +106,7 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo, int ca
     textura = &esqueleto;
     formato = FORMATO_ESQUELETO;
     break;
-  
+
   case ORCO:
     textura = &orco_quieto;
     formato = FORMATO_ORCO;
@@ -114,24 +119,26 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo, int ca
   }
 
   int cuadros = textura->GetWidth() / formato.lado;
-  int cuadro = static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
+  int cuadro =
+      static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
 
   Rect origen(cuadro * formato.lado, 0, formato.lado, formato.lado);
 
   int tamanio = formato.lado * lado / PIXELES_POR_TILE;
 
   int x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
-  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE - camara_y;
+  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
+          camara_y;
 
   // TODO: VER DE SACAR, ES PARA DIFERENCIAR A LA VAMPIRA DEL VAMPIRO
   if (enemigo.tipo == VAMPIRA)
-    textura->SetColorMod(255, 170, 200);   
+    textura->SetColorMod(255, 170, 200);
   renderer.Copy(*textura, origen, Rect(x, y, tamanio, tamanio));
-  textura->SetColorMod(255, 255, 255); 
-
+  textura->SetColorMod(255, 255, 255);
 }
 
-void Caverna::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
+void Caverna::dibujar(Renderer &renderer, int camara_x, int camara_y,
+                      int lado) {
   for (const Mineral &mineral : lista_minerales) {
     dibujar_mineral(renderer, mineral, camara_x, camara_y, lado);
   }

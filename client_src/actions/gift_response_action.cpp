@@ -4,5 +4,5 @@
 GiftResponseAction::GiftResponseAction(bool accept) : dto{accept} {}
 
 void GiftResponseAction::send_by(ClientProtocol &protocol) const {
-    protocol.send_gift_response_dto(dto);
+  protocol.send_gift_response_dto(dto);
 }

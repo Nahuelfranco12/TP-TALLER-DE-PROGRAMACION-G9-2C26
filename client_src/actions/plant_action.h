@@ -6,11 +6,11 @@
 
 class PlantAction : public ClientAction {
 private:
-    PlantDto dto;
+  PlantDto dto;
 
 public:
-    PlantAction(int x, int y, CropTypeDto crop);
-    void send_by(ClientProtocol &protocol) const override;
+  PlantAction(int x, int y, CropTypeDto crop);
+  void send_by(ClientProtocol &protocol) const override;
 };
 
 #endif

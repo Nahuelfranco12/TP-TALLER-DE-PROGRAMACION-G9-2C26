@@ -31,17 +31,17 @@ public:
   Position next(DirectionDto direction) const {
     Position result(x, y);
     switch (direction) {
-    case DirectionDto::Up:    
-      result.y = y - 1; 
+    case DirectionDto::Up:
+      result.y = y - 1;
       break;
-    case DirectionDto::Down:  
-      result.y = y + 1; 
+    case DirectionDto::Down:
+      result.y = y + 1;
       break;
-    case DirectionDto::Left:  
+    case DirectionDto::Left:
       result.x = x - 1;
       break;
-    case DirectionDto::Right: 
-      result.x = x + 1; 
+    case DirectionDto::Right:
+      result.x = x + 1;
       break;
     }
     return result;

@@ -21,24 +21,32 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
     break;
   case ItemType::SEED:
     switch (static_cast<CropTypes>(item.subtype)) {
-        case CropTypes::STRAWBERRY:  return ItemTypeDto::SEED_STRAWBERRY;
-        case CropTypes::GREEN_ONION: return ItemTypeDto::SEED_GREEN_ONION;
-        case CropTypes::POTATO:      return ItemTypeDto::SEED_POTATO;
-        case CropTypes::PUMPKIN:     return ItemTypeDto::SEED_PUMPKIN;
+    case CropTypes::STRAWBERRY:
+      return ItemTypeDto::SEED_STRAWBERRY;
+    case CropTypes::GREEN_ONION:
+      return ItemTypeDto::SEED_GREEN_ONION;
+    case CropTypes::POTATO:
+      return ItemTypeDto::SEED_POTATO;
+    case CropTypes::PUMPKIN:
+      return ItemTypeDto::SEED_PUMPKIN;
     }
     break;
   case ItemType::CROP:
-      switch (static_cast<CropTypes>(item.subtype)) {
-          case CropTypes::STRAWBERRY:  return ItemTypeDto::CROP_STRAWBERRY;
-          case CropTypes::GREEN_ONION: return ItemTypeDto::CROP_GREEN_ONION;
-          case CropTypes::POTATO:      return ItemTypeDto::CROP_POTATO;
-          case CropTypes::PUMPKIN:     return ItemTypeDto::CROP_PUMPKIN;
-      }
-      break;
+    switch (static_cast<CropTypes>(item.subtype)) {
+    case CropTypes::STRAWBERRY:
+      return ItemTypeDto::CROP_STRAWBERRY;
+    case CropTypes::GREEN_ONION:
+      return ItemTypeDto::CROP_GREEN_ONION;
+    case CropTypes::POTATO:
+      return ItemTypeDto::CROP_POTATO;
+    case CropTypes::PUMPKIN:
+      return ItemTypeDto::CROP_PUMPKIN;
+    }
+    break;
   case ItemType::ANIMAL_PRODUCT:
-      if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
-          return ItemTypeDto::COW_MILK;
-      return ItemTypeDto::CHICKEN_EGG;
+    if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
+      return ItemTypeDto::COW_MILK;
+    return ItemTypeDto::CHICKEN_EGG;
   default:
     break;
   }
@@ -75,7 +83,7 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     break;
   case EntityTypes::ANIMAL:
     return e.animal.type == AnimalType::COW ? EntityTypeDto::COW
-                                           : EntityTypeDto::CHICKEN;
+                                            : EntityTypeDto::CHICKEN;
   case EntityTypes::CROP:
     return EntityTypeDto::CROP;
   case EntityTypes::ENEMY:
@@ -85,7 +93,7 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     case EnemyType::ORC:
       return EntityTypeDto::ORC;
     case EnemyType::VAMPIRE_MALE:
-      return EntityTypeDto::VAMPIRE_MALE;    
+      return EntityTypeDto::VAMPIRE_MALE;
     case EnemyType::VAMPIRE_FEMALE:
       return EntityTypeDto::VAMPIRE_FEMALE;
     case EnemyType::TRAP_FLAME:
@@ -116,7 +124,7 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
   case IdSector::CAVERN_LEVEL_8:
   case IdSector::CAVERN_LEVEL_9:
   case IdSector::CAVERN_LEVEL_10:
-      return SectorTypeDto::CAVERN;
+    return SectorTypeDto::CAVERN;
   }
   throw std::logic_error("IdSector sin DTO");
 }
@@ -189,7 +197,8 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
               InventoryDto inv;
               inv.ownerId = playerState.id;
               for (const ItemState &i : playerState.inventory.items)
-                inv.slots.push_back({i.count, toDto(i), static_cast<CropQualityDto>(i.quality)});
+                inv.slots.push_back({i.count, toDto(i),
+                                     static_cast<CropQualityDto>(i.quality)});
               for (const ToolState &t : playerState.inventory.tools)
                 inv.tools.push_back(toDto(t.type));
               playerDto.inventory.push_back(std::move(inv));
@@ -197,7 +206,11 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
                   static_cast<ToolTypeDto>(playerState.actualTool);
               if (playerState.pendingGift.count > 0) {
                 playerDto.pendingGift.giverId = playerState.pendingGiftGiverId;
-                playerDto.pendingGift.gift = {playerState.pendingGift.count, toDto(playerState.pendingGift), static_cast<CropQualityDto>(playerState.pendingGift.quality)};
+                playerDto.pendingGift.gift = {
+                    playerState.pendingGift.count,
+                    toDto(playerState.pendingGift),
+                    static_cast<CropQualityDto>(
+                        playerState.pendingGift.quality)};
               }
             }
             sectorDto.players[pos] = std::move(playerDto);
@@ -211,7 +224,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.crop.type = static_cast<CropTypeDto>(e.crop.type);
           entityDto.crop.growth = static_cast<CropGrowthDto>(e.crop.growth);
           entityDto.crop.needsWater = e.crop.needsWater;
-          
+
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           entityDto.enemy.alive = e.enemy.is_alive;
           sectorDto.entities[pos] = entityDto;

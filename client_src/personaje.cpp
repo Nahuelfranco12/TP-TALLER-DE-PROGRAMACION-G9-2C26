@@ -57,7 +57,9 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
       sombreros(renderer, "assets/personaje/StardewValley_Character_Hats.png"),
       pantalon(0), remera(5), pelo(3), sombrero(2), color_pantalon(0),
       color_pelo(1), tile_x(0), tile_y(0), mirando(ABAJO), vueltas_caminando(0),
-      vueltas_restantes_paso(0), vueltas_picando(0), en_la_mano(ToolTypeDto::PICKAXE), vida(VALOR_MAXIMO), energia(VALOR_MAXIMO) {
+      vueltas_restantes_paso(0), vueltas_picando(0),
+      en_la_mano(ToolTypeDto::PICKAXE), vida(VALOR_MAXIMO),
+      energia(VALOR_MAXIMO) {
   // Colores iniciales
   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
                          COLORES[color_pantalon][2]);
@@ -123,9 +125,7 @@ void Personaje::animar(long vueltas) {
   }
 }
 
-void Personaje::mirar(Direccion direccion) {
-  mirando = direccion;
-}
+void Personaje::mirar(Direccion direccion) { mirando = direccion; }
 
 void Personaje::picar() {
   if (vueltas_picando <= 0) {
@@ -133,17 +133,11 @@ void Personaje::picar() {
   }
 }
 
-void Personaje::agarrar(ToolTypeDto herramienta) {
-  en_la_mano = herramienta;
-}
+void Personaje::agarrar(ToolTypeDto herramienta) { en_la_mano = herramienta; }
 
-void Personaje::poner_vida(double nueva_vida) {
-  vida = nueva_vida;
-}
+void Personaje::poner_vida(double nueva_vida) { vida = nueva_vida; }
 
-void Personaje::poner_energia(double nueva_energia) {
-  energia = nueva_energia;
-}
+void Personaje::poner_energia(double nueva_energia) { energia = nueva_energia; }
 
 int Personaje::obtener_tile_x() const { return tile_x; }
 
@@ -183,7 +177,7 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
 
   int barra_x = x + TILE / 2 - ANCHO_BARRA / 2;
   int barra_vida_y = y - 2 * ALTO_BARRA - 4;
-  int barra_energia_y = y - ALTO_BARRA -2;
+  int barra_energia_y = y - ALTO_BARRA - 2;
   dibujar_barra(renderer, barra_x, barra_vida_y, vida, AMARILLO);
   dibujar_barra(renderer, barra_x, barra_energia_y, energia, VERDE);
 }
@@ -196,13 +190,15 @@ void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
 }
 
-  void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y, int lado) {
-    int fila_cuerpo = mirando;
-    if (mirando == IZQUIERDA) {
-      fila_cuerpo = DERECHA;
-    }
-    dibujar_capas(renderer, centro_x - lado / 2, pie_y - 2 * lado, lado, 0, fila_cuerpo, mirando, 0);
+void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
+                              int lado) {
+  int fila_cuerpo = mirando;
+  if (mirando == IZQUIERDA) {
+    fila_cuerpo = DERECHA;
   }
+  dibujar_capas(renderer, centro_x - lado / 2, pie_y - 2 * lado, lado, 0,
+                fila_cuerpo, mirando, 0);
+}
 
 void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                               int columna, int fila_cuerpo, Direccion direccion,
@@ -267,8 +263,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
   }
 }
 
-void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) {
-  if (mirando ==ARRIBA) {
+void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y,
+                                    int lado) {
+  if (mirando == ARRIBA) {
     return;
   }
 
@@ -285,16 +282,19 @@ void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) 
     flip = SDL_FLIP_HORIZONTAL;
   }
 
-  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt, flip);
+  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt,
+                flip);
 }
 
-void Personaje::dibujar_barra(Renderer &renderer, int barra_x, int barra_y, double valor, const SDL2pp::Color &color) const {
+void Personaje::dibujar_barra(Renderer &renderer, int barra_x, int barra_y,
+                              double valor, const SDL2pp::Color &color) const {
   int lleno = static_cast<int>(ANCHO_BARRA * valor / VALOR_MAXIMO);
   lleno = std::clamp(lleno, 0, ANCHO_BARRA);
 
   // Borde negro
   renderer.SetDrawColor(0, 0, 0, 255);
-  renderer.FillRect(Rect(barra_x - 1, barra_y - 1, ANCHO_BARRA + 2, ALTO_BARRA + 2));
+  renderer.FillRect(
+      Rect(barra_x - 1, barra_y - 1, ANCHO_BARRA + 2, ALTO_BARRA + 2));
 
   // Fondo gris
   renderer.SetDrawColor(70, 70, 70, 255);

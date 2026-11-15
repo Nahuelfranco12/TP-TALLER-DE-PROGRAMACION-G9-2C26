@@ -5,7 +5,6 @@
 
 class HarvestedCrop : public Item {
 private:
-
 public:
 };
 

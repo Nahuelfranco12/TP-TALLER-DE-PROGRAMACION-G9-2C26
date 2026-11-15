@@ -25,7 +25,7 @@ std::string dos_digitos(size_t numero) {
   }
   return std::to_string(numero);
 }
-}
+} // namespace
 
 Interfaz::Interfaz(SDL2pp::Renderer &renderer,
                    const std::string &codigo_partida)
@@ -40,9 +40,12 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
       texto_codigo(renderer,
                    fuente.RenderUTF8_Blended(
                        "Código: " + codigo_partida + "  (copiado)", BLANCO)),
-      textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 1 06:00", BLANCO)),
-      textura_monedas(renderer, fuente.RenderUTF8_Blended("Monedas: 0", BLANCO)),
-      texto_regalo(renderer, fuente.RenderUTF8_Blended("¡Te ofrecen un regalo!", BLANCO)),
+      textura_tiempo(renderer,
+                     fuente.RenderUTF8_Blended("Día 1 06:00", BLANCO)),
+      textura_monedas(renderer,
+                      fuente.RenderUTF8_Blended("Monedas: 0", BLANCO)),
+      texto_regalo(renderer,
+                   fuente.RenderUTF8_Blended("¡Te ofrecen un regalo!", BLANCO)),
       texto_aceptar(renderer, fuente.RenderUTF8_Blended("Aceptar", BLANCO)),
       texto_rechazar(renderer, fuente.RenderUTF8_Blended("Rechazar", BLANCO)) {}
 
@@ -101,26 +104,32 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
     texto = &texto_codigo;
   }
   int ancho = texto->GetWidth() + 2 * RELLENO;
-  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho, ALTO_BOTON);
+  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho,
+                      ALTO_BOTON);
   dibujar_boton(renderer, boton_codigo, *texto);
 
   int ancho_tiempo = textura_tiempo.GetWidth() + 2 * RELLENO;
-  Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - MARGEN, MARGEN + ALTO_BOTON + 8, ancho_tiempo, ALTO_BOTON);
+  Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - MARGEN,
+                   MARGEN + ALTO_BOTON + 8, ancho_tiempo, ALTO_BOTON);
   dibujar_boton(renderer, caja_tiempo, textura_tiempo);
 
   int ancho_monedas = textura_monedas.GetWidth() + 2 * RELLENO;
-  Rect caja_monedas(renderer.GetOutputWidth() - ancho_monedas - MARGEN, MARGEN + 2 * (ALTO_BOTON + 8), ancho_monedas, ALTO_BOTON);
+  Rect caja_monedas(renderer.GetOutputWidth() - ancho_monedas - MARGEN,
+                    MARGEN + 2 * (ALTO_BOTON + 8), ancho_monedas, ALTO_BOTON);
   dibujar_boton(renderer, caja_monedas, textura_monedas);
 }
 
-void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, size_t dia) {
+void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo,
+                                 size_t dia) {
   hora = tiempo.hours;
   minutos = tiempo.minutes;
 
-  std::string nuevo = "Día " + std::to_string(dia) + " " + dos_digitos(hora) + ":" + dos_digitos(minutos);
+  std::string nuevo = "Día " + std::to_string(dia) + " " + dos_digitos(hora) +
+                      ":" + dos_digitos(minutos);
   if (nuevo != texto_tiempo) {
     texto_tiempo = nuevo;
-    textura_tiempo = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
+    textura_tiempo =
+        SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
   }
 }
 
@@ -130,7 +139,8 @@ void Interfaz::actualizar_monedas(Renderer &renderer, size_t nuevas_monedas) {
   }
   monedas = nuevas_monedas;
   std::string texto = "Monedas: " + std::to_string(monedas);
-  textura_monedas = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
+  textura_monedas =
+      SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
 }
 
 void Interfaz::dibujar_noche(Renderer &renderer) const {
@@ -150,7 +160,8 @@ void Interfaz::dibujar_noche(Renderer &renderer) const {
 
   renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   renderer.SetDrawColor(10, 10, 40, alfa);
-  renderer.FillRect(Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
+  renderer.FillRect(
+      Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
 }
 
 void Interfaz::actualizar_regalo(const PendingGiftDto &pendiente) {
@@ -158,21 +169,13 @@ void Interfaz::actualizar_regalo(const PendingGiftDto &pendiente) {
   regalo = pendiente.gift;
 }
 
-bool Interfaz::hay_regalo_pendiente() const {
-  return hay_regalo;
-}
+bool Interfaz::hay_regalo_pendiente() const { return hay_regalo; }
 
-const InventorySlotDto &Interfaz::regalo_pendiente() const {
-  return regalo;
-}
+const InventorySlotDto &Interfaz::regalo_pendiente() const { return regalo; }
 
-Rect Interfaz::lugar_icono_regalo() const {
-  return icono_regalo;
-}
+Rect Interfaz::lugar_icono_regalo() const { return icono_regalo; }
 
-void Interfaz::cerrar_regalo() {
-  hay_regalo = false;
-}
+void Interfaz::cerrar_regalo() { hay_regalo = false; }
 
 bool Interfaz::click_regalo(int x, int y, bool &acepto) {
   if (!hay_regalo) {
@@ -192,18 +195,25 @@ bool Interfaz::click_regalo(int x, int y, bool &acepto) {
 void Interfaz::dibujar_regalo(Renderer &renderer) {
   const int ANCHO = 280;
   const int ALTO = 140;
-  caja_regalo = Rect((renderer.GetOutputWidth() - ANCHO) / 2, (renderer.GetOutputHeight() - ALTO) / 2, ANCHO, ALTO);
+  caja_regalo = Rect((renderer.GetOutputWidth() - ANCHO) / 2,
+                     (renderer.GetOutputHeight() - ALTO) / 2, ANCHO, ALTO);
   renderer.SetDrawColor(40, 30, 20, 240);
   renderer.FillRect(caja_regalo);
   renderer.SetDrawColor(230, 230, 230, 255);
   renderer.DrawRect(caja_regalo);
 
-  renderer.Copy(texto_regalo, NullOpt, Rect(caja_regalo.x + (ANCHO - texto_regalo.GetWidth()) / 2, caja_regalo.y + 10, texto_regalo.GetWidth(), texto_regalo.GetHeight()));
+  renderer.Copy(texto_regalo, NullOpt,
+                Rect(caja_regalo.x + (ANCHO - texto_regalo.GetWidth()) / 2,
+                     caja_regalo.y + 10, texto_regalo.GetWidth(),
+                     texto_regalo.GetHeight()));
 
-  icono_regalo = Rect(caja_regalo.x + (ANCHO -44) / 2, caja_regalo.y + 40, 44, 44);
+  icono_regalo =
+      Rect(caja_regalo.x + (ANCHO - 44) / 2, caja_regalo.y + 40, 44, 44);
 
-  boton_aceptar = Rect(caja_regalo.x + 20, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
-  boton_rechazar = Rect(caja_regalo.x + ANCHO - 130, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
+  boton_aceptar =
+      Rect(caja_regalo.x + 20, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
+  boton_rechazar = Rect(caja_regalo.x + ANCHO - 130, caja_regalo.y + ALTO - 44,
+                        110, ALTO_BOTON);
 
   dibujar_boton(renderer, boton_aceptar, texto_aceptar);
   dibujar_boton(renderer, boton_rechazar, texto_rechazar);

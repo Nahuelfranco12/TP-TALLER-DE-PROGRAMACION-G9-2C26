@@ -28,7 +28,7 @@ const int ULTIMA_ETAPA[4] = {5, 5, 6, 5};
 
 const int ARADA_X = 4 * 16;
 const int ARADA_Y = 4 * 16;
-}
+} // namespace
 
 Granja::Granja(Renderer &renderer)
     // Cargar texturas
@@ -38,8 +38,7 @@ Granja::Granja(Renderer &renderer)
       cultivos(renderer, "assets/cultivos/Spring Crops.png"),
       suelo(renderer, "assets/mapas/ground_01_16x16.png"),
       huevo(renderer, "assets/inventario/egg.png"),
-      leche(renderer, "assets/inventario/milk.png"),
-      vueltas(0) {
+      leche(renderer, "assets/inventario/milk.png"), vueltas(0) {
 
   // Por ahora fijos
   // Hacer después con servidor
@@ -69,7 +68,8 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
   renderer.Copy(suelo, origen_tierra, destino);
 
   int fila = cultivo.tipo * 2 + 1;
-  Rect origen_planta(cultivo.etapa * CULTIVO_LADO, fila * CULTIVO_LADO, CULTIVO_LADO, CULTIVO_LADO);
+  Rect origen_planta(cultivo.etapa * CULTIVO_LADO, fila * CULTIVO_LADO,
+                     CULTIVO_LADO, CULTIVO_LADO);
   renderer.Copy(cultivos, origen_planta, destino);
 }
 
@@ -131,18 +131,21 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
       lista_animales.push_back({GALLINA, x, y, false, entidad.ready});
     } else if (entidad.type == EntityTypeDto::CROP) {
       TipoCultivo tipo = static_cast<TipoCultivo>(entidad.crop.type);
-      int etapa = static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] / 3;
+      int etapa =
+          static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] / 3;
       lista_cultivos.push_back({tipo, x, y, etapa});
     }
   }
 }
 
-void Granja::dibujar_producto(SDL2pp::Renderer &renderer, SDL2pp::Texture &producto, int centro_x, int arriba_y, int lado) {
+void Granja::dibujar_producto(SDL2pp::Renderer &renderer,
+                              SDL2pp::Texture &producto, int centro_x,
+                              int arriba_y, int lado) {
   int ancho = producto.GetWidth() * lado / 24;
   int alto = producto.GetHeight() * lado / 24;
 
   int salto = 0;
-  if((vueltas / VUELTAS_POR_SALTO) % 2 == 1) {
+  if ((vueltas / VUELTAS_POR_SALTO) % 2 == 1) {
     salto = lado / 16;
   }
 

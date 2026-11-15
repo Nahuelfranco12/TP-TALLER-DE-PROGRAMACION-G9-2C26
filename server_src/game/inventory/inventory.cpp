@@ -3,7 +3,8 @@
 #include <utility>
 
 bool Inventory::addItem(std::unique_ptr<Item> item) {
-  if (!item) return false;
+  if (!item)
+    return false;
   for (InventorySlot &slot : this->items) {
     if (slot.getItem().stacksWith(*item)) {
       bool result = slot.add();
@@ -49,12 +50,11 @@ InventoryState Inventory::state() const {
     itemState.subtype = item.subtypeToInt();
     itemState.count = slot.getCount();
     const CropItem *crop = dynamic_cast<const CropItem *>(&item);
-        if (crop) {
-            itemState.quality = crop->getQuality();
-        }
+    if (crop) {
+      itemState.quality = crop->getQuality();
+    }
 
-        state.items.push_back(itemState);
-    
+    state.items.push_back(itemState);
   }
   for (const auto &tool : tools)
     state.tools.push_back({tool->toolType});
@@ -62,11 +62,13 @@ InventoryState Inventory::state() const {
 }
 
 bool Inventory::giveSlotTo(int index, Inventory &other) {
-    if (index < 0 || index >= static_cast<int>(items.size())) return false;
-    if (other.items.size() >= MAX_INVENTORY_ITEMS) return false;
-    auto it = items.begin();
-    std::advance(it, index);
-    other.items.push_back(std::move(*it));
-    items.erase(it);
-    return true;
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return false;
+  if (other.items.size() >= MAX_INVENTORY_ITEMS)
+    return false;
+  auto it = items.begin();
+  std::advance(it, index);
+  other.items.push_back(std::move(*it));
+  items.erase(it);
+  return true;
 }

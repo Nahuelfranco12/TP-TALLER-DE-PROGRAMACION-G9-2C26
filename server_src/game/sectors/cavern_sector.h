@@ -1,8 +1,8 @@
 #ifndef CAVERN_SECTOR_H_
 #define CAVERN_SECTOR_H_
 
-#include "sector.h"
 #include "../entities/enemies_factory.h"
+#include "sector.h"
 
 #include <memory>
 #include <random>

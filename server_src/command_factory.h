@@ -7,19 +7,19 @@
 
 #include "./game/command.h"
 
+#include "./game/commands/attack_command.h"
 #include "./game/commands/collect_command.h"
+#include "./game/commands/gift_offer_command.h"
+#include "./game/commands/gift_response_command.h"
 #include "./game/commands/mine_command.h"
 #include "./game/commands/move_command.h"
 #include "./game/commands/plant_command.h"
 #include "./game/commands/select_tool_command.h"
-#include "./game/commands/gift_offer_command.h"
-#include "./game/commands/gift_response_command.h"
 #include "./game/commands/till_command.h"
 #include "./game/commands/water_command.h"
-#include "./game/commands/attack_command.h"
 
-#include "./game/commands/cheats/cheat_water_crop_command.h"
 #include "./game/commands/cheats/cheat_growth_command.h"
+#include "./game/commands/cheats/cheat_water_crop_command.h"
 
 class CommandFactory {
 public:
@@ -35,7 +35,8 @@ public:
   std::unique_ptr<Command> create(int player_id, const AttackDto &dto);
   std::unique_ptr<Command> create_join(int player_id,
                                        const PlayerOutfitDto &outfit);
-  std::unique_ptr<Command> create_cheat_water(int player_id, const WaterDto &dto);
+  std::unique_ptr<Command> create_cheat_water(int player_id,
+                                              const WaterDto &dto);
   std::unique_ptr<Command> create_cheat_growth(int player_id);
 };
 

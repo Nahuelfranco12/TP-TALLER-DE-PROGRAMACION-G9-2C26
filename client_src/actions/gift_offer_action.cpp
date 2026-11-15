@@ -4,5 +4,5 @@
 GiftOfferAction::GiftOfferAction(const GiftOfferDto &dto) : dto(dto) {}
 
 void GiftOfferAction::send_by(ClientProtocol &protocol) const {
-    protocol.send_gift_offer_dto(dto);
+  protocol.send_gift_offer_dto(dto);
 }

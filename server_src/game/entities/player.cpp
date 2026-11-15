@@ -1,14 +1,14 @@
 #include "player.h"
 
-#include <utility>
 #include <iostream>
+#include <utility>
 
 #include "../sectors/sector.h"
-#include "mineral.h"
 #include "enemy.h"
+#include "mineral.h"
 
 MoveResult Player::move(Position destination) {
-  if(isUnconscious())
+  if (isUnconscious())
     return MoveResult(false, this->position, this->actualSector->getId());
   return this->actualSector->move(this->position, destination);
 }
@@ -24,7 +24,7 @@ Tool *Player::getSelectedTool() { return this->actualTool; }
 
 // cppcheck-suppress constParameterReference
 void Player::mine(Mineral &mineral) {
-  if(isUnconscious())
+  if (isUnconscious())
     return;
   if (!this->position.isAdjacentTo(mineral.position))
     return;
@@ -40,29 +40,29 @@ void Player::mine(Mineral &mineral) {
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)
       return;
-  
+
     this->inventory.addItem(std::move(item));
   }
 }
 
 void Player::attack(Enemy &enemy) {
-  if(isUnconscious())
+  if (isUnconscious())
     return;
   if (!this->position.isAdjacentTo(enemy.position))
     return;
   if (this->actualTool == nullptr ||
       this->actualTool->toolType != AvailableTools::SWORD)
     return;
-  if(enemy.isDead())
+  if (enemy.isDead())
     return;
-  
+
   size_t damage = SWORD_DAMAGE;
-  if(isBadlyHurt())
+  if (isBadlyHurt())
     damage /= 2;
 
-  if(enemy.hit(damage)) {
+  if (enemy.hit(damage)) {
     this->coins += enemy.getGoldDrop();
-    if(enemy.removeOnDeath()){
+    if (enemy.removeOnDeath()) {
       this->actualSector->removeEntity(enemy.position);
     }
   }
@@ -93,7 +93,7 @@ void Player::restoreEnergy(size_t amount) {
 
 void Player::takeDamage(double amount) {
   life -= amount;
-  if(life < 0)
+  if (life < 0)
     life = 0;
 }
 

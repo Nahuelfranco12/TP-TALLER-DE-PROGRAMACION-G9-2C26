@@ -70,4 +70,3 @@ void Audio::poner_musica_pueblo() {
   musica_actual = 2;
   mixer.PlayMusic(musica_pueblo, -1);
 }
-

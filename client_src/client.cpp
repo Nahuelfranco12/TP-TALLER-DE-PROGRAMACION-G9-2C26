@@ -9,17 +9,17 @@
 #include <vector>
 
 #include "../common_src/constants.h"
-#include "actions/mine_action.h"
-#include "actions/move_action.h"
-#include "actions/select_tool_action.h"
-#include "actions/collect_action.h"
-#include "actions/plant_action.h"
-#include "actions/gift_offer_action.h"
-#include "actions/gift_response_action.h"
-#include "actions/till_action.h"
-#include "actions/water_action.h"
 #include "actions/attack_action.h"
 #include "actions/cheat_growth_action.h"
+#include "actions/collect_action.h"
+#include "actions/gift_offer_action.h"
+#include "actions/gift_response_action.h"
+#include "actions/mine_action.h"
+#include "actions/move_action.h"
+#include "actions/plant_action.h"
+#include "actions/select_tool_action.h"
+#include "actions/till_action.h"
+#include "actions/water_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -92,39 +92,39 @@ void Client::send_mine(DirectionDto direction) {
 }
 
 void Client::send_collect(DirectionDto direction) {
-    to_send_queue.try_push(std::make_unique<CollectAction>(direction));
+  to_send_queue.try_push(std::make_unique<CollectAction>(direction));
 }
 
 void Client::send_plant(int x, int y, CropTypeDto crop) {
-    to_send_queue.try_push(std::make_unique<PlantAction>(x, y, crop));
+  to_send_queue.try_push(std::make_unique<PlantAction>(x, y, crop));
 }
 
 void Client::send_gift_offer(int receiverId, int slotIndex) {
-    GiftOfferDto dto{.receiverId = receiverId, .slotIndex = slotIndex};
-    to_send_queue.try_push(std::make_unique<GiftOfferAction>(dto));
+  GiftOfferDto dto{.receiverId = receiverId, .slotIndex = slotIndex};
+  to_send_queue.try_push(std::make_unique<GiftOfferAction>(dto));
 }
 
 void Client::send_gift_response(bool accept) {
-    to_send_queue.try_push(std::make_unique<GiftResponseAction>(accept));
+  to_send_queue.try_push(std::make_unique<GiftResponseAction>(accept));
 }
 void Client::send_till(DirectionDto direction) {
-    to_send_queue.try_push(std::make_unique<TillAction>(direction));
+  to_send_queue.try_push(std::make_unique<TillAction>(direction));
 }
 
 void Client::send_water(DirectionDto direction) {
-    to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+  to_send_queue.try_push(std::make_unique<WaterAction>(direction));
 }
 
 void Client::send_attack(DirectionDto direction) {
-    to_send_queue.try_push(std::make_unique<AttackAction>(direction));
+  to_send_queue.try_push(std::make_unique<AttackAction>(direction));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {
-    to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+  to_send_queue.try_push(std::make_unique<WaterAction>(direction));
 }
 
 void Client::send_cheat_growth() {
-    to_send_queue.try_push(std::make_unique<CheatGrowthAction>());
+  to_send_queue.try_push(std::make_unique<CheatGrowthAction>());
 }
 
 bool Client::try_get_latest_state(SectorStateDto &state) {

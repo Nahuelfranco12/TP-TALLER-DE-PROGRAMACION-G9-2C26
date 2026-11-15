@@ -3,8 +3,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "direccion.h"
 #include "common_src/game_dtos.h"
+#include "direccion.h"
 
 #include <vector>
 
@@ -48,7 +48,8 @@ private:
 
   void dibujar_herramienta(SDL2pp::Renderer &renderer, int x, int y, int lado);
 
-  void dibujar_barra(SDL2pp::Renderer &renderer, int x, int y, double valor, const SDL2pp::Color &color) const;
+  void dibujar_barra(SDL2pp::Renderer &renderer, int x, int y, double valor,
+                     const SDL2pp::Color &color) const;
 
 public:
   // Cargo las texturas
@@ -90,7 +91,8 @@ public:
   void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
               int nueva_remera);
 
-  void dibujar_icono(SDL2pp::Renderer &renderer, int centro_x, int pie_y, int lado);
+  void dibujar_icono(SDL2pp::Renderer &renderer, int centro_x, int pie_y,
+                     int lado);
 };
 
 #endif

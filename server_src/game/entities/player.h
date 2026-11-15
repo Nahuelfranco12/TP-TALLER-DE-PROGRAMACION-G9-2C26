@@ -8,19 +8,19 @@
 #include "../../world_state.h"
 #include "../game_constants.h"
 #include "../inventory/inventory.h"
+#include "../inventory/seed.h"
 #include "../move_result.h"
 #include "entity.h"
 #include "player_outfit.h"
-#include "../inventory/seed.h"
 
 class Sector;  // forward declaration
 class Mineral; // forward declaration
-class Enemy; // forward declaration
+class Enemy;   // forward declaration
 
 struct PendingGift {
-    int giverId = 0;
-    int slotIndex = 0;
-    ItemState item{};
+  int giverId = 0;
+  int slotIndex = 0;
+  ItemState item{};
 };
 
 class Player : public Entity {
@@ -47,9 +47,10 @@ public:
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
     this->inventory.addTool(
         std::make_unique<Tool>(AvailableTools::WATERING_CAN));
-    
+
     for (int i = 0; i < 5; i++) {
-      this->inventory.addItem(std::make_unique<Seed>(10, CropTypes::STRAWBERRY));
+      this->inventory.addItem(
+          std::make_unique<Seed>(10, CropTypes::STRAWBERRY));
     }
 
     this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);

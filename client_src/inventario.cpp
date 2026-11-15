@@ -32,7 +32,8 @@ Inventario::Inventario(Renderer &renderer)
   }
 
   iconos_herramienta.emplace_back(renderer, "assets/inventario/pickaxe.png");
-  iconos_herramienta.emplace_back(renderer, "assets/inventario/watering_can.png");
+  iconos_herramienta.emplace_back(renderer,
+                                  "assets/inventario/watering_can.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/shovel.png");
   iconos_herramienta.emplace_back(renderer, "assets/inventario/sword.png");
 
@@ -84,13 +85,13 @@ bool Inventario::herramienta_seleccionada(ToolTypeDto &herramienta) const {
 
 bool Inventario::item_seleccionado(InventorySlotDto &casillero) const {
   int item = seleccionado - MAX_HERRAMIENTAS;
-  if (item < 0 || item >= static_cast<int>(casilleros.size())) return false;
+  if (item < 0 || item >= static_cast<int>(casilleros.size()))
+    return false;
   casillero = casilleros[item];
   return true;
 }
 
-Rect Inventario::rect_casillero(int i, int ancho_ventana,
-                                int alto_ventana) {
+Rect Inventario::rect_casillero(int i, int ancho_ventana, int alto_ventana) {
   int ancho_barra = CASILLEROS * LADO + SEPARACION;
   int x = (ancho_ventana - ancho_barra) / 2 + i * LADO;
   if (i >= MAX_HERRAMIENTAS) {
@@ -120,23 +121,24 @@ void Inventario::dibujar_numero(Renderer &renderer, int numero,
   }
 }
 
-void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad, const Rect &lugar) {
+void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad,
+                                 const Rect &lugar) {
   SDL2pp::Color color(0, 0, 0, 255);
   switch (calidad) {
-    case CropQualityDto::GOOD:
-      color = SDL2pp::Color(205, 127, 50, 255);
-      break;
-    case CropQualityDto::EXCELENT:
-      color = SDL2pp::Color(200, 200, 215, 255);
-      break;
-    case CropQualityDto::INCREDIBLE:
-      color = SDL2pp::Color(240, 200, 40, 255);
-      break;
-    case CropQualityDto::PERFECT:
-      color = SDL2pp::Color(170, 90, 220, 255);
-      break;
-    default:
-      return;
+  case CropQualityDto::GOOD:
+    color = SDL2pp::Color(205, 127, 50, 255);
+    break;
+  case CropQualityDto::EXCELENT:
+    color = SDL2pp::Color(200, 200, 215, 255);
+    break;
+  case CropQualityDto::INCREDIBLE:
+    color = SDL2pp::Color(240, 200, 40, 255);
+    break;
+  case CropQualityDto::PERFECT:
+    color = SDL2pp::Color(170, 90, 220, 255);
+    break;
+  default:
+    return;
   }
 
   // Estrellita
@@ -152,10 +154,10 @@ void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad, con
   renderer.FillRect(Rect(x, y + 3, 8, 2));
   renderer.FillRect(Rect(x + 3, y, 2, 8));
   renderer.FillRect(Rect(x + 2, y + 2, 4, 4));
-
 }
 
-void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casillero,
+void Inventario::dibujar_item(Renderer &renderer,
+                              const InventorySlotDto &casillero,
                               const Rect &lugar) {
   switch (casillero.item) {
   case ItemTypeDto::MINERAL_GOLD:
@@ -171,37 +173,39 @@ void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casill
     dibujar_icono(renderer, minerales, Rect(100, 1 * 32 + 17, 10, 10), lugar);
     break;
   case ItemTypeDto::CHICKEN_EGG:
-    dibujar_icono(renderer, huevo, Rect(0, 0, huevo.GetWidth(), huevo.GetHeight()), lugar);
+    dibujar_icono(renderer, huevo,
+                  Rect(0, 0, huevo.GetWidth(), huevo.GetHeight()), lugar);
     break;
   case ItemTypeDto::COW_MILK:
-    dibujar_icono(renderer, leche, Rect(0, 0, leche.GetWidth(), leche.GetHeight()), lugar);
+    dibujar_icono(renderer, leche,
+                  Rect(0, 0, leche.GetWidth(), leche.GetHeight()), lugar);
     break;
 
   // SEMILLAS (revisar)
-  case ItemTypeDto::SEED_STRAWBERRY:  
-    dibujar_icono(renderer, cultivos, Rect(7 * 16, 1 * 16, 16, 16), lugar); 
+  case ItemTypeDto::SEED_STRAWBERRY:
+    dibujar_icono(renderer, cultivos, Rect(7 * 16, 1 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::SEED_GREEN_ONION: 
-    dibujar_icono(renderer, cultivos, Rect(7 * 16, 3 * 16, 16, 16), lugar); 
+  case ItemTypeDto::SEED_GREEN_ONION:
+    dibujar_icono(renderer, cultivos, Rect(7 * 16, 3 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::SEED_POTATO:      
-    dibujar_icono(renderer, cultivos, Rect(7 * 16, 5 * 16, 16, 16), lugar); 
+  case ItemTypeDto::SEED_POTATO:
+    dibujar_icono(renderer, cultivos, Rect(7 * 16, 5 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::SEED_PUMPKIN:      
-    dibujar_icono(renderer, cultivos, Rect(7 * 16, 7 * 16, 16, 16), lugar); 
+  case ItemTypeDto::SEED_PUMPKIN:
+    dibujar_icono(renderer, cultivos, Rect(7 * 16, 7 * 16, 16, 16), lugar);
     break;
   // PLANTAS COSECHADAS (tambien revisar)
-  case ItemTypeDto::CROP_STRAWBERRY:  
-    dibujar_icono(renderer, cultivos, Rect(8 * 16, 1 * 16, 16, 16), lugar); 
+  case ItemTypeDto::CROP_STRAWBERRY:
+    dibujar_icono(renderer, cultivos, Rect(8 * 16, 1 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::CROP_GREEN_ONION: 
-    dibujar_icono(renderer, cultivos, Rect(8 * 16, 3 * 16, 16, 16), lugar); 
+  case ItemTypeDto::CROP_GREEN_ONION:
+    dibujar_icono(renderer, cultivos, Rect(8 * 16, 3 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::CROP_POTATO:      
-    dibujar_icono(renderer, cultivos, Rect(8 * 16, 5 * 16, 16, 16), lugar); 
+  case ItemTypeDto::CROP_POTATO:
+    dibujar_icono(renderer, cultivos, Rect(8 * 16, 5 * 16, 16, 16), lugar);
     break;
-  case ItemTypeDto::CROP_PUMPKIN:     
-    dibujar_icono(renderer, cultivos, Rect(8 * 16, 7 * 16, 16, 16), lugar); 
+  case ItemTypeDto::CROP_PUMPKIN:
+    dibujar_icono(renderer, cultivos, Rect(8 * 16, 7 * 16, 16, 16), lugar);
     break;
   default:
     break;
@@ -250,7 +254,8 @@ void Inventario::dibujar(Renderer &renderer, int ancho_ventana,
 
 bool Inventario::indice_item_seleccionado(int &indice) const {
   int item = seleccionado - MAX_HERRAMIENTAS;
-  if (item < 0 || item >= static_cast<int>(casilleros.size())) return false;
+  if (item < 0 || item >= static_cast<int>(casilleros.size()))
+    return false;
   indice = item;
   return true;
 }
@@ -258,12 +263,14 @@ bool Inventario::indice_item_seleccionado(int &indice) const {
 void Inventario::actualizar(const InventoryDto &inventario) {
   casilleros.clear();
   for (const InventorySlotDto &slot : inventario.slots) {
-    if (static_cast<int>(casilleros.size()) == MAX_ITEMS) 
+    if (static_cast<int>(casilleros.size()) == MAX_ITEMS)
       break;
     casilleros.push_back(slot);
   }
 }
 
-void Inventario::dibujar_regalo(Renderer &renderer, const InventorySlotDto &regalo, const Rect &lugar) {
+void Inventario::dibujar_regalo(Renderer &renderer,
+                                const InventorySlotDto &regalo,
+                                const Rect &lugar) {
   dibujar_item(renderer, regalo, lugar);
 }

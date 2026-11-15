@@ -5,8 +5,8 @@
 #include "entities/chicken.h"
 #include "entities/cow.h"
 #include "entities/mineral.h"
-#include "entities/skeleton.h"
 #include "entities/orc.h"
+#include "entities/skeleton.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -113,7 +113,6 @@ bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
 
   case EnemyType::VAMPIRE_FEMALE:
     break;
-
   }
   return it->second->addEntity(std::move(enemy), pos);
 }
@@ -139,7 +138,7 @@ void World::growthCheatAll() {
 
 GameTime World::currentTime() const {
   size_t GAME_TOTAL_MINUTES = DAY_DURATION_HOUR * 60;
-  
+
   size_t gameMinutes = (dayTick * GAME_TOTAL_MINUTES) / TICKS_PER_DAY;
   size_t quantized = (gameMinutes / TIME_INTERVAL) * TIME_INTERVAL;
 

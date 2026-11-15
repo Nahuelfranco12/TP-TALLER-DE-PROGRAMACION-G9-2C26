@@ -5,25 +5,25 @@
 #include "enemy.h"
 
 class Vampire : public Enemy {
-private: 
-    EnemyType vampireType;
-    Vampire *partner;
-    int reviveCountdown;
+private:
+  EnemyType vampireType;
+  Vampire *partner;
+  int reviveCountdown;
 
-    bool inFrenzy() const;
+  bool inFrenzy() const;
 
-public: 
-    Vampire(size_t pos_x, size_t pos_y, EnemyType kind);
+public:
+  Vampire(size_t pos_x, size_t pos_y, EnemyType kind);
 
-    void setPartner(Vampire *otherVampire);
+  void setPartner(Vampire *otherVampire);
 
-    bool removeOnDeath() const override;
-    int getDamage() const override;
-    int getTicksPerMove() const override;
+  bool removeOnDeath() const override;
+  int getDamage() const override;
+  int getTicksPerMove() const override;
 
-    void tick() override;
-    Decision decide(const Sector &sector) override;
-    EntityState entityState() const override;
+  void tick() override;
+  Decision decide(const Sector &sector) override;
+  EntityState entityState() const override;
 };
 
 #endif

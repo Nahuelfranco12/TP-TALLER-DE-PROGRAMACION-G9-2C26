@@ -186,7 +186,7 @@ WaterDto ServerProtocol::receive_water() {
 }
 
 AttackDto ServerProtocol::receive_attack() {
-    return AttackDto{byte_to_direction(protocol.receive_u8())};
+  return AttackDto{byte_to_direction(protocol.receive_u8())};
 }
 
 WaterDto ServerProtocol::receive_cheat_water() {

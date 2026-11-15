@@ -7,9 +7,9 @@
 #include "../world_state.h"
 #include "./entities/animal.h"
 #include "./entities/player.h"
+#include "./sectors/sector.h"
 #include "game_constants.h"
 #include "position.h"
-#include "./sectors/sector.h"
 
 class World {
 private:
@@ -35,7 +35,7 @@ public:
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
 
   bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
-  
+
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
 

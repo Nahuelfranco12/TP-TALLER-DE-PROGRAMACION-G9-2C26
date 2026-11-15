@@ -53,45 +53,43 @@ void ClientProtocol::send_collect_dto(const CollectDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-void ClientProtocol::send_plant_dto(const PlantDto& dto) {
+void ClientProtocol::send_plant_dto(const PlantDto &dto) {
   protocol.send_u8(OP_PLANT);
   protocol.send_u16(static_cast<uint16_t>(dto.target.x));
   protocol.send_u16(static_cast<uint16_t>(dto.target.y));
   protocol.send_u8(static_cast<uint8_t>(dto.crop));
 }
 
-void ClientProtocol::send_gift_offer_dto(const GiftOfferDto& dto) {
+void ClientProtocol::send_gift_offer_dto(const GiftOfferDto &dto) {
   protocol.send_u8(OP_GIFT_OFFER);
   protocol.send_u16(static_cast<uint16_t>(dto.receiverId));
   protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
 }
-void ClientProtocol::send_gift_response_dto(const GiftResponseDto& dto) {
+void ClientProtocol::send_gift_response_dto(const GiftResponseDto &dto) {
   protocol.send_u8(OP_GIFT_RESPONSE);
   protocol.send_u8(dto.accept ? 1 : 0);
 }
 void ClientProtocol::send_till_dto(const TillDto &dto) {
-    protocol.send_u8(OP_TILL);
-    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+  protocol.send_u8(OP_TILL);
+  protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
 void ClientProtocol::send_water_dto(const WaterDto &dto) {
-    protocol.send_u8(OP_WATER);
-    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+  protocol.send_u8(OP_WATER);
+  protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
 void ClientProtocol::send_attack_dto(const AttackDto &dto) {
-    protocol.send_u8(OP_ATTACK);
-    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+  protocol.send_u8(OP_ATTACK);
+  protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
-    protocol.send_u8(OP_CHEAT_WATER);
-    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+  protocol.send_u8(OP_CHEAT_WATER);
+  protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
-void ClientProtocol::send_growth_cheat() {
-    protocol.send_u8(OP_CHEAT_GROWTH);
-}
+void ClientProtocol::send_growth_cheat() { protocol.send_u8(OP_CHEAT_GROWTH); }
 
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
@@ -198,9 +196,9 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.ready = protocol.receive_u8() == 1;
 
     entity.crop.type = static_cast<CropTypeDto>(protocol.receive_u8());
-    entity.crop.growth = static_cast<CropGrowthDto>(protocol.receive_u8()); 
+    entity.crop.growth = static_cast<CropGrowthDto>(protocol.receive_u8());
     entity.crop.needsWater = protocol.receive_u8();
-    
+
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
     state.entities[position] = entity;

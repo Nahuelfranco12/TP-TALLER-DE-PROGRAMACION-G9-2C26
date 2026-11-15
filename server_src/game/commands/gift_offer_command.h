@@ -4,12 +4,13 @@
 
 class GiftOfferCommand : public Command {
 private:
-    int giverId;
-    int receiverId;
-    int slotIndex;
+  int giverId;
+  int receiverId;
+  int slotIndex;
+
 public:
-    GiftOfferCommand(int giverId, int receiverId, int slotIndex)
-        : giverId(giverId), receiverId(receiverId), slotIndex(slotIndex) {}
-    void execute(World &world) override;
+  GiftOfferCommand(int giverId, int receiverId, int slotIndex)
+      : giverId(giverId), receiverId(receiverId), slotIndex(slotIndex) {}
+  void execute(World &world) override;
 };
 #endif

@@ -167,7 +167,7 @@ struct GiftOfferDto {
 
 struct PendingGiftDto {
   int giverId = 0;
-  InventorySlotDto gift; 
+  InventorySlotDto gift;
 };
 
 struct GiftResponseDto {
@@ -201,9 +201,9 @@ struct MineralDto {
 };
 
 struct CropDto {
-    CropTypeDto type{};
-    CropGrowthDto growth{};
-    bool needsWater;
+  CropTypeDto type{};
+  CropGrowthDto growth{};
+  bool needsWater;
 };
 
 struct EnemyDto {
@@ -212,9 +212,9 @@ struct EnemyDto {
 
 struct EntityDto {
   EntityTypeDto type{};
-  bool ready = false; // x ahora solo se usa si es animal
+  bool ready = false;   // x ahora solo se usa si es animal
   MineralDto mineral{}; // Solo se usa si es mineral
-  CropDto crop{}; // Solo se usa si es cultivo
+  CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
 };
 

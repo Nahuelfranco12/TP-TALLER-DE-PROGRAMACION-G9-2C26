@@ -93,7 +93,6 @@
 #define VAMPIRE_MALE_DAMAGE 20
 #define VAMPIRE_MALE_TICKS_PER_MOVE 15
 
-
 enum IdSector {
   FARM,
   VILLAGE,
@@ -123,7 +122,14 @@ enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
-enum class EnemyType { SKELETON, ORC, TRAP_PINCH, TRAP_FLAME, VAMPIRE_MALE, VAMPIRE_FEMALE };
+enum class EnemyType {
+  SKELETON,
+  ORC,
+  TRAP_PINCH,
+  TRAP_FLAME,
+  VAMPIRE_MALE,
+  VAMPIRE_FEMALE
+};
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };
