@@ -30,7 +30,8 @@ class Enemy : public Entity, public Hittable {
 
     int getGoldDrop() const;
 
-    int getDamage() const;
+    virtual int getDamage() const;
+    virtual int getTicksPerMove() const;
 
     bool isDead() const;
 

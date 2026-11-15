@@ -14,6 +14,10 @@ int Enemy::getDamage() const {
     return stats.damage;
 }
 
+int Enemy::getTicksPerMove() const {
+    return stats.ticksPerMove;
+}
+
 bool Enemy::isDead() const {
     return getHitsLeft() == 0;
 }
@@ -64,6 +68,6 @@ Decision Enemy::decide(const Sector& sector) {
 
     if (moveCooldown > 0) 
         return Decision{};
-    moveCooldown = stats.ticksPerMove;
+    moveCooldown = getTicksPerMove();
     return Decision{DecisionType::MOVE, direction};
 }

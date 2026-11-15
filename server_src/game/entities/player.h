@@ -77,6 +77,7 @@ public:
   bool hasEnergy(size_t cost);
   bool spendEnergy(size_t cost);
   void restoreEnergy(size_t amount);
+  bool isBadlyHurt() const;
 
   void takeDamage(double amount);
   bool isUnconscious() const { return life <= 0; }

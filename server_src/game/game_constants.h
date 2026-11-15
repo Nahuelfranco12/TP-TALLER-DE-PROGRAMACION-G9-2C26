@@ -73,12 +73,28 @@
 #define SKELETON_SIGHT_RANGE 6
 #define SKELETON_REVIVE_TICKS (10 * TICKS_PER_SECOND)
 
+<<<<<<< HEAD
 #define ORC_LIFE 40
 #define ORC_DAMAGE 15
 #define ORC_GOLD 10
 #define ORC_TICKS_PER_MOVE 20
 #define ORC_TICKS_PER_ATTACK 35
 #define ORC_SIGHT_RANGE 6
+=======
+#define VAMPIRE_LIFE 80
+#define VAMPIRE_GOLD 20
+#define VAMPIRE_SIGHT_RANGE 8
+#define VAMPIRE_TICKS_PER_ATTACK 30
+#define VAMPIRE_BLOOD_RANGE 4
+#define VAMPIRE_REVIVE_TICKS (5 * TICKS_PER_SECOND)
+
+#define VAMPIRE_FEMALE_DAMAGE 10
+#define VAMPIRE_FEMALE_TICKS_PER_MOVE 8
+
+#define VAMPIRE_MALE_DAMAGE 20
+#define VAMPIRE_MALE_TICKS_PER_MOVE 15
+
+>>>>>>> a8437db (feat: Lógica de la pareja de vampiros)
 
 enum IdSector {
   FARM,
@@ -109,7 +125,7 @@ enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
-enum class EnemyType { SKELETON, ORC, COUNT };
+enum class EnemyType { SKELETON, ORC, COUNT, VAMPIRE_MALE, VAMPIRE_FEMALE };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };

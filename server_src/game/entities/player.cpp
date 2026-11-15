@@ -57,7 +57,7 @@ void Player::attack(Enemy &enemy) {
     return;
   
   size_t damage = SWORD_DAMAGE;
-  if(life <= PLAYER_MAX_LIFE * PLAYER_LOW_LIFE_PERCENT / 100)
+  if(isBadlyHurt())
     damage /= 2;
 
   if(enemy.hit(damage)) {
@@ -72,6 +72,10 @@ bool Player::hasEnergy(size_t cost) {
   if (this->energy <= 0 || this->energy < cost)
     return false;
   return true;
+}
+
+bool Player::isBadlyHurt() const {
+  return life <= PLAYER_MAX_LIFE * PLAYER_LOW_LIFE_PERCENT / 100;
 }
 
 bool Player::spendEnergy(size_t cost) {

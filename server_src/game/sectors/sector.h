@@ -63,6 +63,19 @@ public:
 
   bool closestPlayer(Position origin, int maxDistance, Position& closestPosition) const;
   void apply(Position origin, const Decision &decision);
+
+  bool bloodNear(Position origin, int radius) const {
+    for(const auto &[playerPosition, entity] : entities) {
+      const Player *player = dynamic_cast<const Player *>(entity.get());
+      if(!player || !player->isBadlyHurt()) {
+        continue;
+      }
+      int distance = std::abs(static_cast<int>(playerPosition.x) - static_cast<int>(origin.x)) + std::abs(static_cast<int>(playerPosition.y) - static_cast<int>(origin.y));
+      if(distance <= radius)
+        return true;
+    }
+    return false;
+  }
   
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
