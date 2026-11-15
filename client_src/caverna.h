@@ -6,6 +6,7 @@
 #include <map>
 
 #include "../common_src/game_dtos.h"
+#include "constantes_sdl.h"
 
 #include <SDL2pp/SDL2pp.hh>
 

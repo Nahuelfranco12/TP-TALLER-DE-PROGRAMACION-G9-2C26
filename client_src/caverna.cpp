@@ -3,14 +3,8 @@
 using SDL2pp::Rect;
 using SDL2pp::Renderer;
 
-namespace {
-const int MINERAL_ANCHO = 32;
-const int MINERAL_ALTO = 28;
-const int GOLPES_PARA_ROMPER = 3;
-}
-
 Caverna::Caverna(Renderer &renderer)
-  : minerales(renderer, "assets/caverna/ore.png"), vueltas(0) {}
+  : minerales(renderer, RUTA_MINERALES), vueltas(0) {}
 
 void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
   lista_minerales.clear();
@@ -34,11 +28,11 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
     }
 
     size_t golpes = entidad.mineral.remainingHits;
-    size_t etapa = 0;
-    if (golpes == 2) {
-      etapa = 1;
-    } else if (golpes == 1) {
-      etapa = 2;
+    size_t etapa = SPRITE_MINERAL_ETAPA_ENTERO;
+    if (golpes == CAVERNA_GOLPES_GOLPEADO) {
+      etapa = SPRITE_MINERAL_ETAPA_GOLPEADO;
+    } else if (golpes == CAVERNA_GOLPES_CASI_ROTO) {
+      etapa = SPRITE_MINERAL_ETAPA_CASI_ROTO;
     }
 
     lista_minerales.push_back({
@@ -53,10 +47,13 @@ void Caverna::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) 
 void Caverna::animar(long vueltas_pasadas) {vueltas += vueltas_pasadas;}
 
 void Caverna::dibujar_mineral(Renderer &renderer, const Mineral &mineral, int camara_x, int camara_y, int lado) {
-  Rect origen(mineral.golpes * MINERAL_ANCHO, mineral.tipo * MINERAL_ANCHO, MINERAL_ANCHO, MINERAL_ALTO);
+  Rect origen(mineral.golpes * SPRITE_MINERAL_CELDA,
+              mineral.tipo * SPRITE_MINERAL_CELDA, SPRITE_MINERAL_ANCHO,
+              SPRITE_MINERAL_ALTO);
   int x = mineral.tile_x * lado - camara_x;
   int y = mineral.tile_y * lado - camara_y;
-  Rect destino(x, y, lado, MINERAL_ALTO * lado / MINERAL_ANCHO);
+  int alto = SPRITE_MINERAL_ALTO * lado / SPRITE_MINERAL_ANCHO;
+  Rect destino(x, y, lado, alto);
   renderer.Copy(minerales, origen, destino);
 }
 
