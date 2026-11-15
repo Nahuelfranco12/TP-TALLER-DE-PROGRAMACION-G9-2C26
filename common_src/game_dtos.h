@@ -80,6 +80,7 @@ enum class EntityTypeDto {
   COW,
   CHICKEN,
   SKELETON,
+  ORC,
   MINERAL_GOLD,
   MINERAL_IRON,
   MINERAL_LAPIZLAZULI,

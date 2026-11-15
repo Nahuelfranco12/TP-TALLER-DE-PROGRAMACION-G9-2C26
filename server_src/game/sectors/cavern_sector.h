@@ -2,6 +2,7 @@
 #define CAVERN_SECTOR_H_
 
 #include "sector.h"
+#include "../entities/enemies_factory.h"
 
 #include <memory>
 #include <random>
@@ -20,6 +21,7 @@ private:
   CavernLevelConfig config;
   bool pendingReset = false;
   std::mt19937 rng;
+  EnemiesFactory enemiesFactory;
 
   void spawnMinerals();
   void spawnEnemies();
@@ -31,7 +33,7 @@ public:
   CavernSector(size_t width, size_t height, IdSector id,
                const CavernLevelConfig &config)
       : Sector(width, height, id, Terrain(true, false, TerrainType::GROUND)),
-        config(config) {
+        config(config), enemiesFactory() {
     initEntities();
   }
 

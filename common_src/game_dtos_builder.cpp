@@ -82,6 +82,10 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     switch (e.enemy.type) {
     case EnemyType::SKELETON:
       return EntityTypeDto::SKELETON;
+    case EnemyType::ORC:
+      return EntityTypeDto::ORC;
+    case EnemyType::COUNT:
+      break;
     }
     break;
   default:

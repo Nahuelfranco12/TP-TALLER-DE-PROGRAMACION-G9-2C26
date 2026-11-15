@@ -73,6 +73,13 @@
 #define SKELETON_SIGHT_RANGE 6
 #define SKELETON_REVIVE_TICKS (10 * TICKS_PER_SECOND)
 
+#define ORC_LIFE 40
+#define ORC_DAMAGE 15
+#define ORC_GOLD 10
+#define ORC_TICKS_PER_MOVE 20
+#define ORC_TICKS_PER_ATTACK 35
+#define ORC_SIGHT_RANGE 6
+
 enum IdSector {
   FARM,
   VILLAGE,
@@ -102,7 +109,7 @@ enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
 
-enum class EnemyType { SKELETON };
+enum class EnemyType { SKELETON, ORC, COUNT };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };

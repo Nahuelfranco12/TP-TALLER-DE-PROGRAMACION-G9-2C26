@@ -80,10 +80,14 @@ void CavernSector::spawnMinerals() {
 void CavernSector::spawnEnemies() {
   std::uniform_int_distribution<size_t> countDist(config.minEnemies,
                                                   config.maxEnemies);
+
+  std::uniform_int_distribution<size_t> typeDist(
+      0, static_cast<size_t>(EnemyType::COUNT) - 1);
   int count = countDist(rng);
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) { 
+    EnemyType randType = static_cast<EnemyType>(typeDist(rng)); 
     Position pos = randomFreePosition();
-    addEntity(std::make_unique<Skeleton>(pos.x, pos.y), pos);
+    addEntity(this->enemiesFactory.createEnemy(randType, pos), pos);
   }
 }
 

@@ -8,6 +8,7 @@ target_sources(taller_game
     entities/player.cpp
     entities/crop.cpp
     entities/enemy.cpp
+    entities/enemies_factory.cpp
 
     inventory/inventory.cpp
     inventory/inventory_slot.cpp

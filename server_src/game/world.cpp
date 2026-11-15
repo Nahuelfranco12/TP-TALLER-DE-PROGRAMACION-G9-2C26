@@ -6,6 +6,7 @@
 #include "entities/cow.h"
 #include "entities/mineral.h"
 #include "entities/skeleton.h"
+#include "entities/orc.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -95,6 +96,13 @@ bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
   switch (type) {
   case EnemyType::SKELETON:
     enemy = std::make_unique<Skeleton>(pos.x, pos.y);
+    break;
+
+  case EnemyType::ORC:
+    enemy = std::make_unique<Orc>(pos.x, pos.y);
+    break;
+
+  case EnemyType::COUNT:
     break;
   }
   return it->second->addEntity(std::move(enemy), pos);
