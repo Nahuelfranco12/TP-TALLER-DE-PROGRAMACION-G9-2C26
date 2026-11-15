@@ -33,7 +33,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const TillDto &dto);
   std::unique_ptr<Command> create(int player_id, const WaterDto &dto);
   std::unique_ptr<Command> create(int player_id, const AttackDto &dto);
-  std::unique_ptr<Command> create_join(int player_id,
+  std::unique_ptr<Command> create_join(int player_id, const std::string &name,
                                        const PlayerOutfitDto &outfit);
   std::unique_ptr<Command> create_cheat_water(int player_id,
                                               const WaterDto &dto);

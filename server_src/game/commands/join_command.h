@@ -7,11 +7,12 @@
 class JoinCommand : public Command {
 private:
   int playerId;
+  std::string name;
   PlayerOutfit outfit;
 
 public:
-  JoinCommand(int playerId, PlayerOutfit outfit)
-      : playerId(playerId), outfit(outfit) {}
+  JoinCommand(int playerId, const std::string &name, PlayerOutfit outfit)
+      : playerId(playerId), name(name), outfit(outfit) {}
 
   void execute(World &world) override;
 };
