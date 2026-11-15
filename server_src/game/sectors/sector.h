@@ -14,6 +14,7 @@
 #include "../move_result.h"
 #include "../position.h"
 #include "../terrain.h"
+#include "../decision.h"
 
 class Sector {
 protected:
@@ -60,6 +61,9 @@ public:
   bool till(Position pos);
   bool isTilled(Position pos) const;
 
+  bool closestPlayer(Position origin, int maxDistance, Position& closestPosition) const;
+  void apply(Position origin, const Decision &decision);
+  
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
    */

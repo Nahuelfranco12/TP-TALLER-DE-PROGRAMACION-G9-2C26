@@ -1,8 +1,13 @@
 #include "sector.h"
 
+#include <cstdlib>
 #include <utility>
+#include <iostream>
 
+#include "../entities/player.h"
 #include "../cheatable/growth_cheat.h"
+#include "../entities/enemy.h"
+
 
 MoveResult Sector::move(Position origin, Position destine) {
   if (!canMoveTo(destine)) {
@@ -134,8 +139,60 @@ SectorState Sector::state() const {
   return state;
 }
 
+bool Sector::closestPlayer(Position origin, int maxDistance, Position& closestPosition) const {
+  bool foundAny = false;
+  int closestDistance = maxDistance + 1;
+
+  for(const auto &[playerPosition, entity] : entities ) {
+    const Player *player = dynamic_cast<const Player *>(entity.get());
+    if(!player || player->isUnconscious())
+      continue;
+    
+    int distance = std::abs(static_cast<int>(playerPosition.x) - static_cast<int>(origin.x)) + std::abs(static_cast<int>(playerPosition.y) - static_cast<int>(origin.y));
+
+    if(distance < closestDistance) {
+      closestDistance = distance;
+      closestPosition = playerPosition;
+      foundAny = true;
+    }
+  }
+  return foundAny;
+}
+
+void Sector::apply(Position origin, const Decision &decision) {
+  Enemy *enemy = dynamic_cast<Enemy *>(getEntity(origin));
+  if (!enemy || enemy->isDead())
+    return;
+  Position target = origin.next(decision.direction);
+
+  switch(decision.type) {
+    case DecisionType::MOVE:
+      if(this->doors.find(target) == this->doors.end())
+        move(origin, target);
+      break;
+    case DecisionType::ATTACK: {
+      Player *player = dynamic_cast<Player *>(getEntity(target));
+      if (player)
+        player->takeDamage(enemy->getDamage());
+      break;
+    }
+    case DecisionType::NONE:
+      break;
+  }
+}
+
 void Sector::tick() {
   for (auto &[pos, entity] : this->entities) {
     entity->tick();
   }
+
+  std::map<Position, Decision> decisions;
+  for(auto &[pos, entity] : this->entities ) {
+    Enemy *enemy = dynamic_cast<Enemy *>(entity.get());
+    if(enemy)
+      decisions[pos] = enemy->decide(*this);
+  }
+
+  for(const auto &[pos, decision] : decisions)
+    apply(pos, decision);
 }

@@ -6,32 +6,40 @@
 #include "../game_constants.h"
 #include "entity.h"
 #include "hittable.h"
+#include "../decision.h"
+
+class Sector;
 
 struct EnemyStats {
-    size_t hitsToKill;
+    size_t maxLife;
+    int damage;
     int gold;
+    int ticksPerMove;
+    int ticksPerAttack;
+    int sightRange;
 };
 
 class Enemy : public Entity, public Hittable {
     protected:
     EnemyStats stats;
+    int moveCooldown;
+    int attackCooldown;
 
     public:
-    Enemy(size_t pos_x, size_t pos_y, const EnemyStats &stats): 
-        Entity(pos_x, pos_y, EntityTypes::ENEMY), Hittable(stats.hitsToKill), stats(stats) {}
+    Enemy(size_t pos_x, size_t pos_y, const EnemyStats &stats);
 
-    int getGoldDrop() const {
-        return stats.gold; 
-    }
+    int getGoldDrop() const;
 
-    bool isDead() const {
-        return getHitsLeft() == 0;
-    }
+    int getDamage() const;
+
+    bool isDead() const;
 
     // TODO : revisar si esto es importante (lo puse para esqueletos sobretodo)
-    virtual bool removeOnDeath() const {
-        return true;
-    }
+    virtual bool removeOnDeath() const;
+
+    void tick() override;
+
+    virtual Decision decide(const Sector& sector);
 };
 
 #endif // ENEMY_H_

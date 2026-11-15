@@ -1,12 +1,15 @@
 #include "player.h"
 
 #include <utility>
+#include <iostream>
 
 #include "../sectors/sector.h"
 #include "mineral.h"
 #include "enemy.h"
 
 MoveResult Player::move(Position destination) {
+  if(isUnconscious())
+    return MoveResult(false, this->position, this->actualSector->getId());
   return this->actualSector->move(this->position, destination);
 }
 
@@ -21,6 +24,8 @@ Tool *Player::getSelectedTool() { return this->actualTool; }
 
 // cppcheck-suppress constParameterReference
 void Player::mine(Mineral &mineral) {
+  if(isUnconscious())
+    return;
   if (!this->position.isAdjacentTo(mineral.position))
     return;
   // cppcheck-suppress constVariablePointer
@@ -41,6 +46,8 @@ void Player::mine(Mineral &mineral) {
 }
 
 void Player::attack(Enemy &enemy) {
+  if(isUnconscious())
+    return;
   if (!this->position.isAdjacentTo(enemy.position))
     return;
   if (this->actualTool == nullptr ||
@@ -48,8 +55,12 @@ void Player::attack(Enemy &enemy) {
     return;
   if(enemy.isDead())
     return;
+  
+  size_t damage = SWORD_DAMAGE;
+  if(life <= PLAYER_MAX_LIFE * PLAYER_LOW_LIFE_PERCENT / 100)
+    damage /= 2;
 
-  if(enemy.hit()) {
+  if(enemy.hit(damage)) {
     this->coins += enemy.getGoldDrop();
     if(enemy.removeOnDeath()){
       this->actualSector->removeEntity(enemy.position);
@@ -74,6 +85,12 @@ void Player::restoreEnergy(size_t amount) {
   if ((this->energy + amount) >= PLAYER_MAX_ENERGY)
     this->energy = PLAYER_MAX_ENERGY;
   this->energy += amount;
+}
+
+void Player::takeDamage(double amount) {
+  life -= amount;
+  if(life < 0)
+    life = 0;
 }
 
 PlayerState Player::state() const {

@@ -78,6 +78,9 @@ public:
   bool spendEnergy(size_t cost);
   void restoreEnergy(size_t amount);
 
+  void takeDamage(double amount);
+  bool isUnconscious() const { return life <= 0; }
+
   // state para el serializar el estado del mundo
   PlayerState state() const;
   EntityState entityState() const override {
