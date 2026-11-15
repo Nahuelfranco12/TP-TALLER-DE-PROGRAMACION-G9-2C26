@@ -116,6 +116,10 @@ struct WaterDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct AttackDto {
+  DirectionDto direction = DirectionDto::Up;
+};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
@@ -197,11 +201,16 @@ struct CropDto {
     bool needsWater;
 };
 
+struct EnemyDto {
+  bool alive = true;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false; // x ahora solo se usa si es animal
   MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{}; // Solo se usa si es cultivo
+  EnemyDto enemy{};
 };
 
 struct GameTimeDto {

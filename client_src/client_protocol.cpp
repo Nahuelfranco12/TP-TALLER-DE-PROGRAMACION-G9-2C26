@@ -197,6 +197,7 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.crop.needsWater = protocol.receive_u8();
     
     entity.mineral.remainingHits = protocol.receive_u8();
+    entity.enemy.alive = protocol.receive_u8() == 1;
     state.entities[position] = entity;
   }
 

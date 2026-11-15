@@ -78,6 +78,12 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
                                            : EntityTypeDto::CHICKEN;
   case EntityTypes::CROP:
     return EntityTypeDto::CROP;
+  case EntityTypes::ENEMY:
+    switch (e.enemy.type) {
+    case EnemyType::SKELETON:
+      return EntityTypeDto::SKELETON;
+    }
+    break;
   default:
     break;
   }
@@ -197,6 +203,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.crop.needsWater = e.crop.needsWater;
           
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
+          entityDto.enemy.alive = e.enemy.is_alive;
           sectorDto.entities[pos] = entityDto;
         }
       }
