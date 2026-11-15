@@ -5,7 +5,7 @@
 
 class CheatGrowthAction : public ClientAction {
 public:
-  static CheatGrowthAction();
+  CheatGrowthAction();
 
   void send_by(ClientProtocol &protocol) const override;
 };
