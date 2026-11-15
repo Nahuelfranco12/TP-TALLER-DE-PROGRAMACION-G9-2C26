@@ -15,6 +15,7 @@
 
 class Sector;  // forward declaration
 class Mineral; // forward declaration
+class Enemy; // forward declaration
 
 struct PendingGift {
     int giverId = 0;
@@ -56,6 +57,7 @@ public:
 
   MoveResult move(Position destination);
   void mine(Mineral &mineral);
+  void attack(Enemy &enemy);
 
   void selectTool(AvailableTools tool);
   Tool *getSelectedTool();

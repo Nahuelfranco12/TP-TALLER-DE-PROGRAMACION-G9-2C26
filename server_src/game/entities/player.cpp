@@ -4,6 +4,7 @@
 
 #include "../sectors/sector.h"
 #include "mineral.h"
+#include "enemy.h"
 
 MoveResult Player::move(Position destination) {
   return this->actualSector->move(this->position, destination);
@@ -36,6 +37,23 @@ void Player::mine(Mineral &mineral) {
       return;
   
     this->inventory.addItem(std::move(item));
+  }
+}
+
+void Player::attack(Enemy &enemy) {
+  if (!this->position.isAdjacentTo(enemy.position))
+    return;
+  if (this->actualTool == nullptr ||
+      this->actualTool->toolType != AvailableTools::SWORD)
+    return;
+  if(enemy.isDead())
+    return;
+
+  if(enemy.hit()) {
+    this->coins += enemy.getGoldDrop();
+    if(enemy.removeOnDeath()){
+      this->actualSector->removeEntity(enemy.position);
+    }
   }
 }
 
