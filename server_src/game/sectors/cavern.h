@@ -31,7 +31,7 @@ public:
                               .availableMinerals = minerals,
                               .availableEnemies  = {
                                   {EnemyType::SKELETON, 1, 1},
-                                  {EnemyType::ORC,      3, 6},
+                                  {EnemyType::ORC, 3, 6},
                               }
       };
       world.addSector(std::make_unique<CavernSector>(

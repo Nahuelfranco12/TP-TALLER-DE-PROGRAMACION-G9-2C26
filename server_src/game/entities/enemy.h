@@ -20,16 +20,15 @@ struct EnemyStats {
 };
 
 class Enemy : public Entity, public Hittable {
-    protected:
+protected:
     EnemyStats stats;
     int moveCooldown;
     int attackCooldown;
 
-    public:
+public:
     Enemy(size_t pos_x, size_t pos_y, const EnemyStats &stats);
 
     int getGoldDrop() const;
-
     virtual int getDamage() const;
     virtual int getTicksPerMove() const;
 
