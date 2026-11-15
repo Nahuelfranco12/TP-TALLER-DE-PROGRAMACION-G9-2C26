@@ -6,6 +6,7 @@
 #include <string>
 
 #include "../common_src/game_dtos.h"
+#include "constantes_sdl.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -50,11 +51,12 @@ private:
 
 public:
     explicit Pueblo(SDL2pp::Renderer &renderer);
-    
+
     void animar(long vueltas_pasadas);
-    
-    void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado = 64);
-    
+
+    void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
+                 int lado = TAMANIO_TILE);
+
     void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 
     bool click_npc(int x, int y, int camara_x, int camara_y);

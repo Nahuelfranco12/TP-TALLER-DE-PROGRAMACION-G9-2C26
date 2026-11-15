@@ -10,41 +10,46 @@ using SDL2pp::Rect;
 using SDL2pp::Renderer;
 
 namespace {
-const SDL2pp::Color BLANCO = {255, 255, 255, 255};
-const int TAMANIO_LETRA = 16;
-const int MARGEN = 16;
-const int ALTO_BOTON = 32;
-const int RELLENO = 8;
-const int HORA_ATARDECER = 18;
-const int HORA_NOCHE = 22;
-const int OSCURIDAD_MAXIMA = 170;
+const SDL2pp::Color BLANCO = COLOR_TEXTO;
 
 std::string dos_digitos(size_t numero) {
-  if (numero < 10) {
-    return "0" + std::to_string(numero);
+  if (numero < RELOJ_MINIMO_DOS_CIFRAS) {
+    return TEXTO_JUEGO_CERO + std::to_string(numero);
   }
   return std::to_string(numero);
 }
-}
+}  // namespace
 
 Interfaz::Interfaz(SDL2pp::Renderer &renderer,
                    const std::string &codigo_partida)
-    : fuente("assets/fuentes/DejaVuSans-Bold.ttf", TAMANIO_LETRA),
-      texto_musica(renderer, fuente.RenderUTF8_Blended("Música", BLANCO)),
-      texto_menos(renderer, fuente.RenderUTF8_Blended("-", BLANCO)),
-      texto_mas(renderer, fuente.RenderUTF8_Blended("+", BLANCO)),
-      boton_musica(16, 16, 90, 32), boton_menos(114, 16, 32, 32),
-      boton_mas(254, 16, 32, 32), codigo(codigo_partida),
-      texto_boton_codigo(
-          renderer, fuente.RenderUTF8_Blended("Código Multiplayer", BLANCO)),
-      texto_codigo(renderer,
-                   fuente.RenderUTF8_Blended(
-                       "Código: " + codigo_partida + "  (copiado)", BLANCO)),
-      textura_tiempo(renderer, fuente.RenderUTF8_Blended("Día 1 06:00", BLANCO)),
-      textura_monedas(renderer, fuente.RenderUTF8_Blended("Monedas: 0", BLANCO)),
-      texto_regalo(renderer, fuente.RenderUTF8_Blended("¡Te ofrecen un regalo!", BLANCO)),
-      texto_aceptar(renderer, fuente.RenderUTF8_Blended("Aceptar", BLANCO)),
-      texto_rechazar(renderer, fuente.RenderUTF8_Blended("Rechazar", BLANCO)) {}
+    : fuente(RUTA_FUENTE_JUEGO, HUD_TAMANIO_LETRA),
+      texto_musica(renderer,
+                   fuente.RenderUTF8_Blended(TEXTO_JUEGO_MUSICA, BLANCO)),
+      texto_menos(renderer,
+                  fuente.RenderUTF8_Blended(TEXTO_JUEGO_MENOS, BLANCO)),
+      texto_mas(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_MAS, BLANCO)),
+      boton_musica(HUD_MARGEN, HUD_MARGEN, HUD_ANCHO_BOTON_MUSICA,
+                   HUD_ALTO_BOTON),
+      boton_menos(HUD_BOTON_MENOS_X, HUD_MARGEN, HUD_ALTO_BOTON,
+                  HUD_ALTO_BOTON),
+      boton_mas(HUD_BOTON_MAS_X, HUD_MARGEN, HUD_ALTO_BOTON, HUD_ALTO_BOTON),
+      codigo(codigo_partida),
+      texto_boton_codigo(renderer, fuente.RenderUTF8_Blended(
+                                       TEXTO_JUEGO_BOTON_CODIGO, BLANCO)),
+      texto_codigo(renderer, fuente.RenderUTF8_Blended(
+                                 TEXTO_JUEGO_CODIGO + codigo_partida +
+                                     TEXTO_JUEGO_COPIADO,
+                                 BLANCO)),
+      textura_tiempo(renderer, fuente.RenderUTF8_Blended(
+                                   TEXTO_JUEGO_TIEMPO_INICIAL, BLANCO)),
+      textura_monedas(renderer, fuente.RenderUTF8_Blended(
+                                    TEXTO_JUEGO_MONEDAS_INICIAL, BLANCO)),
+      texto_regalo(renderer,
+                   fuente.RenderUTF8_Blended(TEXTO_JUEGO_REGALO, BLANCO)),
+      texto_aceptar(renderer,
+                    fuente.RenderUTF8_Blended(TEXTO_JUEGO_ACEPTAR, BLANCO)),
+      texto_rechazar(renderer,
+                     fuente.RenderUTF8_Blended(TEXTO_JUEGO_RECHAZAR, BLANCO)) {}
 
 bool Interfaz::click(int x, int y, Audio &audio) {
   if (boton_codigo.Contains(x, y)) {
@@ -69,9 +74,11 @@ bool Interfaz::click(int x, int y, Audio &audio) {
 void Interfaz::dibujar_boton(SDL2pp::Renderer &renderer,
                              const SDL2pp::Rect &boton,
                              SDL2pp::Texture &texto) {
-  renderer.SetDrawColor(30, 30, 30, 255);
+  const SDL2pp::Color fondo = COLOR_BOTON_FONDO;
+  const SDL2pp::Color borde = COLOR_BOTON_BORDE;
+  renderer.SetDrawColor(fondo);
   renderer.FillRect(boton);
-  renderer.SetDrawColor(230, 230, 230, 255);
+  renderer.SetDrawColor(borde);
   renderer.DrawRect(boton);
 
   int ancho = texto.GetWidth();
@@ -86,13 +93,16 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
   dibujar_boton(renderer, boton_menos, texto_menos);
   dibujar_boton(renderer, boton_mas, texto_mas);
 
-  int endendidas = audio.obtener_volumen_musica() / 16;
-  for (int i = 0; i < 8; i++) {
-    Rect rayita(152 + i * 12, 22, 8, 20);
+  const SDL2pp::Color encendida = COLOR_RAYITA_ENCENDIDA;
+  const SDL2pp::Color apagada = COLOR_RAYITA_APAGADA;
+  int endendidas = audio.obtener_volumen_musica() / AUDIO_INCREMENTO_VOLUMEN;
+  for (int i = 0; i < HUD_RAYITAS_VOLUMEN; i++) {
+    Rect rayita(HUD_RAYITA_X + i * HUD_RAYITA_PASO, HUD_RAYITA_Y,
+                HUD_RAYITA_ANCHO, HUD_RAYITA_ALTO);
     if (i < endendidas) {
-      renderer.SetDrawColor(230, 190, 190, 255);
+      renderer.SetDrawColor(encendida);
     } else {
-      renderer.SetDrawColor(80, 80, 80, 255);
+      renderer.SetDrawColor(apagada);
     }
     renderer.FillRect(rayita);
   }
@@ -100,16 +110,21 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
   if (mostrando_codigo) {
     texto = &texto_codigo;
   }
-  int ancho = texto->GetWidth() + 2 * RELLENO;
-  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - MARGEN, MARGEN, ancho, ALTO_BOTON);
+  int ancho = texto->GetWidth() + 2 * HUD_RELLENO;
+  boton_codigo = Rect(renderer.GetOutputWidth() - ancho - HUD_MARGEN,
+                      HUD_MARGEN, ancho, HUD_ALTO_BOTON);
   dibujar_boton(renderer, boton_codigo, *texto);
 
-  int ancho_tiempo = textura_tiempo.GetWidth() + 2 * RELLENO;
-  Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - MARGEN, MARGEN + ALTO_BOTON + 8, ancho_tiempo, ALTO_BOTON);
+  int alto_fila = HUD_ALTO_BOTON + HUD_SEPARACION_CAJAS;
+
+  int ancho_tiempo = textura_tiempo.GetWidth() + 2 * HUD_RELLENO;
+  Rect caja_tiempo(renderer.GetOutputWidth() - ancho_tiempo - HUD_MARGEN,
+                   HUD_MARGEN + alto_fila, ancho_tiempo, HUD_ALTO_BOTON);
   dibujar_boton(renderer, caja_tiempo, textura_tiempo);
 
-  int ancho_monedas = textura_monedas.GetWidth() + 2 * RELLENO;
-  Rect caja_monedas(renderer.GetOutputWidth() - ancho_monedas - MARGEN, MARGEN + 2 * (ALTO_BOTON + 8), ancho_monedas, ALTO_BOTON);
+  int ancho_monedas = textura_monedas.GetWidth() + 2 * HUD_RELLENO;
+  Rect caja_monedas(renderer.GetOutputWidth() - ancho_monedas - HUD_MARGEN,
+                    HUD_MARGEN + 2 * alto_fila, ancho_monedas, HUD_ALTO_BOTON);
   dibujar_boton(renderer, caja_monedas, textura_monedas);
 }
 
@@ -117,7 +132,9 @@ void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, 
   hora = tiempo.hours;
   minutos = tiempo.minutes;
 
-  std::string nuevo = "Día " + std::to_string(dia) + " " + dos_digitos(hora) + ":" + dos_digitos(minutos);
+  std::string nuevo = TEXTO_JUEGO_DIA + std::to_string(dia) +
+                      TEXTO_JUEGO_SEPARADOR_DIA + dos_digitos(hora) +
+                      TEXTO_JUEGO_SEPARADOR_HORA + dos_digitos(minutos);
   if (nuevo != texto_tiempo) {
     texto_tiempo = nuevo;
     textura_tiempo = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
@@ -129,27 +146,29 @@ void Interfaz::actualizar_monedas(Renderer &renderer, size_t nuevas_monedas) {
     return;
   }
   monedas = nuevas_monedas;
-  std::string texto = "Monedas: " + std::to_string(monedas);
+  std::string texto = TEXTO_JUEGO_MONEDAS + std::to_string(monedas);
   textura_monedas = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
 }
 
 void Interfaz::dibujar_noche(Renderer &renderer) const {
-  int minutos_del_dia = static_cast<int>(hora) * 60 + static_cast<int>(minutos);
-  int inicio = HORA_ATARDECER * 60;
-  int fin = HORA_NOCHE * 60;
+  int minutos_del_dia =
+      static_cast<int>(hora) * MINUTOS_POR_HORA + static_cast<int>(minutos);
+  int inicio = NOCHE_HORA_ATARDECER * MINUTOS_POR_HORA;
+  int fin = NOCHE_HORA_OSCURA * MINUTOS_POR_HORA;
 
   int alfa = 0;
-  if (hora < 6 || minutos_del_dia >= fin) {
-    alfa = OSCURIDAD_MAXIMA;
+  if (hora < DIA_HORA_INICIO || minutos_del_dia >= fin) {
+    alfa = NOCHE_OSCURIDAD_MAXIMA;
   } else if (minutos_del_dia > inicio) {
-    alfa = OSCURIDAD_MAXIMA * (minutos_del_dia - inicio) / (fin - inicio);
+    alfa = NOCHE_OSCURIDAD_MAXIMA * (minutos_del_dia - inicio) / (fin - inicio);
   }
   if (alfa == 0) {
     return;
   }
 
+  const SDL2pp::Color noche = COLOR_NOCHE;
   renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
-  renderer.SetDrawColor(10, 10, 40, alfa);
+  renderer.SetDrawColor(noche.r, noche.g, noche.b, alfa);
   renderer.FillRect(Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
 }
 
@@ -190,20 +209,33 @@ bool Interfaz::click_regalo(int x, int y, bool &acepto) {
 }
 
 void Interfaz::dibujar_regalo(Renderer &renderer) {
-  const int ANCHO = 280;
-  const int ALTO = 140;
-  caja_regalo = Rect((renderer.GetOutputWidth() - ANCHO) / 2, (renderer.GetOutputHeight() - ALTO) / 2, ANCHO, ALTO);
-  renderer.SetDrawColor(40, 30, 20, 240);
+  caja_regalo = Rect((renderer.GetOutputWidth() - REGALO_ANCHO) / 2,
+                     (renderer.GetOutputHeight() - REGALO_ALTO) / 2,
+                     REGALO_ANCHO, REGALO_ALTO);
+  const SDL2pp::Color fondo = COLOR_CAJA_REGALO;
+  const SDL2pp::Color borde = COLOR_BOTON_BORDE;
+  renderer.SetDrawColor(fondo);
   renderer.FillRect(caja_regalo);
-  renderer.SetDrawColor(230, 230, 230, 255);
+  renderer.SetDrawColor(borde);
   renderer.DrawRect(caja_regalo);
 
-  renderer.Copy(texto_regalo, NullOpt, Rect(caja_regalo.x + (ANCHO - texto_regalo.GetWidth()) / 2, caja_regalo.y + 10, texto_regalo.GetWidth(), texto_regalo.GetHeight()));
+  Rect lugar_titulo(
+      caja_regalo.x + (REGALO_ANCHO - texto_regalo.GetWidth()) / 2,
+      caja_regalo.y + REGALO_MARGEN_TITULO, texto_regalo.GetWidth(),
+      texto_regalo.GetHeight());
+  renderer.Copy(texto_regalo, NullOpt, lugar_titulo);
 
-  icono_regalo = Rect(caja_regalo.x + (ANCHO -44) / 2, caja_regalo.y + 40, 44, 44);
+  icono_regalo =
+      Rect(caja_regalo.x + (REGALO_ANCHO - INVENTARIO_LADO_CASILLERO) / 2,
+           caja_regalo.y + REGALO_ICONO_Y, INVENTARIO_LADO_CASILLERO,
+           INVENTARIO_LADO_CASILLERO);
 
-  boton_aceptar = Rect(caja_regalo.x + 20, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
-  boton_rechazar = Rect(caja_regalo.x + ANCHO - 130, caja_regalo.y + ALTO - 44, 110, ALTO_BOTON);
+  int botones_y = caja_regalo.y + REGALO_ALTO - REGALO_BOTONES_DESDE_ABAJO;
+  boton_aceptar = Rect(caja_regalo.x + REGALO_MARGEN_BOTONES, botones_y,
+                       REGALO_ANCHO_BOTON, HUD_ALTO_BOTON);
+  boton_rechazar = Rect(caja_regalo.x + REGALO_ANCHO - REGALO_ANCHO_BOTON -
+                            REGALO_MARGEN_BOTONES,
+                        botones_y, REGALO_ANCHO_BOTON, HUD_ALTO_BOTON);
 
   dibujar_boton(renderer, boton_aceptar, texto_aceptar);
   dibujar_boton(renderer, boton_rechazar, texto_rechazar);

@@ -6,6 +6,7 @@
 
 #include "audio.h"
 #include "common_src/game_dtos.h"
+#include "constantes_sdl.h"
 
 class Interfaz {
 private:
@@ -24,7 +25,7 @@ private:
   SDL2pp::Rect boton_codigo;
   bool mostrando_codigo = false;
 
-  size_t hora = 6;
+  size_t hora = DIA_HORA_INICIO;
   size_t minutos = 0;
   std::string texto_tiempo;
   SDL2pp::Texture textura_tiempo;

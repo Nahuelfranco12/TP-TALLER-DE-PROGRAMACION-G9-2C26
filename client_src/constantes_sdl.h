@@ -66,6 +66,35 @@
 #define CAVERNA_GOLPES_GOLPEADO 2
 #define CAVERNA_GOLPES_CASI_ROTO 1
 
+// Pueblo: tiendas (el índice es el mismo para puesto, NPC, título y fondo)
+#define TIENDA_PIERRE 0
+#define TIENDA_CLINT 1
+#define TIENDA_ROBIN 2
+#define TIENDA_MARNIE 3
+#define TIENDA_CERRADA (-1)
+#define PUEBLO_PUESTOS                                                  \
+  {{10, 20, TIENDA_PIERRE},                                             \
+   {30, 36, TIENDA_CLINT},                                              \
+   {29, 3, TIENDA_ROBIN},                                               \
+   {52, 18, TIENDA_MARNIE}}
+#define PUEBLO_NPCS                                                     \
+  {{15, 29, TIENDA_PIERRE},                                             \
+   {34, 44, TIENDA_CLINT},                                              \
+   {37, 13, TIENDA_ROBIN},                                              \
+   {57, 29, TIENDA_MARNIE}}
+#define NPC_CUADROS_ANIMACION 4
+#define NPC_VUELTAS_POR_CUADRO 12
+#define TIENDA_TAMANIO_LETRA 20
+#define TIENDA_CANTIDAD_BOTONES 4
+#define TIENDA_ALTO_BOTON 36
+#define TIENDA_SEPARACION_BOTONES 12
+#define TIENDA_RELLENO_BOTON 12
+#define TIENDA_LADO_PERSONAJES 48
+#define TIENDA_MARGEN_ANCHO 40
+#define TIENDA_MARGEN_ALTO 140
+#define TIENDA_MARGEN_TITULO 10
+#define TIENDA_MARGEN_BOTONES 10
+
 // Personaje: ropa inicial, caminar y picar
 #define PERSONAJE_PANTALON_INICIAL 0
 #define PERSONAJE_REMERA_INICIAL 5
@@ -89,6 +118,53 @@
 #define BARRA_SEPARACION 2
 #define BARRA_BORDE 1
 
+// Día y noche
+#define DIA_HORA_INICIO 6
+#define MINUTOS_POR_HORA 60
+#define NOCHE_HORA_ATARDECER 18
+#define NOCHE_HORA_OSCURA 22
+#define NOCHE_OSCURIDAD_MAXIMA 170
+#define RELOJ_MINIMO_DOS_CIFRAS 10
+
+// HUD (px)
+#define HUD_TAMANIO_LETRA 16
+#define HUD_MARGEN 16
+#define HUD_ALTO_BOTON 32
+#define HUD_RELLENO 8
+#define HUD_SEPARACION_CAJAS 8
+#define HUD_ANCHO_BOTON_MUSICA 90
+#define HUD_BOTON_MENOS_X 114
+#define HUD_BOTON_MAS_X 254
+#define HUD_RAYITAS_VOLUMEN 8  // MIX_MAX_VOLUME / AUDIO_INCREMENTO_VOLUMEN
+#define HUD_RAYITA_X 152
+#define HUD_RAYITA_PASO 12
+#define HUD_RAYITA_Y 22
+#define HUD_RAYITA_ANCHO 8
+#define HUD_RAYITA_ALTO 20
+
+// Cartel de regalo (px)
+#define REGALO_ANCHO 280
+#define REGALO_ALTO 140
+#define REGALO_MARGEN_TITULO 10
+#define REGALO_ICONO_Y 40
+#define REGALO_MARGEN_BOTONES 20
+#define REGALO_BOTONES_DESDE_ABAJO 44
+#define REGALO_ANCHO_BOTON 110
+
+// Inventario (px)
+#define INVENTARIO_HERRAMIENTAS 4
+#define INVENTARIO_ITEMS 9
+#define INVENTARIO_CASILLEROS (INVENTARIO_HERRAMIENTAS + INVENTARIO_ITEMS)
+#define INVENTARIO_LADO_CASILLERO 44
+#define INVENTARIO_SEPARACION 12
+#define INVENTARIO_MARGEN_ABAJO 10
+#define INVENTARIO_LADO_ICONO 32
+#define INVENTARIO_TAMANIO_LETRA 11
+#define INVENTARIO_NUMERO_MARGEN_X 3
+#define INVENTARIO_NUMERO_MARGEN_Y 1
+#define INVENTARIO_ESTRELLA_MARGEN 3
+#define DIGITOS_DECIMALES 10
+
 // Paleta de colores de la ropa
 #define COLOR_ROPA_AZUL {60, 90, 200}
 #define COLOR_ROPA_MARRON {150, 80, 30}
@@ -106,6 +182,7 @@
 
 // Rutas de assets
 #define RUTA_ASSETS "assets/"
+#define RUTA_FUENTE_JUEGO RUTA_ASSETS "fuentes/DejaVuSans-Bold.ttf"
 #define RUTA_ARBOL RUTA_ASSETS "mapas/tree1.png"
 #define RUTA_PINO RUTA_ASSETS "mapas/tree1_2.png"
 #define RUTA_TILESET_GRANJA RUTA_ASSETS "mapas/ground_01_16x16.png"
@@ -116,9 +193,12 @@
   RUTA_ASSETS "mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES RUTA_ASSETS "caverna/ore.png"
 #define RUTA_CASAS RUTA_ASSETS "edificios/House.png"
+#define RUTA_EDIFICIOS_PUEBLO RUTA_ASSETS "edificios/PelicanTown_Buildings.png"
 #define RUTA_VACA RUTA_ASSETS "animales/Female Cow Brown.png"
 #define RUTA_GALLINA RUTA_ASSETS "animales/Chicken Blonde  Green.png"
 #define RUTA_CULTIVOS RUTA_ASSETS "cultivos/Spring Crops.png"
+#define RUTA_ICONOS_MINERALES RUTA_ASSETS "inventario/ore.png"
+#define RUTA_ICONOS_CULTIVOS RUTA_ASSETS "inventario/Spring Crops.png"
 #define RUTA_HUEVO RUTA_ASSETS "inventario/egg.png"
 #define RUTA_LECHE RUTA_ASSETS "inventario/milk.png"
 #define RUTA_ESPADA RUTA_ASSETS "inventario/sword.png"
@@ -135,6 +215,17 @@
   RUTA_ASSETS "personaje/StardewValley_Character_Hairstyles.png"
 #define RUTA_PERSONAJE_SOMBREROS \
   RUTA_ASSETS "personaje/StardewValley_Character_Hats.png"
+#define RUTA_NPC_PIERRE RUTA_ASSETS "npcs/pierre.png"
+#define RUTA_NPC_CLINT RUTA_ASSETS "npcs/clint.png"
+#define RUTA_NPC_ROBIN RUTA_ASSETS "npcs/robin.png"
+#define RUTA_NPC_MARNIE RUTA_ASSETS "npcs/marnie.png"
+#define RUTA_TIENDA_PIERRE RUTA_ASSETS "tiendas/pierre.png"
+#define RUTA_TIENDA_CLINT RUTA_ASSETS "tiendas/clint.jpeg"
+#define RUTA_TIENDA_ROBIN RUTA_ASSETS "tiendas/robin.jpg"
+#define RUTA_TIENDA_MARNIE RUTA_ASSETS "tiendas/marnie.jpg"
+#define RUTAS_FONDOS_TIENDAS                                            \
+  {RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,            \
+   RUTA_TIENDA_MARNIE}
 #define RUTA_MUSICA_GRANJA RUTA_ASSETS "sonidos/musica_granja.ogg"
 #define RUTA_MUSICA_CAVERNA RUTA_ASSETS "sonidos/musica_caverna.ogg"
 #define RUTA_MUSICA_PUEBLO RUTA_ASSETS "sonidos/musica_pueblo.mp3"
@@ -188,6 +279,22 @@
 #define SPRITE_CULTIVO_FILAS_POR_TIPO 2
 #define SPRITE_CULTIVO_FILA_PLANTA 1
 
+// Sprites: pueblo (px)
+#define SPRITE_PUESTO_PIERRE {240, 176, 112, 144}
+#define SPRITE_PUESTO_CLINT {80, 320, 144, 128}
+#define SPRITE_PUESTO_ROBIN {192, 640, 192, 160}
+#define SPRITE_PUESTO_MARNIE {256, 0, 144, 176}
+#define SPRITE_MODELOS_PUESTOS                                          \
+  {SPRITE_PUESTO_PIERRE, SPRITE_PUESTO_CLINT, SPRITE_PUESTO_ROBIN,      \
+   SPRITE_PUESTO_MARNIE}
+#define SPRITE_NPC_PIERRE {RUTA_NPC_PIERRE, 32, 32}
+#define SPRITE_NPC_CLINT {RUTA_NPC_CLINT, 32, 32}
+#define SPRITE_NPC_ROBIN {RUTA_NPC_ROBIN, 64, 48}
+#define SPRITE_NPC_MARNIE {RUTA_NPC_MARNIE, 64, 48}
+#define SPRITE_MODELOS_NPCS                                             \
+  {SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN,               \
+   SPRITE_NPC_MARNIE}
+
 // Sprites: personaje (px)
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
@@ -222,10 +329,45 @@
 #define SPRITE_MANO_Y 16
 #define ICONO_PIXELES_POR_TILE 24
 
+// Sprites: íconos del inventario (px)
+#define ICONO_MINERAL_X 100
+#define ICONO_MINERAL_Y 17
+#define ICONO_MINERAL_LADO 10
+#define ICONO_MINERAL_CELDA 32
+#define ICONO_MINERAL_FILA_HIERRO 0
+#define ICONO_MINERAL_FILA_CARBON 1
+#define ICONO_MINERAL_FILA_LAPISLAZULI 2
+#define ICONO_MINERAL_FILA_ORO 3
+#define ICONO_CULTIVO_LADO 16
+#define ICONO_SEMILLA_COLUMNA 7
+#define ICONO_COSECHA_COLUMNA 8
+#define ICONO_CULTIVO_FILA_FRUTILLA 1
+#define ICONO_CULTIVO_FILA_CEBOLLA 3
+#define ICONO_CULTIVO_FILA_PAPA 5
+#define ICONO_CULTIVO_FILA_CALABAZA 7
+#define SPRITE_ESTRELLA_BORDE {{-1, 2, 10, 4}, {2, -1, 4, 10}}
+#define SPRITE_ESTRELLA_RELLENO {{0, 3, 8, 2}, {3, 0, 2, 8}, {2, 2, 4, 4}}
+
 // Colores
 #define COLOR_ALFA_OPACO 255
 #define COLOR_SOMBRA_MARGEN 150
 #define COLOR_SIN_TINTE 255
+#define COLOR_TEXTO {255, 255, 255, COLOR_ALFA_OPACO}
+#define COLOR_BOTON_FONDO {30, 30, 30, COLOR_ALFA_OPACO}
+#define COLOR_BOTON_BORDE {230, 230, 230, COLOR_ALFA_OPACO}
+#define COLOR_RAYITA_ENCENDIDA {230, 190, 190, COLOR_ALFA_OPACO}
+#define COLOR_RAYITA_APAGADA {80, 80, 80, COLOR_ALFA_OPACO}
+#define COLOR_NOCHE {10, 10, 40, COLOR_ALFA_OPACO}
+#define COLOR_CAJA_REGALO {40, 30, 20, 240}
+#define COLOR_TIENDA_OSCURECER {0, 0, 0, 200}
+#define COLOR_CASILLERO {60, 40, 30, 230}
+#define COLOR_CASILLERO_SELECCIONADO {255, 200, 40, COLOR_ALFA_OPACO}
+#define COLOR_CASILLERO_BORDE {140, 100, 60, COLOR_ALFA_OPACO}
+#define COLOR_ESTRELLA_BORDE {0, 0, 0, COLOR_ALFA_OPACO}
+#define COLOR_CALIDAD_BUENA {205, 127, 50, COLOR_ALFA_OPACO}
+#define COLOR_CALIDAD_EXCELENTE {200, 200, 215, COLOR_ALFA_OPACO}
+#define COLOR_CALIDAD_INCREIBLE {240, 200, 40, COLOR_ALFA_OPACO}
+#define COLOR_CALIDAD_PERFECTA {170, 90, 220, COLOR_ALFA_OPACO}
 #define COLOR_MUNDO_FONDO {18, 22, 18, COLOR_ALFA_OPACO}
 #define COLOR_MUNDO_DIFUMINADO {54, 124, 66, COLOR_ALFA_OPACO}
 #define COLOR_BARRA_VIDA {240, 200, 40, COLOR_ALFA_OPACO}
@@ -233,9 +375,37 @@
 #define COLOR_BARRA_BORDE {0, 0, 0, COLOR_ALFA_OPACO}
 #define COLOR_BARRA_FONDO {70, 70, 70, COLOR_ALFA_OPACO}
 
-// HUD: posiciones y tamaños
-
 // Textos visibles
+#define TEXTO_JUEGO_MUSICA "Música"
+#define TEXTO_JUEGO_MENOS "-"
+#define TEXTO_JUEGO_MAS "+"
+#define TEXTO_JUEGO_BOTON_CODIGO "Código Multiplayer"
+#define TEXTO_JUEGO_CODIGO "Código: "
+#define TEXTO_JUEGO_COPIADO "  (copiado)"
+#define TEXTO_JUEGO_DIA "Día "
+#define TEXTO_JUEGO_SEPARADOR_DIA " "
+#define TEXTO_JUEGO_SEPARADOR_HORA ":"
+#define TEXTO_JUEGO_CERO "0"
+#define TEXTO_JUEGO_TIEMPO_INICIAL TEXTO_JUEGO_DIA "1 06:00"
+#define TEXTO_JUEGO_MONEDAS "Monedas: "
+#define TEXTO_JUEGO_MONEDAS_INICIAL TEXTO_JUEGO_MONEDAS "0"
+#define TEXTO_JUEGO_REGALO "¡Te ofrecen un regalo!"
+#define TEXTO_JUEGO_ACEPTAR "Aceptar"
+#define TEXTO_JUEGO_RECHAZAR "Rechazar"
+#define TEXTO_JUEGO_TIENDA_PIERRE "Tienda de Pierre"
+#define TEXTO_JUEGO_TIENDA_CLINT "Herrería de Clint"
+#define TEXTO_JUEGO_TIENDA_ROBIN "Carpintería de Robin"
+#define TEXTO_JUEGO_TIENDA_MARNIE "Rancho de Marnie"
+#define TITULOS_TIENDAS                                                 \
+  {TEXTO_JUEGO_TIENDA_PIERRE, TEXTO_JUEGO_TIENDA_CLINT,                 \
+   TEXTO_JUEGO_TIENDA_ROBIN, TEXTO_JUEGO_TIENDA_MARNIE}
+#define TEXTO_JUEGO_COMPRAR "Comprar"
+#define TEXTO_JUEGO_VENDER "Vender"
+#define TEXTO_JUEGO_HABLAR "Hablar"
+#define TEXTO_JUEGO_SALIR "Salir"
+#define TEXTOS_BOTONES_TIENDA                                           \
+  {TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,         \
+   TEXTO_JUEGO_SALIR}
 
 // Audio
 #define AUDIO_TAMANIO_BUFFER 1024
