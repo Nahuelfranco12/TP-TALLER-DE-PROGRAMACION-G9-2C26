@@ -22,7 +22,7 @@ private:
   std::mt19937 rng;
 
   void spawnMinerals();
-  // void spawnEnemies();
+  void spawnEnemies();
   void clearEntities();
   void initEntities();
   Position randomFreePosition();

@@ -1,6 +1,7 @@
 #include "cavern_sector.h"
 
 #include "../entities/mineral.h"
+#include "../entities/skeleton.h"
 
 #include <memory>
 #include <random>
@@ -14,7 +15,7 @@ bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
 
 void CavernSector::initEntities() {
   spawnMinerals();
-  // spawnEnemies();
+  spawnEnemies();
 }
 
 void CavernSector::reset() {
@@ -73,6 +74,16 @@ void CavernSector::spawnMinerals() {
       break;
     }
     addEntity(std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits), pos);
+  }
+}
+
+void CavernSector::spawnEnemies() {
+  std::uniform_int_distribution<size_t> countDist(config.minEnemies,
+                                                  config.maxEnemies);
+  int count = countDist(rng);
+  for (int i = 0; i < count; i++) {
+    Position pos = randomFreePosition();
+    addEntity(std::make_unique<Skeleton>(pos.x, pos.y), pos);
   }
 }
 
