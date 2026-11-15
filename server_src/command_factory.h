@@ -16,6 +16,7 @@
 #include "./game/commands/gift_response_command.h"
 #include "./game/commands/till_command.h"
 #include "./game/commands/water_command.h"
+#include "./game/commands/attack_command.h"
 
 #include "./game/commands/cheats/cheat_water_crop_command.h"
 #include "./game/commands/cheats/cheat_growth_command.h"
@@ -31,6 +32,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const GiftResponseDto &dto);
   std::unique_ptr<Command> create(int player_id, const TillDto &dto);
   std::unique_ptr<Command> create(int player_id, const WaterDto &dto);
+  std::unique_ptr<Command> create(int player_id, const AttackDto &dto);
   std::unique_ptr<Command> create_join(int player_id,
                                        const PlayerOutfitDto &outfit);
   std::unique_ptr<Command> create_cheat_water(int player_id, const WaterDto &dto);

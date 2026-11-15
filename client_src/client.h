@@ -36,6 +36,7 @@ public:
   void send_gift_response(bool accept);
   void send_till(DirectionDto direction);
   void send_water(DirectionDto direction);
+  void send_attack(DirectionDto direction);
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
 

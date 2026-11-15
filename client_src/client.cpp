@@ -18,6 +18,7 @@
 #include "actions/gift_response_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
+#include "actions/attack.h"
 #include "actions/cheat_growth_action.h"
 
 Client::Client(const char *hostname, const char *servname)
@@ -112,6 +113,10 @@ void Client::send_till(DirectionDto direction) {
 
 void Client::send_water(DirectionDto direction) {
     to_send_queue.try_push(std::make_unique<WaterAction>(direction));
+}
+
+void Client::send_attack(DirectionDto direction) {
+    to_send_queue.try_push(std::make_unique<AttackAction>(direction));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {

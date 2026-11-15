@@ -79,6 +79,11 @@ void ClientProtocol::send_water_dto(const WaterDto &dto) {
     protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
+void ClientProtocol::send_attack_dto(const AttackDto &dto) {
+    protocol.send_u8(OP_ATTACK);
+    protocol.send_u8(static_cast<uint8_t>(dto.direction));
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
     protocol.send_u8(OP_CHEAT_WATER);
     protocol.send_u8(static_cast<uint8_t>(dto.direction));
