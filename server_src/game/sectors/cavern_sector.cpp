@@ -103,7 +103,7 @@ void CavernSector::spawnEnemies() {
 void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
   Position center = randomFreePosition();
 
-  if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_MALE) {
+  if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_FEMALE) {
     std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> vampires =
         enemiesFactory.createVampires(center);
     Sector::addEntity(std::move(vampires.first), center);
@@ -133,7 +133,7 @@ Position CavernSector::randomNearPosition(Position center, int radius) {
                         static_cast<int>(height - 1));
 
     Position pos(static_cast<size_t>(nx), static_cast<size_t>(ny));
-    if (isEmpty(pos))
+    if (isEmpty(pos) && this->doors.find(pos) == this->doors.end())
       return pos;
   }
   return randomFreePosition();
@@ -145,7 +145,7 @@ Position CavernSector::randomFreePosition() {
 
   for (size_t attempts = 0; attempts < 100; attempts++) {
     Position pos(xDist(rng), yDist(rng));
-    if (isEmpty(pos))
+    if (isEmpty(pos) && this->doors.find(pos) == this->doors.end())
       return pos;
   }
   return findFreePosition();
