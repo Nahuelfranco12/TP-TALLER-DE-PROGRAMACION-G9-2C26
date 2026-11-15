@@ -73,14 +73,13 @@
 #define SKELETON_SIGHT_RANGE 6
 #define SKELETON_REVIVE_TICKS (10 * TICKS_PER_SECOND)
 
-<<<<<<< HEAD
 #define ORC_LIFE 40
 #define ORC_DAMAGE 15
 #define ORC_GOLD 10
 #define ORC_TICKS_PER_MOVE 20
 #define ORC_TICKS_PER_ATTACK 35
 #define ORC_SIGHT_RANGE 6
-=======
+
 #define VAMPIRE_LIFE 80
 #define VAMPIRE_GOLD 20
 #define VAMPIRE_SIGHT_RANGE 8
@@ -94,7 +93,6 @@
 #define VAMPIRE_MALE_DAMAGE 20
 #define VAMPIRE_MALE_TICKS_PER_MOVE 15
 
->>>>>>> a8437db (feat: Lógica de la pareja de vampiros)
 
 enum IdSector {
   FARM,
