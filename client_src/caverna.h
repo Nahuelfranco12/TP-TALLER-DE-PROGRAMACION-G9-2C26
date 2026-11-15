@@ -3,7 +3,6 @@
 
 #include <map>
 #include <vector>
-#include <map>
 
 #include "../common_src/game_dtos.h"
 #include "constantes_sdl.h"
@@ -26,7 +25,8 @@ private:
 
   long vueltas;
 
-  void dibujar_mineral(SDL2pp::Renderer &renderer, const Mineral &mineral, int camara_x, int camara_y, int lado);
+  void dibujar_mineral(SDL2pp::Renderer &renderer, const Mineral &mineral,
+                       int camara_x, int camara_y, int lado);
 
 public:
   explicit Caverna(SDL2pp::Renderer &renderer);
@@ -35,7 +35,8 @@ public:
 
   void animar(long vueltas_pasadas);
 
-  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado = 64);
+  void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
+               int lado = 64);
 };
 
 #endif

@@ -12,7 +12,7 @@ int entre(std::mt19937 &azar, int minimo, int maximo) {
   std::uniform_int_distribution<int> dado(minimo, maximo);
   return dado(azar);
 }
-}  // namespace
+} // namespace
 
 Alrededores::Alrededores(Renderer &renderer, int ancho_granja, int alto_granja,
                          unsigned int semilla)
@@ -57,8 +57,8 @@ void Alrededores::dibujar_arbol(Renderer &renderer, const Arbol &un_arbol,
 
   int ancho = textura->GetWidth() * ESCALA_SPRITES;
   int alto = textura->GetHeight() * ESCALA_SPRITES;
-  int x = un_arbol.tile_x * TAMANIO_TILE + TAMANIO_TILE / 2 - ancho / 2 -
-          camara_x;
+  int x =
+      un_arbol.tile_x * TAMANIO_TILE + TAMANIO_TILE / 2 - ancho / 2 - camara_x;
   int y = (un_arbol.tile_y + 1) * TAMANIO_TILE - alto - camara_y;
   renderer.Copy(*textura, NullOpt, Rect(x, y, ancho, alto));
 }

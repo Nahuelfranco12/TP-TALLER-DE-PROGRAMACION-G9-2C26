@@ -18,7 +18,7 @@ std::string dos_digitos(size_t numero) {
   }
   return std::to_string(numero);
 }
-}  // namespace
+} // namespace
 
 Interfaz::Interfaz(SDL2pp::Renderer &renderer,
                    const std::string &codigo_partida)
@@ -36,10 +36,10 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
       codigo(codigo_partida),
       texto_boton_codigo(renderer, fuente.RenderUTF8_Blended(
                                        TEXTO_JUEGO_BOTON_CODIGO, BLANCO)),
-      texto_codigo(renderer, fuente.RenderUTF8_Blended(
-                                 TEXTO_JUEGO_CODIGO + codigo_partida +
-                                     TEXTO_JUEGO_COPIADO,
-                                 BLANCO)),
+      texto_codigo(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_CODIGO +
+                                                           codigo_partida +
+                                                           TEXTO_JUEGO_COPIADO,
+                                                       BLANCO)),
       textura_tiempo(renderer, fuente.RenderUTF8_Blended(
                                    TEXTO_JUEGO_TIEMPO_INICIAL, BLANCO)),
       textura_monedas(renderer, fuente.RenderUTF8_Blended(
@@ -128,7 +128,8 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
   dibujar_boton(renderer, caja_monedas, textura_monedas);
 }
 
-void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, size_t dia) {
+void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo,
+                                 size_t dia) {
   hora = tiempo.hours;
   minutos = tiempo.minutes;
 
@@ -137,7 +138,8 @@ void Interfaz::actualizar_tiempo(Renderer &renderer, const GameTimeDto &tiempo, 
                       TEXTO_JUEGO_SEPARADOR_HORA + dos_digitos(minutos);
   if (nuevo != texto_tiempo) {
     texto_tiempo = nuevo;
-    textura_tiempo = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
+    textura_tiempo =
+        SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(nuevo, BLANCO));
   }
 }
 
@@ -147,7 +149,8 @@ void Interfaz::actualizar_monedas(Renderer &renderer, size_t nuevas_monedas) {
   }
   monedas = nuevas_monedas;
   std::string texto = TEXTO_JUEGO_MONEDAS + std::to_string(monedas);
-  textura_monedas = SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
+  textura_monedas =
+      SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
 }
 
 void Interfaz::dibujar_noche(Renderer &renderer) const {
@@ -169,7 +172,8 @@ void Interfaz::dibujar_noche(Renderer &renderer) const {
   const SDL2pp::Color noche = COLOR_NOCHE;
   renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   renderer.SetDrawColor(noche.r, noche.g, noche.b, alfa);
-  renderer.FillRect(Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
+  renderer.FillRect(
+      Rect(0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
 }
 
 void Interfaz::actualizar_regalo(const PendingGiftDto &pendiente) {
@@ -177,21 +181,13 @@ void Interfaz::actualizar_regalo(const PendingGiftDto &pendiente) {
   regalo = pendiente.gift;
 }
 
-bool Interfaz::hay_regalo_pendiente() const {
-  return hay_regalo;
-}
+bool Interfaz::hay_regalo_pendiente() const { return hay_regalo; }
 
-const InventorySlotDto &Interfaz::regalo_pendiente() const {
-  return regalo;
-}
+const InventorySlotDto &Interfaz::regalo_pendiente() const { return regalo; }
 
-Rect Interfaz::lugar_icono_regalo() const {
-  return icono_regalo;
-}
+Rect Interfaz::lugar_icono_regalo() const { return icono_regalo; }
 
-void Interfaz::cerrar_regalo() {
-  hay_regalo = false;
-}
+void Interfaz::cerrar_regalo() { hay_regalo = false; }
 
 bool Interfaz::click_regalo(int x, int y, bool &acepto) {
   if (!hay_regalo) {
@@ -219,10 +215,10 @@ void Interfaz::dibujar_regalo(Renderer &renderer) {
   renderer.SetDrawColor(borde);
   renderer.DrawRect(caja_regalo);
 
-  Rect lugar_titulo(
-      caja_regalo.x + (REGALO_ANCHO - texto_regalo.GetWidth()) / 2,
-      caja_regalo.y + REGALO_MARGEN_TITULO, texto_regalo.GetWidth(),
-      texto_regalo.GetHeight());
+  Rect lugar_titulo(caja_regalo.x +
+                        (REGALO_ANCHO - texto_regalo.GetWidth()) / 2,
+                    caja_regalo.y + REGALO_MARGEN_TITULO,
+                    texto_regalo.GetWidth(), texto_regalo.GetHeight());
   renderer.Copy(texto_regalo, NullOpt, lugar_titulo);
 
   icono_regalo =

@@ -23,12 +23,11 @@ Rect icono_cultivo(int columna, int fila) {
   return Rect(columna * ICONO_CULTIVO_LADO, fila * ICONO_CULTIVO_LADO,
               ICONO_CULTIVO_LADO, ICONO_CULTIVO_LADO);
 }
-}  // namespace
+} // namespace
 
 Inventario::Inventario(Renderer &renderer)
     : minerales(renderer, RUTA_ICONOS_MINERALES),
-      cultivos(renderer, RUTA_ICONOS_CULTIVOS),
-      huevo(renderer, RUTA_HUEVO),
+      cultivos(renderer, RUTA_ICONOS_CULTIVOS), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE),
       fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
   for (int i = 0; i < DIGITOS_DECIMALES; i++) {
@@ -89,13 +88,13 @@ bool Inventario::herramienta_seleccionada(ToolTypeDto &herramienta) const {
 
 bool Inventario::item_seleccionado(InventorySlotDto &casillero) const {
   int item = seleccionado - INVENTARIO_HERRAMIENTAS;
-  if (item < 0 || item >= static_cast<int>(casilleros.size())) return false;
+  if (item < 0 || item >= static_cast<int>(casilleros.size()))
+    return false;
   casillero = casilleros[item];
   return true;
 }
 
-Rect Inventario::rect_casillero(int i, int ancho_ventana,
-                                int alto_ventana) {
+Rect Inventario::rect_casillero(int i, int ancho_ventana, int alto_ventana) {
   int ancho_barra =
       INVENTARIO_CASILLEROS * INVENTARIO_LADO_CASILLERO + INVENTARIO_SEPARACION;
   int x = (ancho_ventana - ancho_barra) / 2 + i * INVENTARIO_LADO_CASILLERO;
@@ -128,23 +127,24 @@ void Inventario::dibujar_numero(Renderer &renderer, int numero,
   }
 }
 
-void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad, const Rect &lugar) {
+void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad,
+                                 const Rect &lugar) {
   SDL2pp::Color color = COLOR_ESTRELLA_BORDE;
   switch (calidad) {
-    case CropQualityDto::GOOD:
-      color = COLOR_CALIDAD_BUENA;
-      break;
-    case CropQualityDto::EXCELENT:
-      color = COLOR_CALIDAD_EXCELENTE;
-      break;
-    case CropQualityDto::INCREDIBLE:
-      color = COLOR_CALIDAD_INCREIBLE;
-      break;
-    case CropQualityDto::PERFECT:
-      color = COLOR_CALIDAD_PERFECTA;
-      break;
-    default:
-      return;
+  case CropQualityDto::GOOD:
+    color = COLOR_CALIDAD_BUENA;
+    break;
+  case CropQualityDto::EXCELENT:
+    color = COLOR_CALIDAD_EXCELENTE;
+    break;
+  case CropQualityDto::INCREDIBLE:
+    color = COLOR_CALIDAD_INCREIBLE;
+    break;
+  case CropQualityDto::PERFECT:
+    color = COLOR_CALIDAD_PERFECTA;
+    break;
+  default:
+    return;
   }
 
   // Estrellita
@@ -164,7 +164,8 @@ void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad, con
   }
 }
 
-void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casillero,
+void Inventario::dibujar_item(Renderer &renderer,
+                              const InventorySlotDto &casillero,
                               const Rect &lugar) {
   switch (casillero.item) {
   case ItemTypeDto::MINERAL_GOLD:
@@ -184,24 +185,26 @@ void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casill
                   lugar);
     break;
   case ItemTypeDto::CHICKEN_EGG:
-    dibujar_icono(renderer, huevo, Rect(0, 0, huevo.GetWidth(), huevo.GetHeight()), lugar);
+    dibujar_icono(renderer, huevo,
+                  Rect(0, 0, huevo.GetWidth(), huevo.GetHeight()), lugar);
     break;
   case ItemTypeDto::COW_MILK:
-    dibujar_icono(renderer, leche, Rect(0, 0, leche.GetWidth(), leche.GetHeight()), lugar);
+    dibujar_icono(renderer, leche,
+                  Rect(0, 0, leche.GetWidth(), leche.GetHeight()), lugar);
     break;
 
   // SEMILLAS (revisar)
   case ItemTypeDto::SEED_STRAWBERRY:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_SEMILLA_COLUMNA,
-                                ICONO_CULTIVO_FILA_FRUTILLA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_SEMILLA_COLUMNA, ICONO_CULTIVO_FILA_FRUTILLA),
+        lugar);
     break;
   case ItemTypeDto::SEED_GREEN_ONION:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_SEMILLA_COLUMNA,
-                                ICONO_CULTIVO_FILA_CEBOLLA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_SEMILLA_COLUMNA, ICONO_CULTIVO_FILA_CEBOLLA),
+        lugar);
     break;
   case ItemTypeDto::SEED_POTATO:
     dibujar_icono(renderer, cultivos,
@@ -209,23 +212,23 @@ void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casill
                   lugar);
     break;
   case ItemTypeDto::SEED_PUMPKIN:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_SEMILLA_COLUMNA,
-                                ICONO_CULTIVO_FILA_CALABAZA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_SEMILLA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
+        lugar);
     break;
   // PLANTAS COSECHADAS (tambien revisar)
   case ItemTypeDto::CROP_STRAWBERRY:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_COSECHA_COLUMNA,
-                                ICONO_CULTIVO_FILA_FRUTILLA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_FRUTILLA),
+        lugar);
     break;
   case ItemTypeDto::CROP_GREEN_ONION:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_COSECHA_COLUMNA,
-                                ICONO_CULTIVO_FILA_CEBOLLA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CEBOLLA),
+        lugar);
     break;
   case ItemTypeDto::CROP_POTATO:
     dibujar_icono(renderer, cultivos,
@@ -233,10 +236,10 @@ void Inventario::dibujar_item(Renderer &renderer, const InventorySlotDto &casill
                   lugar);
     break;
   case ItemTypeDto::CROP_PUMPKIN:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_COSECHA_COLUMNA,
-                                ICONO_CULTIVO_FILA_CALABAZA),
-                  lugar);
+    dibujar_icono(
+        renderer, cultivos,
+        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
+        lugar);
     break;
   default:
     break;
@@ -290,7 +293,8 @@ void Inventario::dibujar(Renderer &renderer, int ancho_ventana,
 
 bool Inventario::indice_item_seleccionado(int &indice) const {
   int item = seleccionado - INVENTARIO_HERRAMIENTAS;
-  if (item < 0 || item >= static_cast<int>(casilleros.size())) return false;
+  if (item < 0 || item >= static_cast<int>(casilleros.size()))
+    return false;
   indice = item;
   return true;
 }
@@ -304,6 +308,8 @@ void Inventario::actualizar(const InventoryDto &inventario) {
   }
 }
 
-void Inventario::dibujar_regalo(Renderer &renderer, const InventorySlotDto &regalo, const Rect &lugar) {
+void Inventario::dibujar_regalo(Renderer &renderer,
+                                const InventorySlotDto &regalo,
+                                const Rect &lugar) {
   dibujar_item(renderer, regalo, lugar);
 }

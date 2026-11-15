@@ -37,11 +37,11 @@ public:
   void send_select_tool(const ToolTypeDto &dto);
   void send_mine_dto(const MineDto &dto);
   void send_collect_dto(const CollectDto &dto);
-  void send_plant_dto(const PlantDto& dto);
-  void send_gift_offer_dto(const GiftOfferDto& dto);
-  void send_gift_response_dto(const GiftResponseDto& dto);
-  void send_till_dto(const TillDto& dto);
-  void send_water_dto(const WaterDto& dto);
+  void send_plant_dto(const PlantDto &dto);
+  void send_gift_offer_dto(const GiftOfferDto &dto);
+  void send_gift_response_dto(const GiftResponseDto &dto);
+  void send_till_dto(const TillDto &dto);
+  void send_water_dto(const WaterDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
 

@@ -2,6 +2,7 @@
 #include "personaje.h"
 
 #include <algorithm>
+#include <iterator>
 
 #include <SDL2/SDL.h>
 
@@ -30,70 +31,79 @@ const char *FONDOS_TIENDAS[] = RUTAS_FONDOS_TIENDAS;
 const char *TEXTOS_BOTONES[] = TEXTOS_BOTONES_TIENDA;
 
 int tile_de_pixel(int pixel) {
-    int tile = pixel / TAMANIO_TILE;
-    if (pixel < 0 && pixel % TAMANIO_TILE != 0) {
-        tile--;
-    }
-    return tile;
+  int tile = pixel / TAMANIO_TILE;
+  if (pixel < 0 && pixel % TAMANIO_TILE != 0) {
+    tile--;
   }
+  return tile;
 }
+} // namespace
 
 Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, RUTA_EDIFICIOS_PUEBLO),
-      fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA),
-      vueltas(0),
+      fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA), vueltas(0),
       tienda_abierta(TIENDA_CERRADA) {
 
-    lista_puestos = PUEBLO_PUESTOS;
+  // cppcheck-suppress useInitializationList
+  lista_puestos = PUEBLO_PUESTOS;
 
-    for (const ModeloNpc &modelo : MODELOS_NPCS) {
-      sprites_npcs.emplace_back(renderer, modelo.archivo);
-    }
+  for (const ModeloNpc &modelo : MODELOS_NPCS) {
+    // cppcheck-suppress useStlAlgorithm
+    sprites_npcs.emplace_back(renderer, modelo.archivo);
+  }
 
-    lista_npcs = PUEBLO_NPCS;
+  lista_npcs = PUEBLO_NPCS;
 
-    for (const char *titulo : TITULOS) {
-      titulos.emplace_back(renderer, fuente.RenderUTF8_Blended(titulo, BLANCO));
-    }
-    for (const char *texto : TEXTOS_BOTONES) {
-      texto_botones.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
-    }
-    botones.resize(TIENDA_CANTIDAD_BOTONES);
-    for (const char *archivo : FONDOS_TIENDAS) {
-      fondos_tiendas.emplace_back(renderer, archivo);
-    }
+  for (const char *titulo : TITULOS) {
+    // cppcheck-suppress useStlAlgorithm
+    titulos.emplace_back(renderer, fuente.RenderUTF8_Blended(titulo, BLANCO));
+  }
+  for (const char *texto : TEXTOS_BOTONES) {
+    // cppcheck-suppress useStlAlgorithm
+    texto_botones.emplace_back(renderer,
+                               fuente.RenderUTF8_Blended(texto, BLANCO));
+  }
+  botones.resize(TIENDA_CANTIDAD_BOTONES);
+  for (const char *archivo : FONDOS_TIENDAS) {
+    // cppcheck-suppress useStlAlgorithm
+    fondos_tiendas.emplace_back(renderer, archivo);
+  }
 }
 
 void Pueblo::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
-void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto, int camara_x, int camara_y, int lado) {
-    const SDL_Rect &modelo = MODELOS_PUESTOS[puesto.modelo];
-    Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
+void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
+                            int camara_x, int camara_y, int lado) {
+  const SDL_Rect &modelo = MODELOS_PUESTOS[puesto.modelo];
+  Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
 
-    int x = puesto.tile_x * lado - camara_x;
-    int y = puesto.tile_y * lado - camara_y;
-    Rect destino(x, y, modelo.w * lado / TAMANIO_TILE_ASSET,
-                 modelo.h * lado / TAMANIO_TILE_ASSET);
-    renderer.Copy(edificios, origen, destino);
+  int x = puesto.tile_x * lado - camara_x;
+  int y = puesto.tile_y * lado - camara_y;
+  Rect destino(x, y, modelo.w * lado / TAMANIO_TILE_ASSET,
+               modelo.h * lado / TAMANIO_TILE_ASSET);
+  renderer.Copy(edificios, origen, destino);
 }
 
-void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x, int pie_y, int lado) {
-    const ModeloNpc &datos = MODELOS_NPCS[modelo];
+void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x,
+                            int pie_y, int lado) {
+  const ModeloNpc &datos = MODELOS_NPCS[modelo];
 
-    int cuadro = static_cast<int>((vueltas / NPC_VUELTAS_POR_CUADRO) %
-                                  NPC_CUADROS_ANIMACION);
-    Rect origen(cuadro * datos.lado_cuadro, 0, datos.lado_cuadro, datos.lado_cuadro);
+  int cuadro = static_cast<int>((vueltas / NPC_VUELTAS_POR_CUADRO) %
+                                NPC_CUADROS_ANIMACION);
+  Rect origen(cuadro * datos.lado_cuadro, 0, datos.lado_cuadro,
+              datos.lado_cuadro);
 
-    int tamanio = datos.lado_cuadro * lado / TAMANIO_TILE_ASSET;
-    int pie = datos.pie_y * lado / TAMANIO_TILE_ASSET;
-    renderer.Copy(sprites_npcs[modelo], origen,
-                  Rect(centro_x - tamanio / 2, pie_y - pie, tamanio, tamanio));
+  int tamanio = datos.lado_cuadro * lado / TAMANIO_TILE_ASSET;
+  int pie = datos.pie_y * lado / TAMANIO_TILE_ASSET;
+  renderer.Copy(sprites_npcs[modelo], origen,
+                Rect(centro_x - tamanio / 2, pie_y - pie, tamanio, tamanio));
 }
 
-void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x, int camara_y, int lado) {
-    int centro_x = npc.tile_x * lado + lado / 2 - camara_x;
-    int pie_y = (npc.tile_y + 1) * lado - camara_y;
-    dibujar_npc_en(renderer, npc.modelo, centro_x, pie_y, lado);
+void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x,
+                         int camara_y, int lado) {
+  int centro_x = npc.tile_x * lado + lado / 2 - camara_x;
+  int pie_y = (npc.tile_y + 1) * lado - camara_y;
+  dibujar_npc_en(renderer, npc.modelo, centro_x, pie_y, lado);
 }
 
 void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
@@ -105,101 +115,103 @@ void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
   }
 }
 
+// cppcheck-suppress functionStatic
 void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &) {
   // hasta que mande el servidor
 }
 
 bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
-    int tile_x = tile_de_pixel(x + camara_x);
-    int tile_y = tile_de_pixel(y + camara_y);
+  int tile_x = tile_de_pixel(x + camara_x);
+  int tile_y = tile_de_pixel(y + camara_y);
 
-    for (const Npc &npc : lista_npcs) {
-        bool lo_toque = npc.tile_x == tile_x &&
-                        (npc.tile_y == tile_y || npc.tile_y - 1 == tile_y);
-        if (lo_toque) {
-            tienda_abierta = npc.modelo;
-            return true;
-        }
+  for (const Npc &npc : lista_npcs) {
+    bool lo_toque = npc.tile_x == tile_x &&
+                    (npc.tile_y == tile_y || npc.tile_y - 1 == tile_y);
+    if (lo_toque) {
+      tienda_abierta = npc.modelo;
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 Pueblo::AccionTienda Pueblo::click_tienda(int x, int y) {
-    for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
-        if (botones[i].Contains(x, y)) {
-            return static_cast<AccionTienda>(i + 1);
-        }
+  for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
+    // cppcheck-suppress useStlAlgorithm
+    if (botones[i].Contains(x, y)) {
+      return static_cast<AccionTienda>(i + 1);
     }
-    return NINGUNA;
+  }
+  return NINGUNA;
 }
 
 bool Pueblo::hay_tienda_abierta() const {
-    return tienda_abierta != TIENDA_CERRADA;
+  return tienda_abierta != TIENDA_CERRADA;
 }
 
 void Pueblo::cerrar_tienda() { tienda_abierta = TIENDA_CERRADA; }
 
 void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
-    if (tienda_abierta == TIENDA_CERRADA) {
-        return;
-    }
-    int ancho_ventana = renderer.GetOutputWidth();
-    int alto_ventana = renderer.GetOutputHeight();
+  if (tienda_abierta == TIENDA_CERRADA) {
+    return;
+  }
+  int ancho_ventana = renderer.GetOutputWidth();
+  int alto_ventana = renderer.GetOutputHeight();
 
-    const SDL2pp::Color oscurecer = COLOR_TIENDA_OSCURECER;
-    renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
-    renderer.SetDrawColor(oscurecer);
-    renderer.FillRect(Rect(0, 0, ancho_ventana, alto_ventana));
+  const SDL2pp::Color oscurecer = COLOR_TIENDA_OSCURECER;
+  renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+  renderer.SetDrawColor(oscurecer);
+  renderer.FillRect(Rect(0, 0, ancho_ventana, alto_ventana));
 
-    Texture &fondo = fondos_tiendas[tienda_abierta];
-    double escala_ancho =
-        (ancho_ventana - TIENDA_MARGEN_ANCHO) / double(fondo.GetWidth());
-    double escala_alto =
-        (alto_ventana - TIENDA_MARGEN_ALTO) / double(fondo.GetHeight());
-    double escala = std::min(escala_ancho, escala_alto);
-    int ancho = static_cast<int>(fondo.GetWidth() * escala);
-    int alto = static_cast<int>(fondo.GetHeight() * escala);
-    Rect habitacion((ancho_ventana - ancho) / 2, (alto_ventana - alto) / 2, ancho, alto);
+  Texture &fondo = fondos_tiendas[tienda_abierta];
+  double escala_ancho =
+      (ancho_ventana - TIENDA_MARGEN_ANCHO) / double(fondo.GetWidth());
+  double escala_alto =
+      (alto_ventana - TIENDA_MARGEN_ALTO) / double(fondo.GetHeight());
+  double escala = std::min(escala_ancho, escala_alto);
+  int ancho = static_cast<int>(fondo.GetWidth() * escala);
+  int alto = static_cast<int>(fondo.GetHeight() * escala);
+  Rect habitacion((ancho_ventana - ancho) / 2, (alto_ventana - alto) / 2, ancho,
+                  alto);
   renderer.Copy(fondo, NullOpt, habitacion);
 
-    int centro_x = ancho_ventana / 2;
-    int pie_y = habitacion.y + habitacion.h / 2 + TIENDA_LADO_PERSONAJES;
-    dibujar_npc_en(renderer, tienda_abierta,
-                   centro_x - TIENDA_LADO_PERSONAJES, pie_y,
-                   TIENDA_LADO_PERSONAJES);
-    personaje.dibujar_icono(renderer, centro_x + TIENDA_LADO_PERSONAJES, pie_y,
-                            TIENDA_LADO_PERSONAJES);
+  int centro_x = ancho_ventana / 2;
+  int pie_y = habitacion.y + habitacion.h / 2 + TIENDA_LADO_PERSONAJES;
+  dibujar_npc_en(renderer, tienda_abierta, centro_x - TIENDA_LADO_PERSONAJES,
+                 pie_y, TIENDA_LADO_PERSONAJES);
+  personaje.dibujar_icono(renderer, centro_x + TIENDA_LADO_PERSONAJES, pie_y,
+                          TIENDA_LADO_PERSONAJES);
 
-    Texture &titulo = titulos[tienda_abierta];
-    renderer.Copy(titulo, NullOpt,
-                  Rect((ancho_ventana - titulo.GetWidth()) / 2,
-                       habitacion.y - titulo.GetHeight() - TIENDA_MARGEN_TITULO,
-                       titulo.GetWidth(), titulo.GetHeight()));
+  Texture &titulo = titulos[tienda_abierta];
+  renderer.Copy(titulo, NullOpt,
+                Rect((ancho_ventana - titulo.GetWidth()) / 2,
+                     habitacion.y - titulo.GetHeight() - TIENDA_MARGEN_TITULO,
+                     titulo.GetWidth(), titulo.GetHeight()));
 
-    int ancho_total = 0;
-    for (Texture &texto : texto_botones) {
-        ancho_total += texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON;
-    }
-    ancho_total += (TIENDA_CANTIDAD_BOTONES - 1) * TIENDA_SEPARACION_BOTONES;
+  int ancho_total = 0;
+  for (Texture &texto : texto_botones) {
+    ancho_total += texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON;
+  }
+  ancho_total += (TIENDA_CANTIDAD_BOTONES - 1) * TIENDA_SEPARACION_BOTONES;
 
-    const SDL2pp::Color fondo_boton = COLOR_BOTON_FONDO;
-    const SDL2pp::Color borde_boton = COLOR_BOTON_BORDE;
-    int x = (ancho_ventana - ancho_total) / 2;
-    int y = habitacion.y + habitacion.h + TIENDA_MARGEN_BOTONES;
-    for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
-        Texture &texto = texto_botones[i];
-        botones[i] = Rect(x, y, texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON,
-                          TIENDA_ALTO_BOTON);
+  const SDL2pp::Color fondo_boton = COLOR_BOTON_FONDO;
+  const SDL2pp::Color borde_boton = COLOR_BOTON_BORDE;
+  int x = (ancho_ventana - ancho_total) / 2;
+  int y = habitacion.y + habitacion.h + TIENDA_MARGEN_BOTONES;
+  for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
+    Texture &texto = texto_botones[i];
+    botones[i] = Rect(x, y, texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON,
+                      TIENDA_ALTO_BOTON);
 
-        renderer.SetDrawColor(fondo_boton);
-        renderer.FillRect(botones[i]);
-        renderer.SetDrawColor(borde_boton);
-        renderer.DrawRect(botones[i]);
-        renderer.Copy(texto, NullOpt,
-                      Rect(x + TIENDA_RELLENO_BOTON,
-                           y + (TIENDA_ALTO_BOTON - texto.GetHeight()) / 2,
-                           texto.GetWidth(), texto.GetHeight()));
+    renderer.SetDrawColor(fondo_boton);
+    renderer.FillRect(botones[i]);
+    renderer.SetDrawColor(borde_boton);
+    renderer.DrawRect(botones[i]);
+    renderer.Copy(texto, NullOpt,
+                  Rect(x + TIENDA_RELLENO_BOTON,
+                       y + (TIENDA_ALTO_BOTON - texto.GetHeight()) / 2,
+                       texto.GetWidth(), texto.GetHeight()));
 
-        x += botones[i].w + TIENDA_SEPARACION_BOTONES;
-    }
+    x += botones[i].w + TIENDA_SEPARACION_BOTONES;
+  }
 }

@@ -6,8 +6,8 @@
 #include "constantes_sdl.h"
 #include "granja.h"
 #include "inventario.h"
-#include "pueblo.h"
 #include "mapa_mundo.h"
+#include "pueblo.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -19,14 +19,14 @@
 
 #include <QApplication>
 
+#include <cmath>
+#include <cstdlib>
 #include <exception>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <set>
 #include <string>
-#include <cmath>
-#include <cstdlib>
 
 #include <SDL.h>
 #include <SDL2pp/SDL2pp.hh>
@@ -54,14 +54,23 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
 // TODO : Revisar funcion, la pongo temporalmente para parsear de semilla a crop
 bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
   switch (item) {
-  case ItemTypeDto::SEED_STRAWBERRY:  cultivo = CropTypeDto::STRAWBERRY;  return true;
-  case ItemTypeDto::SEED_GREEN_ONION: cultivo = CropTypeDto::GREEN_ONION; return true;
-  case ItemTypeDto::SEED_POTATO:      cultivo = CropTypeDto::POTATO;      return true;
-  case ItemTypeDto::SEED_PUMPKIN:     cultivo = CropTypeDto::PUMPKIN;     return true;
-  default:                            return false;
+  case ItemTypeDto::SEED_STRAWBERRY:
+    cultivo = CropTypeDto::STRAWBERRY;
+    return true;
+  case ItemTypeDto::SEED_GREEN_ONION:
+    cultivo = CropTypeDto::GREEN_ONION;
+    return true;
+  case ItemTypeDto::SEED_POTATO:
+    cultivo = CropTypeDto::POTATO;
+    return true;
+  case ItemTypeDto::SEED_PUMPKIN:
+    cultivo = CropTypeDto::PUMPKIN;
+    return true;
+  default:
+    return false;
   }
 }
-}
+} // namespace
 
 int main(int argc, char *argv[]) try {
   if (argc != CANTIDAD_ARGUMENTOS) {
@@ -84,8 +93,8 @@ int main(int argc, char *argv[]) try {
 
   // Ventana redimensionable, con el código de la partida en el título
   Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigo(),
-                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                VENTANA_ANCHO, VENTANA_ALTO, SDL_WINDOW_RESIZABLE);
+                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, VENTANA_ANCHO,
+                VENTANA_ALTO, SDL_WINDOW_RESIZABLE);
 
   // Create accelerated video renderer with default driver
   Renderer renderer(window, RENDERER_DRIVER_POR_DEFECTO,
@@ -101,9 +110,12 @@ int main(int argc, char *argv[]) try {
   // Mapas
   SectorStateDto farm, cavern, village;
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
-      if (sector.type == SectorTypeDto::FARM) farm = sector;
-      if (sector.type == SectorTypeDto::CAVERN) cavern = sector;
-      if (sector.type == SectorTypeDto::VILLAGE) village = sector;
+    if (sector.type == SectorTypeDto::FARM)
+      farm = sector;
+    if (sector.type == SectorTypeDto::CAVERN)
+      cavern = sector;
+    if (sector.type == SectorTypeDto::VILLAGE)
+      village = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height,
                    SEMILLA_GRANJA);
@@ -122,7 +134,8 @@ int main(int argc, char *argv[]) try {
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
 
-  MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja, mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
+  MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja,
+                       mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
   bool viendo_mapa = false;
@@ -147,7 +160,8 @@ int main(int argc, char *argv[]) try {
     // Proceso eventos
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
-      if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT) {
+      if (evento.type == SDL_MOUSEBUTTONDOWN &&
+          evento.button.button == SDL_BUTTON_LEFT) {
         int mouse_x = evento.button.x;
         int mouse_y = evento.button.y;
         int camara_x = personaje.obtener_tile_x() * TAMANIO_TILE +
@@ -160,25 +174,27 @@ int main(int argc, char *argv[]) try {
           client.send_gift_response(acepto);
         } else if (pueblo.hay_tienda_abierta()) {
           switch (pueblo.click_tienda(mouse_x, mouse_y)) {
-            case Pueblo::COMPRAR:
-              // TODO
-              break;
-            case Pueblo::VENDER:
-              // TODO
-              break;
-            case Pueblo::HABLAR:
-              // TODO
-              break;
-            case Pueblo::SALIR:
-              pueblo.cerrar_tienda();
-              break;
-            default:
-              break;
+          case Pueblo::COMPRAR:
+            // TODO
+            break;
+          case Pueblo::VENDER:
+            // TODO
+            break;
+          case Pueblo::HABLAR:
+            // TODO
+            break;
+          case Pueblo::SALIR:
+            pueblo.cerrar_tienda();
+            break;
+          default:
+            break;
           }
-        } else if (zona == SectorTypeDto::VILLAGE && pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
+        } else if (zona == SectorTypeDto::VILLAGE &&
+                   pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
           // Se abre la tienda del npc
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
-          if (inventario.click(mouse_x, mouse_y, window.GetWidth(), window.GetHeight())) {
+          if (inventario.click(mouse_x, mouse_y, window.GetWidth(),
+                               window.GetHeight())) {
             ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
             if (inventario.herramienta_seleccionada(herramienta)) {
               client.send_select_tool(herramienta);
@@ -195,14 +211,18 @@ int main(int argc, char *argv[]) try {
                 int px = static_cast<int>(posicion.x);
                 int py = static_cast<int>(posicion.y);
 
-                bool lo_toque = px == tile_x && (py == tile_y || py == tile_y + 1);
+                bool lo_toque =
+                    px == tile_x && (py == tile_y || py == tile_y + 1);
 
-                int distancia = std::abs(px - personaje.obtener_tile_x()) + std::abs(py - personaje.obtener_tile_y());
+                int distancia = std::abs(px - personaje.obtener_tile_x()) +
+                                std::abs(py - personaje.obtener_tile_y());
 
-                bool es_otro = static_cast<int>(jugador.id) != client.get_my_id();
+                bool es_otro =
+                    static_cast<int>(jugador.id) != client.get_my_id();
 
                 if (lo_toque && es_otro && distancia == REGALO_DISTANCIA) {
-                  client.send_gift_offer(static_cast<int>(jugador.id), casillero);
+                  client.send_gift_offer(static_cast<int>(jugador.id),
+                                         casillero);
                 }
               }
             }
@@ -282,8 +302,8 @@ int main(int argc, char *argv[]) try {
           evento.key.repeat == 0)
         client.send_cheat_growth();
 
-      if (evento.type == SDL_KEYDOWN &&
-          evento.key.keysym.sym == TECLA_ACCION && evento.key.repeat == 0) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_ACCION &&
+          evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;
         CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
 
@@ -293,18 +313,19 @@ int main(int argc, char *argv[]) try {
             client.send_mine(dir);
           }
         } else if (inventario.tengo_en_la_mano(PALA)) {
-            client.send_till(dir);
+          client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
-            client.send_water(dir);
+          client.send_water(dir);
         } else if (inventario.item_seleccionado(en_la_mano) &&
                    es_semilla(en_la_mano.item, cultivo)) {
-            client.send_plant(frente_x, frente_y, cultivo);
+          client.send_plant(frente_x, frente_y, cultivo);
         } else {
-            client.send_collect(dir);
+          client.send_collect(dir);
         }
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 && !pueblo.hay_tienda_abierta()) {
+      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 &&
+          !pueblo.hay_tienda_abierta()) {
         switch (evento.key.keysym.sym) {
         case TECLA_ARRIBA:
           personaje.mirar(ARRIBA);
@@ -338,9 +359,15 @@ int main(int argc, char *argv[]) try {
         pueblo.cerrar_tienda();
         zona = state.type;
         switch (zona) {
-          case SectorTypeDto::CAVERN: audio.poner_musica_caverna(); break;
-          case SectorTypeDto::VILLAGE: audio.poner_musica_pueblo(); break;
-          default: audio.poner_musica_granja(); break;
+        case SectorTypeDto::CAVERN:
+          audio.poner_musica_caverna();
+          break;
+        case SectorTypeDto::VILLAGE:
+          audio.poner_musica_pueblo();
+          break;
+        default:
+          audio.poner_musica_granja();
+          break;
         }
       }
 
@@ -367,7 +394,8 @@ int main(int argc, char *argv[]) try {
             audio.reproducir_paso();
           }
           personaje.agarrar(jugador.actualTool);
-          if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a cambiar el inventory.front seguro
+          if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a
+                                            // cambiar el inventory.front seguro
             inventario.actualizar(jugador.inventory.front());
           }
           personaje.poner_vida(jugador.life);
@@ -426,13 +454,15 @@ int main(int argc, char *argv[]) try {
     renderer.SetDrawColor(fondo);
     renderer.Clear();
 
-    mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+    mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                         window.GetHeight());
 
     if (zona == SectorTypeDto::CAVERN) {
       caverna.dibujar(renderer, camara_x, camara_y);
     } else if (zona == SectorTypeDto::FARM) {
       granja.dibujar(renderer, camara_x, camara_y);
-      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(), window.GetHeight());
+      alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
+                          window.GetHeight());
     } else {
       pueblo.dibujar(renderer, camara_x, camara_y);
     }
@@ -449,14 +479,16 @@ int main(int argc, char *argv[]) try {
 
     // Mapa del mundo (M)
     if (viendo_mapa) {
-      mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona, personaje);
+      mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona,
+                         personaje);
     }
 
     interfaz.dibujar(renderer, audio);
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);
-      inventario.dibujar_regalo(renderer, interfaz.regalo_pendiente(), interfaz.lugar_icono_regalo());
+      inventario.dibujar_regalo(renderer, interfaz.regalo_pendiente(),
+                                interfaz.lugar_icono_regalo());
     }
 
     if (!viendo_mapa) {

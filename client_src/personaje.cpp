@@ -14,7 +14,7 @@ namespace {
 const Uint8 COLORES[][3] = PALETA_ROPA;
 const int PASOS_ANIMACION[] = SPRITE_PERSONAJE_PASOS;
 const int FILAS_PICAR[] = SPRITE_PERSONAJE_FILAS_PICAR;
-}  // namespace
+} // namespace
 
 // Carga las texturas y deja la ropa y la posición iniciales
 Personaje::Personaje(SDL2pp::Renderer &renderer)
@@ -95,9 +95,7 @@ void Personaje::animar(long vueltas) {
   }
 }
 
-void Personaje::mirar(Direccion direccion) {
-  mirando = direccion;
-}
+void Personaje::mirar(Direccion direccion) { mirando = direccion; }
 
 void Personaje::picar() {
   if (vueltas_picando <= 0) {
@@ -105,17 +103,11 @@ void Personaje::picar() {
   }
 }
 
-void Personaje::agarrar(ToolTypeDto herramienta) {
-  en_la_mano = herramienta;
-}
+void Personaje::agarrar(ToolTypeDto herramienta) { en_la_mano = herramienta; }
 
-void Personaje::poner_vida(double nueva_vida) {
-  vida = nueva_vida;
-}
+void Personaje::poner_vida(double nueva_vida) { vida = nueva_vida; }
 
-void Personaje::poner_energia(double nueva_energia) {
-  energia = nueva_energia;
-}
+void Personaje::poner_energia(double nueva_energia) { energia = nueva_energia; }
 
 int Personaje::obtener_tile_x() const { return tile_x; }
 
@@ -142,8 +134,8 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   }
   if (vueltas_picando > 0) {
     long transcurrido = PERSONAJE_DURACION_PICAR - vueltas_picando;
-    columna = static_cast<int>(transcurrido /
-                               PERSONAJE_VUELTAS_POR_CUADRO_PICAR);
+    columna =
+        static_cast<int>(transcurrido / PERSONAJE_VUELTAS_POR_CUADRO_PICAR);
     if (columna >= PERSONAJE_CUADROS_PICAR) {
       columna = PERSONAJE_CUADROS_PICAR - 1;
     }
@@ -173,15 +165,16 @@ void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
 }
 
-  void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y, int lado) {
-    int fila_cuerpo = mirando;
-    if (mirando == IZQUIERDA) {
-      fila_cuerpo = DERECHA;
-    }
-    int arriba_y = pie_y - SPRITE_PERSONAJE_ALTO * lado / TAMANIO_TILE_ASSET;
-    dibujar_capas(renderer, centro_x - lado / 2, arriba_y, lado, 0, fila_cuerpo,
-                  mirando, 0);
+void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
+                              int lado) {
+  int fila_cuerpo = mirando;
+  if (mirando == IZQUIERDA) {
+    fila_cuerpo = DERECHA;
   }
+  int arriba_y = pie_y - SPRITE_PERSONAJE_ALTO * lado / TAMANIO_TILE_ASSET;
+  dibujar_capas(renderer, centro_x - lado / 2, arriba_y, lado, 0, fila_cuerpo,
+                mirando, 0);
+}
 
 void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                               int columna, int fila_cuerpo, Direccion direccion,
@@ -225,8 +218,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
     fila_remera = SPRITE_REMERA_FILA_ARRIBA;
   }
   int remera_x = (remera % SPRITE_REMERAS_POR_FILA) * SPRITE_REMERA_LADO;
-  int remera_y = (remera / SPRITE_REMERAS_POR_FILA) * SPRITE_REMERA_ALTO_BLOQUE +
-                 fila_remera;
+  int remera_y =
+      (remera / SPRITE_REMERAS_POR_FILA) * SPRITE_REMERA_ALTO_BLOQUE +
+      fila_remera;
   Rect origen_remera(remera_x, remera_y, SPRITE_REMERA_LADO,
                      SPRITE_REMERA_LADO);
   int lado_remera = SPRITE_REMERA_LADO * lado / TAMANIO_TILE_ASSET;
@@ -277,8 +271,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
   }
 }
 
-void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) {
-  if (mirando ==ARRIBA) {
+void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y,
+                                    int lado) {
+  if (mirando == ARRIBA) {
     return;
   }
 
@@ -295,10 +290,12 @@ void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y, int lado) 
     flip = SDL_FLIP_HORIZONTAL;
   }
 
-  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt, flip);
+  renderer.Copy(icono, NullOpt, Rect(mano_x, mano_y, ancho, alto), 0.0, NullOpt,
+                flip);
 }
 
-void Personaje::dibujar_barra(Renderer &renderer, int barra_x, int barra_y, double valor, const SDL2pp::Color &color) const {
+void Personaje::dibujar_barra(Renderer &renderer, int barra_x, int barra_y,
+                              double valor, const SDL2pp::Color &color) const {
   int lleno = static_cast<int>(BARRA_ANCHO * valor / BARRA_VALOR_MAXIMO);
   lleno = std::clamp(lleno, 0, BARRA_ANCHO);
 

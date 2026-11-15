@@ -11,18 +11,14 @@ namespace {
 const SDL_Rect MODELOS_CASAS[] = SPRITE_MODELOS_CASAS;
 
 const int ULTIMA_ETAPA[] = CULTIVO_ULTIMA_ETAPA;
-}  // namespace
+} // namespace
 
 Granja::Granja(Renderer &renderer)
     // Cargar texturas
-    : casas(renderer, RUTA_CASAS),
-      vaca(renderer, RUTA_VACA),
-      gallina(renderer, RUTA_GALLINA),
-      cultivos(renderer, RUTA_CULTIVOS),
-      suelo(renderer, RUTA_TILESET_GRANJA),
-      huevo(renderer, RUTA_HUEVO),
-      leche(renderer, RUTA_LECHE),
-      vueltas(0) {
+    : casas(renderer, RUTA_CASAS), vaca(renderer, RUTA_VACA),
+      gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
+      suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
+      leche(renderer, RUTA_LECHE), vueltas(0) {
 
   // Por ahora fijos
   // Hacer después con servidor
@@ -51,12 +47,12 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
   Rect destino(x, y, lado, lado);
 
   Rect origen_tierra(SUELO_ARADO_COLUMNA * TAMANIO_TILE_ASSET,
-                     SUELO_ARADO_FILA * TAMANIO_TILE_ASSET,
-                     TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET);
+                     SUELO_ARADO_FILA * TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET,
+                     TAMANIO_TILE_ASSET);
   renderer.Copy(suelo, origen_tierra, destino);
 
-  int fila = cultivo.tipo * SPRITE_CULTIVO_FILAS_POR_TIPO +
-             SPRITE_CULTIVO_FILA_PLANTA;
+  int fila =
+      cultivo.tipo * SPRITE_CULTIVO_FILAS_POR_TIPO + SPRITE_CULTIVO_FILA_PLANTA;
   Rect origen_planta(cultivo.etapa * SPRITE_CULTIVO_LADO,
                      fila * SPRITE_CULTIVO_LADO, SPRITE_CULTIVO_LADO,
                      SPRITE_CULTIVO_LADO);
@@ -132,12 +128,14 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
   }
 }
 
-void Granja::dibujar_producto(SDL2pp::Renderer &renderer, SDL2pp::Texture &producto, int centro_x, int arriba_y, int lado) {
+void Granja::dibujar_producto(SDL2pp::Renderer &renderer,
+                              SDL2pp::Texture &producto, int centro_x,
+                              int arriba_y, int lado) {
   int ancho = producto.GetWidth() * lado / ICONO_PIXELES_POR_TILE;
   int alto = producto.GetHeight() * lado / ICONO_PIXELES_POR_TILE;
 
   int salto = 0;
-  if((vueltas / PRODUCTO_VUELTAS_POR_SALTO) % 2 == 1) {
+  if ((vueltas / PRODUCTO_VUELTAS_POR_SALTO) % 2 == 1) {
     salto = PRODUCTO_SALTO * lado / TAMANIO_TILE_ASSET;
   }
 

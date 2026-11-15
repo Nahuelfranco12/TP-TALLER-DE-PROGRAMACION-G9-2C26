@@ -30,14 +30,17 @@ private:
                             SDL2pp::Texture &textura,
                             const SDL2pp::Rect &origen,
                             const SDL2pp::Rect &casillero);
-  void dibujar_item(SDL2pp::Renderer &renderer, const InventorySlotDto &casillero,
+  void dibujar_item(SDL2pp::Renderer &renderer,
+                    const InventorySlotDto &casillero,
                     const SDL2pp::Rect &lugar);
   void dibujar_herramienta(SDL2pp::Renderer &renderer, Herramienta herramienta,
                            const SDL2pp::Rect &lugar);
   void dibujar_numero(SDL2pp::Renderer &renderer, int numero,
                       const SDL2pp::Rect &lugar);
 
-  static void dibujar_calidad(SDL2pp::Renderer &renderer, CropQualityDto calidad, const SDL2pp::Rect &lugar);
+  static void dibujar_calidad(SDL2pp::Renderer &renderer,
+                              CropQualityDto calidad,
+                              const SDL2pp::Rect &lugar);
 
 public:
   explicit Inventario(SDL2pp::Renderer &renderer);
@@ -56,7 +59,9 @@ public:
 
   void dibujar(SDL2pp::Renderer &renderer, int ancho_ventana, int alto_ventana);
 
-  void dibujar_regalo(SDL2pp::Renderer &renderer, const InventorySlotDto &regalo, const SDL2pp::Rect &lugar);
+  void dibujar_regalo(SDL2pp::Renderer &renderer,
+                      const InventorySlotDto &regalo,
+                      const SDL2pp::Rect &lugar);
 };
 
 #endif

@@ -32,5 +32,4 @@ protected:
   }
 };
 
-
 #endif // CONTROLADOR_PAGINA_EDITOR_H_

@@ -19,8 +19,7 @@ int tile_de_pixel(int pixel) {
 const char *archivo_tileset(SectorTypeDto tipo) {
   if (tipo == SectorTypeDto::FARM) {
     return RUTA_TILESET_GRANJA;
-  }
-  else if (tipo == SectorTypeDto::CAVERN) {
+  } else if (tipo == SectorTypeDto::CAVERN) {
     return RUTA_TILESET_CAVERNA;
   }
   return RUTA_TILESET_PUEBLO;
@@ -29,13 +28,10 @@ const char *archivo_tileset(SectorTypeDto tipo) {
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
-    : suelo(renderer, archivo_tileset(tipo)),
-      muebles(renderer, RUTA_MUEBLES),
+    : suelo(renderer, archivo_tileset(tipo)), muebles(renderer, RUTA_MUEBLES),
       piso_pueblo(renderer, RUTA_TILESET_PUEBLO),
-      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
-      borde(LETRA_BORDE),
-      tipo(tipo),
-      margen(0) {
+      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO), borde(LETRA_BORDE),
+      tipo(tipo), margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
   } else if (tipo == SectorTypeDto::CAVERN) {
@@ -103,46 +99,44 @@ int Mapa::obtener_ancho() const {
   return static_cast<int>(filas[0].size());
 }
 
-int Mapa::obtener_alto() const {
-  return static_cast<int>(filas.size());
-}
+int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
 bool Mapa::es_escalera(int x, int y) const {
   return tile_en(x, y) == LETRA_PUERTA;
 }
 
 void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
-    int ancho = static_cast<int>(tiles.size());
-    int alto = 0;
-    if (ancho > 0) {
-        alto = static_cast<int>(tiles[0].size());
+  int ancho = static_cast<int>(tiles.size());
+  int alto = 0;
+  if (ancho > 0) {
+    alto = static_cast<int>(tiles[0].size());
+  }
+
+  std::vector<std::string> nueva(alto, std::string(ancho, LETRA_PASTO));
+
+  // El servidor decide que hay en cada lugar
+  for (int x = 0; x < ancho; ++x) {
+    for (int y = 0; y < alto; ++y) {
+      const TileDto &tile = tiles[x][y];
+
+      char letra = tile_en(x, y);
+      if (tile.type == TerrainTypeDto::DIRT) {
+        letra = LETRA_TIERRA;
+      }
+      if (tile.tilled) {
+        letra = LETRA_ARADO;
+      }
+      if (tile.isDoor) {
+        letra = LETRA_PUERTA;
+      }
+      if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
+        letra = LETRA_PARED;
+      }
+
+      nueva[y][x] = letra;
     }
-
-    std::vector<std::string> nueva(alto, std::string(ancho, LETRA_PASTO));
-
-    // El servidor decide que hay en cada lugar
-    for (int x = 0; x < ancho; ++x) {
-        for (int y = 0; y < alto; ++y) {
-            const TileDto &tile = tiles[x][y];
-
-            char letra = tile_en(x, y);
-            if (tile.type == TerrainTypeDto::DIRT) {
-                letra = LETRA_TIERRA;
-            }
-            if (tile.tilled) {
-                letra = LETRA_ARADO;
-            }
-            if (tile.isDoor) {
-                letra = LETRA_PUERTA;
-            }
-            if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
-                letra = LETRA_PARED;
-            }
-
-            nueva[y][x] = letra;
-        }
-    }
-    filas = nueva;
+  }
+  filas = nueva;
 }
 
 char Mapa::tile_en(int x, int y) const {
