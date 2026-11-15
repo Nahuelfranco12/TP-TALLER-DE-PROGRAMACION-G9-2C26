@@ -214,6 +214,12 @@ struct EnemyDto {
   bool alive = true;
 };
 
+struct ChatMessageDto {
+  std::string fromName;
+  std::string text;
+  bool isPrivate = false;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false;   // x ahora solo se usa si es animal
@@ -238,6 +244,7 @@ struct SectorStateDto {
 
   GameTimeDto time{};
   size_t dayNumber = 1;
+  std::vector<ChatMessageDto> chat;
 };
 
 struct WorldMapDto {

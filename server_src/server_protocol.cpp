@@ -42,6 +42,12 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
   protocol.send_u8(static_cast<uint8_t>(state.time.minutes));
   protocol.send_u8(static_cast<uint8_t>(state.dayNumber));
+  protocol.send_u8(static_cast<uint8_t>(state.chat.size()));
+  for (const ChatMessageDto &message : state.chat) {
+      protocol.send_string(message.fromName);
+      protocol.send_string(message.text);
+      protocol.send_u8(message.isPrivate ? 1 : 0);
+  }
 }
 
 void ServerProtocol::send_world_map(const WorldMapDto &map) {

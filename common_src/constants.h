@@ -39,4 +39,8 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1
 
+#define SYSTEM_SENDER_ID -1
+#define SYSTEM_SENDER_NAME "Juego"
+#define MESSAGE_FOR_ALL_ID -1
+
 #endif // CONSTANTS_H_

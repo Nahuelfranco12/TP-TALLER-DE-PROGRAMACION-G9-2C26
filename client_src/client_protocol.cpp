@@ -213,6 +213,15 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   state.time.minutes = protocol.receive_u8();
   state.dayNumber = protocol.receive_u8();
 
+  int message_count = protocol.receive_u8();
+  for (int i = 0; i < message_count; i++) {
+      ChatMessageDto message;
+      message.fromName = protocol.receive_string();
+      message.text = protocol.receive_string();
+      message.isPrivate = protocol.receive_u8() == 1;
+      state.chat.push_back(message);
+  }
+
   return state;
 }
 

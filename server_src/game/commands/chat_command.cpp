@@ -1,11 +1,7 @@
 #include "chat_command.h"
 
 #include "../world.h"
-
-#define SYSTEM_SENDER_ID -1
-#define SYSTEM_SENDER_NAME "Juego"
-
-#define FOR_ALL_ID -1
+#include "../../../common_src/constants.h"
 
 void ChatCommand::execute(World &world) {
     Player *sender = world.getPlayer(playerId);
@@ -27,5 +23,5 @@ void ChatCommand::execute(World &world) {
         world.addChat({playerId, sender->getName(), receiver->getId(), message});
         return;
     }
-    world.addChat({playerId, sender->getName(), FOR_ALL_ID, text});
+    world.addChat({playerId, sender->getName(), MESSAGE_FOR_ALL_ID, text});
 }
