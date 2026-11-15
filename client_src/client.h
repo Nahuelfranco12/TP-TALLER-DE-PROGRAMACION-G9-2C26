@@ -26,7 +26,6 @@ private:
 public:
   explicit Client(const char *hostname, const char *servname);
 
-  void send_join();
   void send_move(DirectionDto direction);
   void send_select_tool(ToolTypeDto tool);
   void send_mine(DirectionDto direction);
@@ -49,8 +48,6 @@ public:
   std::vector<MatchInfoDto> list_matches();
   bool join_match(const std::string &code, const std::string &player_name,
                   const PlayerOutfitDto &outfit);
-
-  void run();
 
   ~Client();
 };
