@@ -21,6 +21,10 @@ public:
             remainingHits--;
         return remainingHits == 0;
     }
+
+    void restoreHits(size_t hits) {
+        remainingHits = hits;
+    }
 };
 
 #endif // HITTABLE_H_

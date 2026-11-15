@@ -61,6 +61,10 @@
 
 #define INVALID_PLAYER_ID -1
 
+#define SKELETON_HITS 3
+#define SKELETON_GOLD 5
+#define SKELETON_REVIVE_TICKS (10 * TICKS_PER_SECOND)
+
 enum IdSector {
   FARM,
   VILLAGE,
@@ -89,6 +93,8 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
+
+enum class EnemyType { SKELETON };
 
 enum class CropTypes { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
 enum class CropQuality { BASE, GOOD, EXCELENT, INCREDIBLE, PERFECT };

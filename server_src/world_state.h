@@ -33,6 +33,11 @@ struct AnimalState {
   bool is_ready = false;
 };
 
+struct EnemyState {
+  EnemyType type{};
+  bool is_alive = true;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
@@ -41,6 +46,7 @@ struct EntityState {
   MineralState mineral{}; // en caso de ser mineral.
   AnimalState animal{};    // en caso de ser animal.
   CropState crop{}; // en caso de ser mineral
+  EnemyState enemy{}; // en caso de ser enemigo
 
   // TODO: cultivos y npcs
 };

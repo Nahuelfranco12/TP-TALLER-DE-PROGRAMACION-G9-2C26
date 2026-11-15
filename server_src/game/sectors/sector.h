@@ -15,6 +15,11 @@
 #include "../position.h"
 #include "../terrain.h"
 
+struct PendingRespawn {
+  Position pos;
+  int ticksLeft;
+};
+
 class Sector {
 protected:
   size_t width;
