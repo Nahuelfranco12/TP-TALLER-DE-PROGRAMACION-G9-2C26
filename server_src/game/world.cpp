@@ -5,6 +5,7 @@
 #include "entities/chicken.h"
 #include "entities/cow.h"
 #include "entities/mineral.h"
+#include "entities/skeleton.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -83,6 +84,20 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
     return false;
   }
   return it->second->addEntity(std::move(animal), pos);
+}
+
+bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
+  auto it = this->sectors.find(sectorId);
+  if (it == this->sectors.end())
+    return false;
+
+  std::unique_ptr<Entity> enemy;
+  switch (type) {
+  case EnemyType::SKELETON:
+    enemy = std::make_unique<Skeleton>(pos.x, pos.y);
+    break;
+  }
+  return it->second->addEntity(std::move(enemy), pos);
 }
 
 Player *World::getPlayer(int id) {

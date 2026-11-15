@@ -34,6 +34,8 @@ public:
                     double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
 
+  bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
+  
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
 

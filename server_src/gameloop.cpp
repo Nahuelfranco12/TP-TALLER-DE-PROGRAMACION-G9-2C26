@@ -32,6 +32,7 @@ void Gameloop::addWorldSectors() {
   this->world.spawnAnimal(IdSector::FARM, Position(10, 11), AnimalType::COW);
   this->world.spawnAnimal(IdSector::FARM, Position(11, 11),
                           AnimalType::CHICKEN);
+  this->world.spawnEnemy(IdSector::FARM, Position(15, 15), EnemyType::SKELETON); // TODO: SACAR
 
   Cavern::setup(this->world);
 }
