@@ -9,6 +9,7 @@
 
 #include "../../world_state.h"
 #include "../entities/door.h"
+#include "../entities/player.h"
 #include "../entities/entity.h"
 #include "../game_constants.h"
 #include "../move_result.h"

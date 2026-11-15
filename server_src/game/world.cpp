@@ -102,8 +102,18 @@ bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
     enemy = std::make_unique<Orc>(pos.x, pos.y);
     break;
 
-  case EnemyType::COUNT:
+  case EnemyType::TRAP_FLAME:
     break;
+
+  case EnemyType::TRAP_PINCH:
+    break;
+
+  case EnemyType::VAMPIRE_MALE:
+    break;
+
+  case EnemyType::VAMPIRE_FEMALE:
+    break;
+
   }
   return it->second->addEntity(std::move(enemy), pos);
 }

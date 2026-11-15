@@ -84,8 +84,14 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
       return EntityTypeDto::SKELETON;
     case EnemyType::ORC:
       return EntityTypeDto::ORC;
-    case EnemyType::COUNT:
-      break;
+    case EnemyType::VAMPIRE_MALE:
+      return EntityTypeDto::VAMPIRE_MALE;    
+    case EnemyType::VAMPIRE_FEMALE:
+      return EntityTypeDto::VAMPIRE_FEMALE;
+    case EnemyType::TRAP_FLAME:
+      return EntityTypeDto::TRAP_FLAME;
+    case EnemyType::TRAP_PINCH:
+      return EntityTypeDto::TRAP_PINCH;
     }
     break;
   default:

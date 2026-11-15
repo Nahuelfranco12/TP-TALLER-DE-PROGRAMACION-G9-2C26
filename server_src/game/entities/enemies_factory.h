@@ -14,6 +14,7 @@ private:
     std::unique_ptr<Enemy> createOrc(Position position); 
 
 public:
+    std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> createVampires(Position firstPos);
     std::unique_ptr<Enemy> createEnemy(EnemyType enemyType, Position position);
 };
 

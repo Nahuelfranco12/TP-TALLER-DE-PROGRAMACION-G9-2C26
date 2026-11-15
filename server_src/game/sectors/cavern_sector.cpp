@@ -99,12 +99,23 @@ void CavernSector::spawnEnemies() {
 
 void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
   Position center = randomFreePosition();
-  for (size_t i = 0; i < count; i++) {
-    Position pos = (i == 0) ? center : randomNearPosition(center, 2);
-    auto enemy = enemiesFactory.createEnemy(type, pos);
 
-    if (enemy) {
-      Sector::addEntity(std::move(enemy), pos);
+  if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_MALE) {
+    std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> vampires = enemiesFactory.createVampires(center);
+    Sector::addEntity(std::move(vampires.first), center);
+
+    Position secondPos = randomNearPosition(center, 2);
+    vampires.second->setPosition(secondPos);
+
+    Sector::addEntity(std::move(vampires.second), secondPos);
+  } else {
+    for (size_t i = 0; i < count; i++) {
+      Position pos = (i == 0) ? center : randomNearPosition(center, 2);
+      auto enemy = enemiesFactory.createEnemy(type, pos);
+
+      if (enemy) {
+        Sector::addEntity(std::move(enemy), pos);
+      }
     }
   }
 }
