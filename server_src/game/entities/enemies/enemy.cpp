@@ -1,10 +1,11 @@
 #include "enemy.h"
-#include "../sectors/sector.h"
+
+#include "../../sectors/sector.h"
 #include <cstdlib>
 #include <iostream>
 
-Enemy::Enemy(size_t pos_x, size_t pos_y, const EnemyStats &stats)
-    : Entity(pos_x, pos_y, EntityTypes::ENEMY), Hittable(stats.maxLife),
+Enemy::Enemy(EnemyType type, size_t pos_x, size_t pos_y, const EnemyStats &stats)
+    : type(type), Entity(pos_x, pos_y, EntityTypes::ENEMY), Hittable(stats.maxLife),
       stats(stats), moveCooldown(0), attackCooldown(0) {}
 
 int Enemy::getGoldDrop() const { return stats.gold; }

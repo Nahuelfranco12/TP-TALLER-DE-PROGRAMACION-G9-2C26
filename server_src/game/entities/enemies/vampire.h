@@ -1,7 +1,7 @@
 #ifndef VAMPIRE_H_
 #define VAMPIRE_H_
 
-#include "../game_constants.h"
+#include "../../game_constants.h"
 #include "enemy.h"
 
 class Vampire : public Enemy {
@@ -13,7 +13,7 @@ private:
   bool inFrenzy() const;
 
 public:
-  Vampire(size_t pos_x, size_t pos_y, EnemyType kind);
+  Vampire(size_t pos_x, size_t pos_y, EnemyType kind, EnemyStats vampireStats);
 
   void setPartner(Vampire *otherVampire);
 
@@ -23,7 +23,6 @@ public:
 
   void tick() override;
   Decision decide(const Sector &sector) override;
-  EntityState entityState() const override;
 };
 
 #endif

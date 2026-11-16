@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "../game_constants.h"
-#include "../position.h"
+#include "../../game_constants.h"
+#include "../../position.h"
 #include "enemy.h"
 
 class EnemiesFactory {

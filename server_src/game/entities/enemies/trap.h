@@ -1,7 +1,7 @@
 #ifndef TRAP_H_
 #define TRAP_H_
 
-#include "../game_constants.h"
+#include "../../game_constants.h"
 #include "entity.h"
 
 class Trap : public Entity {
