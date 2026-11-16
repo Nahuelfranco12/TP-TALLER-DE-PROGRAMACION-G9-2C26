@@ -181,42 +181,7 @@ void Sector::apply(Position origin, const Decision &decision) {
   Enemy *enemy = dynamic_cast<Enemy *>(getEntity(origin));
   if (!enemy || enemy->isDead())
     return;
-  Position target = origin.next(decision.direction);
-
-  switch (decision.type) {
-  case DecisionType::MOVE:
-    if (this->doors.find(target) == this->doors.end())
-      move(origin, target);
-    break;
-  
-  case DecisionType::ATTACK: {
-    Position attackTarget = origin;
-
-    if (decision.target.has_value())
-      attackTarget = decision.target.value();
-    else
-      attackTarget = origin.next(decision.direction);
-
-    int dx = static_cast<int>(attackTarget.x) -
-            static_cast<int>(origin.x);
-    int dy = static_cast<int>(attackTarget.y) -
-            static_cast<int>(origin.y);
-    int distance = std::abs(dx) + std::abs(dy);
-
-    if (distance > static_cast<int>(enemy->getAttackRange()))
-      break;
-
-    Player *player =
-        dynamic_cast<Player *>(getEntity(attackTarget));
-
-    if (player)
-      player->takeDamage(enemy->getDamage());
-
-    break;
-  }
-  case DecisionType::NONE:
-    break;
-  }
+  enemy->apply(*this, origin, decision);
 }
 
 void Sector::tick() {
@@ -230,36 +195,7 @@ void Sector::tick() {
   for (const auto &[pos, trap] : this->traps) {
     if (!trap->wasTriggered())
       continue;
-
-    Position target = pos;
-    if (trap->getTrapType() == EnemyType::TRAP_FLAME) {
-      int x = static_cast<int>(pos.x);
-      int y = static_cast<int>(pos.y);
-      switch (trap->getDirection()) {
-      case DirectionDto::Up:
-        y--;
-        break;
-      case DirectionDto::Down:
-        y++;
-        break;
-      case DirectionDto::Left:
-        x--;
-        break;
-      case DirectionDto::Right:
-        x++;
-        break;
-      }
-
-      if (x < 0 || y < 0 || x >= static_cast<int>(width) ||
-          y >= static_cast<int>(height))
-        continue;
-
-      target = Position(static_cast<size_t>(x), static_cast<size_t>(y));
-    }
-
-    Player *player = dynamic_cast<Player *>(getEntity(target));
-    if (player && !player->isUnconscious())
-      player->takeDamage(trap->getDamage());
+    trap->activate(*this);
   }
 
   std::map<Position, Decision> decisions;
