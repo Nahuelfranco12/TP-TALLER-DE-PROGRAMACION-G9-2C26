@@ -97,6 +97,12 @@ void Player::takeDamage(double amount) {
     life = 0;
 }
 
+void Player::startNewDay(bool sleptInBed) {
+  double factor = sleptInBed ? 1.0 : 0.5;
+  this->life = PLAYER_MAX_LIFE * factor;
+  this->energy = PLAYER_MAX_ENERGY * factor;
+}
+
 PlayerState Player::state() const {
   return PlayerState{this->id,
                      this->position,

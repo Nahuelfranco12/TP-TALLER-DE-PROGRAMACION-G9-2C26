@@ -21,6 +21,10 @@ private:
   size_t dayTick;
   size_t dayNumber;
 
+  Sector *findSectorOf(const Player *player);
+  bool sendPlayerToFarm(Player *player, Sector &farm);
+  void sendPlayersToFarm();
+
 public:
   explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
 
@@ -28,6 +32,9 @@ public:
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
+  /*
+  * Entities
+  */
   void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
                  IdSector idSector);
   void removePlayer(int id);
@@ -35,19 +42,30 @@ public:
   bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
                     double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
-
   bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
 
+  /*
+  * getters
+  */
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
-
   Sector *getSector(IdSector id);
 
+  /*
+  * Cheats
+  */
   void growthCheatAll();
+  void endDayCheat();
 
+  /*
+  * State
+  */
   GameTime currentTime() const;
   WorldState state() const;
 
+  /*
+  * Chat
+  */
   void addChat(const ChatMessageState &message);
   void clearChat();
   Player *getPlayerByName(const std::string &name);

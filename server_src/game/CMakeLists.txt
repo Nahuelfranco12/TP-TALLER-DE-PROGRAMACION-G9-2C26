@@ -37,6 +37,7 @@ target_sources(taller_game
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp
+    commands/cheats/cheat_end_day_command.cpp
 
     sectors/sector.cpp
     sectors/cavern_sector.cpp
