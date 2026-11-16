@@ -188,6 +188,10 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   state.height = protocol.receive_u16();
 
   state.sector = receive_tiles();
+  int building_count = protocol.receive_u16();
+  for (int i = 0; i < building_count; i++)
+    state.buildings.push_back(receive_building());
+
   int player_count = protocol.receive_u16();
   for (int i = 0; i < player_count; i++) {
     GamePositionDto position = receive_position();
@@ -237,6 +241,9 @@ WorldMapDto ClientProtocol::receive_world_map() {
     sector.width = protocol.receive_u16();
     sector.height = protocol.receive_u16();
     sector.sector = receive_tiles();
+    int building_count = protocol.receive_u16();
+    for (int j = 0; j < building_count; j++)
+      sector.buildings.push_back(receive_building());
     map.sectors.push_back(sector);
   }
   return map;
@@ -301,4 +308,16 @@ GamePositionDto ClientProtocol::receive_position() {
   position.x = protocol.receive_u16();
   position.y = protocol.receive_u16();
   return position;
+}
+
+BuildingDto ClientProtocol::receive_building() {
+  BuildingDto building;
+  building.type = static_cast<BuildingTypeDto>(protocol.receive_u8());
+  building.topLeft = receive_position();
+  building.width = protocol.receive_u16();
+  building.height = protocol.receive_u16();
+  building.door = receive_position();
+  building.interior = static_cast<SectorIdDto>(protocol.receive_u8());
+  building.ownerId = static_cast<int16_t>(protocol.receive_u16());
+  return building;
 }

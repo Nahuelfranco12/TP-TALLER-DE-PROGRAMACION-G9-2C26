@@ -19,6 +19,10 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
 
   send_tiles(state.sector);
 
+  protocol.send_u16(static_cast<uint16_t>(state.buildings.size()));
+  for (const BuildingDto &building : state.buildings)
+    send_building(building);
+
   protocol.send_u16(static_cast<uint16_t>(state.players.size()));
   for (const auto &[position, player] : state.players) {
     send_position(position);
@@ -58,6 +62,9 @@ void ServerProtocol::send_world_map(const WorldMapDto &map) {
     protocol.send_u16(static_cast<uint16_t>(sector.width));
     protocol.send_u16(static_cast<uint16_t>(sector.height));
     send_tiles(sector.sector);
+    protocol.send_u16(static_cast<uint16_t>(sector.buildings.size()));
+    for (const BuildingDto &building : sector.buildings)
+      send_building(building);
   }
 }
 
@@ -115,6 +122,16 @@ void ServerProtocol::send_inventory(const InventoryDto &inventory) {
 void ServerProtocol::send_position(const GamePositionDto &position) {
   protocol.send_u16(static_cast<uint16_t>(position.x));
   protocol.send_u16(static_cast<uint16_t>(position.y));
+}
+
+void ServerProtocol::send_building(const BuildingDto &building) {
+  protocol.send_u8(static_cast<uint8_t>(building.type));
+  send_position(building.topLeft);
+  protocol.send_u16(static_cast<uint16_t>(building.width));
+  protocol.send_u16(static_cast<uint16_t>(building.height));
+  send_position(building.door);
+  protocol.send_u8(static_cast<uint8_t>(building.interior));
+  protocol.send_u16(static_cast<uint16_t>(building.ownerId));
 }
 
 void ServerProtocol::send_slot(const InventorySlotDto &slot) {

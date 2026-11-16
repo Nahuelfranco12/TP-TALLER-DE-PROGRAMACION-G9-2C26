@@ -77,6 +77,34 @@ enum class ItemTypeDto {
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
+enum class BuildingTypeDto {
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+  SHOP_MARNIE,
+  SHOP_CLINT,
+};
+
+enum class SectorIdDto {
+  FARM,
+  VILLAGE,
+  CAVERN_LEVEL_1,
+  CAVERN_LEVEL_2,
+  CAVERN_LEVEL_3,
+  CAVERN_LEVEL_4,
+  CAVERN_LEVEL_5,
+  CAVERN_LEVEL_6,
+  CAVERN_LEVEL_7,
+  CAVERN_LEVEL_8,
+  CAVERN_LEVEL_9,
+  CAVERN_LEVEL_10,
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+};
+
 enum class EntityTypeDto {
   PLAYER,
   COW,
@@ -162,6 +190,16 @@ struct TileDto {
   bool tilled;
 };
 
+struct BuildingDto {
+  BuildingTypeDto type{};
+  GamePositionDto topLeft;
+  size_t width = 0;
+  size_t height = 0;
+  GamePositionDto door;
+  SectorIdDto interior{};
+  int ownerId = -1;
+};
+
 struct InventorySlotDto {
   int count = 0;
   ItemTypeDto item;
@@ -244,6 +282,7 @@ struct SectorStateDto {
   size_t height = 0;
 
   std::vector<std::vector<TileDto>> sector;
+  std::vector<BuildingDto> buildings;
   std::map<GamePositionDto, PlayerDto> players;
   std::map<GamePositionDto, EntityDto> entities;
 

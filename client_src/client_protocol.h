@@ -19,6 +19,7 @@ private:
   PlayerDto receive_player();
   InventoryDto receive_inventory();
   GamePositionDto receive_position();
+  BuildingDto receive_building();
   InventorySlotDto receive_slot();
 
   void send_slot(const InventorySlotDto &slot);
