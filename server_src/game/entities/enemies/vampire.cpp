@@ -1,16 +1,9 @@
 #include "vampire.h"
 
-#include "../sectors/sector.h"
+#include "../../sectors/sector.h"
 
-Vampire::Vampire(size_t pos_x, size_t pos_y, EnemyType vampireType)
-    : Enemy(pos_x, pos_y,
-            vampireType == EnemyType::VAMPIRE_FEMALE
-                ? EnemyStats{VAMPIRE_LIFE, VAMPIRE_FEMALE_DAMAGE, VAMPIRE_GOLD,
-                             VAMPIRE_FEMALE_TICKS_PER_MOVE,
-                             VAMPIRE_TICKS_PER_ATTACK, VAMPIRE_SIGHT_RANGE}
-                : EnemyStats{VAMPIRE_LIFE, VAMPIRE_MALE_DAMAGE, VAMPIRE_GOLD,
-                             VAMPIRE_MALE_TICKS_PER_MOVE,
-                             VAMPIRE_TICKS_PER_ATTACK, VAMPIRE_SIGHT_RANGE}),
+Vampire::Vampire(size_t pos_x, size_t pos_y, EnemyType kind, EnemyStats vampireStats)
+    : Enemy(kind, pos_x, pos_y, vampireStats),
       vampireType(vampireType), partner(nullptr), reviveCountdown(-1) {}
 
 void Vampire::setPartner(Vampire *otherVampire) { partner = otherVampire; }
@@ -51,11 +44,4 @@ Decision Vampire::decide(const Sector &sector) {
     return Decision{};
   }
   return Enemy::decide(sector);
-}
-
-EntityState Vampire::entityState() const {
-  EntityState state = Entity::entityState();
-  state.enemy.type = vampireType;
-  state.enemy.is_alive = !isDead();
-  return state;
 }

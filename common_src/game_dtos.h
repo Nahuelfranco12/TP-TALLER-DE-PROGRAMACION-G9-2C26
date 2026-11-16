@@ -85,6 +85,8 @@ enum class EntityTypeDto {
   VAMPIRE_FEMALE,
   TRAP_PINCH,
   TRAP_FLAME,
+  SKULL_BLUE,
+  SKULL_GREEN,
   MINERAL_GOLD,
   MINERAL_IRON,
   MINERAL_LAPIZLAZULI,
@@ -208,6 +210,7 @@ struct CropDto {
 
 struct EnemyDto {
   bool alive = true;
+  DirectionDto direction = DirectionDto::Up;
 };
 
 struct EntityDto {
