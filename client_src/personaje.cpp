@@ -109,6 +109,8 @@ void Personaje::poner_vida(double nueva_vida) { vida = nueva_vida; }
 
 void Personaje::poner_energia(double nueva_energia) { energia = nueva_energia; }
 
+double Personaje::obtener_vida() const { return vida; }
+
 int Personaje::obtener_tile_x() const { return tile_x; }
 
 Direccion Personaje::obtener_direccion() const { return mirando; }

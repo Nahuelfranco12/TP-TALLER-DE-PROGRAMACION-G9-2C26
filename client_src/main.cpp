@@ -296,7 +296,7 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN &&
           evento.key.keysym.sym == TECLA_CHEAT_RIEGO && evento.key.repeat == 0)
         client.send_cheat_water(dir);
-      
+
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_t && evento.key.repeat == 0)
         client.send_chat("Hola, gente!");
 
@@ -398,6 +398,11 @@ int main(int argc, char *argv[]) try {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
           }
+          // Si perdió vida en la caverna, le pegaron los de al lado
+          if (zona == SectorTypeDto::CAVERN &&
+              jugador.life < personaje.obtener_vida()) {
+            caverna.golpearon_a(x, y);
+          }
           personaje.agarrar(jugador.actualTool);
           if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a
                                             // cambiar el inventory.front seguro
@@ -411,14 +416,19 @@ int main(int argc, char *argv[]) try {
         }
         presentes.insert(jugador.id);
         std::unique_ptr<Personaje> &otro = otros[jugador.id];
-        if (!otro) {
-          otro = std::make_unique<Personaje>(renderer); // recién llegado
+        bool recien_llegado = !otro;
+        if (recien_llegado) {
+          otro = std::make_unique<Personaje>(renderer);
           otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)],
                        PELOS_SDL[static_cast<int>(jugador.outfit.hair)],
                        PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)],
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        if (zona == SectorTypeDto::CAVERN && !recien_llegado &&
+            jugador.life < otro->obtener_vida()) {
+          caverna.golpearon_a(x, y);
+        }
         otro->poner_vida(jugador.life);
         otro->poner_energia(jugador.energy);
         otro->agarrar(jugador.actualTool);

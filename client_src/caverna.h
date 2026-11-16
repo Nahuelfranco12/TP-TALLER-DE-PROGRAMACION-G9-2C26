@@ -26,16 +26,32 @@ private:
     int tile_x;
     int tile_y;
     bool vivo;
+    long vueltas_caminando;
+    long vueltas_atacando;
+    bool mira_izquierda;
   };
 
   SDL2pp::Texture minerales;
   SDL2pp::Texture esqueleto;
   SDL2pp::Texture orco_quieto;
+  SDL2pp::Texture orco_caminando;
+  SDL2pp::Texture orco_atacando;
   SDL2pp::Texture vampiro_quieto;
+  SDL2pp::Texture vampiro_caminando;
+  SDL2pp::Texture vampiro_atacando;
   std::vector<Mineral> lista_minerales;
   std::vector<Enemigo> lista_enemigos;
 
   long vueltas;
+
+  // Si en la lista hay un enemigo de ese tipo en ese tile
+  static bool hay_enemigo(const std::vector<Enemigo> &lista, TipoEnemigo tipo,
+                          int x, int y);
+
+  // Busca al enemigo en el estado anterior para saber si se movió
+  static void seguir_movimiento(Enemigo &enemigo,
+                                const std::vector<Enemigo> &anteriores,
+                                const std::vector<Enemigo> &actuales);
 
   void dibujar_mineral(SDL2pp::Renderer &renderer, const Mineral &mineral,
                        int camara_x, int camara_y, int lado);
@@ -46,6 +62,9 @@ public:
   explicit Caverna(SDL2pp::Renderer &renderer);
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
+
+  // Un jugador en ese tile perdió vida: los orcos de al lado le pegaron
+  void golpearon_a(int tile_x, int tile_y);
 
   void animar(long vueltas_pasadas);
 

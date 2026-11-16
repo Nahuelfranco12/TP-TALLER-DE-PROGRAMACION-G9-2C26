@@ -67,6 +67,7 @@ public:
   void agarrar(ToolTypeDto herramienta);
   void poner_vida(double nueva_vida);
   void poner_energia(double nueva_energia);
+  double obtener_vida() const;
   bool esta_picando() const { return vueltas_picando > 0; }
 
   // Dónde está (en tiles)

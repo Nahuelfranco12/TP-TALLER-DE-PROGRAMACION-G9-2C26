@@ -1,6 +1,10 @@
 #include "caverna.h"
 #include "constantes_sdl.h"
 
+#include <algorithm>
+#include <cstdlib>
+
+using SDL2pp::NullOpt;
 using SDL2pp::Rect;
 using SDL2pp::Renderer;
 
@@ -22,30 +26,41 @@ const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
 
 Caverna::Caverna(Renderer &renderer)
     : minerales(renderer, RUTA_MINERALES),
-      esqueleto(renderer, "assets/enemigos/enemies-skeleton1_idle.png"),
-      orco_quieto(renderer, "assets/enemigos/enemies-orc1_idle.png"),
-      vampiro_quieto(renderer, "assets/enemigos/enemies-vampire_idle.png"),
+      esqueleto(renderer, RUTA_ESQUELETO_QUIETO),
+      orco_quieto(renderer, RUTA_ORCO_QUIETO),
+      orco_caminando(renderer, RUTA_ORCO_CAMINANDO),
+      orco_atacando(renderer, RUTA_ORCO_ATACA),
+      vampiro_quieto(renderer, RUTA_VAMPIRO_QUIETO),
+      vampiro_caminando(renderer, RUTA_VAMPIRO_CAMINANDO),
+      vampiro_atacando(renderer, RUTA_VAMPIRO_ATACA),
+      esqueleto_quieto(renderer, RUTA_ESQUELETO_QUIETO),
+      esqueleto_caminando(renderer, RUTA_ESQUELETO_CAMINANDO),
+      esqueleto_atacando(renderer, RUTA_ESQUELETO_ATACA),
       vueltas(0) {}
 
 void Caverna::actualizar(
     const std::map<GamePositionDto, EntityDto> &entidades) {
+  const std::vector<Enemigo> anteriores = lista_enemigos;
   lista_minerales.clear();
   lista_enemigos.clear();
   for (const auto &[pos, entidad] : entidades) {
     if (entidad.type == EntityTypeDto::SKELETON) {
       lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive});
+                                static_cast<int>(pos.y), entidad.enemy.alive,
+                                0, 0, false});
       continue;
     } else if (entidad.type == EntityTypeDto::ORC) {
       lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive});
+                                static_cast<int>(pos.y), entidad.enemy.alive,
+                                0, 0, false});
       continue;
     } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
                entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
       TipoEnemigo tipo =
           entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
       lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive});
+                                static_cast<int>(pos.y), entidad.enemy.alive,
+                                0, 0, false});
       continue;
     }
 
@@ -78,9 +93,94 @@ void Caverna::actualizar(
     lista_minerales.push_back(
         {tipo, static_cast<int>(pos.x), static_cast<int>(pos.y), etapa});
   }
+
+  for (Enemigo &enemigo : lista_enemigos) {
+    seguir_movimiento(enemigo, anteriores, lista_enemigos);
+  }
 }
 
-void Caverna::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
+bool Caverna::hay_enemigo(const std::vector<Enemigo> &lista, TipoEnemigo tipo,
+                          int x, int y) {
+  return std::any_of(lista.begin(), lista.end(),
+                     [tipo, x, y](const Enemigo &otro) {
+                       return otro.tipo == tipo && otro.tile_x == x &&
+                              otro.tile_y == y;
+                     });
+}
+
+void Caverna::seguir_movimiento(Enemigo &enemigo,
+                                const std::vector<Enemigo> &anteriores,
+                                const std::vector<Enemigo> &actuales) {
+  // El mismo enemigo, que no se movió: sigue como venía
+  auto mismo = std::find_if(
+      anteriores.begin(), anteriores.end(), [&enemigo](const Enemigo &otro) {
+        return otro.tipo == enemigo.tipo && otro.tile_x == enemigo.tile_x &&
+               otro.tile_y == enemigo.tile_y;
+      });
+  if (mismo != anteriores.end()) {
+    enemigo.vueltas_caminando = mismo->vueltas_caminando;
+    enemigo.vueltas_atacando = mismo->vueltas_atacando;
+    enemigo.mira_izquierda = mismo->mira_izquierda;
+    return;
+  }
+
+  // Uno del mismo tipo que estaba al lado y dejó su tile: se movió
+  auto de_donde = std::find_if(
+      anteriores.begin(), anteriores.end(),
+      [&enemigo, &actuales](const Enemigo &otro) {
+        int distancia = std::abs(otro.tile_x - enemigo.tile_x) +
+                        std::abs(otro.tile_y - enemigo.tile_y);
+        return otro.tipo == enemigo.tipo &&
+               distancia == CAVERNA_ENEMIGO_DISTANCIA_PASO &&
+               !hay_enemigo(actuales, otro.tipo, otro.tile_x, otro.tile_y);
+      });
+  if (de_donde == anteriores.end()) {
+    return; // recién aparecido: queda quieto
+  }
+
+  enemigo.vueltas_caminando = CAVERNA_ENEMIGO_VUELTAS_CAMINANDO;
+  enemigo.mira_izquierda = de_donde->mira_izquierda;
+  if (enemigo.tile_x < de_donde->tile_x) {
+    enemigo.mira_izquierda = true;
+  } else if (enemigo.tile_x > de_donde->tile_x) {
+    enemigo.mira_izquierda = false;
+  }
+}
+
+void Caverna::golpearon_a(int tile_x, int tile_y) {
+  // Dura una pasada completa de la hoja de ataque
+  const long duracion =
+      static_cast<long>(orco_atacando.GetWidth() / FORMATO_ORCO.lado) *
+      VUELTAS_POR_CUADRO_ENEMIGO;
+  for (Enemigo &enemigo : lista_enemigos) {
+    int distancia = std::abs(enemigo.tile_x - tile_x) +
+                    std::abs(enemigo.tile_y - tile_y);
+    if (enemigo.tipo != ORCO || !enemigo.vivo ||
+        distancia != CAVERNA_ENEMIGO_DISTANCIA_ATAQUE ||
+        enemigo.vueltas_atacando > 0) {
+      continue;
+    }
+    enemigo.vueltas_atacando = duracion;
+    // Se da vuelta para mirar al jugador
+    if (tile_x < enemigo.tile_x) {
+      enemigo.mira_izquierda = true;
+    } else if (tile_x > enemigo.tile_x) {
+      enemigo.mira_izquierda = false;
+    }
+  }
+}
+
+void Caverna::animar(long vueltas_pasadas) {
+  vueltas += vueltas_pasadas;
+  for (Enemigo &enemigo : lista_enemigos) {
+    if (enemigo.vueltas_caminando > 0) {
+      enemigo.vueltas_caminando -= vueltas_pasadas;
+    }
+    if (enemigo.vueltas_atacando > 0) {
+      enemigo.vueltas_atacando -= vueltas_pasadas;
+    }
+  }
+}
 
 void Caverna::dibujar_mineral(Renderer &renderer, const Mineral &mineral,
                               int camara_x, int camara_y, int lado) {
@@ -101,6 +201,8 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
 
   SDL2pp::Texture *textura = &esqueleto;
   FormatoEnemigo formato = FORMATO_ESQUELETO;
+  int flip = SDL_FLIP_NONE;
+  int correccion_x = 0;
   switch (enemigo.tipo) {
   case ESQUELETO:
     textura = &esqueleto;
@@ -109,7 +211,19 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
 
   case ORCO:
     textura = &orco_quieto;
+    if (enemigo.vueltas_caminando > 0) {
+      textura = &orco_caminando;
+    }
+    if (enemigo.vueltas_atacando > 0) {
+      textura = &orco_atacando;
+    }
     formato = FORMATO_ORCO;
+    if (enemigo.mira_izquierda) {
+      // Al espejar, el cuerpo cambia de lado dentro del cuadro
+      flip = SDL_FLIP_HORIZONTAL;
+      correccion_x = (2 * SPRITE_ORCO_CENTRO_X - formato.lado) * lado /
+                     PIXELES_POR_TILE;
+    }
     break;
   case VAMPIRO:
   case VAMPIRA:
@@ -121,6 +235,13 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   int cuadros = textura->GetWidth() / formato.lado;
   int cuadro =
       static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
+  if (enemigo.vueltas_atacando > 0) {
+    // El ataque arranca en el primer cuadro y no se repite
+    long duracion = static_cast<long>(cuadros) * VUELTAS_POR_CUADRO_ENEMIGO;
+    cuadro = static_cast<int>((duracion - enemigo.vueltas_atacando) /
+                              VUELTAS_POR_CUADRO_ENEMIGO);
+    cuadro = std::clamp(cuadro, 0, cuadros - 1);
+  }
 
   Rect origen(cuadro * formato.lado, 0, formato.lado, formato.lado);
 
@@ -133,7 +254,8 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   // TODO: VER DE SACAR, ES PARA DIFERENCIAR A LA VAMPIRA DEL VAMPIRO
   if (enemigo.tipo == VAMPIRA)
     textura->SetColorMod(255, 170, 200);
-  renderer.Copy(*textura, origen, Rect(x, y, tamanio, tamanio));
+  renderer.Copy(*textura, origen, Rect(x + correccion_x, y, tamanio, tamanio),
+                0.0, NullOpt, flip);
   textura->SetColorMod(255, 255, 255);
 }
 

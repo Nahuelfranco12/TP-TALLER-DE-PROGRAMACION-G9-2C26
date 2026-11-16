@@ -290,6 +290,10 @@
 #define RUTA_VAMPIRO_DANIADO "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
 #define RUTA_VAMPIRO_MUERTO "assets/enemigos/vampiro/enemies-vampire_death.png"
 
+#define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
+#define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30
+#define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
+
 // Sprites: suelo (columna y fila en tiles del tileset)
 #define SUELO_DEFECTO_COLUMNA 4
 #define SUELO_DEFECTO_FILA 9
@@ -323,6 +327,7 @@
 #define SPRITE_PASTO_OSCURO_Y 144
 
 // Sprites: minerales (px)
+#define SPRITE_ORCO_CENTRO_X 55
 #define SPRITE_MINERAL_CELDA 32
 #define SPRITE_MINERAL_ANCHO 32
 #define SPRITE_MINERAL_ALTO 28
