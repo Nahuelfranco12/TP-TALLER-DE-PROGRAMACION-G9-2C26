@@ -11,7 +11,8 @@ private:
   std::string text;
 
 public:
-  ChatCommand(int playerId, const std::string &text) : playerId(playerId), text(text) {}
+  ChatCommand(int playerId, const std::string &text)
+      : playerId(playerId), text(text) {}
   void execute(World &world) override;
 };
 

@@ -9,6 +9,7 @@
 
 #include "../common_src/constants.h"
 #include "actions/attack_action.h"
+#include "actions/chat_action.h"
 #include "actions/cheat_growth_action.h"
 #include "actions/collect_action.h"
 #include "actions/gift_offer_action.h"
@@ -19,7 +20,6 @@
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
-#include "actions/chat_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -69,7 +69,7 @@ void Client::send_attack(DirectionDto direction) {
 }
 
 void Client::send_chat(const std::string &text) {
-    to_send_queue.try_push(std::make_unique<ChatAction>(text));
+  to_send_queue.try_push(std::make_unique<ChatAction>(text));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {
@@ -86,7 +86,10 @@ bool Client::try_get_latest_state(SectorStateDto &state) {
   std::vector<ChatMessageDto> chat;
   while (received_queue.try_pop(next_state)) {
     has_been_received = true;
-    chat.insert(chat.end(), next_state.chat.begin(), next_state.chat.end()); // TODO: Revisar si lo podemos sacar (está del lado del serversender tambien)
+    chat.insert(
+        chat.end(), next_state.chat.begin(),
+        next_state.chat.end()); // TODO: Revisar si lo podemos sacar (está del
+                                // lado del serversender tambien)
   }
 
   if (has_been_received) {

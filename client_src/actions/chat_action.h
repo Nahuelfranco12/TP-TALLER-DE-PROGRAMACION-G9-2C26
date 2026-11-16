@@ -3,16 +3,16 @@
 
 #include <string>
 
-#include "client_action.h"
 #include "../../common_src/game_dtos.h"
+#include "client_action.h"
 
 class ChatAction : public ClientAction {
 private:
-    ChatDto dto;
+  ChatDto dto;
 
 public:
-    explicit ChatAction(const std::string &text);
-    void send_by(ClientProtocol &protocol) const override;
+  explicit ChatAction(const std::string &text);
+  void send_by(ClientProtocol &protocol) const override;
 };
 
 #endif

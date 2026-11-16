@@ -8,6 +8,7 @@
 #include "./game/command.h"
 
 #include "./game/commands/attack_command.h"
+#include "./game/commands/chat_command.h"
 #include "./game/commands/collect_command.h"
 #include "./game/commands/gift_offer_command.h"
 #include "./game/commands/gift_response_command.h"
@@ -17,7 +18,6 @@
 #include "./game/commands/select_tool_command.h"
 #include "./game/commands/till_command.h"
 #include "./game/commands/water_command.h"
-#include "./game/commands/chat_command.h"
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"

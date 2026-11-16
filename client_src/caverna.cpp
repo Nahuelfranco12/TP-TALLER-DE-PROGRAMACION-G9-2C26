@@ -22,21 +22,31 @@ const FormatoEnemigo FORMATO_VAMPIRO{32, 29};
 const int PIXELES_POR_TILE = 16;
 
 const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
+
+// Atacando tiene prioridad sobre caminando, y caminando sobre quieto
+SDL2pp::Texture *elegir_textura(SDL2pp::Texture &quieto,
+                                SDL2pp::Texture &caminando,
+                                SDL2pp::Texture &atacando,
+                                long vueltas_caminando, long vueltas_atacando) {
+  if (vueltas_atacando > 0)
+    return &atacando;
+  if (vueltas_caminando > 0)
+    return &caminando;
+  return &quieto;
+}
 } // namespace
 
 Caverna::Caverna(Renderer &renderer)
     : minerales(renderer, RUTA_MINERALES),
       esqueleto(renderer, RUTA_ESQUELETO_QUIETO),
+      esqueleto_caminando(renderer, RUTA_ESQUELETO_CAMINANDO),
+      esqueleto_atacando(renderer, RUTA_ESQUELETO_ATACA),
       orco_quieto(renderer, RUTA_ORCO_QUIETO),
       orco_caminando(renderer, RUTA_ORCO_CAMINANDO),
       orco_atacando(renderer, RUTA_ORCO_ATACA),
       vampiro_quieto(renderer, RUTA_VAMPIRO_QUIETO),
       vampiro_caminando(renderer, RUTA_VAMPIRO_CAMINANDO),
-      vampiro_atacando(renderer, RUTA_VAMPIRO_ATACA),
-      esqueleto_quieto(renderer, RUTA_ESQUELETO_QUIETO),
-      esqueleto_caminando(renderer, RUTA_ESQUELETO_CAMINANDO),
-      esqueleto_atacando(renderer, RUTA_ESQUELETO_ATACA),
-      vueltas(0) {}
+      vampiro_atacando(renderer, RUTA_VAMPIRO_ATACA), vueltas(0) {}
 
 void Caverna::actualizar(
     const std::map<GamePositionDto, EntityDto> &entidades) {
@@ -46,21 +56,21 @@ void Caverna::actualizar(
   for (const auto &[pos, entidad] : entidades) {
     if (entidad.type == EntityTypeDto::SKELETON) {
       lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                0, 0, false});
+                                static_cast<int>(pos.y), entidad.enemy.alive, 0,
+                                0, false});
       continue;
     } else if (entidad.type == EntityTypeDto::ORC) {
       lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                0, 0, false});
+                                static_cast<int>(pos.y), entidad.enemy.alive, 0,
+                                0, false});
       continue;
     } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
                entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
       TipoEnemigo tipo =
           entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
       lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                0, 0, false});
+                                static_cast<int>(pos.y), entidad.enemy.alive, 0,
+                                0, false});
       continue;
     }
 
@@ -101,11 +111,10 @@ void Caverna::actualizar(
 
 bool Caverna::hay_enemigo(const std::vector<Enemigo> &lista, TipoEnemigo tipo,
                           int x, int y) {
-  return std::any_of(lista.begin(), lista.end(),
-                     [tipo, x, y](const Enemigo &otro) {
-                       return otro.tipo == tipo && otro.tile_x == x &&
-                              otro.tile_y == y;
-                     });
+  return std::any_of(
+      lista.begin(), lista.end(), [tipo, x, y](const Enemigo &otro) {
+        return otro.tipo == tipo && otro.tile_x == x && otro.tile_y == y;
+      });
 }
 
 void Caverna::seguir_movimiento(Enemigo &enemigo,
@@ -148,19 +157,14 @@ void Caverna::seguir_movimiento(Enemigo &enemigo,
 }
 
 void Caverna::golpearon_a(int tile_x, int tile_y) {
-  // Dura una pasada completa de la hoja de ataque
-  const long duracion =
-      static_cast<long>(orco_atacando.GetWidth() / FORMATO_ORCO.lado) *
-      VUELTAS_POR_CUADRO_ENEMIGO;
   for (Enemigo &enemigo : lista_enemigos) {
-    int distancia = std::abs(enemigo.tile_x - tile_x) +
-                    std::abs(enemigo.tile_y - tile_y);
-    if (enemigo.tipo != ORCO || !enemigo.vivo ||
-        distancia != CAVERNA_ENEMIGO_DISTANCIA_ATAQUE ||
+    int distancia =
+        std::abs(enemigo.tile_x - tile_x) + std::abs(enemigo.tile_y - tile_y);
+    if (!enemigo.vivo || distancia != CAVERNA_ENEMIGO_DISTANCIA_ATAQUE ||
         enemigo.vueltas_atacando > 0) {
       continue;
     }
-    enemigo.vueltas_atacando = duracion;
+    enemigo.vueltas_atacando = duracion_ataque(enemigo.tipo);
     // Se da vuelta para mirar al jugador
     if (tile_x < enemigo.tile_x) {
       enemigo.mira_izquierda = true;
@@ -168,6 +172,16 @@ void Caverna::golpearon_a(int tile_x, int tile_y) {
       enemigo.mira_izquierda = false;
     }
   }
+}
+
+long Caverna::duracion_ataque(TipoEnemigo tipo) const {
+  int cuadros = esqueleto_atacando.GetWidth() / FORMATO_ESQUELETO.lado;
+  if (tipo == ORCO) {
+    cuadros = orco_atacando.GetWidth() / FORMATO_ORCO.lado;
+  } else if (tipo == VAMPIRO || tipo == VAMPIRA) {
+    cuadros = vampiro_atacando.GetWidth() / FORMATO_VAMPIRO.lado;
+  }
+  return static_cast<long>(cuadros) * VUELTAS_POR_CUADRO_ENEMIGO;
 }
 
 void Caverna::animar(long vueltas_pasadas) {
@@ -201,42 +215,48 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
 
   SDL2pp::Texture *textura = &esqueleto;
   FormatoEnemigo formato = FORMATO_ESQUELETO;
-  int flip = SDL_FLIP_NONE;
-  int correccion_x = 0;
+  int centro_x = SPRITE_ESQUELETO_CENTRO_X;
   switch (enemigo.tipo) {
   case ESQUELETO:
-    textura = &esqueleto;
+    textura =
+        elegir_textura(esqueleto, esqueleto_caminando, esqueleto_atacando,
+                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
     formato = FORMATO_ESQUELETO;
+    centro_x = SPRITE_ESQUELETO_CENTRO_X;
     break;
 
   case ORCO:
-    textura = &orco_quieto;
-    if (enemigo.vueltas_caminando > 0) {
-      textura = &orco_caminando;
-    }
-    if (enemigo.vueltas_atacando > 0) {
-      textura = &orco_atacando;
-    }
+    textura =
+        elegir_textura(orco_quieto, orco_caminando, orco_atacando,
+                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
     formato = FORMATO_ORCO;
-    if (enemigo.mira_izquierda) {
-      // Al espejar, el cuerpo cambia de lado dentro del cuadro
-      flip = SDL_FLIP_HORIZONTAL;
-      correccion_x = (2 * SPRITE_ORCO_CENTRO_X - formato.lado) * lado /
-                     PIXELES_POR_TILE;
-    }
+    centro_x = SPRITE_ORCO_CENTRO_X;
     break;
   case VAMPIRO:
   case VAMPIRA:
-    textura = &vampiro_quieto;
+    textura =
+        elegir_textura(vampiro_quieto, vampiro_caminando, vampiro_atacando,
+                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
     formato = FORMATO_VAMPIRO;
+    centro_x = SPRITE_VAMPIRO_CENTRO_X;
+    if (textura == &vampiro_caminando) {
+      formato.pie = SPRITE_VAMPIRO_PIE_CAMINANDO;
+    }
     break;
+  }
+
+  // Al espejar, el cuerpo cambia de lado dentro del cuadro
+  int flip = SDL_FLIP_NONE;
+  int correccion_x = 0;
+  if (enemigo.mira_izquierda) {
+    flip = SDL_FLIP_HORIZONTAL;
+    correccion_x = (2 * centro_x - formato.lado) * lado / PIXELES_POR_TILE;
   }
 
   int cuadros = textura->GetWidth() / formato.lado;
   int cuadro =
       static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
   if (enemigo.vueltas_atacando > 0) {
-    // El ataque arranca en el primer cuadro y no se repite
     long duracion = static_cast<long>(cuadros) * VUELTAS_POR_CUADRO_ENEMIGO;
     cuadro = static_cast<int>((duracion - enemigo.vueltas_atacando) /
                               VUELTAS_POR_CUADRO_ENEMIGO);
@@ -251,7 +271,6 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
           camara_y;
 
-  // TODO: VER DE SACAR, ES PARA DIFERENCIAR A LA VAMPIRA DEL VAMPIRO
   if (enemigo.tipo == VAMPIRA)
     textura->SetColorMod(255, 170, 200);
   renderer.Copy(*textura, origen, Rect(x + correccion_x, y, tamanio, tamanio),

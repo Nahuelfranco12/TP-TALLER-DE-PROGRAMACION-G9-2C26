@@ -297,7 +297,8 @@ int main(int argc, char *argv[]) try {
           evento.key.keysym.sym == TECLA_CHEAT_RIEGO && evento.key.repeat == 0)
         client.send_cheat_water(dir);
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_t && evento.key.repeat == 0)
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_t &&
+          evento.key.repeat == 0)
         client.send_chat("Hola, gente!");
 
       if (evento.type == SDL_KEYDOWN &&

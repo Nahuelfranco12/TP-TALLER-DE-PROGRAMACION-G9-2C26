@@ -28,7 +28,8 @@ public:
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
-  void addPlayer(int id, const std::string &name, PlayerOutfit outfit, IdSector idSector);
+  void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
+                 IdSector idSector);
   void removePlayer(int id);
 
   bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,

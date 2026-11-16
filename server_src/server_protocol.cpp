@@ -44,9 +44,9 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
   protocol.send_u8(static_cast<uint8_t>(state.dayNumber));
   protocol.send_u8(static_cast<uint8_t>(state.chat.size()));
   for (const ChatMessageDto &message : state.chat) {
-      protocol.send_string(message.fromName);
-      protocol.send_string(message.text);
-      protocol.send_u8(message.isPrivate ? 1 : 0);
+    protocol.send_string(message.fromName);
+    protocol.send_string(message.text);
+    protocol.send_u8(message.isPrivate ? 1 : 0);
   }
 }
 
@@ -200,9 +200,9 @@ WaterDto ServerProtocol::receive_cheat_water() {
 }
 
 ChatDto ServerProtocol::receive_chat() {
-    ChatDto dto;
-    dto.text = protocol.receive_string();
-    return dto;
+  ChatDto dto;
+  dto.text = protocol.receive_string();
+  return dto;
 }
 
 DirectionDto ServerProtocol::byte_to_direction(uint8_t direction_byte) {

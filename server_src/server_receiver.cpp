@@ -29,7 +29,8 @@ void ServerReceiver::run() {
         if (was_found) {
           match = found;
           match->join(client_id, to_send_queue,
-                      factory.create_join(client_id, request.player_name, request.player_outfit));
+                      factory.create_join(client_id, request.player_name,
+                                          request.player_outfit));
         }
       }
     }

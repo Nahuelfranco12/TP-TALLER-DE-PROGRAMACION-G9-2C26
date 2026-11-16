@@ -33,6 +33,8 @@ private:
 
   SDL2pp::Texture minerales;
   SDL2pp::Texture esqueleto;
+  SDL2pp::Texture esqueleto_caminando;
+  SDL2pp::Texture esqueleto_atacando;
   SDL2pp::Texture orco_quieto;
   SDL2pp::Texture orco_caminando;
   SDL2pp::Texture orco_atacando;
@@ -53,6 +55,9 @@ private:
                                 const std::vector<Enemigo> &anteriores,
                                 const std::vector<Enemigo> &actuales);
 
+  // Cuántas vueltas dura una pasada de la hoja de ataque de ese tipo
+  long duracion_ataque(TipoEnemigo tipo) const;
+
   void dibujar_mineral(SDL2pp::Renderer &renderer, const Mineral &mineral,
                        int camara_x, int camara_y, int lado);
   void dibujar_enemigo(SDL2pp::Renderer &renderer, const Enemigo &enemigo,
@@ -63,7 +68,6 @@ public:
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 
-  // Un jugador en ese tile perdió vida: los orcos de al lado le pegaron
   void golpearon_a(int tile_x, int tile_y);
 
   void animar(long vueltas_pasadas);
