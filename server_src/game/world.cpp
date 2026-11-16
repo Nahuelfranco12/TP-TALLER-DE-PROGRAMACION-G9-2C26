@@ -37,10 +37,37 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
   return doorOrigin && doorDestine;
 }
 
+bool World::createCabin(int playerId, Position top) {
+  if (playerId < 0 || playerId >= MAX_PLAYERS)
+    return false;
+
+  IdSector cabinId = cabinSectorId(playerId);
+  if (this->sectors.count(cabinId))
+    return true;
+
+  auto *farm = dynamic_cast<FarmSector *>(this->getSector(IdSector::FARM));
+  if (!farm)
+    return false;
+
+  auto b = farm->placeCabin(playerId, top);
+  if (!b)
+    return false;
+
+  if (!this->addSector(std::make_unique<CabinSector>(playerId, cabinId)))
+    return false;
+
+  return this->addDoor(IdSector::FARM, cabinId, b->door,
+                       Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
+}
+
 void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
                       IdSector idSector) {
   auto sectorIt = this->sectors.find(idSector);
   if (sectorIt == this->sectors.end())
+    return;
+  
+  // TODO: revisar porque se deben leer del archivo las posiciones de las cabañas
+  if (!this->createCabin(id, Position(2 + 10 * id, 1)))
     return;
 
   Sector &sector = *sectorIt->second;

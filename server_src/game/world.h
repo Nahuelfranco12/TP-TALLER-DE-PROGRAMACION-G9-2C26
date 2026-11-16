@@ -10,6 +10,8 @@
 #include "./sectors/sector.h"
 #include "game_constants.h"
 #include "position.h"
+#include "sectors/farm_sector.h"
+#include "sectors/cabin_sector.h"
 
 class World {
 private:
@@ -28,6 +30,8 @@ public:
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
+  bool createCabin(int playerId, Position top);
+
   void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
                  IdSector idSector);
   void removePlayer(int id);
@@ -35,7 +39,6 @@ public:
   bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
                     double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
-
   bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
 
   Player *getPlayer(int id);

@@ -17,6 +17,7 @@
 #include "../move_result.h"
 #include "../position.h"
 #include "../terrain.h"
+#include "../building.h"
 
 class Sector {
 protected:
@@ -24,6 +25,7 @@ protected:
   size_t height;
   IdSector id;
   std::vector<std::vector<Terrain>> tiles;
+  std::vector<Building> buildings;
   std::map<Position, std::unique_ptr<Entity>> entities;
   std::map<Position, std::unique_ptr<Trap>> traps;
   std::map<Position, std::unique_ptr<Door>> doors;
@@ -43,6 +45,8 @@ public:
       return;
     tiles[pos.x][pos.y] = Terrain(false, false, type);
   }
+    
+  bool placeBuilding(const Building &building);
 
   virtual bool addEntity(std::unique_ptr<Entity> entity, Position pos);
   std::unique_ptr<Entity> removeEntity(Position pos);

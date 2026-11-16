@@ -17,6 +17,16 @@ struct TerrainState {
   bool tilled = false;
 };
 
+struct BuildingState {
+  BuildingType type;
+  Position topLeft;
+  size_t width;
+  size_t height;
+  Position door;
+  IdSector interior;
+  int ownerId;
+};
+
 struct CropState {
   CropTypes type{};
   CropGrowth growth{};
@@ -104,6 +114,7 @@ struct SectorState {
   size_t width = 0;
   size_t height = 0;
   std::vector<std::vector<TerrainState>> tiles;
+  std::vector<BuildingState> buildings;
   std::vector<EntityState> entities;
 };
 

@@ -1,6 +1,8 @@
 #ifndef GAME_CONSTANTS_H_
 #define GAME_CONSTANTS_H_
 
+#define MAX_PLAYERS 4
+
 #define PLAYER_MAX_ENERGY 100
 #define ENERGY_COST_PLANT 2
 #define ENERGY_COST_WATER 1
@@ -15,6 +17,8 @@
 #define CABIN_DIMENSION_2 10
 #define CABIN_OUTSIDE_HEIGHT 5
 #define CABIN_OUTSIDE_WIDTH 5
+#define CABIN_ENTRY_X 7
+#define CABIN_ENTRY_Y 9
 
 #define CAVERN_DIMENSION 40
 
@@ -137,6 +141,8 @@ enum IdSector {
 };
 
 enum TerrainType { DIRT, GRASS, GROUND, WOOD, HOUSE };
+
+enum class BuildingType { CABIN_PLAYER_1, CABIN_PLAYER_2, CABIN_PLAYER_3, CABIN_PLAYER_4, SHOP_MARNIE, SHOP_CLINT };
 
 enum class AnimalType { COW, CHICKEN };
 
