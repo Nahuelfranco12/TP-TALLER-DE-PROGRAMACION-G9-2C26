@@ -8,6 +8,7 @@
 #include "inventario.h"
 #include "mapa_mundo.h"
 #include "pueblo.h"
+#include "chat.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -145,6 +146,7 @@ int main(int argc, char *argv[]) try {
   Interfaz interfaz(renderer, servicio.codigo());
 
   Inventario inventario(renderer);
+  Chat chat(renderer);
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -160,6 +162,12 @@ int main(int argc, char *argv[]) try {
     // Proceso eventos
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
+      std::string mensaje;
+      if (chat.manejar_evento(evento, mensaje)) {
+        if (!mensaje.empty())
+          client.send_chat(mensaje);
+        continue;
+      }
       if (evento.type == SDL_MOUSEBUTTONDOWN &&
           evento.button.button == SDL_BUTTON_LEFT) {
         int mouse_x = evento.button.x;
@@ -359,6 +367,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      chat.agregar(state.chat);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
       if (state.type != zona) {
@@ -500,6 +509,7 @@ int main(int argc, char *argv[]) try {
     }
 
     interfaz.dibujar(renderer, audio);
+    chat.dibujar(window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);
