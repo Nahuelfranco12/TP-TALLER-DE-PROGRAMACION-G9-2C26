@@ -76,6 +76,13 @@ struct PlayerOutfitState {
   PlayerPants pants;
 };
 
+struct ChatMessageState {
+  int fromId;
+  std::string fromName;
+  int toId;
+  std::string text;
+};
+
 struct PlayerState {
   int id = 0;
   Position position;
@@ -110,6 +117,7 @@ struct WorldState {
   std::vector<PlayerState> players;
   size_t dayNumber = 1;
   GameTime time{6, 0};
+  std::vector<ChatMessageState> chat;
 };
 
 #endif // WORLD_STATE_H_

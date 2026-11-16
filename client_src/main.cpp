@@ -3,6 +3,7 @@
 #include "caverna.h"
 #include "client.h"
 #include "common_src/game_dtos.h"
+#include "constantes_sdl.h"
 #include "granja.h"
 #include "inventario.h"
 #include "mapa_mundo.h"
@@ -15,7 +16,6 @@
 #include "servicio_lobby_red.h"
 #include "tasa_constante.h"
 #include <algorithm>
-#include <iostream>
 
 #include <QApplication>
 
@@ -39,10 +39,10 @@ using SDL2pp::SDLTTF;
 using SDL2pp::Window;
 
 namespace {
-const int SOMBREROS_SDL[] = {45, 4, 40, 61, 121, 99};
-const int PELOS_SDL[] = {9, 10, 33, 69, 21, 27};
-const int PANTALONES_SDL[] = {0, 2, 5, 6};
-const int REMERAS_SDL[] = {9, 19, 36, 27, 104};
+const int SOMBREROS_SDL[] = ROPA_SOMBREROS_SDL;
+const int PELOS_SDL[] = ROPA_PELOS_SDL;
+const int PANTALONES_SDL[] = ROPA_PANTALONES_SDL;
+const int REMERAS_SDL[] = ROPA_REMERAS_SDL;
 
 void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   QApplication app(argc, argv);
@@ -73,30 +73,32 @@ bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
 } // namespace
 
 int main(int argc, char *argv[]) try {
-  if (argc != 3) {
-    std::cerr << "Uso: " << argv[0] << " <host> <puerto>" << std::endl;
-    return 1;
+  if (argc != CANTIDAD_ARGUMENTOS) {
+    std::cerr << TEXTO_JUEGO_USO << argv[0] << TEXTO_JUEGO_ARGUMENTOS
+              << std::endl;
+    return EXIT_FAILURE;
   }
 
-  Client client(argv[1], argv[2]);
+  Client client(argv[ARGUMENTO_HOST], argv[ARGUMENTO_PUERTO]);
   ServicioLobbyRed servicio(client);
 
   mostrarLobby(argc, argv, servicio);
   if (!servicio.estaEnPartida())
-    return 0; // cerró el lobby sin entrar a ninguna partida
+    return EXIT_SUCCESS; // cerró el lobby sin entrar a ninguna partida
 
   // Initialize SDL library
   SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
   SDLImage image(IMG_INIT_PNG);
   SDLTTF ttf;
 
-  // Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-  Window window("Stardew Valley - Partida " + servicio.codigo(),
-                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
-                SDL_WINDOW_RESIZABLE);
+  // Ventana redimensionable, con el código de la partida en el título
+  Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigo(),
+                SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, VENTANA_ANCHO,
+                VENTANA_ALTO, SDL_WINDOW_RESIZABLE);
 
   // Create accelerated video renderer with default driver
-  Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+  Renderer renderer(window, RENDERER_DRIVER_POR_DEFECTO,
+                    SDL_RENDERER_ACCELERATED);
 
   // El granjero: carga sus texturas, su ropa y su posición
   Personaje personaje(renderer);
@@ -115,17 +117,18 @@ int main(int argc, char *argv[]) try {
     if (sector.type == SectorTypeDto::VILLAGE)
       village = sector;
   }
-  Mapa mapa_granja(renderer, farm.type, farm.width, farm.height, 42);
-  Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height, 7);
-  Mapa mapa_pueblo(renderer, village.type, village.width, village.height, 42);
+  Mapa mapa_granja(renderer, farm.type, farm.width, farm.height,
+                   SEMILLA_GRANJA);
+  Mapa mapa_caverna(renderer, cavern.type, cavern.width, cavern.height,
+                    SEMILLA_CAVERNA);
+  Mapa mapa_pueblo(renderer, village.type, village.width, village.height,
+                   SEMILLA_PUEBLO);
   mapa_granja.actualizar(farm.sector);
   mapa_caverna.actualizar(cavern.sector);
   mapa_pueblo.actualizar(village.sector);
 
-  const int TILE = 64;
-
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
-                          mapa_granja.obtener_alto(), 42);
+                          mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
 
   Granja granja(renderer);
   Caverna caverna(renderer);
@@ -143,8 +146,10 @@ int main(int argc, char *argv[]) try {
 
   Inventario inventario(renderer);
 
-  TasaConstante tasa(std::chrono::milliseconds(16)); // 60 vueltas por segundo
+  TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
+
+  const SDL2pp::Color fondo = COLOR_FONDO_JUEGO;
 
   // Los demás jugadores de la partida, por id
   std::map<size_t, std::unique_ptr<Personaje>> otros;
@@ -159,10 +164,10 @@ int main(int argc, char *argv[]) try {
           evento.button.button == SDL_BUTTON_LEFT) {
         int mouse_x = evento.button.x;
         int mouse_y = evento.button.y;
-        int camara_x = personaje.obtener_tile_x() * TILE + TILE / 2 -
-                       window.GetWidth() / 2;
+        int camara_x = personaje.obtener_tile_x() * TAMANIO_TILE +
+                       TAMANIO_TILE / 2 - window.GetWidth() / 2;
         int camara_y =
-            personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
+            personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
         bool acepto = false;
 
         if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
@@ -198,9 +203,9 @@ int main(int argc, char *argv[]) try {
             int casillero = 0;
             if (inventario.indice_item_seleccionado(casillero)) {
               int tile_x = static_cast<int>(
-                  std::floor((mouse_x + camara_x) / double(TILE)));
+                  std::floor((mouse_x + camara_x) / double(TAMANIO_TILE)));
               int tile_y = static_cast<int>(
-                  std::floor((mouse_y + camara_y) / double(TILE)));
+                  std::floor((mouse_y + camara_y) / double(TAMANIO_TILE)));
 
               for (const auto &[posicion, jugador] : ultimo_estado.players) {
                 int px = static_cast<int>(posicion.x);
@@ -215,7 +220,7 @@ int main(int argc, char *argv[]) try {
                 bool es_otro =
                     static_cast<int>(jugador.id) != client.get_my_id();
 
-                if (lo_toque && es_otro && distancia == 1) {
+                if (lo_toque && es_otro && distancia == REGALO_DISTANCIA) {
                   client.send_gift_offer(static_cast<int>(jugador.id),
                                          casillero);
                 }
@@ -229,7 +234,7 @@ int main(int argc, char *argv[]) try {
         corriendo = false;
       }
       // Si el usuario presiona ESC, se cierra la ventana
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_ESCAPE) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_SALIR) {
         if (pueblo.hay_tienda_abierta()) {
           pueblo.cerrar_tienda();
         } else {
@@ -238,14 +243,15 @@ int main(int argc, char *argv[]) try {
       }
 
       // M abre y cierra mapa
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_m) {
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_MAPA) {
         viendo_mapa = !viendo_mapa;
       }
 
       // 1 a 9 seleccionar herramienta
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym >= SDLK_1 &&
-          evento.key.keysym.sym <= SDLK_9) {
-        inventario.seleccionar(evento.key.keysym.sym - SDLK_1);
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym >= TECLA_PRIMER_CASILLERO &&
+          evento.key.keysym.sym <= TECLA_ULTIMO_CASILLERO) {
+        inventario.seleccionar(evento.key.keysym.sym - TECLA_PRIMER_CASILLERO);
         ToolTypeDto herramienta = ToolTypeDto::PICKAXE;
         if (inventario.herramienta_seleccionada(herramienta)) {
           client.send_select_tool(herramienta);
@@ -253,11 +259,13 @@ int main(int argc, char *argv[]) try {
       }
 
       // Y / N: aceptar o rechazar el regalo
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_y) {
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_ACEPTAR_REGALO) {
         client.send_gift_response(true);
         interfaz.cerrar_regalo();
       }
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_n) {
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_RECHAZAR_REGALO) {
         client.send_gift_response(false);
         interfaz.cerrar_regalo();
       }
@@ -285,15 +293,20 @@ int main(int argc, char *argv[]) try {
         break;
       }
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_c &&
-          evento.key.repeat == 0)
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_CHEAT_RIEGO && evento.key.repeat == 0)
         client.send_cheat_water(dir);
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_COMMA &&
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_t &&
+          evento.key.repeat == 0)
+        client.send_chat("Hola, gente!");
+
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_CHEAT_CRECIMIENTO &&
           evento.key.repeat == 0)
         client.send_cheat_growth();
 
-      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_SPACE &&
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_ACCION &&
           evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;
         CropTypeDto cultivo = CropTypeDto::STRAWBERRY;
@@ -320,19 +333,19 @@ int main(int argc, char *argv[]) try {
       if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 &&
           !pueblo.hay_tienda_abierta()) {
         switch (evento.key.keysym.sym) {
-        case SDLK_UP:
+        case TECLA_ARRIBA:
           personaje.mirar(ARRIBA);
           client.send_move(DirectionDto::Up);
           break;
-        case SDLK_DOWN:
+        case TECLA_ABAJO:
           personaje.mirar(ABAJO);
           client.send_move(DirectionDto::Down);
           break;
-        case SDLK_LEFT:
+        case TECLA_IZQUIERDA:
           personaje.mirar(IZQUIERDA);
           client.send_move(DirectionDto::Left);
           break;
-        case SDLK_RIGHT:
+        case TECLA_DERECHA:
           personaje.mirar(DERECHA);
           client.send_move(DirectionDto::Right);
           break;
@@ -386,6 +399,11 @@ int main(int argc, char *argv[]) try {
           if (personaje.aplicar(x, y)) {
             audio.reproducir_paso();
           }
+          // Si perdió vida en la caverna, le pegaron los de al lado
+          if (zona == SectorTypeDto::CAVERN &&
+              jugador.life < personaje.obtener_vida()) {
+            caverna.golpearon_a(x, y);
+          }
           personaje.agarrar(jugador.actualTool);
           if (!jugador.inventory.empty()) { // TODO : revisar esto, vamos a
                                             // cambiar el inventory.front seguro
@@ -399,14 +417,19 @@ int main(int argc, char *argv[]) try {
         }
         presentes.insert(jugador.id);
         std::unique_ptr<Personaje> &otro = otros[jugador.id];
-        if (!otro) {
-          otro = std::make_unique<Personaje>(renderer); // recién llegado
+        bool recien_llegado = !otro;
+        if (recien_llegado) {
+          otro = std::make_unique<Personaje>(renderer);
           otro->vestir(SOMBREROS_SDL[static_cast<int>(jugador.outfit.hat)],
                        PELOS_SDL[static_cast<int>(jugador.outfit.hair)],
                        PANTALONES_SDL[static_cast<int>(jugador.outfit.pants)],
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        if (zona == SectorTypeDto::CAVERN && !recien_llegado &&
+            jugador.life < otro->obtener_vida()) {
+          caverna.golpearon_a(x, y);
+        }
         otro->poner_vida(jugador.life);
         otro->poner_energia(jugador.energy);
         otro->agarrar(jugador.actualTool);
@@ -419,7 +442,7 @@ int main(int argc, char *argv[]) try {
 
     // Si se cortó la conexión, se cierra el juego
     if (!client.is_connected()) {
-      std::cerr << "Se perdió la conexión con el servidor." << STRING_BRK;
+      std::cerr << TEXTO_JUEGO_CONEXION_PERDIDA << STRING_BRK;
       corriendo = false;
     }
 
@@ -432,9 +455,10 @@ int main(int argc, char *argv[]) try {
     pueblo.animar(vueltas);
 
     // Cámara centrada en el personaje
-    int camara_x =
-        personaje.obtener_tile_x() * TILE + TILE / 2 - window.GetWidth() / 2;
-    int camara_y = personaje.obtener_tile_y() * TILE - window.GetHeight() / 2;
+    int camara_x = personaje.obtener_tile_x() * TAMANIO_TILE +
+                   TAMANIO_TILE / 2 - window.GetWidth() / 2;
+    int camara_y =
+        personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
 
     Mapa *mapa_actual = &mapa_granja;
     if (zona == SectorTypeDto::CAVERN) {
@@ -443,7 +467,7 @@ int main(int argc, char *argv[]) try {
       mapa_actual = &mapa_pueblo;
     }
 
-    renderer.SetDrawColor(0, 0, 0, 255);
+    renderer.SetDrawColor(fondo);
     renderer.Clear();
 
     mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
@@ -494,9 +518,9 @@ int main(int argc, char *argv[]) try {
   }
 
   // Here all resources are automatically released and library deinitialized
-  return 0;
+  return EXIT_SUCCESS;
 } catch (std::exception &e) {
   // If case of error, print it and exit with error
   std::cerr << e.what() << std::endl;
-  return 1;
+  return EXIT_FAILURE;
 }

@@ -67,6 +67,7 @@ public:
   void agarrar(ToolTypeDto herramienta);
   void poner_vida(double nueva_vida);
   void poner_energia(double nueva_energia);
+  double obtener_vida() const;
   bool esta_picando() const { return vueltas_picando > 0; }
 
   // Dónde está (en tiles)
@@ -82,10 +83,10 @@ public:
                       int otro_tile_y, int camara_x, int camara_y, int lado);
 
   // Cambiar ropa y colores
-  void cambiar_pantalon();
-  void cambiar_remera();
-  void cambiar_pelo();
-  void cambiar_sombrero();
+  // void cambiar_pantalon();
+  // void cambiar_remera();
+  // void cambiar_pelo();
+  // void cambiar_sombrero();
   void cambiar_color_pantalon();
   void cambiar_color_pelo();
   void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,

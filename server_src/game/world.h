@@ -16,6 +16,7 @@ private:
   DaySpeed speed;
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
+  std::vector<ChatMessageState> chat;
 
   size_t dayTick;
   size_t dayNumber;
@@ -27,7 +28,8 @@ public:
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
-  void addPlayer(int id, PlayerOutfit outfit, IdSector idSector);
+  void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
+                 IdSector idSector);
   void removePlayer(int id);
 
   bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
@@ -45,6 +47,10 @@ public:
 
   GameTime currentTime() const;
   WorldState state() const;
+
+  void addChat(const ChatMessageState &message);
+  void clearChat();
+  Player *getPlayerByName(const std::string &name);
 
   void tick();
   void endDay();

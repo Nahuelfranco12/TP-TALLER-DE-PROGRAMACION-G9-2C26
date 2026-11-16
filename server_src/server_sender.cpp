@@ -14,6 +14,8 @@ void ServerSender::run() {
       WorldState state = to_send_queue.pop();
       WorldState newer_state;
       while (to_send_queue.try_pop(newer_state)) {
+        newer_state.chat.insert(newer_state.chat.begin(), state.chat.begin(),
+                                state.chat.end());
         state = std::move(newer_state);
       }
       std::optional<SectorStateDto> dto = builder.build(state, client_id);

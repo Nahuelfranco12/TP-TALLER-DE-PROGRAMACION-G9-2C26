@@ -61,15 +61,21 @@ CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
   return std::make_unique<CheatWaterCropCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id,
+                                                const ChatDto &dto) {
+  return std::make_unique<ChatCommand>(player_id, dto.text);
+}
+
 std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {
   return std::make_unique<CheatGrowthCommand>(player_id);
 }
 
 std::unique_ptr<Command>
-CommandFactory::create_join(int player_id, const PlayerOutfitDto &outfit) {
+CommandFactory::create_join(int player_id, const std::string &name,
+                            const PlayerOutfitDto &outfit) {
   PlayerOutfit game_outfit(static_cast<PlayerHats>(outfit.hat),
                            static_cast<PlayerHairs>(outfit.hair),
                            static_cast<PlayerShirts>(outfit.tshirt),
                            static_cast<PlayerPants>(outfit.pants));
-  return std::make_unique<JoinCommand>(player_id, game_outfit);
+  return std::make_unique<JoinCommand>(player_id, name, game_outfit);
 }

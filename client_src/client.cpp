@@ -1,15 +1,15 @@
 #include "client.h"
 
-#include <functional>
-#include <iostream>
-#include <map>
-#include <sstream>
+// #include <functional>
+// #include <map>
+// #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "../common_src/constants.h"
 #include "actions/attack_action.h"
+#include "actions/chat_action.h"
 #include "actions/cheat_growth_action.h"
 #include "actions/collect_action.h"
 #include "actions/gift_offer_action.h"
@@ -25,57 +25,6 @@ Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
       received_queue(QUEUE_MAX_SIZE), to_send_queue(QUEUE_MAX_SIZE),
       receiver(protocol, received_queue), sender(protocol, to_send_queue) {}
-
-// igual este run es de prueba, hay q sacarlo conectandolo con sdl
-void Client::run() {
-  std::string line;
-
-  // TEST POR CONSOLA PARA LA PARTE DE QT (MENU)
-  while (!in_game && std::getline(std::cin, line)) {
-    if (line.rfind("c ", 0) == 0) {
-      std::cout << "Partida creada, código: " << create_match(line.substr(2))
-                << STRING_BRK;
-    } else if (line == "l") {
-      for (const MatchInfoDto &m : list_matches())
-        std::cout << m.code << " - " << m.name << " (" << m.players
-                  << " jugadores)" << STRING_BRK;
-    } else if (line.rfind("j ", 0) == 0) {
-      if (join_match(line.substr(2), "jugador", PlayerOutfitDto{}))
-        std::cout << "Te uniste. Sos el jugador " << my_id << STRING_BRK;
-      else
-        std::cout << "No existe esa partida" << STRING_BRK;
-    } else if (line == "q") {
-      return;
-    }
-  }
-  SectorStateDto state;
-
-  // TEST POR CONSOLA DEL MOVIMIENTO DE LOS JUGADORES
-  while (std::getline(std::cin, line) && line != "q") {
-    if (!is_connected()) {
-      break;
-    }
-
-    if (line == "w")
-      send_move(DirectionDto::Up);
-    else if (line == "s")
-      send_move(DirectionDto::Down);
-    else if (line == "a")
-      send_move(DirectionDto::Left);
-    else if (line == "d")
-      send_move(DirectionDto::Right);
-
-    if (try_get_latest_state(state)) {
-      // players es un mapa: posición -> jugador
-      for (const auto &[posicion, jugador] : state.players) {
-        std::string mensaje = "Jugador " + std::to_string(jugador.id) +
-                              " en: " + std::to_string(posicion.x) + ", " +
-                              std::to_string(posicion.y) + STRING_BRK;
-        std::cout << mensaje;
-      }
-    }
-  }
-}
 
 // Métodos de acciones
 
@@ -119,6 +68,10 @@ void Client::send_attack(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<AttackAction>(direction));
 }
 
+void Client::send_chat(const std::string &text) {
+  to_send_queue.try_push(std::make_unique<ChatAction>(text));
+}
+
 void Client::send_cheat_water(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<WaterAction>(direction));
 }
@@ -130,12 +83,18 @@ void Client::send_cheat_growth() {
 bool Client::try_get_latest_state(SectorStateDto &state) {
   bool has_been_received = false;
   SectorStateDto next_state;
+  std::vector<ChatMessageDto> chat;
   while (received_queue.try_pop(next_state)) {
     has_been_received = true;
+    chat.insert(
+        chat.end(), next_state.chat.begin(),
+        next_state.chat.end()); // TODO: Revisar si lo podemos sacar (está del
+                                // lado del serversender tambien)
   }
 
   if (has_been_received) {
     state = std::move(next_state);
+    state.chat = std::move(chat);
   }
   return has_been_received;
 }

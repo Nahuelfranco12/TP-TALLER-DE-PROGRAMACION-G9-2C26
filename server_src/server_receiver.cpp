@@ -29,7 +29,8 @@ void ServerReceiver::run() {
         if (was_found) {
           match = found;
           match->join(client_id, to_send_queue,
-                      factory.create_join(client_id, request.player_outfit));
+                      factory.create_join(client_id, request.player_name,
+                                          request.player_outfit));
         }
       }
     }
@@ -81,6 +82,10 @@ void ServerReceiver::run() {
         match->push_command(factory.create_cheat_water(
             client_id, protocol.receive_cheat_water()));
         break;
+      case OP_CHAT: {
+        match->push_command(factory.create(client_id, protocol.receive_chat()));
+        break;
+      }
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
         break;

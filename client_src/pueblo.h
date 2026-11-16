@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../common_src/game_dtos.h"
+#include "constantes_sdl.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -58,7 +59,7 @@ public:
   void animar(long vueltas_pasadas);
 
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
-               int lado = 64);
+               int lado = TAMANIO_TILE);
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 

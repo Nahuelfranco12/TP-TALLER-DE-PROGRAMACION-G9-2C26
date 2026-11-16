@@ -37,6 +37,7 @@ target_sources(taller_client
     actions/till_action.cpp
     actions/water_action.cpp
     actions/attack_action.cpp
+    actions/chat_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
@@ -88,6 +89,7 @@ target_sources(taller_client
     actions/gift_offer_action.h
     actions/gift_response_action.h
     actions/attack_action.h
+    actions/chat_action.h
     actions/cheat_growth_action.h
     pueblo.h
     mapa_mundo.h
