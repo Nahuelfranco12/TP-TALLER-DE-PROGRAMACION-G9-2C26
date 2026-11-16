@@ -42,6 +42,8 @@ public:
   void tick() override;
 
   virtual Decision decide(const Sector &sector);
+  virtual void apply(Sector &sector, Position origin,
+                     const Decision &decision);
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();
