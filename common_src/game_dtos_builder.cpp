@@ -230,6 +230,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
 
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           entityDto.enemy.alive = e.enemy.is_alive;
+          entityDto.enemy.direction = e.enemy.direction;
           sectorDto.entities[pos] = entityDto;
         }
       }

@@ -15,6 +15,7 @@ private:
   size_t inactiveTicks;
   size_t remainingTicks;
   bool active;
+  bool triggered;
 
 public:
   Trap(size_t pos_x, size_t pos_y, EnemyType trapType,
@@ -23,19 +24,23 @@ public:
       : Entity(pos_x, pos_y, EntityTypes::ENEMY), trapType(trapType),
         direction(direction), damage(damage), activeTicks(activeTicks),
         inactiveTicks(inactiveTicks), remainingTicks(inactiveTicks),
-        active(false) {}
+        active(false), triggered(false) {}
 
   void tick() override {
+    triggered = false;
+
     if (remainingTicks > 0)
       remainingTicks--;
 
     if (remainingTicks == 0) {
       active = !active;
       remainingTicks = active ? activeTicks : inactiveTicks;
+      triggered = active;
     }
   }
 
   bool isActive() const { return active; }
+  bool wasTriggered() const { return triggered; }
   EnemyType getTrapType() const { return trapType; }
   DirectionDto getDirection() const { return direction; }
   int getDamage() const { return damage; }

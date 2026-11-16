@@ -18,6 +18,7 @@ const FormatoEnemigo FORMATO_ORCO{100, 57};
 const FormatoEnemigo FORMATO_VAMPIRO{32, 29};
 const FormatoEnemigo FORMATO_CALAVERA_AZUL{16, 16};
 const FormatoEnemigo FORMATO_CALAVERA_VERDE{16, 16};
+const FormatoEnemigo FORMATO_TRAMPA{16, 16};
 
 const int PIXELES_POR_TILE = 16;
 
@@ -31,6 +32,9 @@ Caverna::Caverna(Renderer &renderer)
       vampiro_quieto(renderer, "assets/enemigos/enemies-vampire_idle.png"),
       calavera_azul_quieto(renderer, "assets/enemigos/enemies-skull_blue_idle.png"),
       calavera_verde_quieto(renderer, "assets/enemigos/enemies-skull_green_idle.png"),
+      pinches(renderer, "assets/enemigos/enemies-peaks_1.png"),
+      lanzallamas_1(renderer, "assets/enemigos/enemies-flamethrower_1_1.png"),
+      lanzallamas_2(renderer, "assets/enemigos/enemies-flamethrower_2_1.png"),
       vueltas(0) {}
 
 void Caverna::actualizar(
@@ -58,6 +62,16 @@ void Caverna::actualizar(
       continue;
     } else if (entidad.type == EntityTypeDto::SKULL_GREEN) {
       lista_enemigos.push_back({CALAVERA_VERDE, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
+      continue;
+    } else if (entidad.type == EntityTypeDto::TRAP_PINCH) {
+      lista_enemigos.push_back({TRAMPA_PINCHES, static_cast<int>(pos.x),
+                                static_cast<int>(pos.y), true,
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::TRAP_FLAME) {
+      lista_enemigos.push_back({TRAMPA_LANZALLAMAS, static_cast<int>(pos.x),
+                                static_cast<int>(pos.y), true,
+                                entidad.enemy.direction});
       continue;
     }
 
@@ -109,6 +123,9 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   if (!enemigo.vivo)
     return;
 
+  int x = enemigo.tile_x * lado - camara_x;
+  int y = enemigo.tile_y * lado - camara_y;
+
   SDL2pp::Texture *textura = &esqueleto;
   FormatoEnemigo formato = FORMATO_ESQUELETO;
   switch (enemigo.tipo) {
@@ -134,9 +151,23 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
     textura = &calavera_verde_quieto;
     formato = FORMATO_CALAVERA_VERDE;
     break;
+  case TRAMPA_PINCHES:
+    textura = &pinches;
+    formato = FORMATO_TRAMPA;
+    break;
+  case TRAMPA_LANZALLAMAS:
+    textura = enemigo.direction == DirectionDto::Up ||
+                      enemigo.direction == DirectionDto::Left
+                  ? &lanzallamas_1
+                  : &lanzallamas_2;
+    formato = FORMATO_TRAMPA;
+    break;
   }
 
   int cuadros = textura->GetWidth() / formato.lado;
+  if (cuadros <= 0)
+    return;
+
   int cuadro =
       static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
 
@@ -144,9 +175,9 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
 
   int tamanio = formato.lado * lado / PIXELES_POR_TILE;
 
-  int x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
-  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
-          camara_y;
+  x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
+  y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
+      camara_y;
 
   // TODO: VER DE SACAR, ES PARA DIFERENCIAR A LA VAMPIRA DEL VAMPIRO
   if (enemigo.tipo == VAMPIRA)

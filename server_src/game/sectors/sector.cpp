@@ -228,7 +228,7 @@ void Sector::tick() {
     trap->tick();
 
   for (const auto &[pos, trap] : this->traps) {
-    if (!trap->isActive())
+    if (!trap->wasTriggered())
       continue;
 
     Position target = pos;

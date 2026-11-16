@@ -210,6 +210,7 @@ struct CropDto {
 
 struct EnemyDto {
   bool alive = true;
+  DirectionDto direction = DirectionDto::Up;
 };
 
 struct EntityDto {
