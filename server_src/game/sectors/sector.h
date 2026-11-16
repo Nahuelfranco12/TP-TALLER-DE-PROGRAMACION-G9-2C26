@@ -45,6 +45,7 @@ public:
   // std::unique_ptr<Door> removeDoor(Position pos);
 
   void growthCheatAll();
+  void cheatEnemies();
 
   /*
    * getters

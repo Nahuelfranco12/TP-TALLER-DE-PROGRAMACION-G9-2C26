@@ -47,6 +47,7 @@ public:
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
   void send_end_day_cheat();
+  void send_enemies_damage_cheat();
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

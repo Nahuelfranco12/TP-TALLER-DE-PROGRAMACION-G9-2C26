@@ -92,6 +92,9 @@ void ServerReceiver::run() {
       case OP_CHEAT_END_DAY:
         match->push_command(factory.create_cheat_end_day(client_id));
         break;
+      case OP_CHEAT_ENEMIES_DAMAGE:
+        match->push_command(factory.create_cheat_enemies_damage(client_id));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }

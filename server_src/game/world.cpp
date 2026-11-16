@@ -149,6 +149,12 @@ void World::endDayCheat() {
   this->dayTick = TICKS_PER_DAY - 240;
 }
 
+void World::cavernCheat() {
+  for (auto &[id, sectorPtr] : this->sectors) {
+    sectorPtr->cheatEnemies();
+  }
+}
+
 GameTime World::currentTime() const {
   size_t GAME_TOTAL_MINUTES = DAY_DURATION_HOUR * 60;
 

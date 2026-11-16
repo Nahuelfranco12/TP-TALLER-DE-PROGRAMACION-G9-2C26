@@ -42,6 +42,7 @@ target_sources(taller_client
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
     actions/cheat_end_day_action.cpp
+    actions/cheat_enemies_damage_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
@@ -93,6 +94,7 @@ target_sources(taller_client
     actions/chat_action.h
     actions/cheat_growth_action.h
     actions/cheat_end_day_action.h
+    actions/cheat_enemies_damage_action.h
     pueblo.h
     mapa_mundo.h
     )

@@ -83,6 +83,14 @@ void Sector::growthCheatAll() {
   }
 }
 
+void Sector::cheatEnemies() {
+  for (auto &[position, entityPtr] : this->entities) {
+    if (entityPtr->getType() == EntityTypes::ENEMY) {
+      static_cast<Enemy &>(*entityPtr).cheat();
+    }
+  }
+}
+
 std::unique_ptr<Entity> Sector::removeEntity(Position pos) {
   auto it = this->entities.find(pos);
   if (it == this->entities.end())

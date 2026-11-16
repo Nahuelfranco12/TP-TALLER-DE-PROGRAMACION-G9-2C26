@@ -56,6 +56,7 @@ public:
   */
   void growthCheatAll();
   void endDayCheat();
+  void cavernCheat();
 
   /*
   * State
