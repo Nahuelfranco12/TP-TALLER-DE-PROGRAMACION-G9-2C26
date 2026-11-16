@@ -46,6 +46,7 @@ public:
   void send_chat_dto(const ChatDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
+  void send_end_day_cheat();
 
   // Protocolo de menú
   void send_create_match(const std::string &name);

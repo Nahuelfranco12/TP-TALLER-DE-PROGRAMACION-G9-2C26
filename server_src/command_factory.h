@@ -21,6 +21,7 @@
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
+#include "./game/commands/cheats/cheat_end_day_command.h"
 
 class CommandFactory {
 public:
@@ -40,6 +41,7 @@ public:
   std::unique_ptr<Command> create_cheat_water(int player_id,
                                               const WaterDto &dto);
   std::unique_ptr<Command> create_cheat_growth(int player_id);
+  std::unique_ptr<Command> create_cheat_end_day(int player_id);
 };
 
 #endif // COMMAND_FACTORY_H_

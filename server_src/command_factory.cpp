@@ -70,6 +70,10 @@ std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {
   return std::make_unique<CheatGrowthCommand>(player_id);
 }
 
+std::unique_ptr<Command> CommandFactory::create_cheat_end_day(int player_id) {
+  return std::make_unique<CheatEndDayCommand>(player_id);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_join(int player_id, const std::string &name,
                             const PlayerOutfitDto &outfit) {

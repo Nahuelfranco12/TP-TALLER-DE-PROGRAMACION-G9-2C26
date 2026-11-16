@@ -39,6 +39,7 @@ public:
   void send_chat(const std::string &text);
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
+  void send_end_day_cheat();
 
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;
