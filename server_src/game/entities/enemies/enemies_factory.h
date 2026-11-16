@@ -6,6 +6,7 @@
 #include "../../game_constants.h"
 #include "../../position.h"
 #include "enemy.h"
+#include "trap.h"
 
 class EnemiesFactory {
 private:
@@ -18,6 +19,8 @@ public:
   std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>>
   createVampires(Position firstPos);
   std::unique_ptr<Enemy> createEnemy(EnemyType enemyType, Position position);
+  std::unique_ptr<Entity> createTrap(EnemyType trapType, Position position,
+                                     DirectionDto direction = DirectionDto::Up);
 };
 
 #endif // ENEMIES_FACTORY_H_

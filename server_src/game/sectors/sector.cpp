@@ -6,6 +6,7 @@
 
 #include "../cheatable/growth_cheat.h"
 #include "../entities/enemies/enemy.h"
+#include "../entities/enemies/trap.h"
 #include "../entities/player.h"
 
 MoveResult Sector::move(Position origin, Position destine) {
@@ -47,6 +48,17 @@ bool Sector::isEmpty(Position pos) const {
 }
 
 bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
+  if (auto *trap = dynamic_cast<Trap *>(entity.get())) {
+    if (this->traps.find(pos) != this->traps.end())
+      return false;
+
+    trap->setPosition(pos);
+    std::unique_ptr<Trap> trapEntity(
+        static_cast<Trap *>(entity.release()));
+    auto [it, inserted] = this->traps.try_emplace(pos, std::move(trapEntity));
+    return inserted;
+  }
+
   if (!isEmpty(pos))
     return false;
 
@@ -99,7 +111,8 @@ Position Sector::findFreePosition() const {
   for (size_t x = 0; x < this->width; x++)
     for (size_t y = 0; y < this->height; y++) {
       Position pos(x, y);
-      if (this->entities.find(pos) == this->entities.end())
+      if (this->entities.find(pos) == this->entities.end() &&
+          this->traps.find(pos) == this->traps.end())
         return pos;
     }
   return Position(0, 0);
@@ -121,9 +134,11 @@ bool Sector::isTilled(Position pos) const {
 SectorState Sector::state() const {
   SectorState state{id, width, height, {}, {}};
 
-  state.entities.reserve(entities.size());
+  state.entities.reserve(entities.size() + traps.size());
   for (const auto &[pos, entity] : entities)
     state.entities.push_back(entity->entityState());
+  for (const auto &[pos, trap] : traps)
+    state.entities.push_back(trap->entityState());
 
   state.tiles.assign(width, std::vector<TerrainState>(height));
   for (size_t x = 0; x < width; ++x)
@@ -207,6 +222,44 @@ void Sector::apply(Position origin, const Decision &decision) {
 void Sector::tick() {
   for (auto &[pos, entity] : this->entities) {
     entity->tick();
+  }
+
+  for (auto &[pos, trap] : this->traps)
+    trap->tick();
+
+  for (const auto &[pos, trap] : this->traps) {
+    if (!trap->isActive())
+      continue;
+
+    Position target = pos;
+    if (trap->getTrapType() == EnemyType::TRAP_FLAME) {
+      int x = static_cast<int>(pos.x);
+      int y = static_cast<int>(pos.y);
+      switch (trap->getDirection()) {
+      case DirectionDto::Up:
+        y--;
+        break;
+      case DirectionDto::Down:
+        y++;
+        break;
+      case DirectionDto::Left:
+        x--;
+        break;
+      case DirectionDto::Right:
+        x++;
+        break;
+      }
+
+      if (x < 0 || y < 0 || x >= static_cast<int>(width) ||
+          y >= static_cast<int>(height))
+        continue;
+
+      target = Position(static_cast<size_t>(x), static_cast<size_t>(y));
+    }
+
+    Player *player = dynamic_cast<Player *>(getEntity(target));
+    if (player && !player->isUnconscious())
+      player->takeDamage(trap->getDamage());
   }
 
   std::map<Position, Decision> decisions;

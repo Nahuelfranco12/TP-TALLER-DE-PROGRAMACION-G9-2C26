@@ -11,6 +11,7 @@
 #include "../decision.h"
 #include "../entities/door.h"
 #include "../entities/entity.h"
+#include "../entities/enemies/trap.h"
 #include "../entities/player.h"
 #include "../game_constants.h"
 #include "../move_result.h"
@@ -24,6 +25,7 @@ protected:
   IdSector id;
   std::vector<std::vector<Terrain>> tiles;
   std::map<Position, std::unique_ptr<Entity>> entities;
+  std::map<Position, std::unique_ptr<Trap>> traps;
   std::map<Position, std::unique_ptr<Door>> doors;
 
 public:

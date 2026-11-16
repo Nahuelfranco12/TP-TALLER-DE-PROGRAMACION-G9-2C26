@@ -36,6 +36,7 @@ private:
 
   void spawnMinerals();
   void spawnEnemies();
+  void spawnTraps();
   void clearEntities();
   void initEntities();
   Position randomFreePosition();

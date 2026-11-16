@@ -4,6 +4,7 @@
 
 #include "entities/chicken.h"
 #include "entities/cow.h"
+#include "entities/enemies/enemies_factory.h"
 #include "entities/mineral.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
@@ -90,31 +91,37 @@ bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
   if (it == this->sectors.end())
     return false;
 
+  EnemiesFactory factory;
   std::unique_ptr<Entity> enemy;
   switch (type) {
   case EnemyType::SKELETON:
+    enemy = factory.createEnemy(type, pos);
     break;
 
   case EnemyType::ORC:
+    enemy = factory.createEnemy(type, pos);
     break;
 
   case EnemyType::TRAP_FLAME:
+    enemy = factory.createTrap(type, pos);
     break;
 
   case EnemyType::TRAP_PINCH:
+    enemy = factory.createTrap(type, pos);
     break;
 
   case EnemyType::VAMPIRE_MALE:
-    break;
-
   case EnemyType::VAMPIRE_FEMALE:
-    break;
+    return false;
 
   case EnemyType::SKULL_BLUE:
-    break;
   case EnemyType::SKULL_GREEN:
+    enemy = factory.createEnemy(type, pos);
     break;
   }
+
+  if (!enemy)
+    return false;
   return it->second->addEntity(std::move(enemy), pos);
 }
 

@@ -67,3 +67,19 @@ std::unique_ptr<Enemy> EnemiesFactory::createEnemy(EnemyType enemyType,
     return createGreenSkull(position);
   return nullptr;
 }
+
+std::unique_ptr<Entity> EnemiesFactory::createTrap(EnemyType trapType,
+                                                   Position position,
+                                                   DirectionDto direction) {
+  if (trapType == EnemyType::TRAP_PINCH)
+    return std::make_unique<Trap>(
+        position.x, position.y, trapType, direction, TRAP_PINCH_DAMAGE,
+        TRAP_ACTIVE_TICKS, TRAP_INACTIVE_TICKS);
+
+  if (trapType == EnemyType::TRAP_FLAME)
+    return std::make_unique<Trap>(
+        position.x, position.y, trapType, direction, TRAP_FLAME_DAMAGE,
+        TRAP_ACTIVE_TICKS, TRAP_INACTIVE_TICKS);
+
+  return nullptr;
+}
