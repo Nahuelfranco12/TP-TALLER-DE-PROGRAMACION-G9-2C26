@@ -11,6 +11,9 @@
 #define SECTOR_DIMENSION_1 50
 #define SECTOR_DIMENSION_2 70
 
+#define CABIN_DIMENSION_1 15
+#define CABIN_DIMENSION_2 10
+
 #define CAVERN_DIMENSION 40
 
 #define TICKS_PER_SECOND 30
@@ -115,6 +118,10 @@
 enum IdSector {
   FARM,
   VILLAGE,
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
   CAVERN_LEVEL_1,
   CAVERN_LEVEL_2,
   CAVERN_LEVEL_3,
@@ -127,7 +134,7 @@ enum IdSector {
   CAVERN_LEVEL_10
 };
 
-enum TerrainType { DIRT, GRASS, GROUND };
+enum TerrainType { DIRT, GRASS, GROUND, WOOD };
 
 enum class AnimalType { COW, CHICKEN };
 

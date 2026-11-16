@@ -38,6 +38,11 @@ public:
   bool canMoveTo(Position pos) const;
   bool isEmpty(Position pos) const;
   Position findFreePosition() const;
+  void blockTile(Position pos, TerrainType type) {
+    if (pos.x >= width || pos.y >= height)
+      return;
+    tiles[pos.x][pos.y] = Terrain(false, false, type);
+  }
 
   virtual bool addEntity(std::unique_ptr<Entity> entity, Position pos);
   std::unique_ptr<Entity> removeEntity(Position pos);
