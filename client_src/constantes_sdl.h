@@ -304,6 +304,11 @@
 #define RUTA_VAMPIRO_DANIADO                                                   \
   "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
 #define RUTA_VAMPIRO_MUERTO "assets/enemigos/vampiro/enemies-vampire_death.png"
+#define RUTA_CALAVERA_AZUL_QUIETA "assets/enemigos/enemies-skull_blue_idle.png"
+#define RUTA_CALAVERA_VERDE_QUIETA "assets/enemigos/enemies-skull_green_idle.png"
+#define RUTA_PINCHES "assets/enemigos/enemies-peaks_1.png"
+#define RUTA_LANZALLAMAS1 "assets/enemigos/enemies-flamethrower_1_1.png"
+#define RUTA_LANZALLAMAS2 "assets/enemigos/enemies-flamethrower_2_1.png"
 
 #define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
 #define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30

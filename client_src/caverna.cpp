@@ -50,11 +50,11 @@ Caverna::Caverna(Renderer &renderer)
       vampiro_quieto(renderer, RUTA_VAMPIRO_QUIETO),
       vampiro_caminando(renderer, RUTA_VAMPIRO_CAMINANDO),
       vampiro_atacando(renderer, RUTA_VAMPIRO_ATACA),
-      calavera_azul_quieto(renderer, "assets/enemigos/enemies-skull_blue_idle.png"),
-      calavera_verde_quieto(renderer, "assets/enemigos/enemies-skull_green_idle.png"),
-      pinches(renderer, "assets/enemigos/enemies-peaks_1.png"),
-      lanzallamas_1(renderer, "assets/enemigos/enemies-flamethrower_1_1.png"),
-      lanzallamas_2(renderer, "assets/enemigos/enemies-flamethrower_2_1.png"),
+      calavera_azul_quieto(renderer, RUTA_CALAVERA_AZUL_QUIETA),
+      calavera_verde_quieto(renderer, RUTA_CALAVERA_VERDE_QUIETA),
+      pinches(renderer, RUTA_PINCHES),
+      lanzallamas_1(renderer, RUTA_LANZALLAMAS1),
+      lanzallamas_2(renderer, RUTA_LANZALLAMAS2),
       vueltas(0) {}
 
       void Caverna::actualizar(
