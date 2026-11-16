@@ -84,6 +84,11 @@ void ClientProtocol::send_attack_dto(const AttackDto &dto) {
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
+void ClientProtocol::send_chat_dto(const ChatDto &dto) {
+  protocol.send_u8(OP_CHAT);
+  protocol.send_string(dto.text);
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
@@ -207,6 +212,15 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   state.time.hours = protocol.receive_u8();
   state.time.minutes = protocol.receive_u8();
   state.dayNumber = protocol.receive_u8();
+
+  int message_count = protocol.receive_u8();
+  for (int i = 0; i < message_count; i++) {
+    ChatMessageDto message;
+    message.fromName = protocol.receive_string();
+    message.text = protocol.receive_string();
+    message.isPrivate = protocol.receive_u8() == 1;
+    state.chat.push_back(message);
+  }
 
   return state;
 }

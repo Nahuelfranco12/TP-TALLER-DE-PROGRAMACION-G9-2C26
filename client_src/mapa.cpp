@@ -101,9 +101,9 @@ int Mapa::obtener_ancho() const {
 
 int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
-bool Mapa::es_escalera(int x, int y) const {
-  return tile_en(x, y) == LETRA_PUERTA;
-}
+// bool Mapa::es_escalera(int x, int y) const {
+//   return tile_en(x, y) == LETRA_PUERTA;
+// }
 
 void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
   int ancho = static_cast<int>(tiles.size());

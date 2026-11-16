@@ -230,57 +230,84 @@
 #define PALETA_ROPA_CANTIDAD 8
 
 // Rutas de assets
-#define RUTA_ASSETS "assets/"
-#define RUTA_FUENTE_JUEGO RUTA_ASSETS "fuentes/DejaVuSans-Bold.ttf"
-#define RUTA_ARBOL RUTA_ASSETS "mapas/tree1.png"
-#define RUTA_PINO RUTA_ASSETS "mapas/tree1_2.png"
-#define RUTA_TILESET_GRANJA RUTA_ASSETS "mapas/ground_01_16x16.png"
-#define RUTA_TILESET_CAVERNA RUTA_ASSETS "mapas/Dungeon_Tileset.png"
-#define RUTA_TILESET_PUEBLO RUTA_ASSETS "mapas/PelicanTown_Buildings.png"
-#define RUTA_MUEBLES RUTA_ASSETS "mapas/Tilesets_Furniture.png"
+#define RUTA_FUENTE_JUEGO "assets/fuentes/DejaVuSans-Bold.ttf"
+#define RUTA_ARBOL "assets/mapas/tree1.png"
+#define RUTA_PINO "assets/mapas/tree1_2.png"
+#define RUTA_TILESET_GRANJA "assets/mapas/ground_01_16x16.png"
+#define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
+#define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
+#define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
-  RUTA_ASSETS "mapas/ComunityCenter_Offerings.png"
-#define RUTA_MINERALES RUTA_ASSETS "caverna/ore.png"
-#define RUTA_CASAS RUTA_ASSETS "edificios/House.png"
-#define RUTA_EDIFICIOS_PUEBLO RUTA_ASSETS "edificios/PelicanTown_Buildings.png"
-#define RUTA_VACA RUTA_ASSETS "animales/Female Cow Brown.png"
-#define RUTA_GALLINA RUTA_ASSETS "animales/Chicken Blonde  Green.png"
-#define RUTA_CULTIVOS RUTA_ASSETS "cultivos/Spring Crops.png"
-#define RUTA_ICONOS_MINERALES RUTA_ASSETS "inventario/ore.png"
-#define RUTA_ICONOS_CULTIVOS RUTA_ASSETS "inventario/Spring Crops.png"
-#define RUTA_HUEVO RUTA_ASSETS "inventario/egg.png"
-#define RUTA_LECHE RUTA_ASSETS "inventario/milk.png"
-#define RUTA_ESPADA RUTA_ASSETS "inventario/sword.png"
-#define RUTA_PICO RUTA_ASSETS "inventario/pickaxe.png"
-#define RUTA_PALA RUTA_ASSETS "inventario/shovel.png"
-#define RUTA_REGADERA RUTA_ASSETS "inventario/watering_can.png"
+  "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_MINERALES "assets/caverna/ore.png"
+#define RUTA_CASAS "assets/edificios/House.png"
+#define RUTA_EDIFICIOS_PUEBLO "assets/edificios/PelicanTown_Buildings.png"
+#define RUTA_VACA "assets/animales/Female Cow Brown.png"
+#define RUTA_GALLINA "assets/animales/Chicken Blonde  Green.png"
+#define RUTA_CULTIVOS "assets/cultivos/Spring Crops.png"
+#define RUTA_ICONOS_MINERALES "assets/inventario/ore.png"
+#define RUTA_ICONOS_CULTIVOS "assets/inventario/Spring Crops.png"
+#define RUTA_HUEVO "assets/inventario/egg.png"
+#define RUTA_LECHE "assets/inventario/milk.png"
+#define RUTA_ESPADA "assets/inventario/sword.png"
+#define RUTA_PICO "assets/inventario/pickaxe.png"
+#define RUTA_PALA "assets/inventario/shovel.png"
+#define RUTA_REGADERA "assets/inventario/watering_can.png"
 #define RUTA_PERSONAJE_CUERPO                                                  \
-  RUTA_ASSETS "personaje/StardewValley_Character_Farmer Base.png"
+  "assets/personaje/StardewValley_Character_Farmer Base.png"
 #define RUTA_PERSONAJE_PANTALONES                                              \
-  RUTA_ASSETS "personaje/StardewValley_Character_Pants.png"
+  "assets/personaje/StardewValley_Character_Pants.png"
 #define RUTA_PERSONAJE_REMERAS                                                 \
-  RUTA_ASSETS "personaje/StardewValley_Character_Shirts.png"
+  "assets/personaje/StardewValley_Character_Shirts.png"
 #define RUTA_PERSONAJE_PELOS                                                   \
-  RUTA_ASSETS "personaje/StardewValley_Character_Hairstyles.png"
+  "assets/personaje/StardewValley_Character_Hairstyles.png"
 #define RUTA_PERSONAJE_SOMBREROS                                               \
-  RUTA_ASSETS "personaje/StardewValley_Character_Hats.png"
-#define RUTA_NPC_PIERRE RUTA_ASSETS "npcs/pierre.png"
-#define RUTA_NPC_CLINT RUTA_ASSETS "npcs/clint.png"
-#define RUTA_NPC_ROBIN RUTA_ASSETS "npcs/robin.png"
-#define RUTA_NPC_MARNIE RUTA_ASSETS "npcs/marnie.png"
-#define RUTA_TIENDA_PIERRE RUTA_ASSETS "tiendas/pierre.png"
-#define RUTA_TIENDA_CLINT RUTA_ASSETS "tiendas/clint.jpeg"
-#define RUTA_TIENDA_ROBIN RUTA_ASSETS "tiendas/robin.jpg"
-#define RUTA_TIENDA_MARNIE RUTA_ASSETS "tiendas/marnie.jpg"
+  "assets/personaje/StardewValley_Character_Hats.png"
+#define RUTA_NPC_PIERRE "assets/npcs/pierre.png"
+#define RUTA_NPC_CLINT "assets/npcs/clint.png"
+#define RUTA_NPC_ROBIN "assets/npcs/robin.png"
+#define RUTA_NPC_MARNIE "assets/npcs/marnie.png"
+#define RUTA_TIENDA_PIERRE "assets/tiendas/pierre.png"
+#define RUTA_TIENDA_CLINT "assets/tiendas/clint.jpeg"
+#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.jpg"
+#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.jpg"
 #define RUTAS_FONDOS_TIENDAS                                                   \
   {                                                                            \
     RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,                  \
         RUTA_TIENDA_MARNIE                                                     \
   }
-#define RUTA_MUSICA_GRANJA RUTA_ASSETS "sonidos/musica_granja.ogg"
-#define RUTA_MUSICA_CAVERNA RUTA_ASSETS "sonidos/musica_caverna.ogg"
-#define RUTA_MUSICA_PUEBLO RUTA_ASSETS "sonidos/musica_pueblo.mp3"
-#define RUTA_SONIDO_PASO RUTA_ASSETS "sonidos/paso.wav"
+#define RUTA_MUSICA_GRANJA "assets/sonidos/musica_granja.ogg"
+#define RUTA_MUSICA_CAVERNA "assets/sonidos/musica_caverna.ogg"
+#define RUTA_MUSICA_PUEBLO "assets/sonidos/musica_pueblo.mp3"
+#define RUTA_SONIDO_PASO "assets/sonidos/paso.wav"
+
+// rutas para los enemigos
+#define RUTA_ESQUELETO_QUIETO                                                  \
+  "assets/enemigos/esqueleto/enemies-skeleton1_idle.png"
+#define RUTA_ESQUELETO_CAMINANDO                                               \
+  "assets/enemigos/esqueleto/enemies-skeleton1_movement.png"
+#define RUTA_ESQUELETO_ATACA                                                   \
+  "assets/enemigos/esqueleto/enemies-skeleton1_attack.png"
+#define RUTA_ESQUELETO_DANIADO                                                 \
+  "assets/enemigos/esqueleto/enemies-skeleton1_take_damage.png"
+#define RUTA_ESQUELETO_MUERTO                                                  \
+  "assets/enemigos/esqueleto/enemies-skeleton1_death.png"
+#define RUTA_ORCO_QUIETO "assets/enemigos/orco/Orc_Idle.png"
+#define RUTA_ORCO_CAMINANDO "assets/enemigos/orco/Orc_Walk.png"
+#define RUTA_ORCO_ATACA "assets/enemigos/orco/Orc_Attack01.png"
+#define RUTA_ORCO_DANIADO "assets/enemigos/orco/Orc_Hurt.png"
+#define RUTA_ORCO_MUERTO "assets/enemigos/orco/Orc_Death.png"
+#define RUTA_VAMPIRO_QUIETO "assets/enemigos/vampiro/enemies-vampire_idle.png"
+#define RUTA_VAMPIRO_CAMINANDO                                                 \
+  "assets/enemigos/vampiro/enemies-vampire_movement.png"
+#define RUTA_VAMPIRO_ATACA "assets/enemigos/vampiro/enemies-vampire_attack.png"
+#define RUTA_VAMPIRO_DANIADO                                                   \
+  "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
+#define RUTA_VAMPIRO_MUERTO "assets/enemigos/vampiro/enemies-vampire_death.png"
+
+#define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
+#define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30
+#define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
 
 // Sprites: suelo (columna y fila en tiles del tileset)
 #define SUELO_DEFECTO_COLUMNA 4
@@ -315,6 +342,10 @@
 #define SPRITE_PASTO_OSCURO_Y 144
 
 // Sprites: minerales (px)
+#define SPRITE_ORCO_CENTRO_X 55
+#define SPRITE_ESQUELETO_CENTRO_X 14
+#define SPRITE_VAMPIRO_CENTRO_X 13
+#define SPRITE_VAMPIRO_PIE_CAMINANDO 28
 #define SPRITE_MINERAL_CELDA 32
 #define SPRITE_MINERAL_ANCHO 32
 #define SPRITE_MINERAL_ALTO 28

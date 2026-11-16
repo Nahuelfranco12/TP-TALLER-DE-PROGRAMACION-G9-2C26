@@ -37,7 +37,8 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
   return doorOrigin && doorDestine;
 }
 
-void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
+void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
+                      IdSector idSector) {
   auto sectorIt = this->sectors.find(idSector);
   if (sectorIt == this->sectors.end())
     return;
@@ -45,8 +46,8 @@ void World::addPlayer(int id, PlayerOutfit outfit, IdSector idSector) {
   Sector &sector = *sectorIt->second;
   Position startPos = sector.findFreePosition();
 
-  auto player =
-      std::make_unique<Player>(startPos.x, startPos.y, id, &sector, outfit);
+  auto player = std::make_unique<Player>(startPos.x, startPos.y, id, name,
+                                         &sector, outfit);
   Player *playerPtr = player.get();
 
   if (!sector.addEntity(std::move(player), startPos))
@@ -166,7 +167,7 @@ WorldState World::state() const {
 
   state.dayNumber = dayNumber;
   state.time = currentTime();
-
+  state.chat = chat;
   return state;
 }
 
@@ -186,4 +187,17 @@ void World::tick() {
 void World::endDay() {
   for (auto &[id, sector] : sectors)
     sector->endDay();
+}
+
+void World::addChat(const ChatMessageState &message) {
+  chat.push_back(message);
+}
+
+void World::clearChat() { chat.clear(); }
+
+Player *World::getPlayerByName(const std::string &name) {
+  for (auto &[id, player] : this->players)
+    if (player->getName() == name)
+      return player;
+  return nullptr;
 }

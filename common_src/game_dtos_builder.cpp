@@ -240,6 +240,15 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
   sectorDto.time = {state.time.hours, state.time.minutes};
   sectorDto.dayNumber = state.dayNumber;
 
+  for (const ChatMessageState &message : state.chat) {
+    bool forEveryone = message.toId == -1;
+    bool forMe = message.toId == clientId;
+    bool fromMe = message.fromId == clientId;
+    if (forEveryone || forMe || fromMe) {
+      sectorDto.chat.push_back({message.fromName, message.text, !forEveryone});
+    }
+  }
+
   return sectorDto;
 }
 

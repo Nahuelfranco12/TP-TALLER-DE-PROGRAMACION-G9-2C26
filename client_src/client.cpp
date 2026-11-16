@@ -1,14 +1,15 @@
 #include "client.h"
 
-#include <functional>
-#include <map>
-#include <sstream>
+// #include <functional>
+// #include <map>
+// #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "../common_src/constants.h"
 #include "actions/attack_action.h"
+#include "actions/chat_action.h"
 #include "actions/cheat_growth_action.h"
 #include "actions/collect_action.h"
 #include "actions/gift_offer_action.h"
@@ -67,6 +68,10 @@ void Client::send_attack(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<AttackAction>(direction));
 }
 
+void Client::send_chat(const std::string &text) {
+  to_send_queue.try_push(std::make_unique<ChatAction>(text));
+}
+
 void Client::send_cheat_water(DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<WaterAction>(direction));
 }
@@ -78,12 +83,18 @@ void Client::send_cheat_growth() {
 bool Client::try_get_latest_state(SectorStateDto &state) {
   bool has_been_received = false;
   SectorStateDto next_state;
+  std::vector<ChatMessageDto> chat;
   while (received_queue.try_pop(next_state)) {
     has_been_received = true;
+    chat.insert(
+        chat.end(), next_state.chat.begin(),
+        next_state.chat.end()); // TODO: Revisar si lo podemos sacar (está del
+                                // lado del serversender tambien)
   }
 
   if (has_been_received) {
     state = std::move(next_state);
+    state.chat = std::move(chat);
   }
   return has_been_received;
 }

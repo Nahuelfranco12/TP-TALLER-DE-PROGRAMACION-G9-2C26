@@ -43,6 +43,7 @@ public:
   TillDto receive_till();
   WaterDto receive_water();
   AttackDto receive_attack();
+  ChatDto receive_chat();
   WaterDto receive_cheat_water();
 
   // Protocolo de menú
