@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "../cheatable/growth_cheat.h"
-#include "../entities/enemy.h"
+#include "../entities/enemies/enemy.h"
 #include "../entities/player.h"
 
 MoveResult Sector::move(Position origin, Position destine) {
@@ -173,10 +173,30 @@ void Sector::apply(Position origin, const Decision &decision) {
     if (this->doors.find(target) == this->doors.end())
       move(origin, target);
     break;
+  
   case DecisionType::ATTACK: {
-    Player *player = dynamic_cast<Player *>(getEntity(target));
+    Position attackTarget = origin;
+
+    if (decision.target.has_value())
+      attackTarget = decision.target.value();
+    else
+      attackTarget = origin.next(decision.direction);
+
+    int dx = static_cast<int>(attackTarget.x) -
+            static_cast<int>(origin.x);
+    int dy = static_cast<int>(attackTarget.y) -
+            static_cast<int>(origin.y);
+    int distance = std::abs(dx) + std::abs(dy);
+
+    if (distance > static_cast<int>(enemy->getAttackRange()))
+      break;
+
+    Player *player =
+        dynamic_cast<Player *>(getEntity(attackTarget));
+
     if (player)
       player->takeDamage(enemy->getDamage());
+
     break;
   }
   case DecisionType::NONE:

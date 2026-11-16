@@ -32,6 +32,7 @@ public:
   int getGoldDrop() const;
   virtual int getDamage() const;
   virtual int getTicksPerMove() const;
+  virtual size_t getAttackRange() const;
 
   bool isDead() const;
 

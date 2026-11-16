@@ -11,7 +11,7 @@
 class Caverna {
 private:
   enum TipoMineral { HIERRO, CARBON, LAPISLAZULI, ORO };
-  enum TipoEnemigo { ESQUELETO, ORCO, VAMPIRO, VAMPIRA };
+  enum TipoEnemigo { ESQUELETO, ORCO, VAMPIRO, VAMPIRA, CALAVERA_AZUL, CALAVERA_VERDE };
 
   struct Mineral {
     TipoMineral tipo;
@@ -31,6 +31,8 @@ private:
   SDL2pp::Texture esqueleto;
   SDL2pp::Texture orco_quieto;
   SDL2pp::Texture vampiro_quieto;
+  SDL2pp::Texture calavera_azul_quieto;
+  SDL2pp::Texture calavera_verde_quieto;
   std::vector<Mineral> lista_minerales;
   std::vector<Enemigo> lista_enemigos;
 

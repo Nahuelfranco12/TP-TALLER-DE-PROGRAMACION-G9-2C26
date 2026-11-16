@@ -14,6 +14,9 @@ int Enemy::getDamage() const { return stats.damage; }
 
 int Enemy::getTicksPerMove() const { return stats.ticksPerMove; }
 
+size_t Enemy::getAttackRange() const { return 1; }
+
+
 bool Enemy::isDead() const { return getHitsLeft() == 0; }
 
 bool Enemy::removeOnDeath() const { return true; }
@@ -51,11 +54,17 @@ Decision Enemy::decide(const Sector &sector) {
     }
   }
 
-  if (std::abs(dx) + std::abs(dy) == 1) {
+  int distance = std::abs(dx) + std::abs(dy);
+
+  if (distance <= static_cast<int>(getAttackRange())) {
     if (attackCooldown > 0)
       return Decision{};
+
     attackCooldown = stats.ticksPerAttack;
-    return Decision{DecisionType::ATTACK, direction};
+
+    Decision attack{DecisionType::ATTACK, direction};
+    attack.target = target;
+    return attack;
   }
 
   if (moveCooldown > 0)

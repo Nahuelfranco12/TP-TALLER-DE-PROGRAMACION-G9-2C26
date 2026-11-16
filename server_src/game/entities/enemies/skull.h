@@ -11,6 +11,10 @@ public:
 
   bool removeOnDeath() const override { return false; }
 
+  size_t getAttackRange() const override {
+    return stats.sightRange;
+  }
+
   void tick() override {
     Enemy::tick();
     if (!isDead())

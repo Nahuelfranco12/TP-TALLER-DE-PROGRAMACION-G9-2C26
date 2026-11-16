@@ -100,7 +100,10 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
       return EntityTypeDto::TRAP_FLAME;
     case EnemyType::TRAP_PINCH:
       return EntityTypeDto::TRAP_PINCH;
-    }
+    case EnemyType::SKULL_BLUE:
+      return EntityTypeDto::SKULL_BLUE;
+    case EnemyType::SKULL_GREEN:
+      return EntityTypeDto::SKULL_GREEN;    }
     break;
   default:
     break;

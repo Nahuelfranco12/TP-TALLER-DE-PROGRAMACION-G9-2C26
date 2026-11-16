@@ -1,7 +1,7 @@
 #include "cavern_sector.h"
 
 #include "../entities/mineral.h"
-#include "../entities/skeleton.h"
+#include "../entities/enemies/skeleton.h"
 
 #include <algorithm>
 #include <memory>
@@ -86,17 +86,46 @@ void CavernSector::spawnMinerals() {
 }
 
 void CavernSector::spawnEnemies() {
-  std::uniform_int_distribution<size_t> groupCountDist(config.minEnemyGroups,
-                                                       config.maxEnemyGroups);
-  std::uniform_int_distribution<size_t> typeDist(
-      0, config.availableEnemies.size() - 1);
+  std::uniform_int_distribution<size_t> groupCountDist(config.minEnemyGroups, config.maxEnemyGroups);
+  std::uniform_int_distribution<size_t> typeDist(0, config.availableEnemies.size() - 1);
 
+  for (EnemySpawnConfig &spawnCfg : config.availableEnemies)
+    spawnCfg.currentCount = 0;
+  bool skullSpawned = false;
   size_t groupCount = groupCountDist(rng);
+
   for (size_t i = 0; i < groupCount; i++) {
-    const EnemySpawnConfig &spawnCfg = config.availableEnemies[typeDist(rng)];
-    std::uniform_int_distribution<size_t> sizeDist(spawnCfg.minGroup,
-                                                   spawnCfg.maxGroup);
-    spawnEnemyGroup(spawnCfg.type, sizeDist(rng));
+    EnemySpawnConfig *selected = nullptr;
+    size_t attempts = 0;
+
+    while (attempts < config.availableEnemies.size() && selected == nullptr) {
+      EnemySpawnConfig &candidate = config.availableEnemies[typeDist(rng)];
+
+      bool isSkull = candidate.type == EnemyType::SKULL_BLUE || candidate.type == EnemyType::SKULL_GREEN;
+      size_t remaining = candidate.maxLevel - candidate.currentCount;
+
+      bool canSpawn = remaining >= candidate.minGroup && (!isSkull || !skullSpawned);
+      if (canSpawn)
+        selected = &candidate;
+      attempts++;
+    }
+
+    if (selected != nullptr) {
+      size_t remaining = selected->maxLevel - selected->currentCount;
+      size_t maxGroup = std::min(selected->maxGroup, remaining);
+
+      std::uniform_int_distribution<size_t> sizeDist(selected->minGroup, maxGroup);
+      size_t count = sizeDist(rng);
+
+      spawnEnemyGroup(selected->type, count);
+      selected->currentCount += count;
+
+      bool isSkull = selected->type == EnemyType::SKULL_BLUE ||
+                     selected->type == EnemyType::SKULL_GREEN;
+
+      if (isSkull)
+        skullSpawned = true;
+    }
   }
 }
 

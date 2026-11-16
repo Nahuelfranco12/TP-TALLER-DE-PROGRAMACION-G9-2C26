@@ -11,6 +11,8 @@ class EnemiesFactory {
 private:
   std::unique_ptr<Enemy> createSkeleton(Position position);
   std::unique_ptr<Enemy> createOrc(Position position);
+  std::unique_ptr<Enemy> createBlueSkull(Position position);
+  std::unique_ptr<Enemy> createGreenSkull(Position position);
 
 public:
   std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>>

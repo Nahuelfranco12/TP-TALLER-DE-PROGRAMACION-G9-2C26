@@ -1,7 +1,7 @@
 #ifndef CAVERN_SECTOR_H_
 #define CAVERN_SECTOR_H_
 
-#include "../entities/enemies_factory.h"
+#include "../entities/enemies/enemies_factory.h"
 #include "sector.h"
 
 #include <memory>
@@ -12,6 +12,8 @@ struct EnemySpawnConfig {
   EnemyType type;
   size_t minGroup;
   size_t maxGroup;
+  size_t maxLevel;
+  size_t currentCount = 0;
 };
 
 struct CavernLevelConfig {

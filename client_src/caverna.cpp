@@ -16,6 +16,8 @@ struct FormatoEnemigo {
 const FormatoEnemigo FORMATO_ESQUELETO{32, 29};
 const FormatoEnemigo FORMATO_ORCO{100, 57};
 const FormatoEnemigo FORMATO_VAMPIRO{32, 29};
+const FormatoEnemigo FORMATO_CALAVERA_AZUL{16, 16};
+const FormatoEnemigo FORMATO_CALAVERA_VERDE{16, 16};
 
 const int PIXELES_POR_TILE = 16;
 
@@ -27,6 +29,8 @@ Caverna::Caverna(Renderer &renderer)
       esqueleto(renderer, "assets/enemigos/enemies-skeleton1_idle.png"),
       orco_quieto(renderer, "assets/enemigos/enemies-orc1_idle.png"),
       vampiro_quieto(renderer, "assets/enemigos/enemies-vampire_idle.png"),
+      calavera_azul_quieto(renderer, "assets/enemigos/enemies-skull_blue_idle.png"),
+      calavera_verde_quieto(renderer, "assets/enemigos/enemies-skull_green_idle.png"),
       vueltas(0) {}
 
 void Caverna::actualizar(
@@ -41,13 +45,19 @@ void Caverna::actualizar(
     } else if (entidad.type == EntityTypeDto::ORC) {
       lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
                                 static_cast<int>(pos.y), entidad.enemy.alive});
-      continue;
+      continue;  
     } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
                entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
       TipoEnemigo tipo =
           entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
       lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
                                 static_cast<int>(pos.y), entidad.enemy.alive});
+      continue;
+    } else if (entidad.type == EntityTypeDto::SKULL_BLUE) {
+      lista_enemigos.push_back({CALAVERA_AZUL, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
+      continue;
+    } else if (entidad.type == EntityTypeDto::SKULL_GREEN) {
+      lista_enemigos.push_back({CALAVERA_VERDE, static_cast<int>(pos.x), static_cast<int>(pos.y), entidad.enemy.alive});
       continue;
     }
 
@@ -115,6 +125,14 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   case VAMPIRA:
     textura = &vampiro_quieto;
     formato = FORMATO_VAMPIRO;
+    break;
+  case CALAVERA_AZUL:
+    textura = &calavera_azul_quieto;
+    formato = FORMATO_CALAVERA_AZUL;
+    break;
+  case CALAVERA_VERDE:
+    textura = &calavera_verde_quieto;
+    formato = FORMATO_CALAVERA_VERDE;
     break;
   }
 
