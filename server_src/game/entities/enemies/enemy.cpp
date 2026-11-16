@@ -1,10 +1,11 @@
 #include "enemy.h"
-#include "../sectors/sector.h"
+
+#include "../../sectors/sector.h"
 #include <cstdlib>
 #include <iostream>
 
-Enemy::Enemy(size_t pos_x, size_t pos_y, const EnemyStats &stats)
-    : Entity(pos_x, pos_y, EntityTypes::ENEMY), Hittable(stats.maxLife),
+Enemy::Enemy(EnemyType type, size_t pos_x, size_t pos_y, const EnemyStats &stats)
+    : type(type), Entity(pos_x, pos_y, EntityTypes::ENEMY), Hittable(stats.maxLife),
       stats(stats), moveCooldown(0), attackCooldown(0) {}
 
 int Enemy::getGoldDrop() const { return stats.gold; }
@@ -12,6 +13,9 @@ int Enemy::getGoldDrop() const { return stats.gold; }
 int Enemy::getDamage() const { return stats.damage; }
 
 int Enemy::getTicksPerMove() const { return stats.ticksPerMove; }
+
+size_t Enemy::getAttackRange() const { return 1; }
+
 
 bool Enemy::isDead() const { return getHitsLeft() == 0; }
 
@@ -50,11 +54,17 @@ Decision Enemy::decide(const Sector &sector) {
     }
   }
 
-  if (std::abs(dx) + std::abs(dy) == 1) {
+  int distance = std::abs(dx) + std::abs(dy);
+
+  if (distance <= static_cast<int>(getAttackRange())) {
     if (attackCooldown > 0)
       return Decision{};
+
     attackCooldown = stats.ticksPerAttack;
-    return Decision{DecisionType::ATTACK, direction};
+
+    Decision attack{DecisionType::ATTACK, direction};
+    attack.target = target;
+    return attack;
   }
 
   if (moveCooldown > 0)

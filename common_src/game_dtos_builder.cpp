@@ -100,7 +100,10 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
       return EntityTypeDto::TRAP_FLAME;
     case EnemyType::TRAP_PINCH:
       return EntityTypeDto::TRAP_PINCH;
-    }
+    case EnemyType::SKULL_BLUE:
+      return EntityTypeDto::SKULL_BLUE;
+    case EnemyType::SKULL_GREEN:
+      return EntityTypeDto::SKULL_GREEN;    }
     break;
   default:
     break;
@@ -227,6 +230,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
 
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           entityDto.enemy.alive = e.enemy.is_alive;
+          entityDto.enemy.direction = e.enemy.direction;
           sectorDto.entities[pos] = entityDto;
         }
       }

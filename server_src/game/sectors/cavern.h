@@ -30,9 +30,11 @@ public:
                                .maxEnemyGroups = 6 + i,
                                .availableMinerals = minerals,
                                .availableEnemies = {
-                                   {EnemyType::SKELETON, 1, 1},
-                                   {EnemyType::ORC, 3, 3},
-                                   {EnemyType::VAMPIRE_MALE, 1, 1},
+                                   {EnemyType::SKELETON, 1, 1, 5},
+                                   {EnemyType::ORC, 3, 3, 4},
+                                   {EnemyType::VAMPIRE_MALE, 1, 1, 4},
+                                   {EnemyType::SKULL_BLUE, 1, 1, 1},
+                                   {EnemyType::SKULL_GREEN, 1, 1, 1},
                                }};
       world.addSector(std::make_unique<CavernSector>(
           CAVERN_DIMENSION, CAVERN_DIMENSION, levelId(i), config));

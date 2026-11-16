@@ -1,6 +1,6 @@
 #include "attack_command.h"
 
-#include "../entities/enemy.h"
+#include "../entities/enemies/enemy.h"
 
 void AttackCommand::execute(World &world) {
   Player *player = world.getPlayer(this->playerId);

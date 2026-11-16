@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "../sectors/sector.h"
-#include "enemy.h"
+#include "enemies/enemy.h"
 #include "mineral.h"
 
 MoveResult Player::move(Position destination) {

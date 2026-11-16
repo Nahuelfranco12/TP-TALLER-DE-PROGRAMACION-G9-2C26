@@ -1,7 +1,7 @@
 #include "cavern_sector.h"
 
 #include "../entities/mineral.h"
-#include "../entities/skeleton.h"
+#include "../entities/enemies/skeleton.h"
 
 #include <algorithm>
 #include <memory>
@@ -22,6 +22,7 @@ bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
 void CavernSector::initEntities() {
   spawnMinerals();
   spawnEnemies();
+  spawnTraps();
 }
 
 void CavernSector::reset() {
@@ -46,6 +47,8 @@ void CavernSector::clearEntities() {
     else
       it++;
   }
+
+  traps.clear();
 }
 
 void CavernSector::spawnMinerals() {
@@ -86,17 +89,76 @@ void CavernSector::spawnMinerals() {
 }
 
 void CavernSector::spawnEnemies() {
-  std::uniform_int_distribution<size_t> groupCountDist(config.minEnemyGroups,
-                                                       config.maxEnemyGroups);
-  std::uniform_int_distribution<size_t> typeDist(
-      0, config.availableEnemies.size() - 1);
+  std::uniform_int_distribution<size_t> groupCountDist(config.minEnemyGroups, config.maxEnemyGroups);
+  std::uniform_int_distribution<size_t> typeDist(0, config.availableEnemies.size() - 1);
 
+  for (EnemySpawnConfig &spawnCfg : config.availableEnemies)
+    spawnCfg.currentCount = 0;
+  bool skullSpawned = false;
   size_t groupCount = groupCountDist(rng);
+
   for (size_t i = 0; i < groupCount; i++) {
-    const EnemySpawnConfig &spawnCfg = config.availableEnemies[typeDist(rng)];
-    std::uniform_int_distribution<size_t> sizeDist(spawnCfg.minGroup,
-                                                   spawnCfg.maxGroup);
-    spawnEnemyGroup(spawnCfg.type, sizeDist(rng));
+    EnemySpawnConfig *selected = nullptr;
+    size_t attempts = 0;
+
+    while (attempts < config.availableEnemies.size() && selected == nullptr) {
+      EnemySpawnConfig &candidate = config.availableEnemies[typeDist(rng)];
+
+      bool isSkull = candidate.type == EnemyType::SKULL_BLUE || candidate.type == EnemyType::SKULL_GREEN;
+      size_t remaining = candidate.maxLevel - candidate.currentCount;
+
+      bool canSpawn = remaining >= candidate.minGroup && (!isSkull || !skullSpawned);
+      if (canSpawn)
+        selected = &candidate;
+      attempts++;
+    }
+
+    if (selected != nullptr) {
+      size_t remaining = selected->maxLevel - selected->currentCount;
+      size_t maxGroup = std::min(selected->maxGroup, remaining);
+
+      std::uniform_int_distribution<size_t> sizeDist(selected->minGroup, maxGroup);
+      size_t count = sizeDist(rng);
+
+      spawnEnemyGroup(selected->type, count);
+      selected->currentCount += count;
+
+      bool isSkull = selected->type == EnemyType::SKULL_BLUE ||
+                     selected->type == EnemyType::SKULL_GREEN;
+
+      if (isSkull)
+        skullSpawned = true;
+    }
+  }
+}
+
+void CavernSector::spawnTraps() {
+  for (size_t i = 0; i < TRAP_PINCH_COUNT; i++) {
+    Position pos = randomFreePosition();
+    auto trap = enemiesFactory.createTrap(EnemyType::TRAP_PINCH, pos);
+    if (trap)
+      Sector::addEntity(std::move(trap), pos);
+  }
+
+  std::uniform_int_distribution<size_t> sideDist(0, 1);
+  std::uniform_int_distribution<size_t> yDist(0, height - 1);
+
+  size_t spawned = 0;
+  for (size_t attempts = 0;
+       spawned < TRAP_FLAME_COUNT && attempts < TRAP_FLAME_COUNT * 20;
+       attempts++) {
+    bool leftWall = sideDist(rng) == 0;
+    Position pos(leftWall ? 0 : width - 1, yDist(rng));
+    DirectionDto direction =
+        leftWall ? DirectionDto::Right : DirectionDto::Left;
+
+    if (!isEmpty(pos) || this->doors.find(pos) != this->doors.end())
+      continue;
+
+    auto trap = enemiesFactory.createTrap(EnemyType::TRAP_FLAME, pos,
+                                           direction);
+    if (trap && Sector::addEntity(std::move(trap), pos))
+      spawned++;
   }
 }
 
@@ -106,12 +168,16 @@ void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
   if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_FEMALE) {
     std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> vampires =
         enemiesFactory.createVampires(center);
-    Sector::addEntity(std::move(vampires.first), center);
+    bool resultVampire = Sector::addEntity(std::move(vampires.first), center);
+    if (!resultVampire)
+      return;
 
     Position secondPos = randomNearPosition(center, 2);
     vampires.second->setPosition(secondPos);
 
-    Sector::addEntity(std::move(vampires.second), secondPos);
+    resultVampire = Sector::addEntity(std::move(vampires.second), secondPos);
+    if (!resultVampire)
+      Sector::removeEntity(center);
   } else {
     for (size_t i = 0; i < count; i++) {
       Position pos = (i == 0) ? center : randomNearPosition(center, 2);
@@ -133,7 +199,8 @@ Position CavernSector::randomNearPosition(Position center, int radius) {
                         static_cast<int>(height - 1));
 
     Position pos(static_cast<size_t>(nx), static_cast<size_t>(ny));
-    if (isEmpty(pos) && this->doors.find(pos) == this->doors.end())
+    if (isEmpty(pos) && this->traps.find(pos) == this->traps.end() &&
+      this->doors.find(pos) == this->doors.end())
       return pos;
   }
   return randomFreePosition();
@@ -145,7 +212,8 @@ Position CavernSector::randomFreePosition() {
 
   for (size_t attempts = 0; attempts < 100; attempts++) {
     Position pos(xDist(rng), yDist(rng));
-    if (isEmpty(pos) && this->doors.find(pos) == this->doors.end())
+    if (isEmpty(pos) && this->traps.find(pos) == this->traps.end() &&
+      this->doors.find(pos) == this->doors.end())
       return pos;
   }
   return findFreePosition();

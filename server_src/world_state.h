@@ -36,6 +36,7 @@ struct AnimalState {
 struct EnemyState {
   EnemyType type{};
   bool is_alive = true;
+  DirectionDto direction = DirectionDto::Up;
 };
 
 struct EntityState {
