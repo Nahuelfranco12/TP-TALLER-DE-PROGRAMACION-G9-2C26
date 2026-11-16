@@ -19,7 +19,7 @@ void Gameloop::process_commands() {
 
 void Gameloop::setupFarm() {
   auto farm = std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2);
-  Position door;
+  Position door{0, 0};
   farm->placeCabin({2, 1}, door);
   world.addSector(std::move(farm));
 }

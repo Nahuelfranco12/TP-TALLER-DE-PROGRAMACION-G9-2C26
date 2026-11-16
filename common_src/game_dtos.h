@@ -12,10 +12,12 @@ enum class DirectionDto { Up, Down, Left, Right };
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
-  GROUND
+  GROUND,
+  WOOD,
+  HOUSE,
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
-enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
 
 // TODO: revisar para que sea acorde a SDL
 enum PlayerHatsDto {

@@ -117,6 +117,11 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
+  case CABIN_PLAYER_1:
+  case CABIN_PLAYER_2:
+  case CABIN_PLAYER_3:
+  case CABIN_PLAYER_4:
+    return SectorTypeDto::CABIN;
   case IdSector::CAVERN_LEVEL_1:
   case IdSector::CAVERN_LEVEL_2:
   case IdSector::CAVERN_LEVEL_3:
@@ -140,6 +145,10 @@ TerrainTypeDto GameDtosBuilder::toDto(TerrainType terrain) {
     return TerrainTypeDto::GRASS;
   case GROUND:
     return TerrainTypeDto::GROUND;
+  case WOOD:
+    return TerrainTypeDto::WOOD;
+  case HOUSE:
+    return TerrainTypeDto::HOUSE;
   }
   throw std::logic_error("TerrainType sin DTO");
 }
