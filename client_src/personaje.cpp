@@ -42,17 +42,17 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
   herramientas.emplace_back(renderer, RUTA_REGADERA);
 }
 
-void Personaje::cambiar_color_pantalon() {
-  color_pantalon = (color_pantalon + 1) % PALETA_ROPA_CANTIDAD;
-  pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
-                         COLORES[color_pantalon][2]);
-}
-
-void Personaje::cambiar_color_pelo() {
-  color_pelo = (color_pelo + 1) % PALETA_ROPA_CANTIDAD;
-  pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
-                    COLORES[color_pelo][2]);
-}
+// void Personaje::cambiar_color_pantalon() {
+//   color_pantalon = (color_pantalon + 1) % PALETA_ROPA_CANTIDAD;
+//   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
+//                          COLORES[color_pantalon][2]);
+// }
+//
+// void Personaje::cambiar_color_pelo() {
+//   color_pelo = (color_pelo + 1) % PALETA_ROPA_CANTIDAD;
+//   pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
+//                     COLORES[color_pelo][2]);
+// }
 
 void Personaje::vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
                        int nueva_remera) {
@@ -159,13 +159,13 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   dibujar_barra(renderer, barra_x, barra_energia_y, energia, color_energia);
 }
 
-void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
-                               int otro_tile_y, int camara_x, int camara_y,
-                               int lado) {
-  int x = otro_tile_x * lado - camara_x;
-  int y = otro_tile_y * lado - lado - camara_y;
-  dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
-}
+// void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
+//                                int otro_tile_y, int camara_x, int camara_y,
+//                                int lado) {
+//   int x = otro_tile_x * lado - camara_x;
+//   int y = otro_tile_y * lado - lado - camara_y;
+//   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
+// }
 
 void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
                               int lado) {

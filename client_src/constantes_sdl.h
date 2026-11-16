@@ -230,7 +230,6 @@
 #define PALETA_ROPA_CANTIDAD 8
 
 // Rutas de assets
-//#define RUTA_ASSETS "assets/"
 #define RUTA_FUENTE_JUEGO "assets/fuentes/DejaVuSans-Bold.ttf"
 #define RUTA_ARBOL "assets/mapas/tree1.png"
 #define RUTA_PINO "assets/mapas/tree1_2.png"
@@ -283,7 +282,6 @@
 #define RUTA_SONIDO_PASO "assets/sonidos/paso.wav"
 
 // rutas para los enemigos
-//#define "assets/enemigos/assets/enemigos/"
 #define RUTA_ESQUELETO_QUIETO                                                  \
   "assets/enemigos/esqueleto/enemies-skeleton1_idle.png"
 #define RUTA_ESQUELETO_CAMINANDO                                               \

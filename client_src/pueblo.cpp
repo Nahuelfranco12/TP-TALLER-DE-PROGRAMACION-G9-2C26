@@ -2,7 +2,7 @@
 #include "personaje.h"
 
 #include <algorithm>
-#include <iterator>
+// #include <iterator>
 
 #include <SDL2/SDL.h>
 
