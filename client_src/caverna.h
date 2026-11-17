@@ -80,7 +80,7 @@ public:
   void animar(long vueltas_pasadas);
 
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
-               int lado = 64);
+               int lado = TAMANIO_TILE);
 };
 
 #endif

@@ -144,7 +144,7 @@ void MapaMundo::dibujar(Renderer &renderer, int ancho_ventana, int alto_ventana,
 
 void MapaMundo::dibujar_bosque(Renderer &renderer) {
   Rect pasto_oscuro(SPRITE_PASTO_OSCURO_X, SPRITE_PASTO_OSCURO_Y,
-                    TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET);
+                    PIXELES_POR_TILE, PIXELES_POR_TILE);
   for (int y = 0; y < alto; y += MUNDO_BLOQUE_PASTO) {
     for (int x = 0; x < ancho; x += MUNDO_BLOQUE_PASTO) {
       int bloque_ancho = std::min(MUNDO_BLOQUE_PASTO, ancho - x);

@@ -14,13 +14,13 @@ struct FormatoEnemigo {
   int pie;
 };
 
-const FormatoEnemigo FORMATO_CALAVERA_AZUL{16, 16};
-const FormatoEnemigo FORMATO_CALAVERA_VERDE{16, 16};
-const FormatoEnemigo FORMATO_TRAMPA{16, 16};
+const FormatoEnemigo FORMATO_CALAVERA{SPRITE_CALAVERA_LADO, SPRITE_CALAVERA_PIE};
+//const FormatoEnemigo FORMATO_CALAVERA_VERDE{};
+const FormatoEnemigo FORMATO_TRAMPA{SPRITE_TRAMPA_LADO, SPRITE_TRAMPA_PIE};
 
-const int PIXELES_POR_TILE = 16;
+//const int PIXELES_POR_TILE = 16;
 
-const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
+//const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
 
 const HojasEnemigo HOJAS_ESQUELETO{RUTA_ESQUELETO_QUIETO,RUTA_ESQUELETO_CAMINANDO,
                                    RUTA_ESQUELETO_ATACA,RUTA_ESQUELETO_DANIADO,
@@ -264,11 +264,11 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   switch (enemigo.tipo) {
   case CALAVERA_AZUL:
     textura = &calavera_azul_quieto;
-    formato = FORMATO_CALAVERA_AZUL;
+    formato = FORMATO_CALAVERA;
     break;
   case CALAVERA_VERDE:
     textura = &calavera_verde_quieto;
-    formato = FORMATO_CALAVERA_VERDE;
+    formato = FORMATO_CALAVERA;
     break;
   case TRAMPA_PINCHES:
     textura = &pinches;
@@ -289,14 +289,14 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   if (cuadros <= 0)
     return;
 
-  int cuadro =
-      static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
+  int cuadro = static_cast<int>(
+      (vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
   Rect origen(cuadro * formato.lado, 0, formato.lado, formato.lado);
 
   int tamanio = formato.lado * lado / PIXELES_POR_TILE;
   int x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
-  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
-          camara_y;
+  int y = enemigo.tile_y * lado + lado -
+          formato.pie * lado / PIXELES_POR_TILE - camara_y;
 
   renderer.Copy(*textura, origen, Rect(x, y, tamanio, tamanio));
 }

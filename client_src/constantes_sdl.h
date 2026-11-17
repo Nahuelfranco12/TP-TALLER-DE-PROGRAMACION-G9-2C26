@@ -8,12 +8,11 @@
 #define VENTANA_ANCHO 640
 #define VENTANA_ALTO 480
 #define RENDERER_DRIVER_POR_DEFECTO (-1)
-#define LOOP_PERIODO_MS 16 // 60 vueltas por segundo
+#define LOOP_PERIODO_MS 16
 
-// Mapa: tiles, escala y generación de decoración
-#define TAMANIO_TILE_ASSET 16
+#define PIXELES_POR_TILE 16
 #define ESCALA_SPRITES 4
-#define TAMANIO_TILE (TAMANIO_TILE_ASSET * ESCALA_SPRITES)
+#define TAMANIO_TILE (PIXELES_POR_TILE * ESCALA_SPRITES)
 #define MAPA_MARGEN 30
 #define MAPA_DADO_DECORACION_MAXIMO 9
 #define SEMILLA_GRANJA 42
@@ -21,7 +20,6 @@
 #define SEMILLA_PUEBLO 42
 #define SEMILLA_ALREDEDORES 42
 
-// Letras de la grilla del mapa
 #define LETRA_PASTO '.'
 #define LETRA_BORDE ','
 #define LETRA_BORDE_CAVERNA '#'
@@ -35,7 +33,6 @@
 #define LETRA_PISO_PUEBLO 'c'
 #define LETRA_FLORES 'f'
 
-// Bosque alrededor de la granja (medidas en tiles)
 #define BOSQUE_ZONA 30
 #define BOSQUE_SEPARACION 3
 #define BOSQUE_DESPLAZAMIENTO_MAXIMO (BOSQUE_SEPARACION - 2)
@@ -45,7 +42,6 @@
 #define BOSQUE_MARGEN 4
 #define BOSQUE_SOMBRA 200
 
-// Mapa general, tecla M (medidas en tiles salvo que diga px)
 #define MUNDO_MARGEN 8
 #define MUNDO_SEPARACION 14
 #define MUNDO_PASILLO 10
@@ -62,7 +58,6 @@
 #define MUNDO_FIGURA_TILES 4
 #define MUNDO_FIGURA_MINIMA 12
 
-// Granja
 #define GRANJA_CASA_TILE_X 2
 #define GRANJA_CASA_TILE_Y 1
 #define GRANJA_CASA_MODELO 0
@@ -74,11 +69,9 @@
   { 5, 5, 6, 5 }
 #define CULTIVO_CRECIMIENTO_MAXIMO 3
 
-// Caverna: golpes restantes de un mineral
 #define CAVERNA_GOLPES_GOLPEADO 2
 #define CAVERNA_GOLPES_CASI_ROTO 1
 
-// Pueblo: tiendas (el índice es el mismo para puesto, NPC, título y fondo)
 #define TIENDA_PIERRE 0
 #define TIENDA_CLINT 1
 #define TIENDA_ROBIN 2
@@ -109,7 +102,6 @@
 #define TIENDA_MARGEN_TITULO 10
 #define TIENDA_MARGEN_BOTONES 10
 
-// Personaje: ropa inicial, caminar y picar
 #define PERSONAJE_PANTALON_INICIAL 0
 #define PERSONAJE_REMERA_INICIAL 5
 #define PERSONAJE_PELO_INICIAL 3
@@ -125,7 +117,6 @@
 #define PERSONAJE_DURACION_PICAR                                               \
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
 
-// Ropa elegida en el lobby: índice de Qt -> índice en las hojas de SDL
 #define ROPA_SOMBREROS_SDL                                                     \
   { 45, 4, 40, 61, 121, 99 }
 #define ROPA_PELOS_SDL                                                         \
@@ -135,14 +126,12 @@
 #define ROPA_REMERAS_SDL                                                       \
   { 9, 19, 36, 27, 104 }
 
-// Barras de vida y energía (px)
 #define BARRA_VALOR_MAXIMO 100.0
 #define BARRA_ANCHO 48
 #define BARRA_ALTO 6
 #define BARRA_SEPARACION 2
 #define BARRA_BORDE 1
 
-// Día y noche
 #define DIA_HORA_INICIO 6
 #define MINUTOS_POR_HORA 60
 #define NOCHE_HORA_ATARDECER 18
@@ -150,7 +139,6 @@
 #define NOCHE_OSCURIDAD_MAXIMA 170
 #define RELOJ_MINIMO_DOS_CIFRAS 10
 
-// HUD (px)
 #define HUD_TAMANIO_LETRA 16
 #define HUD_MARGEN 16
 #define HUD_ALTO_BOTON 32
@@ -166,7 +154,6 @@
 #define HUD_RAYITA_ANCHO 8
 #define HUD_RAYITA_ALTO 20
 
-// Teclas
 #define TECLA_SALIR SDLK_ESCAPE
 #define TECLA_MAPA SDLK_m
 #define TECLA_PRIMER_CASILLERO SDLK_1
@@ -182,7 +169,6 @@
 #define TECLA_IZQUIERDA SDLK_LEFT
 #define TECLA_DERECHA SDLK_RIGHT
 
-// Cartel de regalo (px)
 #define REGALO_ANCHO 280
 #define REGALO_ALTO 140
 #define REGALO_MARGEN_TITULO 10
@@ -191,7 +177,6 @@
 #define REGALO_BOTONES_DESDE_ABAJO 44
 #define REGALO_ANCHO_BOTON 110
 
-// Inventario (px)
 #define INVENTARIO_HERRAMIENTAS 4
 #define INVENTARIO_ITEMS 9
 #define INVENTARIO_CASILLEROS (INVENTARIO_HERRAMIENTAS + INVENTARIO_ITEMS)
@@ -205,7 +190,6 @@
 #define INVENTARIO_ESTRELLA_MARGEN 3
 #define DIGITOS_DECIMALES 10
 
-// Paleta de colores de la ropa
 #define COLOR_ROPA_AZUL                                                        \
   { 60, 90, 200 }
 #define COLOR_ROPA_MARRON                                                      \
@@ -230,7 +214,6 @@
   }
 #define PALETA_ROPA_CANTIDAD 8
 
-// Rutas de assets
 #define RUTA_FUENTE_JUEGO "assets/fuentes/DejaVuSans-Bold.ttf"
 #define RUTA_ARBOL "assets/mapas/tree1.png"
 #define RUTA_PINO "assets/mapas/tree1_2.png"
@@ -314,9 +297,8 @@
 #define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
 #define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30
 #define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
-#define CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO 6
+#define VUELTAS_POR_CUADRO_ENEMIGO 6
 
-// Sprites: suelo (columna y fila en tiles del tileset)
 #define SUELO_DEFECTO_COLUMNA 4
 #define SUELO_DEFECTO_FILA 9
 #define SUELO_BORDE_CAVERNA_COLUMNA 8
@@ -336,7 +318,6 @@
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
 
-// Sprites: recortes del mapa (px)
 #define SPRITE_PUERTA_X 514
 #define SPRITE_PUERTA_Y 370
 #define SPRITE_PUERTA_ANCHO 30
@@ -348,7 +329,6 @@
 #define SPRITE_PASTO_OSCURO_X 16
 #define SPRITE_PASTO_OSCURO_Y 144
 
-// Sprites: minerales (px)
 #define SPRITE_ORCO_CENTRO_X 55
 #define SPRITE_ESQUELETO_CENTRO_X 14
 #define SPRITE_VAMPIRO_CENTRO_X 13
@@ -365,8 +345,11 @@
 #define SPRITE_ORCO_PIE 57
 #define SPRITE_VAMPIRO_LADO 32
 #define SPRITE_VAMPIRO_PIE 29
+#define SPRITE_CALAVERA_LADO 16
+#define SPRITE_CALAVERA_PIE 16
+#define SPRITE_TRAMPA_LADO 16
+#define SPRITE_TRAMPA_PIE 16
 
-// Sprites: granja (px)
 #define SPRITE_MODELOS_CASAS                                                   \
   {                                                                            \
     {144, 0, 80, 104}, { 0, 0, 80, 96 }                                        \
@@ -377,7 +360,6 @@
 #define SPRITE_CULTIVO_FILAS_POR_TIPO 2
 #define SPRITE_CULTIVO_FILA_PLANTA 1
 
-// Sprites: pueblo (px)
 #define SPRITE_PUESTO_PIERRE                                                   \
   { 240, 176, 112, 144 }
 #define SPRITE_PUESTO_CLINT                                                    \
@@ -402,7 +384,6 @@
 #define SPRITE_MODELOS_NPCS                                                    \
   { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
 
-// Sprites: personaje (px)
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
 #define SPRITE_PERSONAJE_PASOS                                                 \
@@ -438,7 +419,6 @@
 #define SPRITE_MANO_Y 16
 #define ICONO_PIXELES_POR_TILE 24
 
-// Sprites: íconos del inventario (px)
 #define ICONO_MINERAL_X 100
 #define ICONO_MINERAL_Y 17
 #define ICONO_MINERAL_LADO 10
@@ -463,7 +443,6 @@
     {0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }                                 \
   }
 
-// Colores
 #define COLOR_ALFA_OPACO 255
 #define COLOR_SOMBRA_MARGEN 150
 #define COLOR_SIN_TINTE 255
@@ -515,7 +494,6 @@
 #define COLOR_FONDO_JUEGO                                                      \
   { 0, 0, 0, COLOR_ALFA_OPACO }
 
-// Textos visibles
 #define TEXTO_JUEGO_MUSICA "Música"
 #define TEXTO_JUEGO_MENOS "-"
 #define TEXTO_JUEGO_MAS "+"
@@ -555,7 +533,6 @@
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "
 #define TEXTO_JUEGO_CONEXION_PERDIDA "Se perdió la conexión con el servidor."
 
-// Audio
 #define AUDIO_TAMANIO_BUFFER 1024
 #define AUDIO_INCREMENTO_VOLUMEN 16
 #define AUDIO_VOLUMEN_INICIAL (MIX_MAX_VOLUME / 2)

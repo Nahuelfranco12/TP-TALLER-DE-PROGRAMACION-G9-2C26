@@ -173,7 +173,7 @@ void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
   if (mirando == IZQUIERDA) {
     fila_cuerpo = DERECHA;
   }
-  int arriba_y = pie_y - SPRITE_PERSONAJE_ALTO * lado / TAMANIO_TILE_ASSET;
+  int arriba_y = pie_y - SPRITE_PERSONAJE_ALTO * lado / PIXELES_POR_TILE;
   dibujar_capas(renderer, centro_x - lado / 2, arriba_y, lado, 0, fila_cuerpo,
                 mirando, 0);
 }
@@ -188,10 +188,10 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
     flip = SDL_FLIP_HORIZONTAL;
   }
 
-  int ancho = SPRITE_PERSONAJE_ANCHO * lado / TAMANIO_TILE_ASSET;
-  int alto = SPRITE_PERSONAJE_ALTO * lado / TAMANIO_TILE_ASSET;
+  int ancho = SPRITE_PERSONAJE_ANCHO * lado / PIXELES_POR_TILE;
+  int alto = SPRITE_PERSONAJE_ALTO * lado / PIXELES_POR_TILE;
   Rect destino(x, y, ancho, alto);
-  int desplazamiento = rebote * lado / TAMANIO_TILE_ASSET;
+  int desplazamiento = rebote * lado / PIXELES_POR_TILE;
 
   // Cuerpo
   Rect origen_cuerpo(columna * SPRITE_PERSONAJE_ANCHO,
@@ -225,9 +225,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
       fila_remera;
   Rect origen_remera(remera_x, remera_y, SPRITE_REMERA_LADO,
                      SPRITE_REMERA_LADO);
-  int lado_remera = SPRITE_REMERA_LADO * lado / TAMANIO_TILE_ASSET;
-  Rect destino_remera(x + SPRITE_REMERA_X * lado / TAMANIO_TILE_ASSET,
-                      y + SPRITE_REMERA_Y * lado / TAMANIO_TILE_ASSET +
+  int lado_remera = SPRITE_REMERA_LADO * lado / PIXELES_POR_TILE;
+  Rect destino_remera(x + SPRITE_REMERA_X * lado / PIXELES_POR_TILE,
+                      y + SPRITE_REMERA_Y * lado / PIXELES_POR_TILE +
                           desplazamiento,
                       lado_remera, lado_remera);
   renderer.Copy(remeras, origen_remera, destino_remera);
@@ -264,9 +264,9 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
         fila_sombrero;
     Rect origen_sombrero(sombrero_x, sombrero_y, SPRITE_SOMBRERO_LADO,
                          SPRITE_SOMBRERO_LADO);
-    int lado_sombrero = SPRITE_SOMBRERO_LADO * lado / TAMANIO_TILE_ASSET;
-    Rect destino_sombrero(x + SPRITE_SOMBRERO_X * lado / TAMANIO_TILE_ASSET,
-                          y + SPRITE_SOMBRERO_Y * lado / TAMANIO_TILE_ASSET +
+    int lado_sombrero = SPRITE_SOMBRERO_LADO * lado / PIXELES_POR_TILE;
+    Rect destino_sombrero(x + SPRITE_SOMBRERO_X * lado / PIXELES_POR_TILE,
+                          y + SPRITE_SOMBRERO_Y * lado / PIXELES_POR_TILE +
                               desplazamiento,
                           lado_sombrero, lado_sombrero);
     renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
@@ -284,11 +284,11 @@ void Personaje::dibujar_herramienta(Renderer &renderer, int x, int y,
   int alto = icono.GetHeight() * lado / ICONO_PIXELES_POR_TILE;
 
   // Mano derecha
-  int mano_x = x + SPRITE_MANO_DERECHA_X * lado / TAMANIO_TILE_ASSET;
-  int mano_y = y + SPRITE_MANO_Y * lado / TAMANIO_TILE_ASSET;
+  int mano_x = x + SPRITE_MANO_DERECHA_X * lado / PIXELES_POR_TILE;
+  int mano_y = y + SPRITE_MANO_Y * lado / PIXELES_POR_TILE;
   int flip = SDL_FLIP_NONE;
   if (mirando == IZQUIERDA) {
-    mano_x = x + SPRITE_MANO_IZQUIERDA_X * lado / TAMANIO_TILE_ASSET - ancho;
+    mano_x = x + SPRITE_MANO_IZQUIERDA_X * lado / PIXELES_POR_TILE - ancho;
     flip = SDL_FLIP_HORIZONTAL;
   }
 

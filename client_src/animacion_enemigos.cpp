@@ -5,15 +5,12 @@
 using SDL2pp::Renderer;
 
 namespace {
-// Descuenta las vueltas de una animación en curso
 void descontar(long &contador, long vueltas) {
   if (contador > 0) {
     contador -= vueltas;
   }
 }
 } // namespace
-
-// AnimacionEnemigo
 
 void AnimacionEnemigo::mirar_hacia(int dx) {
   if (dx < 0) {
@@ -107,15 +104,15 @@ long AnimacionEnemigo::restantes(Estado actual) const {
 
 SpritesEnemigo::SpritesEnemigo(Renderer &renderer, const HojasEnemigo &hojas)
     : quieto(renderer, hojas.quieto, hojas.lado, hojas.pie, hojas.centro_x,
-             CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO),
+             VUELTAS_POR_CUADRO_ENEMIGO),
       caminando(renderer, hojas.caminando, hojas.lado, hojas.pie_caminando,
-                hojas.centro_x, CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO),
+                hojas.centro_x, VUELTAS_POR_CUADRO_ENEMIGO),
       atacando(renderer, hojas.atacando, hojas.lado, hojas.pie,
-               hojas.centro_x, CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO),
+               hojas.centro_x, VUELTAS_POR_CUADRO_ENEMIGO),
       daniado(renderer, hojas.daniado, hojas.lado, hojas.pie, hojas.centro_x,
-              CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO),
+              VUELTAS_POR_CUADRO_ENEMIGO),
       muerte(renderer, hojas.muerte, hojas.lado, hojas.pie, hojas.centro_x,
-             CAVERNA_ENEMIGO_VUELTAS_POR_CUADRO) {}
+             VUELTAS_POR_CUADRO_ENEMIGO) {}
 
 long SpritesEnemigo::duracion_ataque() const { return atacando.duracion(); }
 

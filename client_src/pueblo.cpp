@@ -79,8 +79,8 @@ void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
 
   int x = puesto.tile_x * lado - camara_x;
   int y = puesto.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / TAMANIO_TILE_ASSET,
-               modelo.h * lado / TAMANIO_TILE_ASSET);
+  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
+               modelo.h * lado / PIXELES_POR_TILE);
   renderer.Copy(edificios, origen, destino);
 }
 
@@ -93,8 +93,8 @@ void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x,
   Rect origen(cuadro * datos.lado_cuadro, 0, datos.lado_cuadro,
               datos.lado_cuadro);
 
-  int tamanio = datos.lado_cuadro * lado / TAMANIO_TILE_ASSET;
-  int pie = datos.pie_y * lado / TAMANIO_TILE_ASSET;
+  int tamanio = datos.lado_cuadro * lado / PIXELES_POR_TILE;
+  int pie = datos.pie_y * lado / PIXELES_POR_TILE;
   renderer.Copy(sprites_npcs[modelo], origen,
                 Rect(centro_x - tamanio / 2, pie_y - pie, tamanio, tamanio));
 }

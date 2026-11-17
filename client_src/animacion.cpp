@@ -49,15 +49,15 @@ void Animacion::dibujar(Renderer &renderer, int cuadro, int tile_x,
     return;
   }
 
-  int tamanio = lado_cuadro * lado_tile / TAMANIO_TILE_ASSET;
+  int tamanio = lado_cuadro * lado_tile / PIXELES_POR_TILE;
   int x = tile_x * lado_tile + lado_tile / 2 - tamanio / 2 - camara_x;
   int y = tile_y * lado_tile + lado_tile -
-          fila_pie * lado_tile / TAMANIO_TILE_ASSET - camara_y;
+          fila_pie * lado_tile / PIXELES_POR_TILE - camara_y;
 
   int flip = SDL_FLIP_NONE;
   if (espejada) {
     flip = SDL_FLIP_HORIZONTAL;
-    x += (2 * columna_centro - lado_cuadro) * lado_tile / TAMANIO_TILE_ASSET;
+    x += (2 * columna_centro - lado_cuadro) * lado_tile / PIXELES_POR_TILE;
   }
 
   Rect origen(cuadro * lado_cuadro, 0, lado_cuadro, lado_cuadro);
