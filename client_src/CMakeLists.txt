@@ -48,8 +48,13 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    animacion.cpp
+    animacion_enemigos.cpp
+
     PUBLIC
     # .h files
+    animacion.h
+    animacion_enemigos.h
     client.h
     audio.h
     personaje.h

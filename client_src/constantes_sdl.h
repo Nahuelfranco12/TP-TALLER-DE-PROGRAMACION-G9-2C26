@@ -460,6 +460,7 @@
 #define COLOR_ALFA_OPACO 255
 #define COLOR_SOMBRA_MARGEN 150
 #define COLOR_SIN_TINTE 255
+#define COLOR_TINTE_NEUTRO { COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_ALFA_OPACO }
 #define COLOR_TEXTO                                                            \
   { 255, 255, 255, COLOR_ALFA_OPACO }
 #define COLOR_BOTON_FONDO                                                      \
