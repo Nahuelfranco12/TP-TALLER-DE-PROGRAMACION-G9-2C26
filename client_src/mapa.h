@@ -38,8 +38,6 @@ public:
   int obtener_ancho() const;
   int obtener_alto() const;
 
-  bool es_escalera(int x, int y) const;
-
   void actualizar(const std::vector<std::vector<TileDto>> &tiles);
 
   void dibujar_completo(SDL2pp::Renderer &renderer, int origen_x, int origen_y,

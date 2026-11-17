@@ -42,18 +42,6 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
   herramientas.emplace_back(renderer, RUTA_REGADERA);
 }
 
-// void Personaje::cambiar_color_pantalon() {
-//   color_pantalon = (color_pantalon + 1) % PALETA_ROPA_CANTIDAD;
-//   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
-//                          COLORES[color_pantalon][2]);
-// }
-//
-// void Personaje::cambiar_color_pelo() {
-//   color_pelo = (color_pelo + 1) % PALETA_ROPA_CANTIDAD;
-//   pelos.SetColorMod(COLORES[color_pelo][0], COLORES[color_pelo][1],
-//                     COLORES[color_pelo][2]);
-// }
-
 void Personaje::vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
                        int nueva_remera) {
   sombrero = nuevo_sombrero;

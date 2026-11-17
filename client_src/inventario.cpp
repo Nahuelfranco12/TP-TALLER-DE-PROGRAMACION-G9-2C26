@@ -127,46 +127,10 @@ void Inventario::dibujar_numero(Renderer &renderer, int numero,
   }
 }
 
-void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad,
-                                 const Rect &lugar) {
-  SDL2pp::Color color = COLOR_ESTRELLA_BORDE;
-  switch (calidad) {
-  case CropQualityDto::GOOD:
-    color = COLOR_CALIDAD_BUENA;
-    break;
-  case CropQualityDto::EXCELENT:
-    color = COLOR_CALIDAD_EXCELENTE;
-    break;
-  case CropQualityDto::INCREDIBLE:
-    color = COLOR_CALIDAD_INCREIBLE;
-    break;
-  case CropQualityDto::PERFECT:
-    color = COLOR_CALIDAD_PERFECTA;
-    break;
-  default:
-    return;
-  }
-
-  // Estrellita
-  int x = lugar.x + INVENTARIO_ESTRELLA_MARGEN;
-  int y = lugar.y + INVENTARIO_ESTRELLA_MARGEN;
-
-  // Borde negro
-  const SDL2pp::Color borde = COLOR_ESTRELLA_BORDE;
-  renderer.SetDrawColor(borde);
-  for (const SDL_Rect &parte : ESTRELLA_BORDE) {
-    renderer.FillRect(Rect(x + parte.x, y + parte.y, parte.w, parte.h));
-  }
-
-  renderer.SetDrawColor(color);
-  for (const SDL_Rect &parte : ESTRELLA_RELLENO) {
-    renderer.FillRect(Rect(x + parte.x, y + parte.y, parte.w, parte.h));
-  }
-}
-
 void Inventario::dibujar_item(Renderer &renderer,
                               const InventorySlotDto &casillero,
                               const Rect &lugar) {
+  int columna_cultivo = 8 + static_cast<int>(casillero.quality);
   switch (casillero.item) {
   case ItemTypeDto::MINERAL_GOLD:
     dibujar_icono(renderer, minerales, icono_mineral(ICONO_MINERAL_FILA_ORO),
@@ -219,32 +183,20 @@ void Inventario::dibujar_item(Renderer &renderer,
     break;
   // PLANTAS COSECHADAS (tambien revisar)
   case ItemTypeDto::CROP_STRAWBERRY:
-    dibujar_icono(
-        renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_FRUTILLA),
-        lugar);
+    dibujar_icono(renderer, cultivos, Rect(columna_cultivo * 16, 1 * 16, 16, 16), lugar);
     break;
   case ItemTypeDto::CROP_GREEN_ONION:
-    dibujar_icono(
-        renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CEBOLLA),
-        lugar);
+    dibujar_icono(renderer, cultivos, Rect(columna_cultivo * 16, 3 * 16, 16, 16), lugar);
     break;
   case ItemTypeDto::CROP_POTATO:
-    dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_PAPA),
-                  lugar);
+    dibujar_icono(renderer, cultivos, Rect(columna_cultivo * 16, 5 * 16, 16, 16), lugar);
     break;
   case ItemTypeDto::CROP_PUMPKIN:
-    dibujar_icono(
-        renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
-        lugar);
+    dibujar_icono(renderer, cultivos, Rect(columna_cultivo * 16, 7 * 16, 16, 16), lugar);
     break;
   default:
     break;
   }
-  dibujar_calidad(renderer, casillero.quality, lugar);
   dibujar_numero(renderer, casillero.count, lugar);
 }
 
