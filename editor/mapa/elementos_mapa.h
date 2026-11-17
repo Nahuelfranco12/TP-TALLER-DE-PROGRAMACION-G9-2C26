@@ -35,7 +35,8 @@ enum class ElementosCaverna {
   Escombros,
   Antorcha,
   Candelabro,
-  Escudo
+  Escudo,
+  Pozo
 };
 
 enum class ElementosPueblo {

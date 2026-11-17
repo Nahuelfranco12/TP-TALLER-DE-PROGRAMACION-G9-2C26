@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "constantes_mapa.h"
+#include "elementos_mapa.h"
 #include "mapa_editor.h"
 
 namespace {
@@ -24,6 +25,10 @@ std::string conEncabezado(const std::string &lugar,
 
 std::string falta(const std::string &lugar, const char *nombre) {
   return conEncabezado(lugar, std::string(VALIDACION_TEXTO_FALTA) + nombre);
+}
+
+std::string sobra(const std::string &zona, const std::string &elemento) {
+  return zona + VALIDACION_TEXTO_SEPARADOR + VALIDACION_TEXTO_SOBRA + elemento;
 }
 
 void validarGranja(const MapaZona<ElementosGranja> &granja,
@@ -62,17 +67,34 @@ void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
       errores.push_back(falta(VALIDACION_TEXTO_ZONA_PUEBLO, nombre));
 }
 
+struct ReglaCaverna {
+  ElementosCaverna tipo;
+  const char *nombre;
+  bool vaEnPrimerNivel;
+  bool vaEnUltimoNivel;
+};
+
 void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
   for (std::size_t i = 0; i < niveles.size(); ++i) {
     std::string nivel = std::string(VALIDACION_TEXTO_ZONA_CAVERMA) +
-                        VALIDACION_TEXTO_NIVEL +
-                        std::to_string(i + PRIMER_NIVEL_CAVERNA);
+                        VALIDACION_TEXTO_NIVEL + std::to_string(i + PRIMER_NIVEL_CAVERNA);
+    bool esPrimero = i == 0, esUltimo = i + 1 == niveles.size();
+    bool hayPozo = cantidadDe(niveles[i], ElementosCaverna::Pozo) > 0;
+    bool hayEscalera = cantidadDe(niveles[i], ElementosCaverna::Escalera) > 0;
+
     if (cantidadDe(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
       errores.push_back(falta(nivel, TEXTO_SALIDA_CAVERNA));
-    bool esUltimo = i + 1 == niveles.size();
-    if (!esUltimo && cantidadDe(niveles[i], ElementosCaverna::Escalera) == 0)
+
+    if (!esUltimo && !hayPozo)
+      errores.push_back(falta(nivel, TEXTO_POZO));
+    if (esUltimo && hayPozo)
+      errores.push_back(sobra(nivel, TEXTO_POZO));
+
+    if (!esPrimero && !hayEscalera)
       errores.push_back(falta(nivel, TEXTO_ESCALERA));
+    if (esPrimero && hayEscalera)
+      errores.push_back(sobra(nivel, TEXTO_ESCALERA));
   }
 }
 } // namespace

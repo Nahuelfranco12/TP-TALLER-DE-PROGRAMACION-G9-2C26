@@ -14,6 +14,9 @@
     <qresource prefix="/Fuentes">
         <file alias="stardew_valley.ttf">../assets/fuentes/Stardew_Valley.ttf</file>
     </qresource>
+    <qresource prefix="/Caverna">
+        <file alias="pozo.png">../assets/caverna/pozo-sig-nivel.png</file>
+    </qresource>
     <qresource prefix="/Mapas">
         <file alias="suelo.png">../assets/mapas/ground_01_16x16.png</file>
         <file alias="cabanias.png">../assets/mapas/Tilesets_Cabins.png</file>
