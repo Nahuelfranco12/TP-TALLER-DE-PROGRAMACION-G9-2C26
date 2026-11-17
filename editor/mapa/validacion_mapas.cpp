@@ -78,7 +78,8 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
   for (std::size_t i = 0; i < niveles.size(); ++i) {
     std::string nivel = std::string(VALIDACION_TEXTO_ZONA_CAVERMA) +
-                        VALIDACION_TEXTO_NIVEL + std::to_string(i + PRIMER_NIVEL_CAVERNA);
+                        VALIDACION_TEXTO_NIVEL +
+                        std::to_string(i + PRIMER_NIVEL_CAVERNA);
     bool esPrimero = i == 0, esUltimo = i + 1 == niveles.size();
     bool hayPozo = cantidadDe(niveles[i], ElementosCaverna::Pozo) > 0;
     bool hayEscalera = cantidadDe(niveles[i], ElementosCaverna::Escalera) > 0;

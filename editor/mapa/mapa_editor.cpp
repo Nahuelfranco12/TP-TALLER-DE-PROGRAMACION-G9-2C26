@@ -96,14 +96,14 @@ bool esUnico(ElementosGranja tipo) {
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
-	switch(tipo){
-		case ElementosCaverna::Pozo:
-  			return {TAMANIO_OCUPADO_POZO_ANCHO_ALTO,TAMANIO_OCUPADO_POZO_ANCHO_ALTO};
-     	case ElementosCaverna::SalidaCaverna:
-      		return {TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
-      default:
-        return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
-	}
+  switch (tipo) {
+  case ElementosCaverna::Pozo:
+    return {TAMANIO_OCUPADO_POZO_ANCHO_ALTO, TAMANIO_OCUPADO_POZO_ANCHO_ALTO};
+  case ElementosCaverna::SalidaCaverna:
+    return {TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
+  default:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
+  }
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
@@ -131,7 +131,9 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
 }
 
 bool esUnico(ElementosCaverna tipo) {
-  return tipo == ElementosCaverna::Escalera || tipo == ElementosCaverna::SalidaCaverna || tipo == ElementosCaverna::Pozo;
+  return tipo == ElementosCaverna::Escalera ||
+         tipo == ElementosCaverna::SalidaCaverna ||
+         tipo == ElementosCaverna::Pozo;
 }
 
 bool esUnico(ElementosPueblo tipo) {

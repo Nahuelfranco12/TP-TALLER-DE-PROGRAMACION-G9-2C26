@@ -121,7 +121,8 @@
 #define RECORTE_ESCUDO                                                         \
   { 64, 112, 16, 16 }
 
-#define RECORTE_POZO {0,0,32,32}
+#define RECORTE_POZO                                                           \
+  { 0, 0, 32, 32 }
 
 // Catálogo: recortes del pueblo -> catalogo_elementos.cpp
 #define RECORTE_CASA_MARNIE                                                    \

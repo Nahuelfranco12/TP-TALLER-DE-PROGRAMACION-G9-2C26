@@ -92,7 +92,7 @@ const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna() {
       {ElementosCaverna::Candelabro, TEXTO_CANDELABRO, RUTA_CAVERNA,
        RECORTE_CANDELABRO},
       {ElementosCaverna::Escudo, TEXTO_ESCUDO, RUTA_CAVERNA, RECORTE_ESCUDO},
-      {ElementosCaverna::Pozo, TEXTO_POZO, RUTA_POZO, RECORTE_POZO}  };
+      {ElementosCaverna::Pozo, TEXTO_POZO, RUTA_POZO, RECORTE_POZO}};
   return catalogo;
 }
 

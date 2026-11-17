@@ -15,10 +15,12 @@
 #define TIPOS_GORRO ":/ropas/assets/ropas/StardewValley_Character_Hats.png"
 #define TIPOS_PANTALON ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
 #define TIPOS_REMERA ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
-#define TIPOS_CUERPO ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
+#define TIPOS_CUERPO                                                           \
+  ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
 #define RUTA_FUENTE ":/fuentes/assets/fuentes/Stardew_Valley.otf"
 
-// Escalas -> controlador_customizar_personaje.cpp, controlador_retomar_partida.cpp
+// Escalas -> controlador_customizar_personaje.cpp,
+// controlador_retomar_partida.cpp
 #define ESCALA_PREVISUALIZACION 6
 #define ESCALA_TARJETA 4
 
@@ -28,10 +30,22 @@
 
 // Coordenadas de las ropas en las hojas -> dibujar_personaje.cpp
 #define BASE_COORDENADAS 1
-#define COORDENADAS_PELOS {{1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, { 4, 12 }}
-#define COORDENADAS_GORROS {{13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, { 33, 4 }}
-#define COORDENADAS_PANTALONES {{1, 1}, {1, 25}, {1, 61}, { 1, 73 }}
-#define COORDENADAS_REMERAS {{1, 10}, {5, 4}, {9, 5}, {5, 12}, { 25, 9 }}
+#define COORDENADAS_PELOS                                                      \
+  {                                                                            \
+    {1, 10}, {1, 11}, {7, 2}, {13, 6}, {4, 6}, { 4, 12 }                       \
+  }
+#define COORDENADAS_GORROS                                                     \
+  {                                                                            \
+    {13, 10}, {1, 5}, {13, 5}, {21, 2}, {41, 2}, { 33, 4 }                     \
+  }
+#define COORDENADAS_PANTALONES                                                 \
+  {                                                                            \
+    {1, 1}, {1, 25}, {1, 61}, { 1, 73 }                                        \
+  }
+#define COORDENADAS_REMERAS                                                    \
+  {                                                                            \
+    {1, 10}, {5, 4}, {9, 5}, {5, 12}, { 25, 9 }                                \
+  }
 #define OPCION_POR_DEFECTO 0
 
 // Medidas de las ropas en las hojas -> dibujar_personaje.cpp
@@ -61,7 +75,8 @@
 #define COLOR_PANTALON QColor(60, 90, 200)
 #define COLOR_PELO QColor(150, 80, 30)
 
-// Textos visibles -> controlador_nueva_partida.cpp, controlador_retomar_partida.cpp
+// Textos visibles -> controlador_nueva_partida.cpp,
+// controlador_retomar_partida.cpp
 #define ELEGIR_MAPA "Elegir Mapa"
 #define TEXTO_MULTIPLAYER "Multiplayer"
 #define TEXTO_SINGLEPLAYER "Singleplayer"
@@ -70,12 +85,22 @@
 // Tarjetas de mundos y partidas -> tarjeta_item.cpp
 #define ALTO_TARJETA 80
 #define TAMANIO_IMAGEN_TARJETA 64
-#define ESTILO_TARJETA_TITULO "color: #f1b356; font-family: 'Stardew Valley'; font-size: 18px; border: " "none;"
-#define ESTILO_TARJETA_SUBTITULO "color: white; font-family: 'Stardew Valley'; font-size: 14px; border: " "none;"
-#define ESTILO_TARJETA_EXTRA "color: #f1b356; font-family: 'Stardew Valley'; font-size: 14px; border: " "none;"
-#define ESTILO_TARJETA_BOTON "background-color: #f1b356; color: #3b2010; font-weight: bold; " "border-radius: 3px; padding: 5px;"
-#define ESTILO_TARJETA_SELECCIONADA "background-color: #5c341a; border: 2px solid #f1b356; border-radius: 5px;"
-#define ESTILO_TARJETA_NO_SELECCIONADA "background-color: #3b2010; border: 2px solid #6b4020; border-radius: 5px;"
+#define ESTILO_TARJETA_TITULO                                                  \
+  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 18px; border: "   \
+  "none;"
+#define ESTILO_TARJETA_SUBTITULO                                               \
+  "color: white; font-family: 'Stardew Valley'; font-size: 14px; border: "     \
+  "none;"
+#define ESTILO_TARJETA_EXTRA                                                   \
+  "color: #f1b356; font-family: 'Stardew Valley'; font-size: 14px; border: "   \
+  "none;"
+#define ESTILO_TARJETA_BOTON                                                   \
+  "background-color: #f1b356; color: #3b2010; font-weight: bold; "             \
+  "border-radius: 3px; padding: 5px;"
+#define ESTILO_TARJETA_SELECCIONADA                                            \
+  "background-color: #5c341a; border: 2px solid #f1b356; border-radius: 5px;"
+#define ESTILO_TARJETA_NO_SELECCIONADA                                         \
+  "background-color: #3b2010; border: 2px solid #6b4020; border-radius: 5px;"
 #define ESTILO_SIN_BORDE "border: none;"
 
 // Errores del lobby -> controlador_pagina.cpp, servicio_lobby_red.cpp
