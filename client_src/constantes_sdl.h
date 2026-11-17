@@ -359,6 +359,12 @@
 #define SPRITE_MINERAL_ETAPA_ENTERO 0
 #define SPRITE_MINERAL_ETAPA_GOLPEADO 1
 #define SPRITE_MINERAL_ETAPA_CASI_ROTO 2
+#define SPRITE_ESQUELETO_LADO 32
+#define SPRITE_ESQUELETO_PIE 29
+#define SPRITE_ORCO_LADO 100
+#define SPRITE_ORCO_PIE 57
+#define SPRITE_VAMPIRO_LADO 32
+#define SPRITE_VAMPIRO_PIE 29
 
 // Sprites: granja (px)
 #define SPRITE_MODELOS_CASAS                                                   \
