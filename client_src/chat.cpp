@@ -13,7 +13,7 @@ const int ANCHO_CHAT = 420;
 
 const SDL_Color BLANCO = {255, 255, 255, 255};
 const SDL_Color AMARILLO = {255, 220, 90, 255};
-} // namespace
+} 
 
 Chat::Chat(SDL2pp::Renderer &renderer)
     : renderer(renderer), fuente("assets/fuentes/DejaVuSans-Bold.ttf", TAMANIO_LETRA),
