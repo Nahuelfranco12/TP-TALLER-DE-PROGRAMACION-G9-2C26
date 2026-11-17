@@ -44,7 +44,8 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
 
 // void Personaje::cambiar_color_pantalon() {
 //   color_pantalon = (color_pantalon + 1) % PALETA_ROPA_CANTIDAD;
-//   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
+//   pantalones.SetColorMod(COLORES[color_pantalon][0],
+//   COLORES[color_pantalon][1],
 //                          COLORES[color_pantalon][2]);
 // }
 //

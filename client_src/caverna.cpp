@@ -14,29 +14,31 @@ struct FormatoEnemigo {
   int pie;
 };
 
-const FormatoEnemigo FORMATO_CALAVERA{SPRITE_CALAVERA_LADO, SPRITE_CALAVERA_PIE};
-//const FormatoEnemigo FORMATO_CALAVERA_VERDE{};
+const FormatoEnemigo FORMATO_CALAVERA{SPRITE_CALAVERA_LADO,
+                                      SPRITE_CALAVERA_PIE};
+// const FormatoEnemigo FORMATO_CALAVERA_VERDE{};
 const FormatoEnemigo FORMATO_TRAMPA{SPRITE_TRAMPA_LADO, SPRITE_TRAMPA_PIE};
 
-//const int PIXELES_POR_TILE = 16;
+// const int PIXELES_POR_TILE = 16;
 
-//const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
+// const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
 
-const HojasEnemigo HOJAS_ESQUELETO{RUTA_ESQUELETO_QUIETO,RUTA_ESQUELETO_CAMINANDO,
-                                   RUTA_ESQUELETO_ATACA,RUTA_ESQUELETO_DANIADO,
-                                   RUTA_ESQUELETO_MUERTO,SPRITE_ESQUELETO_LADO,
-                                   SPRITE_ESQUELETO_PIE,SPRITE_ESQUELETO_PIE,
-                                   SPRITE_ESQUELETO_CENTRO_X};
-const HojasEnemigo HOJAS_ORCO{RUTA_ORCO_QUIETO,RUTA_ORCO_CAMINANDO,
-                              RUTA_ORCO_ATACA,RUTA_ORCO_DANIADO,
-                              RUTA_ORCO_MUERTO,SPRITE_ORCO_LADO,
-                              SPRITE_ORCO_PIE,SPRITE_ORCO_PIE,
-                              SPRITE_ORCO_CENTRO_X};
-const HojasEnemigo HOJAS_VAMPIRO{RUTA_VAMPIRO_QUIETO,RUTA_VAMPIRO_CAMINANDO,
-                                 RUTA_VAMPIRO_ATACA,RUTA_VAMPIRO_DANIADO,
-                                 RUTA_VAMPIRO_MUERTO,SPRITE_VAMPIRO_LADO,
-                                 SPRITE_VAMPIRO_PIE,SPRITE_VAMPIRO_PIE_CAMINANDO,
-                                 SPRITE_VAMPIRO_CENTRO_X};
+const HojasEnemigo HOJAS_ESQUELETO{
+    RUTA_ESQUELETO_QUIETO,    RUTA_ESQUELETO_CAMINANDO,
+    RUTA_ESQUELETO_ATACA,     RUTA_ESQUELETO_DANIADO,
+    RUTA_ESQUELETO_MUERTO,    SPRITE_ESQUELETO_LADO,
+    SPRITE_ESQUELETO_PIE,     SPRITE_ESQUELETO_PIE,
+    SPRITE_ESQUELETO_CENTRO_X};
+const HojasEnemigo HOJAS_ORCO{
+    RUTA_ORCO_QUIETO,  RUTA_ORCO_CAMINANDO, RUTA_ORCO_ATACA,
+    RUTA_ORCO_DANIADO, RUTA_ORCO_MUERTO,    SPRITE_ORCO_LADO,
+    SPRITE_ORCO_PIE,   SPRITE_ORCO_PIE,     SPRITE_ORCO_CENTRO_X};
+const HojasEnemigo HOJAS_VAMPIRO{
+    RUTA_VAMPIRO_QUIETO,    RUTA_VAMPIRO_CAMINANDO,
+    RUTA_VAMPIRO_ATACA,     RUTA_VAMPIRO_DANIADO,
+    RUTA_VAMPIRO_MUERTO,    SPRITE_VAMPIRO_LADO,
+    SPRITE_VAMPIRO_PIE,     SPRITE_VAMPIRO_PIE_CAMINANDO,
+    SPRITE_VAMPIRO_CENTRO_X};
 } // namespace
 
 Caverna::Caverna(Renderer &renderer)
@@ -57,41 +59,62 @@ void Caverna::actualizar(
   lista_enemigos.clear();
   for (const auto &[pos, entidad] : entidades) {
     if (entidad.type == EntityTypeDto::SKELETON) {
-      lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                {}, entidad.enemy.direction});
+      lista_enemigos.push_back({ESQUELETO,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::ORC) {
-      lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                {}, entidad.enemy.direction});
+      lista_enemigos.push_back({ORCO,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
                entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
       TipoEnemigo tipo =
           entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
-      lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                {}, entidad.enemy.direction});
+      lista_enemigos.push_back({tipo,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::SKULL_BLUE) {
-      lista_enemigos.push_back({CALAVERA_AZUL, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                {}, entidad.enemy.direction});
+      lista_enemigos.push_back({CALAVERA_AZUL,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::SKULL_GREEN) {
-      lista_enemigos.push_back({CALAVERA_VERDE, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), entidad.enemy.alive,
-                                {}, entidad.enemy.direction});
+      lista_enemigos.push_back({CALAVERA_VERDE,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::TRAP_PINCH) {
-      lista_enemigos.push_back({TRAMPA_PINCHES, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), true, {},
+      lista_enemigos.push_back({TRAMPA_PINCHES,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                true,
+                                {},
                                 entidad.enemy.direction});
       continue;
     } else if (entidad.type == EntityTypeDto::TRAP_FLAME) {
-      lista_enemigos.push_back({TRAMPA_LANZALLAMAS, static_cast<int>(pos.x),
-                                static_cast<int>(pos.y), true, {},
+      lista_enemigos.push_back({TRAMPA_LANZALLAMAS,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                true,
+                                {},
                                 entidad.enemy.direction});
       continue;
     }
@@ -289,14 +312,14 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
   if (cuadros <= 0)
     return;
 
-  int cuadro = static_cast<int>(
-      (vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
+  int cuadro =
+      static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
   Rect origen(cuadro * formato.lado, 0, formato.lado, formato.lado);
 
   int tamanio = formato.lado * lado / PIXELES_POR_TILE;
   int x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
-  int y = enemigo.tile_y * lado + lado -
-          formato.pie * lado / PIXELES_POR_TILE - camara_y;
+  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
+          camara_y;
 
   renderer.Copy(*textura, origen, Rect(x, y, tamanio, tamanio));
 }

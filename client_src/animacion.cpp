@@ -42,8 +42,8 @@ int Animacion::cuadro_al_reves(long vueltas_restantes) const {
 
 int Animacion::ultimo_cuadro() const { return limitar(cuadros() - 1); }
 
-void Animacion::dibujar(Renderer &renderer, int cuadro, int tile_x,
-                        int tile_y, int camara_x, int camara_y, int lado_tile,
+void Animacion::dibujar(Renderer &renderer, int cuadro, int tile_x, int tile_y,
+                        int camara_x, int camara_y, int lado_tile,
                         bool espejada, const SDL2pp::Color &tinte) {
   if (cuadros() <= 0) {
     return;

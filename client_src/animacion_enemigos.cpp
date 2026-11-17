@@ -107,8 +107,8 @@ SpritesEnemigo::SpritesEnemigo(Renderer &renderer, const HojasEnemigo &hojas)
              VUELTAS_POR_CUADRO_ENEMIGO),
       caminando(renderer, hojas.caminando, hojas.lado, hojas.pie_caminando,
                 hojas.centro_x, VUELTAS_POR_CUADRO_ENEMIGO),
-      atacando(renderer, hojas.atacando, hojas.lado, hojas.pie,
-               hojas.centro_x, VUELTAS_POR_CUADRO_ENEMIGO),
+      atacando(renderer, hojas.atacando, hojas.lado, hojas.pie, hojas.centro_x,
+               VUELTAS_POR_CUADRO_ENEMIGO),
       daniado(renderer, hojas.daniado, hojas.lado, hojas.pie, hojas.centro_x,
               VUELTAS_POR_CUADRO_ENEMIGO),
       muerte(renderer, hojas.muerte, hojas.lado, hojas.pie, hojas.centro_x,
@@ -160,6 +160,6 @@ void SpritesEnemigo::dibujar(Renderer &renderer,
     break;
   }
 
-  hoja->dibujar(renderer, cuadro, tile_x, tile_y, camara_x, camara_y,
-                lado_tile, animacion.mira_a_la_izquierda(), tinte);
+  hoja->dibujar(renderer, cuadro, tile_x, tile_y, camara_x, camara_y, lado_tile,
+                animacion.mira_a_la_izquierda(), tinte);
 }

@@ -1,8 +1,10 @@
 #ifndef CONSTANTES_SDL_H_
 #define CONSTANTES_SDL_H_
 
-// ACLARACION: las constantes estan centralizadas en este archivo, la idea es agruparlas en lo que es cada una, por ejemplo textos, cantidades, rutas, etc. Ese grupo se dice con un comentario arriba en que archivos se uso, esto para ser mas claro
-// por ejemplo grupo -> archivo1.cpp, archivoN.cpp
+// ACLARACION: las constantes estan centralizadas en este archivo, la idea es
+// agruparlas en lo que es cada una, por ejemplo textos, cantidades, rutas, etc.
+// Ese grupo se dice con un comentario arriba en que archivos se uso, esto para
+// ser mas claro por ejemplo grupo -> archivo1.cpp, archivoN.cpp
 
 // Ventana, argumentos y loop -> main.cpp
 #define CANTIDAD_ARGUMENTOS 3
@@ -13,7 +15,9 @@
 #define RENDERER_DRIVER_POR_DEFECTO (-1)
 #define LOOP_PERIODO_MS 16
 
-// Escalas y tamaños -> alrededores.cpp, animacion.cpp, caverna.h, caverna.cpp, granja.h, granja.cpp, main.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp, pueblo.h, pueblo.cpp
+// Escalas y tamaños -> alrededores.cpp, animacion.cpp, caverna.h, caverna.cpp,
+// granja.h, granja.cpp, main.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
+// pueblo.h, pueblo.cpp
 #define PIXELES_POR_TILE 16
 #define ESCALA_SPRITES 4
 #define TAMANIO_TILE (PIXELES_POR_TILE * ESCALA_SPRITES)
@@ -89,15 +93,25 @@
 #define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
 #define VUELTAS_POR_CUADRO_ENEMIGO 6
 
-// Pueblo y tiendas (el índice es el mismo para puesto, NPC, título y fondo) -> pueblo.cpp
+// Pueblo y tiendas (el índice es el mismo para puesto, NPC, título y fondo) ->
+// pueblo.cpp
 #define TIENDA_PIERRE 0
 #define TIENDA_CLINT 1
 #define TIENDA_ROBIN 2
 #define TIENDA_MARNIE 3
 #define TIENDA_CERRADA (-1)
-#define PUEBLO_PUESTOS { {10, 20, TIENDA_PIERRE}, {30, 36, TIENDA_CLINT}, {29, 3, TIENDA_ROBIN}, { 52, 18,TIENDA_MARNIE}                                                                          \
+#define PUEBLO_PUESTOS                                                         \
+  {                                                                            \
+    {10, 20, TIENDA_PIERRE}, {30, 36, TIENDA_CLINT}, {29, 3, TIENDA_ROBIN}, {  \
+      52, 18, TIENDA_MARNIE                                                    \
+    }                                                                          \
   }
-#define PUEBLO_NPCS {{15, 29, TIENDA_PIERRE}, {34, 44, TIENDA_CLINT}, {37, 13, TIENDA_ROBIN}, { 57, 29, TIENDA_MARNIE}}
+#define PUEBLO_NPCS                                                            \
+  {                                                                            \
+    {15, 29, TIENDA_PIERRE}, {34, 44, TIENDA_CLINT}, {37, 13, TIENDA_ROBIN}, { \
+      57, 29, TIENDA_MARNIE                                                    \
+    }                                                                          \
+  }
 #define NPC_CUADROS_ANIMACION 4
 #define NPC_VUELTAS_POR_CUADRO 12
 #define TIENDA_TAMANIO_LETRA 20
@@ -128,10 +142,14 @@
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
 
 // Ropa elegida en el lobby -> índice en las hojas de SDL -> main.cpp
-#define ROPA_SOMBREROS_SDL { 45, 4, 40, 61, 121, 99 }
-#define ROPA_PELOS_SDL { 9, 10, 33, 69, 21, 27 }
-#define ROPA_PANTALONES_SDL { 0, 2, 5, 6 }
-#define ROPA_REMERAS_SDL { 9, 19, 36, 27, 104 }
+#define ROPA_SOMBREROS_SDL                                                     \
+  { 45, 4, 40, 61, 121, 99 }
+#define ROPA_PELOS_SDL                                                         \
+  { 9, 10, 33, 69, 21, 27 }
+#define ROPA_PANTALONES_SDL                                                    \
+  { 0, 2, 5, 6 }
+#define ROPA_REMERAS_SDL                                                       \
+  { 9, 19, 36, 27, 104 }
 
 // Barras de vida y energía (px) -> personaje.cpp
 #define BARRA_VALOR_MAXIMO 100.0
@@ -204,7 +222,9 @@
 #define INVENTARIO_ESTRELLA_MARGEN 3
 #define DIGITOS_DECIMALES 10
 
-// Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp, interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp, pueblo.cpp
+// Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
+// interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
+// pueblo.cpp
 #define RUTA_FUENTE_JUEGO "assets/fuentes/DejaVuSans-Bold.ttf"
 #define RUTA_ARBOL "assets/mapas/tree1.png"
 #define RUTA_PINO "assets/mapas/tree1_2.png"
@@ -212,7 +232,8 @@
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
-#define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
+  "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"
 #define RUTA_CASAS "assets/edificios/House.png"
 #define RUTA_EDIFICIOS_PUEBLO "assets/edificios/PelicanTown_Buildings.png"
@@ -227,11 +248,16 @@
 #define RUTA_PICO "assets/inventario/pickaxe.png"
 #define RUTA_PALA "assets/inventario/shovel.png"
 #define RUTA_REGADERA "assets/inventario/watering_can.png"
-#define RUTA_PERSONAJE_CUERPO "assets/personaje/StardewValley_Character_Farmer Base.png"
-#define RUTA_PERSONAJE_PANTALONES "assets/personaje/StardewValley_Character_Pants.png"
-#define RUTA_PERSONAJE_REMERAS "assets/personaje/StardewValley_Character_Shirts.png"
-#define RUTA_PERSONAJE_PELOS "assets/personaje/StardewValley_Character_Hairstyles.png"
-#define RUTA_PERSONAJE_SOMBREROS "assets/personaje/StardewValley_Character_Hats.png"
+#define RUTA_PERSONAJE_CUERPO                                                  \
+  "assets/personaje/StardewValley_Character_Farmer Base.png"
+#define RUTA_PERSONAJE_PANTALONES                                              \
+  "assets/personaje/StardewValley_Character_Pants.png"
+#define RUTA_PERSONAJE_REMERAS                                                 \
+  "assets/personaje/StardewValley_Character_Shirts.png"
+#define RUTA_PERSONAJE_PELOS                                                   \
+  "assets/personaje/StardewValley_Character_Hairstyles.png"
+#define RUTA_PERSONAJE_SOMBREROS                                               \
+  "assets/personaje/StardewValley_Character_Hats.png"
 #define RUTA_NPC_PIERRE "assets/npcs/pierre.png"
 #define RUTA_NPC_CLINT "assets/npcs/clint.png"
 #define RUTA_NPC_ROBIN "assets/npcs/robin.png"
@@ -240,28 +266,40 @@
 #define RUTA_TIENDA_CLINT "assets/tiendas/clint.jpeg"
 #define RUTA_TIENDA_ROBIN "assets/tiendas/robin.jpg"
 #define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.jpg"
-#define RUTAS_FONDOS_TIENDAS {RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,RUTA_TIENDA_MARNIE}
+#define RUTAS_FONDOS_TIENDAS                                                   \
+  {                                                                            \
+    RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,                  \
+        RUTA_TIENDA_MARNIE                                                     \
+  }
 #define RUTA_MUSICA_GRANJA "assets/sonidos/musica_granja.ogg"
 #define RUTA_MUSICA_CAVERNA "assets/sonidos/musica_caverna.ogg"
 #define RUTA_MUSICA_PUEBLO "assets/sonidos/musica_pueblo.mp3"
 #define RUTA_SONIDO_PASO "assets/sonidos/paso.wav"
-#define RUTA_ESQUELETO_QUIETO "assets/enemigos/esqueleto/enemies-skeleton1_idle.png"
-#define RUTA_ESQUELETO_CAMINANDO "assets/enemigos/esqueleto/enemies-skeleton1_movement.png"
-#define RUTA_ESQUELETO_ATACA "assets/enemigos/esqueleto/enemies-skeleton1_attack.png"
-#define RUTA_ESQUELETO_DANIADO "assets/enemigos/esqueleto/enemies-skeleton1_take_damage.png"
-#define RUTA_ESQUELETO_MUERTO "assets/enemigos/esqueleto/enemies-skeleton1_death.png"
+#define RUTA_ESQUELETO_QUIETO                                                  \
+  "assets/enemigos/esqueleto/enemies-skeleton1_idle.png"
+#define RUTA_ESQUELETO_CAMINANDO                                               \
+  "assets/enemigos/esqueleto/enemies-skeleton1_movement.png"
+#define RUTA_ESQUELETO_ATACA                                                   \
+  "assets/enemigos/esqueleto/enemies-skeleton1_attack.png"
+#define RUTA_ESQUELETO_DANIADO                                                 \
+  "assets/enemigos/esqueleto/enemies-skeleton1_take_damage.png"
+#define RUTA_ESQUELETO_MUERTO                                                  \
+  "assets/enemigos/esqueleto/enemies-skeleton1_death.png"
 #define RUTA_ORCO_QUIETO "assets/enemigos/orco/Orc_Idle.png"
 #define RUTA_ORCO_CAMINANDO "assets/enemigos/orco/Orc_Walk.png"
 #define RUTA_ORCO_ATACA "assets/enemigos/orco/Orc_Attack01.png"
 #define RUTA_ORCO_DANIADO "assets/enemigos/orco/Orc_Hurt.png"
 #define RUTA_ORCO_MUERTO "assets/enemigos/orco/Orc_Death.png"
 #define RUTA_VAMPIRO_QUIETO "assets/enemigos/vampiro/enemies-vampire_idle.png"
-#define RUTA_VAMPIRO_CAMINANDO "assets/enemigos/vampiro/enemies-vampire_movement.png"
+#define RUTA_VAMPIRO_CAMINANDO                                                 \
+  "assets/enemigos/vampiro/enemies-vampire_movement.png"
 #define RUTA_VAMPIRO_ATACA "assets/enemigos/vampiro/enemies-vampire_attack.png"
-#define RUTA_VAMPIRO_DANIADO "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
+#define RUTA_VAMPIRO_DANIADO                                                   \
+  "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
 #define RUTA_VAMPIRO_MUERTO "assets/enemigos/vampiro/enemies-vampire_death.png"
 #define RUTA_CALAVERA_AZUL_QUIETA "assets/enemigos/enemies-skull_blue_idle.png"
-#define RUTA_CALAVERA_VERDE_QUIETA "assets/enemigos/enemies-skull_green_idle.png"
+#define RUTA_CALAVERA_VERDE_QUIETA                                             \
+  "assets/enemigos/enemies-skull_green_idle.png"
 #define RUTA_PINCHES "assets/enemigos/enemies-peaks_1.png"
 #define RUTA_LANZALLAMAS1 "assets/enemigos/enemies-flamethrower_1_1.png"
 #define RUTA_LANZALLAMAS2 "assets/enemigos/enemies-flamethrower_2_1.png"
@@ -286,7 +324,8 @@
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
 
-// Sprites (px) -> caverna.cpp, granja.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp, pueblo.cpp
+// Sprites (px) -> caverna.cpp, granja.cpp, inventario.cpp, mapa.cpp,
+// mapa_mundo.cpp, personaje.cpp, pueblo.cpp
 #define SPRITE_PUERTA_X 514
 #define SPRITE_PUERTA_Y 370
 #define SPRITE_PUERTA_ANCHO 30
@@ -317,26 +356,44 @@
 #define SPRITE_CALAVERA_PIE 16
 #define SPRITE_TRAMPA_LADO 16
 #define SPRITE_TRAMPA_PIE 16
-#define SPRITE_MODELOS_CASAS {{144, 0, 80, 104}, { 0, 0, 80, 96 }}
+#define SPRITE_MODELOS_CASAS                                                   \
+  {                                                                            \
+    {144, 0, 80, 104}, { 0, 0, 80, 96 }                                        \
+  }
 #define SPRITE_VACA_LADO 32
 #define SPRITE_GALLINA_LADO 16
 #define SPRITE_CULTIVO_LADO 16
 #define SPRITE_CULTIVO_FILAS_POR_TIPO 2
 #define SPRITE_CULTIVO_FILA_PLANTA 1
-#define SPRITE_PUESTO_PIERRE { 240, 176, 112, 144 }
-#define SPRITE_PUESTO_CLINT { 80, 320, 144, 128 }
-#define SPRITE_PUESTO_ROBIN { 192, 640, 192, 160 }
-#define SPRITE_PUESTO_MARNIE { 256, 0, 144, 176 }
-#define SPRITE_MODELOS_PUESTOS {SPRITE_PUESTO_PIERRE, SPRITE_PUESTO_CLINT, SPRITE_PUESTO_ROBIN,SPRITE_PUESTO_MARNIE}
-#define SPRITE_NPC_PIERRE { RUTA_NPC_PIERRE, 32, 32 }
-#define SPRITE_NPC_CLINT { RUTA_NPC_CLINT, 32, 32 }
-#define SPRITE_NPC_ROBIN { RUTA_NPC_ROBIN, 64, 48 }
-#define SPRITE_NPC_MARNIE { RUTA_NPC_MARNIE, 64, 48 }
-#define SPRITE_MODELOS_NPCS { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
+#define SPRITE_PUESTO_PIERRE                                                   \
+  { 240, 176, 112, 144 }
+#define SPRITE_PUESTO_CLINT                                                    \
+  { 80, 320, 144, 128 }
+#define SPRITE_PUESTO_ROBIN                                                    \
+  { 192, 640, 192, 160 }
+#define SPRITE_PUESTO_MARNIE                                                   \
+  { 256, 0, 144, 176 }
+#define SPRITE_MODELOS_PUESTOS                                                 \
+  {                                                                            \
+    SPRITE_PUESTO_PIERRE, SPRITE_PUESTO_CLINT, SPRITE_PUESTO_ROBIN,            \
+        SPRITE_PUESTO_MARNIE                                                   \
+  }
+#define SPRITE_NPC_PIERRE                                                      \
+  { RUTA_NPC_PIERRE, 32, 32 }
+#define SPRITE_NPC_CLINT                                                       \
+  { RUTA_NPC_CLINT, 32, 32 }
+#define SPRITE_NPC_ROBIN                                                       \
+  { RUTA_NPC_ROBIN, 64, 48 }
+#define SPRITE_NPC_MARNIE                                                      \
+  { RUTA_NPC_MARNIE, 64, 48 }
+#define SPRITE_MODELOS_NPCS                                                    \
+  { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
-#define SPRITE_PERSONAJE_PASOS { 0, 1, 0, 2 }
-#define SPRITE_PERSONAJE_FILAS_PICAR { 11, 8, 6 }
+#define SPRITE_PERSONAJE_PASOS                                                 \
+  { 0, 1, 0, 2 }
+#define SPRITE_PERSONAJE_FILAS_PICAR                                           \
+  { 11, 8, 6 }
 #define SPRITE_BRAZOS_X 96
 #define SPRITE_PANTALONES_POR_FILA 10
 #define SPRITE_PANTALONES_ANCHO_BLOQUE 192
@@ -364,8 +421,14 @@
 #define SPRITE_MANO_DERECHA_X 9
 #define SPRITE_MANO_IZQUIERDA_X 7
 #define SPRITE_MANO_Y 16
-#define SPRITE_ESTRELLA_BORDE {{-1, 2, 10, 4}, { 2, -1, 4, 10 }}
-#define SPRITE_ESTRELLA_RELLENO {{0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }}
+#define SPRITE_ESTRELLA_BORDE                                                  \
+  {                                                                            \
+    {-1, 2, 10, 4}, { 2, -1, 4, 10 }                                           \
+  }
+#define SPRITE_ESTRELLA_RELLENO                                                \
+  {                                                                            \
+    {0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }                                 \
+  }
 
 // Íconos del inventario (px) -> granja.cpp, inventario.cpp,
 //   personaje.cpp
@@ -391,40 +454,77 @@
 //   pueblo.cpp
 #define COLOR_ALFA_OPACO 255
 #define COLOR_SIN_TINTE 255
-#define COLOR_ROPA_AZUL { 60, 90, 200 }
-#define COLOR_ROPA_MARRON { 150, 80, 30 }
-#define COLOR_ROPA_NEGRO { 40, 30, 20 }
-#define COLOR_ROPA_RUBIO { 230, 190, 90 }
-#define COLOR_ROPA_ROJO { 200, 60, 40 }
-#define COLOR_ROPA_VERDE { 70, 150, 70 }
-#define COLOR_ROPA_BLANCO { 230, 230, 230 }
-#define COLOR_ROPA_VIOLETA { 150, 80, 200 }
-#define PALETA_ROPA {COLOR_ROPA_AZUL, COLOR_ROPA_MARRON, COLOR_ROPA_NEGRO, COLOR_ROPA_RUBIO,COLOR_ROPA_ROJO, COLOR_ROPA_VERDE, COLOR_ROPA_BLANCO,COLOR_ROPA_VIOLETA}
+#define COLOR_ROPA_AZUL                                                        \
+  { 60, 90, 200 }
+#define COLOR_ROPA_MARRON                                                      \
+  { 150, 80, 30 }
+#define COLOR_ROPA_NEGRO                                                       \
+  { 40, 30, 20 }
+#define COLOR_ROPA_RUBIO                                                       \
+  { 230, 190, 90 }
+#define COLOR_ROPA_ROJO                                                        \
+  { 200, 60, 40 }
+#define COLOR_ROPA_VERDE                                                       \
+  { 70, 150, 70 }
+#define COLOR_ROPA_BLANCO                                                      \
+  { 230, 230, 230 }
+#define COLOR_ROPA_VIOLETA                                                     \
+  { 150, 80, 200 }
+#define PALETA_ROPA                                                            \
+  {                                                                            \
+    COLOR_ROPA_AZUL, COLOR_ROPA_MARRON, COLOR_ROPA_NEGRO, COLOR_ROPA_RUBIO,    \
+        COLOR_ROPA_ROJO, COLOR_ROPA_VERDE, COLOR_ROPA_BLANCO,                  \
+        COLOR_ROPA_VIOLETA                                                     \
+  }
 #define COLOR_SOMBRA_MARGEN 150
-#define COLOR_TINTE_NEUTRO { COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_ALFA_OPACO }
-#define COLOR_TEXTO { 255, 255, 255, COLOR_ALFA_OPACO }
-#define COLOR_BOTON_FONDO { 30, 30, 30, COLOR_ALFA_OPACO }
-#define COLOR_BOTON_BORDE { 230, 230, 230, COLOR_ALFA_OPACO }
-#define COLOR_RAYITA_ENCENDIDA { 230, 190, 190, COLOR_ALFA_OPACO }
-#define COLOR_RAYITA_APAGADA { 80, 80, 80, COLOR_ALFA_OPACO }
-#define COLOR_NOCHE { 10, 10, 40, COLOR_ALFA_OPACO }
-#define COLOR_CAJA_REGALO { 40, 30, 20, 240 }
-#define COLOR_TIENDA_OSCURECER { 0, 0, 0, 200 }
-#define COLOR_CASILLERO { 60, 40, 30, 230 }
-#define COLOR_CASILLERO_SELECCIONADO { 255, 200, 40, COLOR_ALFA_OPACO }
-#define COLOR_CASILLERO_BORDE { 140, 100, 60, COLOR_ALFA_OPACO }
-#define COLOR_ESTRELLA_BORDE { 0, 0, 0, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_BUENA { 205, 127, 50, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_EXCELENTE { 200, 200, 215, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_INCREIBLE { 240, 200, 40, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_PERFECTA { 170, 90, 220, COLOR_ALFA_OPACO }
-#define COLOR_MUNDO_FONDO { 18, 22, 18, COLOR_ALFA_OPACO }
-#define COLOR_MUNDO_DIFUMINADO { 54, 124, 66, COLOR_ALFA_OPACO }
-#define COLOR_BARRA_VIDA { 240, 200, 40, COLOR_ALFA_OPACO }
-#define COLOR_BARRA_ENERGIA { 70, 190, 70, COLOR_ALFA_OPACO }
-#define COLOR_BARRA_BORDE { 0, 0, 0, COLOR_ALFA_OPACO }
-#define COLOR_BARRA_FONDO { 70, 70, 70, COLOR_ALFA_OPACO }
-#define COLOR_FONDO_JUEGO { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_TINTE_NEUTRO                                                     \
+  { COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_ALFA_OPACO }
+#define COLOR_TEXTO                                                            \
+  { 255, 255, 255, COLOR_ALFA_OPACO }
+#define COLOR_BOTON_FONDO                                                      \
+  { 30, 30, 30, COLOR_ALFA_OPACO }
+#define COLOR_BOTON_BORDE                                                      \
+  { 230, 230, 230, COLOR_ALFA_OPACO }
+#define COLOR_RAYITA_ENCENDIDA                                                 \
+  { 230, 190, 190, COLOR_ALFA_OPACO }
+#define COLOR_RAYITA_APAGADA                                                   \
+  { 80, 80, 80, COLOR_ALFA_OPACO }
+#define COLOR_NOCHE                                                            \
+  { 10, 10, 40, COLOR_ALFA_OPACO }
+#define COLOR_CAJA_REGALO                                                      \
+  { 40, 30, 20, 240 }
+#define COLOR_TIENDA_OSCURECER                                                 \
+  { 0, 0, 0, 200 }
+#define COLOR_CASILLERO                                                        \
+  { 60, 40, 30, 230 }
+#define COLOR_CASILLERO_SELECCIONADO                                           \
+  { 255, 200, 40, COLOR_ALFA_OPACO }
+#define COLOR_CASILLERO_BORDE                                                  \
+  { 140, 100, 60, COLOR_ALFA_OPACO }
+#define COLOR_ESTRELLA_BORDE                                                   \
+  { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_CALIDAD_BUENA                                                    \
+  { 205, 127, 50, COLOR_ALFA_OPACO }
+#define COLOR_CALIDAD_EXCELENTE                                                \
+  { 200, 200, 215, COLOR_ALFA_OPACO }
+#define COLOR_CALIDAD_INCREIBLE                                                \
+  { 240, 200, 40, COLOR_ALFA_OPACO }
+#define COLOR_CALIDAD_PERFECTA                                                 \
+  { 170, 90, 220, COLOR_ALFA_OPACO }
+#define COLOR_MUNDO_FONDO                                                      \
+  { 18, 22, 18, COLOR_ALFA_OPACO }
+#define COLOR_MUNDO_DIFUMINADO                                                 \
+  { 54, 124, 66, COLOR_ALFA_OPACO }
+#define COLOR_BARRA_VIDA                                                       \
+  { 240, 200, 40, COLOR_ALFA_OPACO }
+#define COLOR_BARRA_ENERGIA                                                    \
+  { 70, 190, 70, COLOR_ALFA_OPACO }
+#define COLOR_BARRA_BORDE                                                      \
+  { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_BARRA_FONDO                                                      \
+  { 70, 70, 70, COLOR_ALFA_OPACO }
+#define COLOR_FONDO_JUEGO                                                      \
+  { 0, 0, 0, COLOR_ALFA_OPACO }
 
 // Textos visibles -> interfaz.cpp, main.cpp, pueblo.cpp
 #define TEXTO_JUEGO_MUSICA "Música"
@@ -447,12 +547,20 @@
 #define TEXTO_JUEGO_TIENDA_CLINT "Herrería de Clint"
 #define TEXTO_JUEGO_TIENDA_ROBIN "Carpintería de Robin"
 #define TEXTO_JUEGO_TIENDA_MARNIE "Rancho de Marnie"
-#define TITULOS_TIENDAS {TEXTO_JUEGO_TIENDA_PIERRE, TEXTO_JUEGO_TIENDA_CLINT,TEXTO_JUEGO_TIENDA_ROBIN,TEXTO_JUEGO_TIENDA_MARNIE}
+#define TITULOS_TIENDAS                                                        \
+  {                                                                            \
+    TEXTO_JUEGO_TIENDA_PIERRE, TEXTO_JUEGO_TIENDA_CLINT,                       \
+        TEXTO_JUEGO_TIENDA_ROBIN, TEXTO_JUEGO_TIENDA_MARNIE                    \
+  }
 #define TEXTO_JUEGO_COMPRAR "Comprar"
 #define TEXTO_JUEGO_VENDER "Vender"
 #define TEXTO_JUEGO_HABLAR "Hablar"
 #define TEXTO_JUEGO_SALIR "Salir"
-#define TEXTOS_BOTONES_TIENDA {TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,TEXTO_JUEGO_SALIR}
+#define TEXTOS_BOTONES_TIENDA                                                  \
+  {                                                                            \
+    TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,               \
+        TEXTO_JUEGO_SALIR                                                      \
+  }
 #define TEXTO_JUEGO_USO "Uso: "
 #define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "

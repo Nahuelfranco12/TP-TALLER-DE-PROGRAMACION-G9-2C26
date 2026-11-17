@@ -13,10 +13,11 @@ const int ANCHO_CHAT = 420;
 
 const SDL_Color BLANCO = {255, 255, 255, 255};
 const SDL_Color AMARILLO = {255, 220, 90, 255};
-} 
+} // namespace
 
 Chat::Chat(SDL2pp::Renderer &renderer)
-    : renderer(renderer), fuente("assets/fuentes/DejaVuSans-Bold.ttf", TAMANIO_LETRA),
+    : renderer(renderer),
+      fuente("assets/fuentes/DejaVuSans-Bold.ttf", TAMANIO_LETRA),
       abierto(false) {
   SDL_StopTextInput();
 }
@@ -83,7 +84,8 @@ void Chat::dibujar(int alto_ventana) {
   // agregue un fondo medio transparente atras del texto
   renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   renderer.SetDrawColor(0, 0, 0, abierto ? 160 : 90);
-  renderer.FillRect(Rect(MARGEN, base - lineas_totales * ALTO_LINEA - MARGEN / 2,
+  renderer.FillRect(Rect(MARGEN,
+                         base - lineas_totales * ALTO_LINEA - MARGEN / 2,
                          ANCHO_CHAT, lineas_totales * ALTO_LINEA + MARGEN));
 
   // acá se muestran todos los mensajes
@@ -96,7 +98,8 @@ void Chat::dibujar(int alto_ventana) {
 
   // y aca muestro lo que se está escribiendo ahora para q sea mas user friendly
   if (abierto) {
-    Texture entrada(renderer, fuente.RenderUTF8_Blended("> " + escribiendo + "_", BLANCO));
+    Texture entrada(
+        renderer, fuente.RenderUTF8_Blended("> " + escribiendo + "_", BLANCO));
     renderer.Copy(entrada, SDL2pp::NullOpt,
                   Rect(MARGEN * 2, y, entrada.GetWidth(), entrada.GetHeight()));
   }
