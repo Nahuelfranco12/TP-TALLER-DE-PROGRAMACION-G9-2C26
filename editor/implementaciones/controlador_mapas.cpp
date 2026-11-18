@@ -30,29 +30,29 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   ui.valorAltoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
   ui.valorNivelCaverna->setRange(PRIMER_NIVEL_CAVERNA,
                                  CANTIDAD_NIVELES_CAVERNA);
-  ui.cajaNombreMapa->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
-  ui.cajaNombreMapa->setPlaceholderText(TEXTO_AYUDA_NOMBRE_MUNDO);
+  ui.campoNombreMundo->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
+  ui.campoNombreMundo->setPlaceholderText(TEXTO_AYUDA_NOMBRE_MUNDO);
 
-  connect(ui.botonVolverPM, &QPushButton::clicked, this, [this]() {
+  connect(ui.botonVolverMapas, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
     this->navegador.volver();
   });
-  connect(ui.botonAplicarPM, &QPushButton::clicked, this,
+  connect(ui.botonAplicarMapas, &QPushButton::clicked, this,
           [this]() { aplicarDimensiones(); });
-  connect(ui.pestanaMapas, &QTabWidget::currentChanged, this, [this](int i) {
-    cambiarDeZona(zonaDe(this->ui.pestanaMapas->widget(i)));
+  connect(ui.pestaniaMapas, &QTabWidget::currentChanged, this, [this](int i) {
+    cambiarDeZona(zonaDe(this->ui.pestaniaMapas->widget(i)));
   });
   connect(ui.valorNivelCaverna, &QSpinBox::valueChanged, this,
           [this](int nivel) { cambiarDeNivel(nivel); });
   connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
-      this->ui.cajaNombreMapa->setText(
+      this->ui.campoNombreMundo->setText(
           QString::fromStdString(this->datos.mapa.nombre));
       dibujarMapa();
-      cambiarDeZona(zonaDe(this->ui.pestanaMapas->currentWidget()));
+      cambiarDeZona(zonaDe(this->ui.pestaniaMapas->currentWidget()));
     }
   });
-  connect(ui.botonExportarPM, &QPushButton::clicked, this,
+  connect(ui.botonExportarMapas, &QPushButton::clicked, this,
           [this]() { exportar(); });
 
   ui.vistaGranja->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
@@ -65,18 +65,18 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
     clickEn(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
   });
 
-  connect(ui.cajaNombreMapa, &QLineEdit::textChanged, this,
+  connect(ui.campoNombreMundo, &QLineEdit::textChanged, this,
           [this](const QString &texto) {
             this->datos.mapa.nombre = texto.trimmed().toStdString();
           });
 
-  cambiarDeZona(zonaDe(ui.pestanaMapas->currentWidget()));
+  cambiarDeZona(zonaDe(ui.pestaniaMapas->currentWidget()));
 }
 
 void ControladorMapas::limpiarPagina() {
-  ui.cajaNombreMapa->clear();
+  ui.campoNombreMundo->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
-  ui.pestanaMapas->setCurrentWidget(ui.tabGranja);
+  ui.pestaniaMapas->setCurrentWidget(ui.tabGranja);
   ui.vistaGranja->limpiar();
   ui.vistaCaverna->limpiar();
   ui.vistaPueblo->limpiar();

@@ -133,13 +133,9 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
 
 const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
   for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo}) {
-    const auto &terrenos = terrenosDe(zona);
-    auto encontrado =
-        std::ranges::find_if(terrenos, [terreno](const auto &info) {
-          return info.elemento == terreno;
-        });
-    if (encontrado != terrenos.end())
-      return &*encontrado;
+    const InfoElemento<Terreno> *info = buscar(terrenosDe(zona), terreno);
+    if (info != nullptr)
+      return info;
   }
   return nullptr;
 }
