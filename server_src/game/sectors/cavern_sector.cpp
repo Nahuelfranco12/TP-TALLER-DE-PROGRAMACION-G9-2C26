@@ -9,14 +9,21 @@
 #include <utility>
 
 bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
+  return tryAddEntity(entity, pos);
+}
+
+bool CavernSector::tryAddEntity(std::unique_ptr<Entity> &entity, Position pos) {
   if (entity->getType() == EntityTypes::PLAYER && playerCount() == 0)
     reset();
 
   if (entity->getType() == EntityTypes::PLAYER && !isEmpty(pos)) {
-    pos = randomFreePosition();
+    Position freePosition(0, 0);
+    if (!findFreePosition(freePosition))
+      return false;
+    pos = freePosition;
   }
 
-  return Sector::addEntity(std::move(entity), pos);
+  return Sector::tryAddEntity(entity, pos);
 }
 
 void CavernSector::initEntities() {

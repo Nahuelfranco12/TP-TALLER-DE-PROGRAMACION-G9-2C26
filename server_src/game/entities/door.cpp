@@ -5,12 +5,21 @@
 
 #include "../sectors/sector.h"
 
-Position Door::moveEntity(std::unique_ptr<Entity> entity) {
-  if (this->destineSector.canMoveTo(this->destinePosition)) {
-    this->destineSector.addEntity(std::move(entity), this->destinePosition);
-    return this->destinePosition;
+bool Door::moveEntity(std::unique_ptr<Entity>& entity,
+                       Position& destinePosition) {
+  if (this->destineSector.canMoveTo(this->destinePosition) &&
+      this->destineSector.tryAddEntity(entity, this->destinePosition)) {
+    destinePosition = this->destinePosition;
+    return true;
   }
-  Position freePos = this->destineSector.findFreePosition();
-  this->destineSector.addEntity(std::move(entity), freePos);
-  return freePos;
+
+  Position freePosition(0, 0);
+  if (!this->destineSector.findFreePosition(freePosition))
+    return false;
+
+  if (!this->destineSector.tryAddEntity(entity, freePosition))
+    return false;
+
+  destinePosition = freePosition;
+  return true;
 }

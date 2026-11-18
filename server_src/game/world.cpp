@@ -72,7 +72,9 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
     return;
 
   Sector &sector = *sectorIt->second;
-  Position startPos = sector.findFreePosition();
+  Position startPos(0, 0);
+  if (!sector.findFreePosition(startPos))
+    return;
 
   auto player = std::make_unique<Player>(startPos.x, startPos.y, id, name,
                                          &sector, outfit);
@@ -271,7 +273,11 @@ bool World::sendPlayerToFarm(Player *player, Sector &farm) {
   if (!entity)
     return false;
 
-  Position target = farm.findFreePosition();
+  Position target(0, 0);
+  if (!farm.findFreePosition(target)) {
+    origin->addEntity(std::move(entity), originPos);
+    return false;
+  }
   if (!farm.isEmpty(target)) {
     origin->addEntity(std::move(entity), originPos);
     return false;
@@ -303,12 +309,16 @@ void World::endDay() {
       player->setLife(PLAYER_MAX_LIFE);
       player->setEnergy(PLAYER_MAX_ENERGY);
     } else {
-      Position spawn = cabin->findBedSpawnPosition();
+      Position spawn(0, 0);
+      if (!cabin->findBedSpawnPosition(spawn))
+        continue;
       Sector *origin = player->getActualSector();
       std::unique_ptr<Entity> entity = origin->removeEntity(player->position);
       if (entity) {
-        cabin->addEntity(std::move(entity), spawn);
-        player->setActualSector(cabin);
+        if (!cabin->tryAddEntity(entity, spawn))
+          origin->addEntity(std::move(entity), player->position);
+        else
+          player->setActualSector(cabin);
       }
       player->setLife(PLAYER_MAX_LIFE / 2);
       player->setEnergy(PLAYER_MAX_ENERGY / 2);

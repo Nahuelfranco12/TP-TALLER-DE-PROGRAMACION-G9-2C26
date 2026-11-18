@@ -30,7 +30,12 @@ MoveResult Sector::move(Position origin, Position destine) {
   } else {
     // Si hay puerta se le pide a la puerta que mueva la entidad
     Door &door = *this->doors.at(destine);
-    Position destinePos = door.moveEntity(std::move(entity));
+    Position destinePos(0, 0);
+    if (!door.moveEntity(entity, destinePos)) {
+      entity->setPosition(origin);
+      this->entities.emplace(origin, std::move(entity));
+      return MoveResult(false, origin, this->id);
+    }
     return MoveResult(true, destinePos, door.getIdDestineSector());
   }
 }
@@ -65,6 +70,10 @@ bool Sector::placeBuilding(const Building &building) {
 }
 
 bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
+  return tryAddEntity(entity, pos);
+}
+
+bool Sector::tryAddEntity(std::unique_ptr<Entity> &entity, Position pos) {
   if (auto *trap = dynamic_cast<Trap *>(entity.get())) {
     if (this->traps.find(pos) != this->traps.end())
       return false;
@@ -132,14 +141,24 @@ size_t Sector::playerCount() const {
   return count;
 }
 
-Position Sector::findFreePosition() const {
+bool Sector::findFreePosition(Position &freePosition) const {
   for (size_t x = 0; x < this->width; x++)
     for (size_t y = 0; y < this->height; y++) {
       Position pos(x, y);
-      if (this->tiles[x][y].isTransitable() && this->entities.find(pos) == this->entities.end() &&
-          this->traps.find(pos) == this->traps.end())
-        return pos;
+      if (this->tiles[x][y].isTransitable() &&
+          this->entities.find(pos) == this->entities.end() &&
+          this->traps.find(pos) == this->traps.end()) {
+        freePosition = pos;
+        return true;
+      }
     }
+  return false;
+}
+
+Position Sector::findFreePosition() const {
+  Position freePosition(0, 0);
+  if (findFreePosition(freePosition))
+    return freePosition;
   return Position(0, 0);
 }
 

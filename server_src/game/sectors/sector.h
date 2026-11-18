@@ -40,6 +40,7 @@ public:
   bool canMoveTo(Position pos) const;
   bool isEmpty(Position pos) const;
   Position findFreePosition() const;
+  bool findFreePosition(Position &freePosition) const;
   void blockTile(Position pos, TerrainType type) {
     if (pos.x >= width || pos.y >= height)
       return;
@@ -49,6 +50,7 @@ public:
   bool placeBuilding(const Building &building);
 
   virtual bool addEntity(std::unique_ptr<Entity> entity, Position pos);
+  virtual bool tryAddEntity(std::unique_ptr<Entity> &entity, Position pos);
   std::unique_ptr<Entity> removeEntity(Position pos);
   bool addDoor(std::unique_ptr<Door> door, Position pos);
   // std::unique_ptr<Door> removeDoor(Position pos);

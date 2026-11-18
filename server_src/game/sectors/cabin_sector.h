@@ -34,7 +34,7 @@ public:
 
     Position getBedPosition() const { return bed.first; }
 
-    Position findBedSpawnPosition() const {
+    bool findBedSpawnPosition(Position &spawnPosition) const {
         Position candidates[] = {
             Position(bed.first.x + 1, bed.first.y),
             Position(bed.first.x, bed.first.y + 1),
@@ -42,9 +42,11 @@ public:
             Position(bed.first.x, bed.first.y > 0 ? bed.first.y - 1 : 0)};
 
         for (const Position &candidate : candidates)
-            if (canMoveTo(candidate))
-                return candidate;
-        return findFreePosition();
+            if (canMoveTo(candidate)) {
+            spawnPosition = candidate;
+            return true;
+        }
+        return findFreePosition(spawnPosition);
     }
 
     void endDay() override {
