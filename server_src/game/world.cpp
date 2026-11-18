@@ -76,11 +76,11 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
   if (!sector.findFreePosition(startPos))
     return;
 
-  auto player = std::make_unique<Player>(startPos.x, startPos.y, id, name,
-                                         &sector, outfit);
-  Player *playerPtr = player.get();
+  std::unique_ptr<Entity> player = std::make_unique<Player>(
+      startPos.x, startPos.y, id, name, &sector, outfit);
+  Player *playerPtr = dynamic_cast<Player *>(player.get());
 
-  if (!sector.addEntity(std::move(player), startPos))
+  if (!sector.tryAddEntity(player, startPos))
     return;
 
   this->players.emplace(id, playerPtr);
@@ -101,9 +101,9 @@ bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
   auto it = this->sectors.find(sectorId);
   if (it == this->sectors.end())
     return false;
-  auto mineral =
+  std::unique_ptr<Entity> mineral =
       std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
-  return it->second->addEntity(std::move(mineral), pos);
+  return it->second->tryAddEntity(mineral, pos);
 }
 
 bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
@@ -122,7 +122,7 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
   default:
     return false;
   }
-  return it->second->addEntity(std::move(animal), pos);
+  return it->second->tryAddEntity(animal, pos);
 }
 
 bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
@@ -161,7 +161,7 @@ bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
 
   if (!enemy)
     return false;
-  return it->second->addEntity(std::move(enemy), pos);
+  return it->second->tryAddEntity(enemy, pos);
 }
 
 Player *World::getPlayer(int id) {
@@ -275,15 +275,18 @@ bool World::sendPlayerToFarm(Player *player, Sector &farm) {
 
   Position target(0, 0);
   if (!farm.findFreePosition(target)) {
-    origin->addEntity(std::move(entity), originPos);
+    origin->tryAddEntity(entity, originPos);
     return false;
   }
   if (!farm.isEmpty(target)) {
-    origin->addEntity(std::move(entity), originPos);
+    origin->tryAddEntity(entity, originPos);
     return false;
   }
 
-  farm.addEntity(std::move(entity), target);
+  if (!farm.tryAddEntity(entity, target)) {
+    origin->tryAddEntity(entity, originPos);
+    return false;
+  }
   player->setActualSector(&farm);
   player->startNewDay(true);
   return true;
@@ -316,7 +319,7 @@ void World::endDay() {
       std::unique_ptr<Entity> entity = origin->removeEntity(player->position);
       if (entity) {
         if (!cabin->tryAddEntity(entity, spawn))
-          origin->addEntity(std::move(entity), player->position);
+          origin->tryAddEntity(entity, player->position);
         else
           player->setActualSector(cabin);
       }

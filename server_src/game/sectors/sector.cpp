@@ -69,10 +69,6 @@ bool Sector::placeBuilding(const Building &building) {
   return true;
 }
 
-bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
-  return tryAddEntity(entity, pos);
-}
-
 bool Sector::tryAddEntity(std::unique_ptr<Entity> &entity, Position pos) {
   if (auto *trap = dynamic_cast<Trap *>(entity.get())) {
     if (this->traps.find(pos) != this->traps.end())

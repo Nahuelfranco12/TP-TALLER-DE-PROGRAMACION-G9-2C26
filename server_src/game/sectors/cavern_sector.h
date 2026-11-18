@@ -50,7 +50,6 @@ public:
     initEntities();
   }
 
-  bool addEntity(std::unique_ptr<Entity> entity, Position pos) override;
   bool tryAddEntity(std::unique_ptr<Entity> &entity, Position pos) override;
 
   void reset() override;
