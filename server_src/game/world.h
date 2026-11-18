@@ -45,18 +45,21 @@ public:
   const std::map<int, Player *> getPlayers() const;
 
   Sector *getSector(IdSector id);
+  const Sector *getSector(IdSector id) const;
 
   void growthCheatAll();
 
-  GameTime currentTime() const;
-  WorldState state() const;
+  bool allPlayersSleeping() const;
 
   void addChat(const ChatMessageState &message);
   void clearChat();
   Player *getPlayerByName(const std::string &name);
-
+  
   void tick();
   void endDay();
+
+  GameTime currentTime() const;
+  WorldState state() const;
 };
 
 #endif // WORLD_H_

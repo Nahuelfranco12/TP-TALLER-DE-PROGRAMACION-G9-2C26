@@ -11,16 +11,16 @@
 #define ENERGY_COST_MINE 5
 
 #define SECTOR_DIMENSION_1 50
-#define SECTOR_DIMENSION_2 70
+#define SECTOR_DIMENSION_2 30
 
-#define CABIN_DIMENSION_1 15
-#define CABIN_DIMENSION_2 10
+#define CABIN_DIMENSION_1 30
+#define CABIN_DIMENSION_2 15
 #define CABIN_OUTSIDE_HEIGHT 5
 #define CABIN_OUTSIDE_WIDTH 5
 #define CABIN_ENTRY_X 7
 #define CABIN_ENTRY_Y 9
 
-#define CAVERN_DIMENSION 40
+#define CAVERN_DIMENSION 30
 
 #define TICKS_PER_SECOND 30
 #define DAY_START_HOUR 6
@@ -154,7 +154,7 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
 
 enum class EnemyType {
   SKELETON,

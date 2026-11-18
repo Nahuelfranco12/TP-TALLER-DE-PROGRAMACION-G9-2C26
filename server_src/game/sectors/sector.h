@@ -96,7 +96,7 @@ public:
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
    */
-  SectorState state() const;
+  virtual SectorState state() const;
 };
 
 #endif // SECTOR_H_

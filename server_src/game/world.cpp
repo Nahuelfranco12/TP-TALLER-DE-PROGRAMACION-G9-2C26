@@ -53,7 +53,8 @@ bool World::createCabin(int playerId, Position top) {
   if (!b)
     return false;
 
-  if (!this->addSector(std::make_unique<CabinSector>(playerId, cabinId)))
+  if (!this->addSector(std::make_unique<CabinSector>(
+          playerId, cabinId, Position(CABIN_ENTRY_X - 1, CABIN_ENTRY_Y))))
     return false;
 
   return this->addDoor(IdSector::FARM, cabinId, b->door,
@@ -83,7 +84,15 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
   this->players.emplace(id, playerPtr);
 }
 
-void World::removePlayer(int id) { this->players.erase(id); }
+void World::removePlayer(int id) {
+  Player *player = getPlayer(id);
+  if (player) {
+    Sector *sector = player->getActualSector();
+    if (sector)
+      sector->removeEntity(player->position);
+  }
+  this->players.erase(id);
+}
 
 bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
                          double freq, size_t pickaxeHits) {
@@ -167,9 +176,32 @@ Sector *World::getSector(IdSector id) {
   return (it != this->sectors.end()) ? it->second.get() : nullptr;
 }
 
+const Sector *World::getSector(IdSector id) const {
+  auto it = this->sectors.find(id);
+  return (it != this->sectors.end()) ? it->second.get() : nullptr;
+}
+
 void World::growthCheatAll() {
   for (auto &[id, sector] : sectors)
     sector->growthCheatAll();
+}
+
+bool World::allPlayersSleeping() const {
+  if (players.empty())
+    return false;
+
+  for (const auto &[playerId, player] : players) {
+    IdSector cabinId = cabinSectorId(playerId);
+    auto cabinIt = sectors.find(cabinId);
+    if (cabinIt == sectors.end())
+      return false;
+
+    const CabinSector *cabin =
+        dynamic_cast<const CabinSector *>(cabinIt->second.get());
+    if (!cabin || !cabin->isPlayerSleeping())
+      return false;
+  }
+  return true;
 }
 
 GameTime World::currentTime() const {
@@ -204,7 +236,7 @@ void World::tick() {
   }
 
   dayTick++;
-  if (dayTick >= TICKS_PER_DAY) {
+  if (allPlayersSleeping() || dayTick >= TICKS_PER_DAY) {
     dayTick = 0;
     dayNumber++;
     endDay();
@@ -212,6 +244,28 @@ void World::tick() {
 }
 
 void World::endDay() {
+  for (auto &[playerId, player] : players) {
+    CabinSector *cabin = dynamic_cast<CabinSector *>(
+        getSector(cabinSectorId(playerId)));
+    if (!cabin)
+      continue;
+
+    if (cabin->isPlayerSleeping()) {
+      player->setLife(PLAYER_MAX_LIFE);
+      player->setEnergy(PLAYER_MAX_ENERGY);
+    } else {
+      Position spawn = cabin->findBedSpawnPosition();
+      Sector *origin = player->getActualSector();
+      std::unique_ptr<Entity> entity = origin->removeEntity(player->position);
+      if (entity) {
+        cabin->addEntity(std::move(entity), spawn);
+        player->setActualSector(cabin);
+      }
+      player->setLife(PLAYER_MAX_LIFE / 2);
+      player->setEnergy(PLAYER_MAX_ENERGY / 2);
+    }
+  }
+
   for (auto &[id, sector] : sectors)
     sector->endDay();
 }

@@ -49,6 +49,10 @@ struct EnemyState {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct BedState {
+  bool sleeping;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
@@ -58,6 +62,7 @@ struct EntityState {
   AnimalState animal{};   // en caso de ser animal.
   CropState crop{};       // en caso de ser mineral
   EnemyState enemy{};     // en caso de ser enemigo
+  BedState bed{};
 
   // TODO: cultivos y npcs
 };
