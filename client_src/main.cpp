@@ -306,6 +306,17 @@ int main(int argc, char *argv[]) try {
           evento.key.repeat == 0)
         client.send_cheat_growth();
 
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_CHEAT_DIA &&
+          evento.key.repeat == 0)
+        client.send_end_day_cheat();
+
+
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == SDLK_k &&
+          evento.key.repeat == 0)
+        client.send_enemies_damage_cheat();
+      
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_ACCION &&
           evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;

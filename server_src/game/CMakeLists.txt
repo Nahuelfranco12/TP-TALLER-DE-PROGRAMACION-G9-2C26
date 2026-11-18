@@ -9,6 +9,7 @@ target_sources(taller_game
     entities/crop.cpp
     entities/enemies/enemy.cpp
     entities/enemies/enemies_factory.cpp
+    entities/enemies/trap.cpp
     entities/enemies/vampire.cpp
 
     inventory/inventory.cpp
@@ -37,6 +38,8 @@ target_sources(taller_game
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp
+    commands/cheats/cheat_end_day_command.cpp
+    commands/cheats/cheat_enemies_damage_command.cpp
 
     sectors/sector.cpp
     sectors/cavern_sector.cpp

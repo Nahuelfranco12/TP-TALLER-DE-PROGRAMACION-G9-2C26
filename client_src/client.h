@@ -40,6 +40,8 @@ public:
   void send_sleep();
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
+  void send_end_day_cheat();
+  void send_enemies_damage_cheat();
 
   bool try_get_latest_state(SectorStateDto &state);
   bool is_connected() const;

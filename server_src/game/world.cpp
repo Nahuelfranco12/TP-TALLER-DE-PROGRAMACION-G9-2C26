@@ -204,6 +204,16 @@ bool World::allPlayersSleeping() const {
   return true;
 }
 
+void World::endDayCheat() {
+  this->dayTick = TICKS_PER_DAY - 240;
+}
+
+void World::cavernCheat() {
+  for (auto &[id, sectorPtr] : this->sectors) {
+    sectorPtr->cheatEnemies();
+  }
+}
+
 GameTime World::currentTime() const {
   size_t GAME_TOTAL_MINUTES = DAY_DURATION_HOUR * 60;
 
@@ -239,8 +249,47 @@ void World::tick() {
   if (allPlayersSleeping() || dayTick >= TICKS_PER_DAY) {
     dayTick = 0;
     dayNumber++;
+    // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
     endDay();
   }
+}
+
+Sector *World::findSectorOf(const Player *player) {
+  for (auto &[id, sector] : this->sectors)
+    if (sector->getEntity(player->position) == player)
+      return sector.get();
+  return nullptr;
+}
+
+bool World::sendPlayerToFarm(Player *player, Sector &farm) {
+  Sector *origin = this->findSectorOf(player);
+  if (origin == nullptr)
+    return false;
+
+  Position originPos = player->position;
+  std::unique_ptr<Entity> entity = origin->removeEntity(originPos);
+  if (!entity)
+    return false;
+
+  Position target = farm.findFreePosition();
+  if (!farm.isEmpty(target)) {
+    origin->addEntity(std::move(entity), originPos);
+    return false;
+  }
+
+  farm.addEntity(std::move(entity), target);
+  player->setActualSector(&farm);
+  player->startNewDay(true);
+  return true;
+}
+
+void World::sendPlayersToFarm() {
+  Sector *farm = this->getSector(IdSector::FARM);
+  if (farm == nullptr)
+    return;
+
+  for (auto &[id, player] : this->players)
+    this->sendPlayerToFarm(player, *farm);
 }
 
 void World::endDay() {

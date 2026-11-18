@@ -13,6 +13,7 @@ class Sector;
 struct EnemyStats {
   size_t maxLife;
   int damage;
+  int defaultDamage;
   int gold;
   int ticksPerMove;
   int ticksPerAttack;
@@ -25,6 +26,7 @@ protected:
   EnemyStats stats;
   int moveCooldown;
   int attackCooldown;
+  bool cheated = false;
 
 public:
   Enemy(EnemyType type, size_t pos_x, size_t pos_y, const EnemyStats &stats);
@@ -34,6 +36,14 @@ public:
   virtual int getTicksPerMove() const;
   virtual size_t getAttackRange() const;
 
+  void cheat() {
+    cheated = !cheated;
+    if (cheated)
+      this->stats.damage = 0;
+    else
+      this->stats.damage = this->stats.defaultDamage;
+  }
+
   bool isDead() const;
 
   // TODO : revisar si esto es importante (lo puse para esqueletos sobretodo)
@@ -42,6 +52,8 @@ public:
   void tick() override;
 
   virtual Decision decide(const Sector &sector);
+  virtual void apply(Sector &sector, Position origin,
+                     const Decision &decision);
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();

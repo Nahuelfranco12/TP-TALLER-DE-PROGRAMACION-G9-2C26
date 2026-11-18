@@ -6,6 +6,8 @@
 #include "../../game_constants.h"
 #include "../entity.h"
 
+class Sector;
+
 class Trap : public Entity {
 private:
   EnemyType trapType;
@@ -41,6 +43,7 @@ public:
 
   bool isActive() const { return active; }
   bool wasTriggered() const { return triggered; }
+  void activate(Sector &sector) const;
   EnemyType getTrapType() const { return trapType; }
   DirectionDto getDirection() const { return direction; }
   int getDamage() const { return damage; }

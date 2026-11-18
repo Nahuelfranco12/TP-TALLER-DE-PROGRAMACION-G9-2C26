@@ -1,6 +1,7 @@
 #include "enemy.h"
 
 #include "../../sectors/sector.h"
+#include "../player.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -71,4 +72,65 @@ Decision Enemy::decide(const Sector &sector) {
     return Decision{};
   moveCooldown = getTicksPerMove();
   return Decision{DecisionType::MOVE, direction};
+}
+
+void Enemy::apply(Sector &sector, Position origin,
+                  const Decision &decision) {
+  if (isDead())
+    return;
+
+  switch (decision.type) {
+  case DecisionType::MOVE: {
+    Position target = origin.next(decision.direction);
+    sector.move(origin, target);
+    break;
+  }
+
+  case DecisionType::ATTACK: {
+    Position target = origin;
+
+    if (decision.target.has_value()) {
+      target = decision.target.value();
+    } else {
+      int x = static_cast<int>(origin.x);
+      int y = static_cast<int>(origin.y);
+
+      switch (decision.direction) {
+      case DirectionDto::Up:
+        y--;
+        break;
+      case DirectionDto::Down:
+        y++;
+        break;
+      case DirectionDto::Left:
+        x--;
+        break;
+      case DirectionDto::Right:
+        x++;
+        break;
+      }
+
+      if (x < 0 || y < 0 || x >= static_cast<int>(sector.getWidth()) ||
+          y >= static_cast<int>(sector.getHeight()))
+        return;
+
+      target = Position(static_cast<size_t>(x), static_cast<size_t>(y));
+    }
+
+    int dx = static_cast<int>(target.x) - static_cast<int>(origin.x);
+    int dy = static_cast<int>(target.y) - static_cast<int>(origin.y);
+    int distance = std::abs(dx) + std::abs(dy);
+
+    if (distance > static_cast<int>(getAttackRange()))
+      return;
+
+    Player *player = dynamic_cast<Player *>(sector.getEntity(target));
+    if (player && !player->isUnconscious())
+      player->takeDamage(getDamage());
+    break;
+  }
+
+  case DecisionType::NONE:
+    break;
+  }
 }
