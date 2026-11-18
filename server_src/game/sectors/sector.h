@@ -17,6 +17,7 @@
 #include "../move_result.h"
 #include "../position.h"
 #include "../terrain.h"
+#include "../building.h"
 
 class Sector {
 protected:
@@ -24,6 +25,7 @@ protected:
   size_t height;
   IdSector id;
   std::vector<std::vector<Terrain>> tiles;
+  std::vector<Building> buildings;
   std::map<Position, std::unique_ptr<Entity>> entities;
   std::map<Position, std::unique_ptr<Trap>> traps;
   std::map<Position, std::unique_ptr<Door>> doors;
@@ -38,6 +40,13 @@ public:
   bool canMoveTo(Position pos) const;
   bool isEmpty(Position pos) const;
   Position findFreePosition() const;
+  void blockTile(Position pos, TerrainType type) {
+    if (pos.x >= width || pos.y >= height)
+      return;
+    tiles[pos.x][pos.y] = Terrain(false, false, type);
+  }
+    
+  bool placeBuilding(const Building &building);
 
   virtual bool addEntity(std::unique_ptr<Entity> entity, Position pos);
   std::unique_ptr<Entity> removeEntity(Position pos);
@@ -45,6 +54,7 @@ public:
   // std::unique_ptr<Door> removeDoor(Position pos);
 
   void growthCheatAll();
+  void cheatEnemies();
 
   /*
    * getters
@@ -87,7 +97,7 @@ public:
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
    */
-  SectorState state() const;
+  virtual SectorState state() const;
 };
 
 #endif // SECTOR_H_

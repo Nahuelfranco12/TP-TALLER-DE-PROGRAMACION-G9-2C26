@@ -5,22 +5,8 @@ void MoveCommand::execute(World &world) {
   if (!player)
     return;
 
-  Position destination(player->position.x, player->position.y);
-  switch (this->direction) {
-  case DirectionDto::Up:
-    destination.y = player->position.y - 1;
-    break;
-  case DirectionDto::Down:
-    destination.y = player->position.y + 1;
-    break;
-  case DirectionDto::Left:
-    destination.x = player->position.x - 1;
-    break;
-  case DirectionDto::Right:
-    destination.x = player->position.x + 1;
-    break;
-  }
-
+  Position destination = player->position.next(this->direction);
+  
   MoveResult moveRes = player->move(destination);
   if (moveRes.success && moveRes.idSector != player->getActualSector()->getId())
     player->setActualSector(world.getSector(moveRes.idSector));

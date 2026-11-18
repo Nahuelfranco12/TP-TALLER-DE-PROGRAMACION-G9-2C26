@@ -47,6 +47,23 @@ bool Sector::isEmpty(Position pos) const {
   return this->entities.find(pos) == this->entities.end();
 }
 
+bool Sector::placeBuilding(const Building &building) {
+  for (size_t dx = 0; dx < building.width; dx++)
+    for (size_t dy = 0; dy < building.height; dy++)
+      if (!canMoveTo({building.topLeft.x + dx, building.topLeft.y + dy}))
+        return false;
+
+  for (size_t dx = 0; dx < building.width; dx++)
+    for (size_t dy = 0; dy < building.height; dy++) {
+      Position p{building.topLeft.x + dx, building.topLeft.y + dy};
+      if (p == building.door) continue;
+        blockTile(p, TerrainType::HOUSE);
+    }
+
+  buildings.push_back(building);
+  return true;
+}
+
 bool Sector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
   if (auto *trap = dynamic_cast<Trap *>(entity.get())) {
     if (this->traps.find(pos) != this->traps.end())
@@ -83,6 +100,14 @@ void Sector::growthCheatAll() {
   }
 }
 
+void Sector::cheatEnemies() {
+  for (auto &[position, entityPtr] : this->entities) {
+    if (entityPtr->getType() == EntityTypes::ENEMY) {
+      static_cast<Enemy &>(*entityPtr).cheat();
+    }
+  }
+}
+
 std::unique_ptr<Entity> Sector::removeEntity(Position pos) {
   auto it = this->entities.find(pos);
   if (it == this->entities.end())
@@ -111,7 +136,7 @@ Position Sector::findFreePosition() const {
   for (size_t x = 0; x < this->width; x++)
     for (size_t y = 0; y < this->height; y++) {
       Position pos(x, y);
-      if (this->entities.find(pos) == this->entities.end() &&
+      if (this->tiles[x][y].isTransitable() && this->entities.find(pos) == this->entities.end() &&
           this->traps.find(pos) == this->traps.end())
         return pos;
     }
@@ -149,6 +174,11 @@ SectorState Sector::state() const {
           this->doors.find(Position(x, y)) != this->doors.end(),
           terrain.isTilled()};
     }
+
+  state.buildings.reserve(buildings.size());
+  for (const auto &b : buildings)
+    state.buildings.push_back({b.type, b.topLeft, b.width, b.height,
+                              b.door, b.interior, b.ownerId});
 
   return state;
 }

@@ -19,6 +19,7 @@ private:
   PlayerDto receive_player();
   InventoryDto receive_inventory();
   GamePositionDto receive_position();
+  BuildingDto receive_building();
   InventorySlotDto receive_slot();
 
   void send_slot(const InventorySlotDto &slot);
@@ -44,8 +45,11 @@ public:
   void send_water_dto(const WaterDto &dto);
   void send_attack_dto(const AttackDto &dto);
   void send_chat_dto(const ChatDto &dto);
+  void send_sleep();
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
+  void send_end_day_cheat();
+  void send_enemies_damage_cheat();
 
   // Protocolo de menú
   void send_create_match(const std::string &name);
