@@ -31,7 +31,7 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   ui.valorNivelCaverna->setRange(PRIMER_NIVEL_CAVERNA,
                                  CANTIDAD_NIVELES_CAVERNA);
   ui.cajaNombreMapa->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
-  ui.cajaNombreMapa->setPlaceholderText(NOMBRE_PREDETERMINADO_AYUDA);
+  ui.cajaNombreMapa->setPlaceholderText(TEXTO_AYUDA_NOMBRE_MUNDO);
 
   connect(ui.botonVolverPM, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
@@ -188,7 +188,7 @@ void ControladorMapas::exportar() {
     QStringList lineas;
     for (const auto &error : errores)
       lineas.append(QString::fromStdString(error));
-    QMessageBox::warning(&ventana, VALIDACION_TEXTO_TITULO_MAPA_INVALIDO,
+    QMessageBox::warning(&ventana, TITULO_MAPA_INVALIDO,
                          lineas.join('\n'));
     return;
   }

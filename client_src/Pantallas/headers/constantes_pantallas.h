@@ -10,11 +10,11 @@
 #define ALTO_DISENIO 768
 
 // Rutas de recursos -> dibujar_personaje.cpp, pantalla.cpp
-#define TIPOS_PELO ":/ropas/assets/ropas/StardewValley_Character_Hairstyles.png"
-#define TIPOS_GORRO ":/ropas/assets/ropas/StardewValley_Character_Hats.png"
-#define TIPOS_PANTALON ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
-#define TIPOS_REMERA ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
-#define TIPOS_CUERPO                                                           \
+#define RUTA_TIPOS_PELO ":/ropas/assets/ropas/StardewValley_Character_Hairstyles.png"
+#define RUTA_TIPOS_GORRO ":/ropas/assets/ropas/StardewValley_Character_Hats.png"
+#define RUTA_TIPOS_PANTALON ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
+#define RUTA_TIPOS_REMERA ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
+#define RUTA_TIPOS_CUERPO                                                           \
   ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
 #define RUTA_FUENTE ":/fuentes/assets/fuentes/Stardew_Valley.otf"
 
@@ -76,7 +76,7 @@
 
 // Textos visibles -> controlador_nueva_partida.cpp,
 // controlador_retomar_partida.cpp
-#define ELEGIR_MAPA "Elegir Mapa"
+#define TEXTO_ELEGIR_MUNDO "Elegir mundo"
 #define TEXTO_MULTIPLAYER "Multiplayer"
 #define TEXTO_SINGLEPLAYER "Singleplayer"
 #define TEXTO_SELECCIONAR "Seleccionar"

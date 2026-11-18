@@ -49,7 +49,7 @@ void ControladorNuevaPartida::cargarMundos() {
   for (const MundoMock &mundo : datosMundos)
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
                                  mundo.nombreMundo, QString(), QString(),
-                                 ELEGIR_MAPA});
+                                 TEXTO_ELEGIR_MUNDO});
   mundos->cargar(tarjetas);
 }
 

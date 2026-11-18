@@ -22,14 +22,14 @@
 // Página de mapas -> controlador_mapas.cpp
 #define TAMANIO_ICONO 48
 #define ROL_VALOR Qt::UserRole
-#define NOMBRE_PREDETERMINADO_AYUDA "Nombre del mundo"
+#define TEXTO_AYUDA_NOMBRE_MUNDO "Nombre del mundo"
 #define MAX_LARGO_NOMBRE_MUNDO 50
 #define TEXTO_ELEGIR_ELEMENTO "Elegí un elemento de la paleta"
 #define TEXTO_NO_SE_PUEDE_COLOCAR "No entra ahí o pisa otro objeto"
 #define TITULO_ERROR_DIMENSIONES "No se pudo redimensionar la zona"
 
 // Exportar -> controlador_mapas.cpp
-#define VALIDACION_TEXTO_TITULO_MAPA_INVALIDO "El mapa no esta completo"
+#define TITULO_MAPA_INVALIDO "El mapa no esta completo"
 #define TITULO_GUARDAR "Guardar mapa"
 #define TITULO_MAPA_GUARDADO "Mapa guardado"
 #define TEXTO_MAPA_GUARDADO "El mapa se guardó en:\n"
@@ -51,7 +51,7 @@
 #define RUTA_PIEDRAS ":/Mapas/piedras.png"
 #define RUTA_ARBOL1 ":/Mapas/arbol1.png"
 #define RUTA_ARBOL2 ":/Mapas/arbol2.png"
-#define RUTA_AGUA ":/Mapas/naturaleza.png"
+#define RUTA_NATURALEZA ":/Mapas/naturaleza.png"
 #define RUTA_CABANIAS ":/Mapas/cabanias.png"
 #define RUTA_CENTRO_COMUNITARIO ":/Mapas/centro_comunitario.png"
 #define RUTA_CASA_NPC ":/Mapas/casas_npcs.png"
@@ -59,7 +59,6 @@
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
-#define RUTA_POZO ":/Caverna/pozo.png"
 
 // Catálogo: recortes de terrenos -> catalogo_elementos.cpp
 #define RECORTE_PASTO                                                          \
@@ -124,18 +123,17 @@
   { 48, 144, 16, 16 }
 #define RECORTE_ESCUDO                                                         \
   { 64, 112, 16, 16 }
-
 #define RECORTE_POZO                                                           \
   { 0, 0, 32, 32 }
 
 // Catálogo: recortes del pueblo -> catalogo_elementos.cpp
 #define RECORTE_CASA_MARNIE                                                    \
   { 256, 16, 142, 160 }
-#define RECORTE_MERNIE_ROBIN                                                   \
+#define RECORTE_MARNIE_ROBIN                                                   \
   { 24, 16, 16, 32 }
 #define RECORTE_CASA_CLINT                                                     \
   { 80, 320, 144, 128 }
-#define RECORTE_PC                                                             \
+#define RECORTE_PIERRE_CLINT                                                             \
   { 0, 0, 32, 32 }
 #define RECORTE_CASA_PIERRE                                                    \
   { 240, 176, 112, 144 }

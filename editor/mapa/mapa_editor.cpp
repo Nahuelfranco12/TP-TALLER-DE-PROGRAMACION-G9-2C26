@@ -46,7 +46,7 @@ Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
 
 void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
   if (!dimensionesValidas(nuevas))
-    throw std::invalid_argument(ERROR_DIMENSIONES_FUERA_DE_RANGO);
+    throw std::invalid_argument(TEXTO_ERROR_DIMENSIONES_ZONA);
   switch (zona) {
   case Zona::Granja:
     mapa.granja.redimensionar(nuevas);
@@ -109,7 +109,7 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
 CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::CentroComunitario:
-    return {TAMANIO_OCUPADO_CENTROCOM_ANCHO, TAMANIO_OCUPADO_CENTROCOM_ALTO};
+    return {TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO, TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO};
   case ElementosPueblo::FarolNaranja:
   case ElementosPueblo::FarolAzul:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};
@@ -119,12 +119,12 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   case ElementosPueblo::CasaPierre:
   case ElementosPueblo::CasaMarnie:
   case ElementosPueblo::CasaClint:
-    return {TAMANIO_ANCHO_CASA_NPC, TAMANIO_ALTO_CASA_NPC};
+    return {TAMANIO_OCUPADO_CASA_NPC_ANCHO, TAMANIO_OCUPADO_CASA_NPC_ALTO};
   case ElementosPueblo::NpcPierre:
   case ElementosPueblo::NpcMarnie:
   case ElementosPueblo::NpcRobin:
   case ElementosPueblo::NpcClint:
-    return {TAMANIO_ALTO_ANCHO_NPC, TAMANIO_ALTO_ANCHO_NPC};
+    return {TAMANIO_OCUPADO_NPC_ANCHO_ALTO, TAMANIO_OCUPADO_NPC_ANCHO_ALTO};
   default:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
   }

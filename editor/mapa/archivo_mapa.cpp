@@ -47,7 +47,6 @@ const TablaIds<ElementosCaverna> &tablaIds(ElementosCaverna) {
       {ElementosCaverna::Escombros, ID_ESCOMBROS},
       {ElementosCaverna::Antorcha, ID_ANTORCHA},
       {ElementosCaverna::Candelabro, ID_CANDELABRO},
-      {ElementosCaverna::Candelabro, ID_CANDELABRO},
       {ElementosCaverna::Escudo, ID_ESCUDO},
       {ElementosCaverna::Pozo, ID_POZO}};
   return tabla;

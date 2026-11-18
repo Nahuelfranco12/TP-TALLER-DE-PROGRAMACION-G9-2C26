@@ -77,7 +77,7 @@ struct ReglaCaverna {
 void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
   for (std::size_t i = 0; i < niveles.size(); ++i) {
-    std::string nivel = std::string(VALIDACION_TEXTO_ZONA_CAVERMA) +
+    std::string nivel = std::string(VALIDACION_TEXTO_ZONA_CAVERNA) +
                         VALIDACION_TEXTO_NIVEL +
                         std::to_string(i + PRIMER_NIVEL_CAVERNA);
     bool esPrimero = i == 0, esUltimo = i + 1 == niveles.size();
