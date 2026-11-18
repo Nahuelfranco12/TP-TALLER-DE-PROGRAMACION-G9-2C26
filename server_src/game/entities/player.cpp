@@ -85,10 +85,18 @@ bool Player::spendEnergy(size_t cost) {
   return true;
 }
 
+void Player::setLife(double value) {
+  life = value < 0 ? 0 : (value > PLAYER_MAX_LIFE ? PLAYER_MAX_LIFE : value);
+}
+
+void Player::setEnergy(double value) {
+  energy = value < 0
+               ? 0
+               : (value > PLAYER_MAX_ENERGY ? PLAYER_MAX_ENERGY : value);
+}
+
 void Player::restoreEnergy(size_t amount) {
-  if ((this->energy + amount) >= PLAYER_MAX_ENERGY)
-    this->energy = PLAYER_MAX_ENERGY;
-  this->energy += amount;
+  setEnergy(energy + amount);
 }
 
 void Player::takeDamage(double amount) {

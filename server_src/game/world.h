@@ -10,6 +10,8 @@
 #include "./sectors/sector.h"
 #include "game_constants.h"
 #include "position.h"
+#include "sectors/farm_sector.h"
+#include "sectors/cabin_sector.h"
 
 class World {
 private:
@@ -32,6 +34,8 @@ public:
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine);
 
+  bool createCabin(int playerId, Position top);
+
   /*
   * Entities
   */
@@ -50,6 +54,7 @@ public:
   Player *getPlayer(int id);
   const std::map<int, Player *> getPlayers() const;
   Sector *getSector(IdSector id);
+  const Sector *getSector(IdSector id) const;
 
   /*
   * Cheats
@@ -58,11 +63,8 @@ public:
   void endDayCheat();
   void cavernCheat();
 
-  /*
-  * State
-  */
-  GameTime currentTime() const;
-  WorldState state() const;
+
+  bool allPlayersSleeping() const;
 
   /*
   * Chat
@@ -70,9 +72,15 @@ public:
   void addChat(const ChatMessageState &message);
   void clearChat();
   Player *getPlayerByName(const std::string &name);
-
+  
   void tick();
   void endDay();
+
+  /*
+  * State
+  */
+  GameTime currentTime() const;
+  WorldState state() const;
 };
 
 #endif // WORLD_H_

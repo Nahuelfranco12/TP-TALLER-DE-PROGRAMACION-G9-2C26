@@ -12,10 +12,12 @@ enum class DirectionDto { Up, Down, Left, Right };
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
-  GROUND
+  GROUND,
+  WOOD,
+  HOUSE,
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
-enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
 
 // TODO: revisar para que sea acorde a SDL
 enum PlayerHatsDto {
@@ -75,6 +77,34 @@ enum class ItemTypeDto {
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
+enum class BuildingTypeDto {
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+  SHOP_MARNIE,
+  SHOP_CLINT,
+};
+
+enum class SectorIdDto {
+  FARM,
+  VILLAGE,
+  CAVERN_LEVEL_1,
+  CAVERN_LEVEL_2,
+  CAVERN_LEVEL_3,
+  CAVERN_LEVEL_4,
+  CAVERN_LEVEL_5,
+  CAVERN_LEVEL_6,
+  CAVERN_LEVEL_7,
+  CAVERN_LEVEL_8,
+  CAVERN_LEVEL_9,
+  CAVERN_LEVEL_10,
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+};
+
 enum class EntityTypeDto {
   PLAYER,
   COW,
@@ -92,6 +122,7 @@ enum class EntityTypeDto {
   MINERAL_LAPIZLAZULI,
   MINERAL_COAL,
   CROP,
+  BED,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo
@@ -131,6 +162,8 @@ struct ChatDto {
   std::string text;
 };
 
+struct SleepDto {};
+
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
   int id = 0;
@@ -158,6 +191,16 @@ struct TileDto {
   bool arable;
   bool isDoor;
   bool tilled;
+};
+
+struct BuildingDto {
+  BuildingTypeDto type{};
+  GamePositionDto topLeft;
+  size_t width = 0;
+  size_t height = 0;
+  GamePositionDto door;
+  SectorIdDto interior{};
+  int ownerId = -1;
 };
 
 struct InventorySlotDto {
@@ -223,12 +266,17 @@ struct ChatMessageDto {
   bool isPrivate = false;
 };
 
+struct BedDto {
+  bool sleeping = false;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false;   // x ahora solo se usa si es animal
   MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
+  BedDto bed{};
 };
 
 struct GameTimeDto {
@@ -242,6 +290,7 @@ struct SectorStateDto {
   size_t height = 0;
 
   std::vector<std::vector<TileDto>> sector;
+  std::vector<BuildingDto> buildings;
   std::map<GamePositionDto, PlayerDto> players;
   std::map<GamePositionDto, EntityDto> entities;
 

@@ -86,6 +86,8 @@ public:
   */
   bool hasEnergy(size_t cost);
   bool spendEnergy(size_t cost);
+  void setLife(double value);
+  void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
 

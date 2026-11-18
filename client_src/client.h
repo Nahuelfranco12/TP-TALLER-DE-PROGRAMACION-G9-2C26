@@ -37,6 +37,7 @@ public:
   void send_water(DirectionDto direction);
   void send_attack(DirectionDto direction);
   void send_chat(const std::string &text);
+  void send_sleep();
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
   void send_end_day_cheat();

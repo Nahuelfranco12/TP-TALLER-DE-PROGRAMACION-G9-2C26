@@ -17,6 +17,16 @@ struct TerrainState {
   bool tilled = false;
 };
 
+struct BuildingState {
+  BuildingType type;
+  Position topLeft;
+  size_t width;
+  size_t height;
+  Position door;
+  IdSector interior;
+  int ownerId;
+};
+
 struct CropState {
   CropTypes type{};
   CropGrowth growth{};
@@ -39,6 +49,10 @@ struct EnemyState {
   DirectionDto direction = DirectionDto::Up;
 };
 
+struct BedState {
+  bool sleeping;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
@@ -48,6 +62,7 @@ struct EntityState {
   AnimalState animal{};   // en caso de ser animal.
   CropState crop{};       // en caso de ser mineral
   EnemyState enemy{};     // en caso de ser enemigo
+  BedState bed{};
 
   // TODO: cultivos y npcs
 };
@@ -104,6 +119,7 @@ struct SectorState {
   size_t width = 0;
   size_t height = 0;
   std::vector<std::vector<TerrainState>> tiles;
+  std::vector<BuildingState> buildings;
   std::vector<EntityState> entities;
 };
 
