@@ -122,6 +122,7 @@ enum class EntityTypeDto {
   MINERAL_LAPIZLAZULI,
   MINERAL_COAL,
   CROP,
+  BED,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo
@@ -160,6 +161,8 @@ struct AttackDto {
 struct ChatDto {
   std::string text;
 };
+
+struct SleepDto {};
 
 // TODO: ver de eliminarlo
 struct PlayerPositionDto {
@@ -263,12 +266,17 @@ struct ChatMessageDto {
   bool isPrivate = false;
 };
 
+struct BedDto {
+  bool sleeping = false;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false;   // x ahora solo se usa si es animal
   MineralDto mineral{}; // Solo se usa si es mineral
   CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
+  BedDto bed{};
 };
 
 struct GameTimeDto {

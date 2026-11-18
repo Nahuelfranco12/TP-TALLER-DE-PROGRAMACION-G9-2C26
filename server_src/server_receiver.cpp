@@ -89,6 +89,9 @@ void ServerReceiver::run() {
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
         break;
+      case OP_SLEEP:
+        match->push_command(factory.create_sleep(client_id));
+        break;
       default:
         throw std::runtime_error("Operación desconocida");
       }

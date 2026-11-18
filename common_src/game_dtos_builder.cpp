@@ -105,6 +105,8 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     case EnemyType::SKULL_GREEN:
       return EntityTypeDto::SKULL_GREEN;    }
     break;
+  case EntityTypes::BED:
+      return EntityTypeDto::BED;
   default:
     break;
   }

@@ -35,6 +35,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_CHEAT_GROWTH 17
 #define OP_ATTACK 18
 #define OP_CHAT 19
+#define OP_SLEEP 20
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

@@ -33,6 +33,7 @@ target_sources(taller_game
     commands/gift_offer_command.cpp
     commands/gift_response_command.cpp
     commands/chat_command.cpp
+    commands/sleep_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp

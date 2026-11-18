@@ -89,6 +89,8 @@ void ClientProtocol::send_chat_dto(const ChatDto &dto) {
   protocol.send_string(dto.text);
 }
 
+void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
@@ -210,6 +212,7 @@ SectorStateDto ClientProtocol::receive_sector_state() {
 
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
+    entity.bed.sleeping = protocol.receive_u8() == 1;
     state.entities[position] = entity;
   }
 

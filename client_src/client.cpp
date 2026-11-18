@@ -17,6 +17,7 @@
 #include "actions/mine_action.h"
 #include "actions/move_action.h"
 #include "actions/plant_action.h"
+#include "actions/sleep_action.h"
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
@@ -70,6 +71,10 @@ void Client::send_attack(DirectionDto direction) {
 
 void Client::send_chat(const std::string &text) {
   to_send_queue.try_push(std::make_unique<ChatAction>(text));
+}
+
+void Client::send_sleep() {
+  to_send_queue.try_push(std::make_unique<SleepAction>());
 }
 
 void Client::send_cheat_water(DirectionDto direction) {

@@ -66,6 +66,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<ChatCommand>(player_id, dto.text);
 }
 
+std::unique_ptr<Command> CommandFactory::create_sleep(int player_id) {
+  return std::make_unique<SleepCommand>(player_id);
+}
+
 std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {
   return std::make_unique<CheatGrowthCommand>(player_id);
 }
