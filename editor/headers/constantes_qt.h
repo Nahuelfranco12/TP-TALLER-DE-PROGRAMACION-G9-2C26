@@ -1,6 +1,10 @@
 #ifndef CONSTANTES_QT_H_
 #define CONSTANTES_QT_H_
 
+// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas por tema
+// indico con un comentario que hace ese grupo y donde estan de la forma:
+// tema -> archivo1.cpp, archivoN.cpp
+
 // Ventana -> ventanaeditor.cpp
 #define ANCHO_DISENIO 1366
 #define ALTO_DISENIO 768
@@ -173,7 +177,7 @@
 #define TEXTO_ARBUSTO_REDONDO "Arbusto redondo"
 #define TEXTO_ARBUSTO_GRANDE "Arbusto grande"
 #define TEXTO_TRONCO_CAIDO "Tronco caído"
-#define TEXTO_TOCON "Tronco cortado"
+#define TEXTO_TRONCO_CORTADO "Tronco cortado"
 #define TEXTO_BUZON_ROJO "Buzon rojo"
 #define TEXTO_CARTEL_VACIO "Cartel"
 

@@ -1,10 +1,9 @@
 #ifndef CONSTANTES_SDL_H_
 #define CONSTANTES_SDL_H_
 
-// ACLARACION: las constantes estan centralizadas en este archivo, la idea es
-// agruparlas en lo que es cada una, por ejemplo textos, cantidades, rutas, etc.
-// Ese grupo se dice con un comentario arriba en que archivos se uso, esto para
-// ser mas claro por ejemplo grupo -> archivo1.cpp, archivoN.cpp
+// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas por tema
+// indico con un comentario que hace ese grupo y donde estan de la forma:
+// tema -> archivo1.cpp, archivoN.cpp
 
 // Ventana, argumentos y loop -> main.cpp
 #define CANTIDAD_ARGUMENTOS 3
