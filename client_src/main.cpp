@@ -1,6 +1,7 @@
 #include "alrededores.h"
 #include "audio.h"
 #include "caverna.h"
+#include "chat.h"
 #include "client.h"
 #include "common_src/game_dtos.h"
 #include "constantes_sdl.h"
@@ -145,6 +146,7 @@ int main(int argc, char *argv[]) try {
   Interfaz interfaz(renderer, servicio.codigo());
 
   Inventario inventario(renderer);
+  Chat chat(renderer);
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -160,6 +162,12 @@ int main(int argc, char *argv[]) try {
     // Proceso eventos
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
+      std::string mensaje;
+      if (chat.manejar_evento(evento, mensaje)) {
+        if (!mensaje.empty())
+          client.send_chat(mensaje);
+        continue;
+      }
       if (evento.type == SDL_MOUSEBUTTONDOWN &&
           evento.button.button == SDL_BUTTON_LEFT) {
         int mouse_x = evento.button.x;
@@ -307,16 +315,13 @@ int main(int argc, char *argv[]) try {
         client.send_cheat_growth();
 
       if (evento.type == SDL_KEYDOWN &&
-          evento.key.keysym.sym == TECLA_CHEAT_DIA &&
-          evento.key.repeat == 0)
+          evento.key.keysym.sym == TECLA_CHEAT_DIA && evento.key.repeat == 0)
         client.send_end_day_cheat();
 
-
-      if (evento.type == SDL_KEYDOWN &&
-          evento.key.keysym.sym == SDLK_k &&
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_k &&
           evento.key.repeat == 0)
         client.send_enemies_damage_cheat();
-      
+
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_ACCION &&
           evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;
@@ -324,6 +329,9 @@ int main(int argc, char *argv[]) try {
 
         if (inventario.tengo_en_la_mano(ESPADA)) {
           client.send_attack(dir);
+          if (zona == SectorTypeDto::CAVERN) {
+            caverna.golpear(frente_x, frente_y);
+          }
         } else if (zona == SectorTypeDto::CAVERN) {
           if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
             personaje.picar();
@@ -372,6 +380,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      chat.agregar(state.chat);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
       if (state.type != zona) {
@@ -513,6 +522,7 @@ int main(int argc, char *argv[]) try {
     }
 
     interfaz.dibujar(renderer, audio);
+    chat.dibujar(window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);

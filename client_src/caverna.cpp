@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-using SDL2pp::NullOpt;
 using SDL2pp::Rect;
 using SDL2pp::Renderer;
 
@@ -15,128 +14,145 @@ struct FormatoEnemigo {
   int pie;
 };
 
-const FormatoEnemigo FORMATO_ESQUELETO{32, 29};
-const FormatoEnemigo FORMATO_ORCO{100, 57};
-const FormatoEnemigo FORMATO_VAMPIRO{32, 29};
-const FormatoEnemigo FORMATO_CALAVERA_AZUL{16, 16};
-const FormatoEnemigo FORMATO_CALAVERA_VERDE{16, 16};
-const FormatoEnemigo FORMATO_TRAMPA{16, 16};
+const FormatoEnemigo FORMATO_CALAVERA{SPRITE_CALAVERA_LADO,
+                                      SPRITE_CALAVERA_PIE};
+// const FormatoEnemigo FORMATO_CALAVERA_VERDE{};
+const FormatoEnemigo FORMATO_TRAMPA{SPRITE_TRAMPA_LADO, SPRITE_TRAMPA_PIE};
 
-const int PIXELES_POR_TILE = 16;
+// const int PIXELES_POR_TILE = 16;
 
-const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
+// const int VUELTAS_POR_CUADRO_ENEMIGO = 6;
 
-// Atacando tiene prioridad sobre caminando, y caminando sobre quieto
-SDL2pp::Texture *elegir_textura(SDL2pp::Texture &quieto,
-                                SDL2pp::Texture &caminando,
-                                SDL2pp::Texture &atacando,
-                                long vueltas_caminando, long vueltas_atacando) {
-  if (vueltas_atacando > 0)
-    return &atacando;
-  if (vueltas_caminando > 0)
-    return &caminando;
-  return &quieto;
-}
+const HojasEnemigo HOJAS_ESQUELETO{
+    RUTA_ESQUELETO_QUIETO,    RUTA_ESQUELETO_CAMINANDO,
+    RUTA_ESQUELETO_ATACA,     RUTA_ESQUELETO_DANIADO,
+    RUTA_ESQUELETO_MUERTO,    SPRITE_ESQUELETO_LADO,
+    SPRITE_ESQUELETO_PIE,     SPRITE_ESQUELETO_PIE,
+    SPRITE_ESQUELETO_CENTRO_X};
+const HojasEnemigo HOJAS_ORCO{
+    RUTA_ORCO_QUIETO,  RUTA_ORCO_CAMINANDO, RUTA_ORCO_ATACA,
+    RUTA_ORCO_DANIADO, RUTA_ORCO_MUERTO,    SPRITE_ORCO_LADO,
+    SPRITE_ORCO_PIE,   SPRITE_ORCO_PIE,     SPRITE_ORCO_CENTRO_X};
+const HojasEnemigo HOJAS_VAMPIRO{
+    RUTA_VAMPIRO_QUIETO,    RUTA_VAMPIRO_CAMINANDO,
+    RUTA_VAMPIRO_ATACA,     RUTA_VAMPIRO_DANIADO,
+    RUTA_VAMPIRO_MUERTO,    SPRITE_VAMPIRO_LADO,
+    SPRITE_VAMPIRO_PIE,     SPRITE_VAMPIRO_PIE_CAMINANDO,
+    SPRITE_VAMPIRO_CENTRO_X};
 } // namespace
 
 Caverna::Caverna(Renderer &renderer)
     : minerales(renderer, RUTA_MINERALES),
-      esqueleto(renderer, RUTA_ESQUELETO_QUIETO),
-      esqueleto_caminando(renderer, RUTA_ESQUELETO_CAMINANDO),
-      esqueleto_atacando(renderer, RUTA_ESQUELETO_ATACA),
-      orco_quieto(renderer, RUTA_ORCO_QUIETO),
-      orco_caminando(renderer, RUTA_ORCO_CAMINANDO),
-      orco_atacando(renderer, RUTA_ORCO_ATACA),
-      vampiro_quieto(renderer, RUTA_VAMPIRO_QUIETO),
-      vampiro_caminando(renderer, RUTA_VAMPIRO_CAMINANDO),
-      vampiro_atacando(renderer, RUTA_VAMPIRO_ATACA),
+      sprites_esqueleto(renderer, HOJAS_ESQUELETO),
+      sprites_orco(renderer, HOJAS_ORCO),
+      sprites_vampiro(renderer, HOJAS_VAMPIRO),
       calavera_azul_quieto(renderer, RUTA_CALAVERA_AZUL_QUIETA),
       calavera_verde_quieto(renderer, RUTA_CALAVERA_VERDE_QUIETA),
       pinches(renderer, RUTA_PINCHES),
       lanzallamas_1(renderer, RUTA_LANZALLAMAS1),
-      lanzallamas_2(renderer, RUTA_LANZALLAMAS2),
-      vueltas(0) {}
+      lanzallamas_2(renderer, RUTA_LANZALLAMAS2), vueltas(0) {}
 
-      void Caverna::actualizar(
-          const std::map<GamePositionDto, EntityDto> &entidades) {
-        const std::vector<Enemigo> anteriores = lista_enemigos;
-        lista_minerales.clear();
-        lista_enemigos.clear();
-        for (const auto &[pos, entidad] : entidades) {
-          if (entidad.type == EntityTypeDto::SKELETON) {
-            lista_enemigos.push_back({ESQUELETO, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), entidad.enemy.alive, 0,
-                                      0, false, entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::ORC) {
-            lista_enemigos.push_back({ORCO, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), entidad.enemy.alive, 0,
-                                      0, false, entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
-                     entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
-            TipoEnemigo tipo =
-                entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
-            lista_enemigos.push_back({tipo, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), entidad.enemy.alive, 0,
-                                      0, false, entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::SKULL_BLUE) {
-            lista_enemigos.push_back({CALAVERA_AZUL, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), entidad.enemy.alive, 0,
-                                      0, false, entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::SKULL_GREEN) {
-            lista_enemigos.push_back({CALAVERA_VERDE, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), entidad.enemy.alive, 0,
-                                      0, false, entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::TRAP_PINCH) {
-            lista_enemigos.push_back({TRAMPA_PINCHES, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), true, 0, 0, false,
-                                      entidad.enemy.direction});
-            continue;
-          } else if (entidad.type == EntityTypeDto::TRAP_FLAME) {
-            lista_enemigos.push_back({TRAMPA_LANZALLAMAS, static_cast<int>(pos.x),
-                                      static_cast<int>(pos.y), true, 0, 0, false,
-                                      entidad.enemy.direction});
-            continue;
-          }
+void Caverna::actualizar(
+    const std::map<GamePositionDto, EntityDto> &entidades) {
+  const std::vector<Enemigo> anteriores = lista_enemigos;
+  lista_minerales.clear();
+  lista_enemigos.clear();
+  for (const auto &[pos, entidad] : entidades) {
+    if (entidad.type == EntityTypeDto::SKELETON) {
+      lista_enemigos.push_back({ESQUELETO,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::ORC) {
+      lista_enemigos.push_back({ORCO,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::VAMPIRE_MALE ||
+               entidad.type == EntityTypeDto::VAMPIRE_FEMALE) {
+      TipoEnemigo tipo =
+          entidad.type == EntityTypeDto::VAMPIRE_FEMALE ? VAMPIRA : VAMPIRO;
+      lista_enemigos.push_back({tipo,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::SKULL_BLUE) {
+      lista_enemigos.push_back({CALAVERA_AZUL,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::SKULL_GREEN) {
+      lista_enemigos.push_back({CALAVERA_VERDE,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                entidad.enemy.alive,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::TRAP_PINCH) {
+      lista_enemigos.push_back({TRAMPA_PINCHES,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                true,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    } else if (entidad.type == EntityTypeDto::TRAP_FLAME) {
+      lista_enemigos.push_back({TRAMPA_LANZALLAMAS,
+                                static_cast<int>(pos.x),
+                                static_cast<int>(pos.y),
+                                true,
+                                {},
+                                entidad.enemy.direction});
+      continue;
+    }
 
-          TipoMineral tipo;
-          switch (entidad.type) {
-          case EntityTypeDto::MINERAL_IRON:
-            tipo = HIERRO;
-            break;
-          case EntityTypeDto::MINERAL_COAL:
-            tipo = CARBON;
-            break;
-          case EntityTypeDto::MINERAL_LAPIZLAZULI:
-            tipo = LAPISLAZULI;
-            break;
-          case EntityTypeDto::MINERAL_GOLD:
-            tipo = ORO;
-            break;
-          default:
-            continue;
-          }
+    TipoMineral tipo;
+    switch (entidad.type) {
+    case EntityTypeDto::MINERAL_IRON:
+      tipo = HIERRO;
+      break;
+    case EntityTypeDto::MINERAL_COAL:
+      tipo = CARBON;
+      break;
+    case EntityTypeDto::MINERAL_LAPIZLAZULI:
+      tipo = LAPISLAZULI;
+      break;
+    case EntityTypeDto::MINERAL_GOLD:
+      tipo = ORO;
+      break;
+    default:
+      continue;
+    }
 
-          size_t golpes = entidad.mineral.remainingHits;
-          size_t etapa = SPRITE_MINERAL_ETAPA_ENTERO;
-          if (golpes == CAVERNA_GOLPES_GOLPEADO) {
-            etapa = SPRITE_MINERAL_ETAPA_GOLPEADO;
-          } else if (golpes == CAVERNA_GOLPES_CASI_ROTO) {
-            etapa = SPRITE_MINERAL_ETAPA_CASI_ROTO;
-          }
+    size_t golpes = entidad.mineral.remainingHits;
+    size_t etapa = SPRITE_MINERAL_ETAPA_ENTERO;
+    if (golpes == CAVERNA_GOLPES_GOLPEADO) {
+      etapa = SPRITE_MINERAL_ETAPA_GOLPEADO;
+    } else if (golpes == CAVERNA_GOLPES_CASI_ROTO) {
+      etapa = SPRITE_MINERAL_ETAPA_CASI_ROTO;
+    }
 
-          lista_minerales.push_back(
-              {tipo, static_cast<int>(pos.x), static_cast<int>(pos.y), etapa});
-        }
+    lista_minerales.push_back(
+        {tipo, static_cast<int>(pos.x), static_cast<int>(pos.y), etapa});
+  }
 
-        for (Enemigo &enemigo : lista_enemigos) {
-          seguir_movimiento(enemigo, anteriores, lista_enemigos);
-        }
-      }
+  for (Enemigo &enemigo : lista_enemigos) {
+    seguir_movimiento(enemigo, anteriores, lista_enemigos);
+  }
+}
 
 bool Caverna::hay_enemigo(const std::vector<Enemigo> &lista, TipoEnemigo tipo,
                           int x, int y) {
@@ -156,9 +172,15 @@ void Caverna::seguir_movimiento(Enemigo &enemigo,
                otro.tile_y == enemigo.tile_y;
       });
   if (mismo != anteriores.end()) {
-    enemigo.vueltas_caminando = mismo->vueltas_caminando;
-    enemigo.vueltas_atacando = mismo->vueltas_atacando;
-    enemigo.mira_izquierda = mismo->mira_izquierda;
+    enemigo.animacion = mismo->animacion;
+    SpritesEnemigo *sprites = sprites_de(enemigo.tipo);
+    if (sprites != nullptr) {
+      if (mismo->vivo && !enemigo.vivo) {
+        enemigo.animacion.morir(sprites->duracion_muerte());
+      } else if (!mismo->vivo && enemigo.vivo) {
+        enemigo.animacion.revivir(sprites->duracion_muerte());
+      }
+    }
     return;
   }
 
@@ -173,58 +195,59 @@ void Caverna::seguir_movimiento(Enemigo &enemigo,
                !hay_enemigo(actuales, otro.tipo, otro.tile_x, otro.tile_y);
       });
   if (de_donde == anteriores.end()) {
-    return; // recién aparecido: queda quieto
+    return; // recién aparecido: quieto (o tirado, si llega muerto)
   }
 
-  enemigo.vueltas_caminando = CAVERNA_ENEMIGO_VUELTAS_CAMINANDO;
-  enemigo.mira_izquierda = de_donde->mira_izquierda;
-  if (enemigo.tile_x < de_donde->tile_x) {
-    enemigo.mira_izquierda = true;
-  } else if (enemigo.tile_x > de_donde->tile_x) {
-    enemigo.mira_izquierda = false;
+  enemigo.animacion = de_donde->animacion;
+  enemigo.animacion.caminar(enemigo.tile_x - de_donde->tile_x,
+                            CAVERNA_ENEMIGO_VUELTAS_CAMINANDO);
+}
+
+SpritesEnemigo *Caverna::sprites_de(TipoEnemigo tipo) {
+  switch (tipo) {
+  case ESQUELETO:
+    return &sprites_esqueleto;
+  case ORCO:
+    return &sprites_orco;
+  case VAMPIRO:
+  case VAMPIRA:
+    return &sprites_vampiro;
+  default:
+    return nullptr; // calaveras y trampas: los dibuja su propio código
+  }
+}
+
+void Caverna::golpear(int tile_x, int tile_y) {
+  for (Enemigo &enemigo : lista_enemigos) {
+    SpritesEnemigo *sprites = sprites_de(enemigo.tipo);
+    if (sprites == nullptr || !enemigo.vivo || enemigo.tile_x != tile_x ||
+        enemigo.tile_y != tile_y) {
+      continue;
+    }
+    enemigo.animacion.recibir_golpe(sprites->duracion_golpe());
   }
 }
 
 void Caverna::golpearon_a(int tile_x, int tile_y) {
   for (Enemigo &enemigo : lista_enemigos) {
-    bool cuerpo_a_cuerpo = enemigo.tipo == ESQUELETO || enemigo.tipo == ORCO ||
-                           enemigo.tipo == VAMPIRO || enemigo.tipo == VAMPIRA;
+    SpritesEnemigo *sprites = sprites_de(enemigo.tipo);
     int distancia =
         std::abs(enemigo.tile_x - tile_x) + std::abs(enemigo.tile_y - tile_y);
-    if (!cuerpo_a_cuerpo || !enemigo.vivo ||
+    if (sprites == nullptr || !enemigo.vivo ||
         distancia != CAVERNA_ENEMIGO_DISTANCIA_ATAQUE ||
-        enemigo.vueltas_atacando > 0) {
+        enemigo.animacion.esta_atacando()) {
       continue;
     }
-    enemigo.vueltas_atacando = duracion_ataque(enemigo.tipo);
     // Se da vuelta para mirar al jugador
-    if (tile_x < enemigo.tile_x) {
-      enemigo.mira_izquierda = true;
-    } else if (tile_x > enemigo.tile_x) {
-      enemigo.mira_izquierda = false;
-    }
+    enemigo.animacion.atacar(tile_x - enemigo.tile_x,
+                             sprites->duracion_ataque());
   }
-}
-
-long Caverna::duracion_ataque(TipoEnemigo tipo) const {
-  int cuadros = esqueleto_atacando.GetWidth() / FORMATO_ESQUELETO.lado;
-  if (tipo == ORCO) {
-    cuadros = orco_atacando.GetWidth() / FORMATO_ORCO.lado;
-  } else if (tipo == VAMPIRO || tipo == VAMPIRA) {
-    cuadros = vampiro_atacando.GetWidth() / FORMATO_VAMPIRO.lado;
-  }
-  return static_cast<long>(cuadros) * VUELTAS_POR_CUADRO_ENEMIGO;
 }
 
 void Caverna::animar(long vueltas_pasadas) {
   vueltas += vueltas_pasadas;
   for (Enemigo &enemigo : lista_enemigos) {
-    if (enemigo.vueltas_caminando > 0) {
-      enemigo.vueltas_caminando -= vueltas_pasadas;
-    }
-    if (enemigo.vueltas_atacando > 0) {
-      enemigo.vueltas_atacando -= vueltas_pasadas;
-    }
+    enemigo.animacion.animar(vueltas_pasadas);
   }
 }
 
@@ -242,56 +265,37 @@ void Caverna::dibujar_mineral(Renderer &renderer, const Mineral &mineral,
 
 void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
                               int camara_x, int camara_y, int lado) {
+  // Esqueleto, orco y vampiros: sus hojas se dibujan solas
+  SpritesEnemigo *sprites = sprites_de(enemigo.tipo);
+  if (sprites != nullptr) {
+    SDL2pp::Color tinte = COLOR_TINTE_NEUTRO;
+    if (enemigo.tipo == VAMPIRA) {
+      tinte = SDL2pp::Color(255, 170, 200);
+    }
+    sprites->dibujar(renderer, enemigo.animacion, enemigo.vivo, vueltas,
+                     enemigo.tile_x, enemigo.tile_y, camara_x, camara_y, lado,
+                     tinte);
+    return;
+  }
+
+  // Calaveras y trampas
   if (!enemigo.vivo)
     return;
 
-  int x = enemigo.tile_x * lado - camara_x;
-  int y = enemigo.tile_y * lado - camara_y;
-
-  SDL2pp::Texture *textura = &esqueleto;
-  FormatoEnemigo formato = FORMATO_ESQUELETO;
-  int centro_x = SPRITE_ESQUELETO_CENTRO_X;
+  SDL2pp::Texture *textura = &pinches;
+  FormatoEnemigo formato = FORMATO_TRAMPA;
   switch (enemigo.tipo) {
-  case ESQUELETO:
-    textura =
-        elegir_textura(esqueleto, esqueleto_caminando, esqueleto_atacando,
-                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
-    formato = FORMATO_ESQUELETO;
-    centro_x = SPRITE_ESQUELETO_CENTRO_X;
-    break;
-
-  case ORCO:
-    textura =
-        elegir_textura(orco_quieto, orco_caminando, orco_atacando,
-                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
-    formato = FORMATO_ORCO;
-    centro_x = SPRITE_ORCO_CENTRO_X;
-    break;
-  case VAMPIRO:
-  case VAMPIRA:
-    textura =
-        elegir_textura(vampiro_quieto, vampiro_caminando, vampiro_atacando,
-                       enemigo.vueltas_caminando, enemigo.vueltas_atacando);
-    formato = FORMATO_VAMPIRO;
-    centro_x = SPRITE_VAMPIRO_CENTRO_X;
-    if (textura == &vampiro_caminando) {
-      formato.pie = SPRITE_VAMPIRO_PIE_CAMINANDO;
-    }
-    break;
   case CALAVERA_AZUL:
     textura = &calavera_azul_quieto;
-    formato = FORMATO_CALAVERA_AZUL;
-    centro_x = formato.lado / 2;
+    formato = FORMATO_CALAVERA;
     break;
   case CALAVERA_VERDE:
     textura = &calavera_verde_quieto;
-    formato = FORMATO_CALAVERA_VERDE;
-    centro_x = formato.lado / 2;
+    formato = FORMATO_CALAVERA;
     break;
   case TRAMPA_PINCHES:
     textura = &pinches;
     formato = FORMATO_TRAMPA;
-    centro_x = formato.lado / 2;
     break;
   case TRAMPA_LANZALLAMAS:
     textura = enemigo.direction == DirectionDto::Up ||
@@ -299,16 +303,9 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
                   ? &lanzallamas_1
                   : &lanzallamas_2;
     formato = FORMATO_TRAMPA;
-    centro_x = formato.lado / 2;
     break;
-  }
-
-  // Al espejar, el cuerpo cambia de lado dentro del cuadro
-  int flip = SDL_FLIP_NONE;
-  int correccion_x = 0;
-  if (enemigo.mira_izquierda) {
-    flip = SDL_FLIP_HORIZONTAL;
-    correccion_x = (2 * centro_x - formato.lado) * lado / PIXELES_POR_TILE;
+  default:
+    return;
   }
 
   int cuadros = textura->GetWidth() / formato.lado;
@@ -317,26 +314,14 @@ void Caverna::dibujar_enemigo(Renderer &renderer, const Enemigo &enemigo,
 
   int cuadro =
       static_cast<int>((vueltas / VUELTAS_POR_CUADRO_ENEMIGO) % cuadros);
-  if (enemigo.vueltas_atacando > 0) {
-    long duracion = static_cast<long>(cuadros) * VUELTAS_POR_CUADRO_ENEMIGO;
-    cuadro = static_cast<int>((duracion - enemigo.vueltas_atacando) /
-                              VUELTAS_POR_CUADRO_ENEMIGO);
-    cuadro = std::clamp(cuadro, 0, cuadros - 1);
-  }
-
   Rect origen(cuadro * formato.lado, 0, formato.lado, formato.lado);
 
   int tamanio = formato.lado * lado / PIXELES_POR_TILE;
+  int x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
+  int y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
+          camara_y;
 
-  x = enemigo.tile_x * lado + lado / 2 - tamanio / 2 - camara_x;
-  y = enemigo.tile_y * lado + lado - formato.pie * lado / PIXELES_POR_TILE -
-      camara_y;
-
-  if (enemigo.tipo == VAMPIRA)
-    textura->SetColorMod(255, 170, 200);
-  renderer.Copy(*textura, origen, Rect(x + correccion_x, y, tamanio, tamanio),
-                0.0, NullOpt, flip);
-  textura->SetColorMod(255, 255, 255);
+  renderer.Copy(*textura, origen, Rect(x, y, tamanio, tamanio));
 }
 
 void Caverna::dibujar(Renderer &renderer, int camara_x, int camara_y,

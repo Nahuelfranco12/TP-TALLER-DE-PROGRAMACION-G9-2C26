@@ -55,19 +55,19 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
        RECORTE_SALIDA_PUEBLO},
       {ElementosGranja::Arbol1, TEXTO_ARBOL1, RUTA_ARBOL1, {}},
       {ElementosGranja::Arbol2, TEXTO_ARBOL2, RUTA_ARBOL2, {}},
-      {ElementosGranja::Agua, TEXTO_AGUA, RUTA_AGUA, RECORTE_AGUA},
+      {ElementosGranja::Agua, TEXTO_AGUA, RUTA_NATURALEZA, RECORTE_AGUA},
       {ElementosGranja::Piedra, TEXTO_PIEDRA, RUTA_PIEDRAS, RECORTE_PIEDRA},
-      {ElementosGranja::PiedraGrisGrande, TEXTO_PIEDRA_GRIS_GRANDE, RUTA_AGUA,
+      {ElementosGranja::PiedraGrisGrande, TEXTO_PIEDRA_GRIS_GRANDE, RUTA_NATURALEZA,
        RECORTE_PIEDRA_GRIS_GRANDE},
-      {ElementosGranja::PiedraGris, TEXTO_PIEDRA_GRIS, RUTA_AGUA,
+      {ElementosGranja::PiedraGris, TEXTO_PIEDRA_GRIS, RUTA_NATURALEZA,
        RECORTE_PIEDRA_GRIS},
-      {ElementosGranja::ArbustoRedondo, TEXTO_ARBUSTO_REDONDO, RUTA_AGUA,
+      {ElementosGranja::ArbustoRedondo, TEXTO_ARBUSTO_REDONDO, RUTA_NATURALEZA,
        RECORTE_ARBUSTO_REDONDO},
-      {ElementosGranja::ArbustoGrande, TEXTO_ARBUSTO_GRANDE, RUTA_AGUA,
+      {ElementosGranja::ArbustoGrande, TEXTO_ARBUSTO_GRANDE, RUTA_NATURALEZA,
        RECORTE_ARBUSTO_GRANDE},
-      {ElementosGranja::TroncoCaido, TEXTO_TRONCO_CAIDO, RUTA_AGUA,
+      {ElementosGranja::TroncoCaido, TEXTO_TRONCO_CAIDO, RUTA_NATURALEZA,
        RECORTE_TRONCO_CAIDO},
-      {ElementosGranja::Tocon, TEXTO_TOCON, RUTA_AGUA, RECORTE_TOCON},
+      {ElementosGranja::Tocon, TEXTO_TRONCO_CORTADO, RUTA_NATURALEZA, RECORTE_TOCON},
       {ElementosGranja::BuzonRojo, TEXTO_BUZON_ROJO, RUTA_OBJETOS,
        RECORTE_BUZON_ROJO},
       {ElementosGranja::CartelVacio, TEXTO_CARTEL_VACIO, RUTA_OBJETOS,
@@ -91,7 +91,8 @@ const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna() {
        RECORTE_ANTORCHA},
       {ElementosCaverna::Candelabro, TEXTO_CANDELABRO, RUTA_CAVERNA,
        RECORTE_CANDELABRO},
-      {ElementosCaverna::Escudo, TEXTO_ESCUDO, RUTA_CAVERNA, RECORTE_ESCUDO}};
+      {ElementosCaverna::Escudo, TEXTO_ESCUDO, RUTA_CAVERNA, RECORTE_ESCUDO},
+      {ElementosCaverna::Pozo, TEXTO_POZO, RUTA_POZO, RECORTE_POZO}};
   return catalogo;
 }
 
@@ -100,17 +101,17 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
       {ElementosPueblo::CasaMarnie, TEXTO_CASA_MARNIE, RUTA_CASA_NPC,
        RECORTE_CASA_MARNIE},
       {ElementosPueblo::NpcMarnie, TEXTO_MARNIE, RUTA_MARNIE,
-       RECORTE_MERNIE_ROBIN},
+       RECORTE_MARNIE_ROBIN},
       {ElementosPueblo::CasaClint, TEXTO_CASA_CLINT, RUTA_CASA_NPC,
        RECORTE_CASA_CLINT},
-      {ElementosPueblo::NpcClint, TEXTO_CLINT, RUTA_CLINT, RECORTE_PC},
+      {ElementosPueblo::NpcClint, TEXTO_CLINT, RUTA_CLINT, RECORTE_PIERRE_CLINT},
       {ElementosPueblo::CasaPierre, TEXTO_CASA_PIERRE, RUTA_CASA_NPC,
        RECORTE_CASA_PIERRE},
-      {ElementosPueblo::NpcPierre, TEXTO_PIERRE, RUTA_PIERRE, RECORTE_PC},
+      {ElementosPueblo::NpcPierre, TEXTO_PIERRE, RUTA_PIERRE, RECORTE_PIERRE_CLINT},
       {ElementosPueblo::CasaRobin, TEXTO_CASA_ROBIN, RUTA_CASA_NPC,
        RECORTE_CASA_ROBIN},
       {ElementosPueblo::NpcRobin, TEXTO_ROBIN, RUTA_ROBIN,
-       RECORTE_MERNIE_ROBIN},
+       RECORTE_MARNIE_ROBIN},
       {ElementosPueblo::CentroComunitario, TEXTO_CENTRO_COMUNITARIO,
        RUTA_CENTRO_COMUNITARIO, RECORTE_CENTRO_COMUNITARIO},
       {ElementosPueblo::EntradaMina, TEXTO_ENTRADA_MINA, RUTA_CAVERNA,
@@ -132,13 +133,9 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
 
 const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
   for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo}) {
-    const auto &terrenos = terrenosDe(zona);
-    auto encontrado =
-        std::ranges::find_if(terrenos, [terreno](const auto &info) {
-          return info.elemento == terreno;
-        });
-    if (encontrado != terrenos.end())
-      return &*encontrado;
+    const InfoElemento<Terreno> *info = buscar(terrenosDe(zona), terreno);
+    if (info != nullptr)
+      return info;
   }
   return nullptr;
 }

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../common_src/game_dtos.h"
+#include "animacion_enemigos.h"
 #include "constantes_sdl.h"
 
 #include <SDL2pp/SDL2pp.hh>
@@ -35,22 +36,14 @@ private:
     int tile_x;
     int tile_y;
     bool vivo;
-    long vueltas_caminando;
-    long vueltas_atacando;
-    bool mira_izquierda;
+    AnimacionEnemigo animacion;
     DirectionDto direction = DirectionDto::Up;
   };
 
   SDL2pp::Texture minerales;
-  SDL2pp::Texture esqueleto;
-  SDL2pp::Texture esqueleto_caminando;
-  SDL2pp::Texture esqueleto_atacando;
-  SDL2pp::Texture orco_quieto;
-  SDL2pp::Texture orco_caminando;
-  SDL2pp::Texture orco_atacando;
-  SDL2pp::Texture vampiro_quieto;
-  SDL2pp::Texture vampiro_caminando;
-  SDL2pp::Texture vampiro_atacando;
+  SpritesEnemigo sprites_esqueleto;
+  SpritesEnemigo sprites_orco;
+  SpritesEnemigo sprites_vampiro;
   SDL2pp::Texture calavera_azul_quieto;
   SDL2pp::Texture calavera_verde_quieto;
   SDL2pp::Texture pinches;
@@ -61,17 +54,14 @@ private:
 
   long vueltas;
 
-  // Si en la lista hay un enemigo de ese tipo en ese tile
   static bool hay_enemigo(const std::vector<Enemigo> &lista, TipoEnemigo tipo,
                           int x, int y);
 
-  // Busca al enemigo en el estado anterior para saber si se movió
-  static void seguir_movimiento(Enemigo &enemigo,
-                                const std::vector<Enemigo> &anteriores,
-                                const std::vector<Enemigo> &actuales);
+  void seguir_movimiento(Enemigo &enemigo,
+                         const std::vector<Enemigo> &anteriores,
+                         const std::vector<Enemigo> &actuales);
 
-  // Cuántas vueltas dura una pasada de la hoja de ataque de ese tipo
-  long duracion_ataque(TipoEnemigo tipo) const;
+  SpritesEnemigo *sprites_de(TipoEnemigo tipo);
 
   void dibujar_mineral(SDL2pp::Renderer &renderer, const Mineral &mineral,
                        int camara_x, int camara_y, int lado);
@@ -83,12 +73,14 @@ public:
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 
+  void golpear(int tile_x, int tile_y);
+
   void golpearon_a(int tile_x, int tile_y);
 
   void animar(long vueltas_pasadas);
 
   void dibujar(SDL2pp::Renderer &renderer, int camara_x, int camara_y,
-               int lado = 64);
+               int lado = TAMANIO_TILE);
 };
 
 #endif

@@ -10,6 +10,8 @@
 #include "../common_src/constants.h"
 #include "actions/attack_action.h"
 #include "actions/chat_action.h"
+#include "actions/cheat_end_day_action.h"
+#include "actions/cheat_enemies_damage_action.h"
 #include "actions/cheat_growth_action.h"
 #include "actions/collect_action.h"
 #include "actions/gift_offer_action.h"
@@ -21,8 +23,6 @@
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
-#include "actions/cheat_end_day_action.h"
-#include "actions/cheat_enemies_damage_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),

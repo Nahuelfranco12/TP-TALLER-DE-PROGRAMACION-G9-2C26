@@ -40,3 +40,4 @@ qrc_*.cpp
 *.swp
 *~
 .DS_Store
+otro/

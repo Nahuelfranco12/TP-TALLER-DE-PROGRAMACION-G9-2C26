@@ -36,11 +36,11 @@ const CoordenadaSprite &opcionValida(const QList<CoordenadaSprite> &opciones,
 DibujarPersonaje::DibujarPersonaje()
     : pelos(COORDENADAS_PELOS), gorros(COORDENADAS_GORROS),
       pantalones(COORDENADAS_PANTALONES), remeras(COORDENADAS_REMERAS) {
-  hojaCuerpo.load(TIPOS_CUERPO);
-  hojaPelo.load(TIPOS_PELO);
-  hojaGorro.load(TIPOS_GORRO);
-  hojaPantalon.load(TIPOS_PANTALON);
-  hojaRemera.load(TIPOS_REMERA);
+  hojaCuerpo.load(RUTA_TIPOS_CUERPO);
+  hojaPelo.load(RUTA_TIPOS_PELO);
+  hojaGorro.load(RUTA_TIPOS_GORRO);
+  hojaPantalon.load(RUTA_TIPOS_PANTALON);
+  hojaRemera.load(RUTA_TIPOS_REMERA);
 }
 
 QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
