@@ -13,6 +13,7 @@ target_sources(taller_client
     client_receiver.cpp
     client_sender.cpp
     caverna.cpp
+    chat.cpp
     inventario.cpp
     alrededores.cpp
     servicio_lobby_red.cpp
@@ -48,8 +49,13 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    animacion.cpp
+    animacion_enemigos.cpp
+
     PUBLIC
     # .h files
+    animacion.h
+    animacion_enemigos.h
     client.h
     audio.h
     personaje.h
@@ -58,6 +64,7 @@ target_sources(taller_client
     interfaz.h
     mapa.h
     granja.h
+    chat.h
     client_protocol.h
     client_receiver.h
     client_sender.h

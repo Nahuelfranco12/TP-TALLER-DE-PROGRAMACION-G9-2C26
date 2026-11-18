@@ -208,23 +208,23 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     return;
   }
 
-  Rect piso(SPRITE_PISO_PUEBLO_X, SPRITE_PISO_PUEBLO_Y, TAMANIO_TILE_ASSET,
-            TAMANIO_TILE_ASSET);
+  Rect piso(SPRITE_PISO_PUEBLO_X, SPRITE_PISO_PUEBLO_Y, PIXELES_POR_TILE,
+            PIXELES_POR_TILE);
   if (tipo_tile == LETRA_PISO_PUEBLO && tipo != SectorTypeDto::CAVERN) {
     renderer.Copy(piso_pueblo, piso, Rect(x, y, lado, lado));
     return;
   }
 
   if (tipo_tile == LETRA_FLORES) {
-    Rect flor(SPRITE_FLORES_X, SPRITE_FLORES_Y, TAMANIO_TILE_ASSET,
-              TAMANIO_TILE_ASSET);
+    Rect flor(SPRITE_FLORES_X, SPRITE_FLORES_Y, PIXELES_POR_TILE,
+              PIXELES_POR_TILE);
     renderer.Copy(piso_pueblo, piso, Rect(x, y, lado, lado));
     renderer.Copy(flores, flor, Rect(x, y, lado, lado));
     return;
   }
 
-  Rect origen(columna * TAMANIO_TILE_ASSET, fila * TAMANIO_TILE_ASSET,
-              TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET);
+  Rect origen(columna * PIXELES_POR_TILE, fila * PIXELES_POR_TILE,
+              PIXELES_POR_TILE, PIXELES_POR_TILE);
   Rect destino(x, y, lado, lado);
   renderer.Copy(suelo, origen, destino);
 }

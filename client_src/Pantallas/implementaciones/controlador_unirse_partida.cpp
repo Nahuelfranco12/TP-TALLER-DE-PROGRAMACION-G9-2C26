@@ -9,11 +9,11 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
                                                    QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida) {
-  ui.botSiguienteUP->setEnabled(false);
-  conectarVolver(ui.botVolverUP);
+  ui.botonSiguienteUnirsePartida->setEnabled(false);
+  conectarVolver(ui.botonVolverUnirsePartida);
   connect(ui.campoCodigoPartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
-  connect(ui.botSiguienteUP, &QPushButton::clicked, this, [this]() {
+  connect(ui.botonSiguienteUnirsePartida, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Unirse;
     this->datosPartida.codigoUnirsePartida =
         this->ui.campoCodigoPartida->text().trimmed();
@@ -23,7 +23,7 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
 
 void ControladorUnirsePartida::actualizarBotonAvanzar() {
   bool tieneCodigo = !ui.campoCodigoPartida->text().trimmed().isEmpty();
-  ui.botSiguienteUP->setEnabled(tieneCodigo);
+  ui.botonSiguienteUnirsePartida->setEnabled(tieneCodigo);
 }
 
 void ControladorUnirsePartida::limpiarPagina() {

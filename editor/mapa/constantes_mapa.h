@@ -1,16 +1,19 @@
 #ifndef CONSTANTES_MAPA_H_
 #define CONSTANTES_MAPA_H_
 
-// Caverna y dimensiones
+// Niveles de caverna -> mapa_editor.cpp, archivo_mapa.cpp,
+// validacion_mapas.cpp, controlador_mapas.cpp
 #define CANTIDAD_NIVELES_CAVERNA 10
 #define PRIMER_NIVEL_CAVERNA 1
+
+// Dimensiones de zona -> mapa_editor.h, controlador_mapas.cpp
 #define ANCHO_PREDETERMINADO 35
 #define ALTO_PREDETERMINADO 25
 #define DIMENSION_MINIMA 10
 #define DIMENSION_MAXIMA 50
-#define MAX_LARGO_NOMBRE_MUNDO 50
 
-// Nombres de elementos que usa la validación
+// Nombres de elementos -> validacion_mapas.cpp,
+// catalogo_elementos.cpp
 #define TEXTO_ENTRADA_MINA "Entrada a la mina"
 #define TEXTO_SALIDA_PUEBLO "Salida al pueblo"
 #define TEXTO_ESCALERA "Escalera"
@@ -25,37 +28,43 @@
 #define TEXTO_CASA_CLINT "Casa Clint"
 #define TEXTO_CASA_PIERRE "Casa Pierre"
 #define TEXTO_CASA_MARNIE "Casa Marnie"
+#define TEXTO_POZO "Pozo"
 
-// Celdas que ocupa cada elemento (ancho x alto)
+// Celdas que ocupa cada elemento (ancho x alto) ->
+// mapa_editor.cpp
 #define TAMANIO_OCUPADO_ASSET_NORMAL 1
 #define TAMANIO_OCUPADO_CABANIA_ANCHO 3
 #define TAMANIO_OCUPADO_CABANIA_ALTO 4
-#define TAMANIO_OCUPADO_CENTROCOM_ANCHO 8
-#define TAMANIO_OCUPADO_CENTROCOM_ALTO 6
+#define TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO 8
+#define TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO 6
 #define TAMANIO_OCUPADO_ARBOL_ALTO 2
 #define TAMANIO_OCUPADO_AGUA_ANCHO 4
 #define TAMANIO_OCUPADO_AGUA_ALTO 4
 #define TAMANIO_OCUPADO_FAROL_ALTO 2
 #define TAMANIO_OCUPADO_BANCO_ANCHO 2
 #define TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO 2
-#define TAMANIO_ANCHO_CASA_NPC 5
-#define TAMANIO_ALTO_CASA_NPC 4
-#define TAMANIO_ALTO_ANCHO_NPC 2
+#define TAMANIO_OCUPADO_CASA_NPC_ANCHO 5
+#define TAMANIO_OCUPADO_CASA_NPC_ALTO 4
+#define TAMANIO_OCUPADO_NPC_ANCHO_ALTO 2
+#define TAMANIO_OCUPADO_POZO_ANCHO_ALTO 2
 
-// Validaciones para que se pueda exportar el archivo
+// Errores del modelo -> mapa_editor.h, mapa_editor.cpp
+#define TEXTO_ERROR_DIMENSIONES_ZONA "Dimensiones de zona fuera de rango"
+
+// Validación para poder exportar -> validacion_mapas.cpp
 #define VALIDACION_CABANIAS_MINIMAS 3
 #define VALIDACION_TEXTO_ZONA_GRANJA "Granja"
 #define VALIDACION_TEXTO_ZONA_PUEBLO "Pueblo"
-#define VALIDACION_TEXTO_ZONA_CAVERMA "Caverna"
+#define VALIDACION_TEXTO_ZONA_CAVERNA "Caverna"
 #define VALIDACION_TEXTO_SEPARADOR ": "
 #define VALIDACION_TEXTO_FALTA "falta "
 #define VALIDACION_TEXTO_NIVEL ", nivel "
 #define VALIDACION_TEXTO_CABANIAS_INICIO "tenes que colocar al menos "
 #define VALIDACION_TEXTO_CABANIAS_FIN " cabañas"
 #define VALIDACION_TEXTO_ERROR_NOMBRE "No le pusiste nombre al mundo!"
+#define VALIDACION_TEXTO_SOBRA "no puede haber "
 
-// Archivo del mapa
-#define EXTENSION_MAPA ".toml"
+// Archivo TOML: versión y claves -> archivo_mapa.cpp
 #define VERSION_ARCHIVO_MAPA 1
 #define CLAVE_VERSION "version"
 #define CLAVE_NOMBRE "nombre"
@@ -69,11 +78,14 @@
 #define CLAVE_TIPO "tipo"
 #define CLAVE_X "x"
 #define CLAVE_Y "y"
+
+// Archivo TOML: errores -> archivo_mapa.cpp
 #define TEXTO_ERROR_ESCRIBIR "No se pudo escribir el archivo: "
 #define TEXTO_ERROR_SIN_ID "Hay un elemento sin identificador en el archivo"
 #define TEXTO_ERROR_LEER "No se pudo leer el archivo: "
 #define TEXTO_ERROR_VERSION "Version de archivo no soportada."
 #define TEXTO_ERROR_CAMPO "Falta un dato o es invalido: "
+#define TEXTO_ERROR_RANGO "Valor fuera de rango en "
 #define TEXTO_ERROR_TIPO "Elemento desconocido: "
 #define TEXTO_ERROR_DIMENSIONES "Dimensiones fuera de rango en: "
 #define TEXTO_ERROR_OBJETO "Un objeto no entra o pisa a otro en: "
@@ -81,10 +93,7 @@
   "La caverna no tiene la cantidad de niveles esperada."
 #define TEXTO_NIVEL_ARCHIVO " nivel "
 
-#define ERROR_DIMENSIONES_FUERA_DE_RANGO "Dimensiones de zona fuera de rango"
-#define TITULO_ERROR_DIMENSIONES "No se pudo redimensionar la zona"
-
-// lo uso para los ids del archivo
+// Archivo TOML: ids de la granja -> archivo_mapa.cpp
 #define ID_CABANIA1 "Cabania1"
 #define ID_CABANIA2 "Cabania2"
 #define ID_CABANIA3 "Cabania3"
@@ -104,6 +113,7 @@
 #define ID_BUZON_ROJO "BuzonRojo"
 #define ID_CARTEL_VACIO "CartelVacio"
 
+// Archivo TOML: ids de la caverna -> archivo_mapa.cpp
 #define ID_ESCALERA "Escalera"
 #define ID_SALIDA_CAVERNA "SalidaCaverna"
 #define ID_BARRIL "Barril"
@@ -113,7 +123,9 @@
 #define ID_ANTORCHA "Antorcha"
 #define ID_CANDELABRO "Candelabro"
 #define ID_ESCUDO "Escudo"
+#define ID_POZO "Pozo"
 
+// Archivo TOML: ids del pueblo -> archivo_mapa.cpp
 #define ID_NPC_MARNIE "NpcMarnie"
 #define ID_NPC_CLINT "NpcClint"
 #define ID_NPC_PIERRE "NpcPierre"
@@ -130,7 +142,5 @@
 #define ID_BANCO_MADERA "BancoMadera"
 #define ID_BUZON_GRIS "BuzonGris"
 #define ID_BUZON_AZUL "BuzonAzul"
-
-#define TEXTO_ERROR_RANGO "Valor fuera de rango en "
 
 #endif // CONSTANTES_MAPA_H_

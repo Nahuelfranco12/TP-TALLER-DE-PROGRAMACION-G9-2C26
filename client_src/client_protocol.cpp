@@ -98,9 +98,13 @@ void ClientProtocol::send_water_cheat(const WaterDto &dto) {
 
 void ClientProtocol::send_growth_cheat() { protocol.send_u8(OP_CHEAT_GROWTH); }
 
-void ClientProtocol::send_end_day_cheat() { protocol.send_u8(OP_CHEAT_END_DAY); }
+void ClientProtocol::send_end_day_cheat() {
+  protocol.send_u8(OP_CHEAT_END_DAY);
+}
 
-void ClientProtocol::send_enemies_damage_cheat() { protocol.send_u8(OP_CHEAT_ENEMIES_DAMAGE); }
+void ClientProtocol::send_enemies_damage_cheat() {
+  protocol.send_u8(OP_CHEAT_ENEMIES_DAMAGE);
+}
 
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
