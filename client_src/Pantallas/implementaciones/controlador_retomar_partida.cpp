@@ -9,27 +9,27 @@ ControladorRetomarPartida::ControladorRetomarPartida(
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), dibujante(dibujante), servicio(servicio) {
 
-  partidas = new ListaSeleccionable(ui.scrollAreaWidgetContents, this);
+  partidas = new ListaSeleccionable(ui.contenedorPartidas, this);
 
   cargarPartidas();
 
-  ui.botJugarRP->setEnabled(false);
+  ui.botonJugarRetomarPartida->setEnabled(false);
 
-  conectarVolver(ui.botVolverRP);
+  conectarVolver(ui.botonVolverRetomarPartida);
 
   partidas->setAlSeleccionar([this]() { actualizarBotonAvanzar(); });
 
-  connect(ui.botJugarRP, &QPushButton::clicked, this, [this]() {
+  connect(ui.botonJugarRetomarPartida, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Retomar;
     this->datosPartida.idRetomarPartida = partidas->seleccionado();
-    intentarJugar(this->servicio, this->datosPartida, this->ui.botJugarRP);
+    intentarJugar(this->servicio, this->datosPartida, this->ui.botonJugarRetomarPartida);
   });
 }
 
 void ControladorRetomarPartida::actualizarBotonAvanzar() {
   bool tienePartida = partidas->haySeleccion();
 
-  ui.botJugarRP->setEnabled(tienePartida);
+  ui.botonJugarRetomarPartida->setEnabled(tienePartida);
 }
 
 void ControladorRetomarPartida::cargarPartidas() {

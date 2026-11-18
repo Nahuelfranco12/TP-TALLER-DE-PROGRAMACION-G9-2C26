@@ -59,6 +59,7 @@
 #define RUTA_CLINT ":/Npcs/clint.png"
 #define RUTA_PIERRE ":/Npcs/pierre.png"
 #define RUTA_ROBIN ":/Npcs/robin.png"
+#define RUTA_POZO ":/Caverna/pozo.png"
 
 // Catálogo: recortes de terrenos -> catalogo_elementos.cpp
 #define RECORTE_PASTO                                                          \

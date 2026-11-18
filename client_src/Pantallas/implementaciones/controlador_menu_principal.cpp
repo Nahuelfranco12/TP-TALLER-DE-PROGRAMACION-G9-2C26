@@ -6,11 +6,11 @@ ControladorMenuPrincipal::ControladorMenuPrincipal(QWidget &ventana,
                                                    Navegador &navegador,
                                                    QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent) {
-  connect(ui.botNuevaPartida, &QPushButton::clicked, this,
+  connect(ui.botonNuevaPartidaMenuPrincipal, &QPushButton::clicked, this,
           [this]() { this->navegador.irA(this->ui.pageNuevaPartida); });
-  connect(ui.botUnirsePartida, &QPushButton::clicked, this,
+  connect(ui.botonUnirsePartidaMenuPrincipal, &QPushButton::clicked, this,
           [this]() { this->navegador.irA(this->ui.pageUnirsePartida); });
-  connect(ui.botRetomarPartida, &QPushButton::clicked, this,
+  connect(ui.botonRetomarPartidaMenuPrincipal, &QPushButton::clicked, this,
           [this]() { this->navegador.irA(this->ui.pageRetomarPartida); });
 }
 

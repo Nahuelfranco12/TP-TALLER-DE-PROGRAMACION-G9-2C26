@@ -11,16 +11,16 @@ ControladorNuevaPartida::ControladorNuevaPartida(
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), servicio(servicio) {
 
-  mundos = new ListaSeleccionable(ui.scrollAreaWidgetContents_2, this);
+  mundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
   cargarMundos();
   ocultarMapa();
 
-  ui.botSiguiente->setEnabled(false);
+  ui.botonSiguienteNuevaPartida->setEnabled(false);
 
-  conectarVolver(ui.botVolver);
+  conectarVolver(ui.botonVolverNuevaPartida);
 
-  connect(ui.campoNOmbrePartida, &QLineEdit::textChanged, this,
+  connect(ui.campoNombrePartida, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
 
   mundos->setAlSeleccionar([this]() {
@@ -28,19 +28,19 @@ ControladorNuevaPartida::ControladorNuevaPartida(
     mostrarMapaSeleccionado();
   });
 
-  connect(ui.botSiguiente, &QPushButton::clicked, this, [this]() {
+  connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Nueva;
     this->datosPartida.nombrePartida =
-        this->ui.campoNOmbrePartida->text().trimmed();
+        this->ui.campoNombrePartida->text().trimmed();
     this->datosPartida.idMundo = mundos->seleccionado();
     this->navegador.irA(this->ui.pageCustomizarPersonaje);
   });
 }
 
 void ControladorNuevaPartida::actualizarBotonAvanzar() {
-  bool tieneNombre = !ui.campoNOmbrePartida->text().trimmed().isEmpty();
+  bool tieneNombre = !ui.campoNombrePartida->text().trimmed().isEmpty();
   bool tieneMundo = mundos->haySeleccion();
-  ui.botSiguiente->setEnabled(tieneNombre && tieneMundo);
+  ui.botonSiguienteNuevaPartida->setEnabled(tieneNombre && tieneMundo);
 }
 
 void ControladorNuevaPartida::cargarMundos() {
@@ -58,10 +58,10 @@ void ControladorNuevaPartida::mostrarMapaSeleccionado() {
   for (const MundoMock &mundo : datosMundos) {
     if (mundo.nombreMundo == id) {
       QPixmap mapa(mundo.rutaImagen);
-      ui.mapasAMostrar->setPixmap(
-          mapa.scaled(ui.mapasAMostrar->contentsRect().size(),
+      ui.infoMundo->setPixmap(
+          mapa.scaled(ui.infoMundo->contentsRect().size(),
                       Qt::KeepAspectRatio, Qt::SmoothTransformation));
-      ui.mapasAMostrar->setVisible(true);
+      ui.infoMundo->setVisible(true);
       return;
     }
   }
@@ -69,14 +69,14 @@ void ControladorNuevaPartida::mostrarMapaSeleccionado() {
 }
 
 void ControladorNuevaPartida::ocultarMapa() {
-  ui.mapasAMostrar->clear();
-  ui.mapasAMostrar->setVisible(false);
+  ui.infoMundo->clear();
+  ui.infoMundo->setVisible(false);
 }
 
 void ControladorNuevaPartida::limpiarPagina() {
   mundos->deseleccionar();
   ocultarMapa();
-  ui.campoNOmbrePartida->clear();
+  ui.campoNombrePartida->clear();
   actualizarBotonAvanzar();
   datosPartida = DatosPartida{};
 }
