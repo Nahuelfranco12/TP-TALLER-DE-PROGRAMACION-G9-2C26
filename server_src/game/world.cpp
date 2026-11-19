@@ -14,7 +14,8 @@ bool World::addSector(std::unique_ptr<Sector> sector) {
 }
 
 bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
-                    Position posOrigin, Position posDestine) {
+                    Position posOrigin, Position posDestine,
+                    DoorType typeOrigin, DoorType typeDestine) {
   auto sectorOriginIt = this->sectors.find(idSectorOrigin);
   auto sectorDestineIt = this->sectors.find(idSectorDestine);
 
@@ -25,14 +26,14 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
   Sector &sectorOrigin = *sectorOriginIt->second;
   Sector &sectorDestine = *sectorDestineIt->second;
 
-  bool doorOrigin =
-      sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine,
-                                                  sectorDestine, posDestine),
-                           posOrigin);
-  bool doorDestine =
-      sectorDestine.addDoor(std::make_unique<Door>(posDestine, idSectorOrigin,
-                                                   sectorOrigin, posOrigin),
-                            posDestine);
+    bool doorOrigin = sectorOrigin.addDoor(
+      std::make_unique<Door>(typeOrigin, posOrigin, idSectorDestine,
+                 sectorDestine, posDestine),
+      posOrigin);
+    bool doorDestine = sectorDestine.addDoor(
+      std::make_unique<Door>(typeDestine, posDestine, idSectorOrigin,
+                 sectorOrigin, posOrigin),
+      posDestine);
 
   return doorOrigin && doorDestine;
 }
@@ -96,16 +97,6 @@ void World::removePlayer(int id) {
   this->players.erase(id);
 }
 
-bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                         double freq, size_t pickaxeHits) {
-  auto it = this->sectors.find(sectorId);
-  if (it == this->sectors.end())
-    return false;
-  std::unique_ptr<Entity> mineral =
-      std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
-  return it->second->tryAddEntity(mineral, pos);
-}
-
 bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
   auto it = this->sectors.find(sectorId);
   if (it == this->sectors.end())
@@ -123,45 +114,6 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
     return false;
   }
   return it->second->tryAddEntity(animal, pos);
-}
-
-bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
-  auto it = this->sectors.find(sectorId);
-  if (it == this->sectors.end())
-    return false;
-
-  EnemiesFactory factory;
-  std::unique_ptr<Entity> enemy;
-  switch (type) {
-  case EnemyType::SKELETON:
-    enemy = factory.createEnemy(type, pos);
-    break;
-
-  case EnemyType::ORC:
-    enemy = factory.createEnemy(type, pos);
-    break;
-
-  case EnemyType::TRAP_FLAME:
-    enemy = factory.createTrap(type, pos);
-    break;
-
-  case EnemyType::TRAP_PINCH:
-    enemy = factory.createTrap(type, pos);
-    break;
-
-  case EnemyType::VAMPIRE_MALE:
-  case EnemyType::VAMPIRE_FEMALE:
-    return false;
-
-  case EnemyType::SKULL_BLUE:
-  case EnemyType::SKULL_GREEN:
-    enemy = factory.createEnemy(type, pos);
-    break;
-  }
-
-  if (!enemy)
-    return false;
-  return it->second->tryAddEntity(enemy, pos);
 }
 
 Player *World::getPlayer(int id) {

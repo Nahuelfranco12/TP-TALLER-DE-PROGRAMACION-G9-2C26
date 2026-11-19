@@ -185,7 +185,7 @@ SectorState Sector::state() const {
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
       state.tiles[x][y] = {
-          terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable(),
+          terrain.getTerrainType(), terrain.getTerrainDecoration(), terrain.isTransitable(), terrain.isArable(),
           this->doors.find(Position(x, y)) != this->doors.end(),
           terrain.isTilled()};
     }

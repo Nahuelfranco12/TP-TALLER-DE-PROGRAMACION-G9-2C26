@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 
 #include "../world_state.h"
 #include "./entities/animal.h"
@@ -15,6 +16,7 @@
 
 class World {
 private:
+  std::string name;
   DaySpeed speed;
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
@@ -28,11 +30,13 @@ private:
   void sendPlayersToFarm();
 
 public:
-  explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
+  explicit World(const std::string& name) : name(name), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(1) {}
 
   bool addSector(std::unique_ptr<Sector> sector);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
-               Position posOrigin, Position posDestine);
+               Position posOrigin, Position posDestine,
+               DoorType typeOrigin = DoorType::VillageEntry,
+               DoorType typeDestine = DoorType::VillageEntry);
 
   bool createCabin(int playerId, Position top);
 
@@ -42,11 +46,7 @@ public:
   void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
                  IdSector idSector);
   void removePlayer(int id);
-
-  bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                    double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
-  bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
 
   /*
   * getters

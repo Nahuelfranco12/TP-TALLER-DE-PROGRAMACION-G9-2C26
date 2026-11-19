@@ -8,9 +8,12 @@
 class FarmSector : public Sector {
 private:
 public:
-  FarmSector(size_t width, size_t height)
+  FarmSector(size_t width, size_t height,
+             std::map<Position, TerrainDecoration> decorations = {},
+             std::vector<Building> buildings = {})
       : Sector(width, height, IdSector::FARM,
-               Terrain(true, true, TerrainType::GRASS)) {}
+               Terrain(true, true, TerrainType::GRASS), std::move(decorations),
+               std::move(buildings)) {}
 
   bool placeAnimal(Position position, AnimalType animalType);
 

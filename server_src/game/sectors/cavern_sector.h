@@ -44,8 +44,11 @@ private:
 
 public:
   CavernSector(size_t width, size_t height, IdSector id,
-               const CavernLevelConfig &config)
-      : Sector(width, height, id, Terrain(true, false, TerrainType::GROUND)),
+               const CavernLevelConfig &config,
+               std::map<Position, TerrainDecoration> decorations = {},
+               std::vector<Building> buildings = {})
+      : Sector(width, height, id, Terrain(true, false, TerrainType::GROUND),
+               std::move(decorations), std::move(buildings)),
         config(config), enemiesFactory() {
     initEntities();
   }
