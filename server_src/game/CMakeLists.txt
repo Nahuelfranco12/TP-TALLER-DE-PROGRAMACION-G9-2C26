@@ -2,6 +2,7 @@ target_sources(taller_game
     PRIVATE
 
     world.cpp
+    ../editor_parser/editor_parser.cpp
 
     entities/mineral.cpp
     entities/door.cpp
@@ -25,7 +26,6 @@ target_sources(taller_game
     commands/select_tool_command.cpp
     commands/mine_command.cpp
     commands/collect_command.cpp
-    commands/spawn_mineral_command.cpp
     commands/spawn_animal_command.cpp
     commands/plant_command.cpp
     commands/water_command.cpp
