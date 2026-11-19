@@ -15,6 +15,7 @@ struct TerrainState {
   bool transitable;
   bool arable;
   bool isDoor;
+  DoorType doorType = VillageEntry;
   bool tilled = false;
 };
 

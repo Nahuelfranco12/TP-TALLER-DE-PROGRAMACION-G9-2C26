@@ -35,8 +35,6 @@ public:
    *  - Any free position finded where the entity now is placed.
    */
   bool moveEntity(std::unique_ptr<Entity>& entity, Position& destinePosition);
-
-  EntityState entityState() const;
 };
 
 #endif // DOOR_H_

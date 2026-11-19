@@ -281,6 +281,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           const TerrainState &t = sectorState.tiles[x][y];
           sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
                                     t.transitable, t.arable, t.isDoor,
+                                    static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
 
@@ -394,6 +395,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
           const TerrainState &t = sectorState.tiles[x][y];
           sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
                                     t.transitable, t.arable, t.isDoor,
+                                    static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
 

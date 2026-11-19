@@ -274,6 +274,7 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
       tile.isDoor = protocol.receive_u8() == 1;
+      tile.doorType = static_cast<DoorTypeDto>(protocol.receive_u8());
       tile.tilled = protocol.receive_u8() == 1;
     }
   }

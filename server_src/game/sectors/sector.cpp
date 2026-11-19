@@ -143,7 +143,7 @@ bool Sector::findFreePosition(Position &freePosition) const {
       Position pos(x, y);
       if (this->tiles[x][y].isTransitable() &&
           this->entities.find(pos) == this->entities.end() &&
-          this->traps.find(pos) == this->traps.end()) {
+            this->traps.find(pos) == this->traps.end()) {
         freePosition = pos;
         return true;
       }
@@ -184,9 +184,11 @@ SectorState Sector::state() const {
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
+        auto door = this->doors.find(Position(x, y));
+        bool isDoor = door != this->doors.end();
       state.tiles[x][y] = {
           terrain.getTerrainType(), terrain.getTerrainDecoration(), terrain.isTransitable(), terrain.isArable(),
-          this->doors.find(Position(x, y)) != this->doors.end(),
+            isDoor, isDoor ? door->second->getDoorType() : VillageEntry,
           terrain.isTilled()};
     }
 

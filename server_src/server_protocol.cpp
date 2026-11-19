@@ -86,6 +86,7 @@ void ServerProtocol::send_tiles(
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
       protocol.send_u8(tile.isDoor ? 1 : 0);
+      protocol.send_u8(static_cast<uint8_t>(tile.doorType));
       protocol.send_u8(tile.tilled ? 1 : 0);
     }
   }

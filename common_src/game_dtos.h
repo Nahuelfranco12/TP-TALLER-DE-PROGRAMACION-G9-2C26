@@ -205,6 +205,7 @@ struct TileDto {
   bool transitable;
   bool arable;
   bool isDoor;
+  DoorTypeDto doorType = VillageEntryDto;
   bool tilled;
 };
 

@@ -23,10 +23,3 @@ bool Door::moveEntity(std::unique_ptr<Entity>& entity,
   destinePosition = freePosition;
   return true;
 }
-
-
-EntityState Door::entityState() const {
-  EntityState state = Entity::entityState();
-  state.door.type = type;
-  return state;
-}
