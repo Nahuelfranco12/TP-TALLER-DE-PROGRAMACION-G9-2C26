@@ -117,7 +117,7 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
       return EntityTypeDto::NPC_ROBIN;
     case MerchantType::MARNIE:
       return EntityTypeDto::NPC_MARNIE;
-  }
+    }
     break;
   default:
     break;
