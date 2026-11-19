@@ -139,6 +139,8 @@ std::string ClientProtocol::receive_created_match() {
 
 void ClientProtocol::send_list_matches() { protocol.send_u8(OP_LIST_MATCHES); }
 
+void ClientProtocol::send_list_maps() { protocol.send_u8(OP_LIST_MAPS); }
+
 std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
   if (protocol.receive_u8() != OP_LIST_MATCHES)
     throw std::runtime_error("Mensaje inesperado");
@@ -153,6 +155,21 @@ std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
     matches.push_back(matchinfo);
   }
   return matches;
+}
+
+std::vector<MapInfoDto> ClientProtocol::receive_map_list() {
+  if (protocol.receive_u8() != OP_LIST_MAPS)
+    throw std::runtime_error("Mensaje inesperado");
+
+  std::vector<MapInfoDto> maps;
+  int count = protocol.receive_u16();
+  for (int i = 0; i < count; i++) {
+    MapInfoDto map;
+    map.name = protocol.receive_string();
+    map.path = protocol.receive_string();
+    maps.push_back(std::move(map));
+  }
+  return maps;
 }
 
 void ClientProtocol::send_join_match(const std::string &code,

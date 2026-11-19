@@ -1,0 +1,253 @@
+nombre = 'conexion'
+version = 1
+
+[caverna]
+alto = 25
+ancho = 35
+
+    [[caverna.niveles]]
+    objetos = [
+        { tipo = 'SalidaCaverna', x = 1, y = 23 },
+        { tipo = 'Barril', x = 2, y = 6 },
+        { tipo = 'Barril', x = 5, y = 6 },
+        { tipo = 'Barril', x = 9, y = 6 },
+        { tipo = 'Barril', x = 13, y = 8 },
+        { tipo = 'Barril', x = 16, y = 12 },
+        { tipo = 'Barril', x = 21, y = 15 },
+        { tipo = 'Barril', x = 24, y = 8 },
+        { tipo = 'Calavera', x = 4, y = 17 },
+        { tipo = 'Calavera', x = 9, y = 16 },
+        { tipo = 'Calavera', x = 8, y = 12 },
+        { tipo = 'Calavera', x = 5, y = 13 },
+        { tipo = 'Calavera', x = 8, y = 18 },
+        { tipo = 'Calavera', x = 14, y = 10 },
+        { tipo = 'Calavera', x = 9, y = 10 },
+        { tipo = 'Calavera', x = 6, y = 8 },
+        { tipo = 'Calavera', x = 5, y = 3 },
+        { tipo = 'Calavera', x = 17, y = 3 },
+        { tipo = 'Calavera', x = 31, y = 5 },
+        { tipo = 'Hueso', x = 19, y = 5 },
+        { tipo = 'Hueso', x = 21, y = 5 },
+        { tipo = 'Hueso', x = 24, y = 6 },
+        { tipo = 'Hueso', x = 28, y = 9 },
+        { tipo = 'Hueso', x = 26, y = 12 },
+        { tipo = 'Hueso', x = 21, y = 10 },
+        { tipo = 'Hueso', x = 21, y = 8 },
+        { tipo = 'Hueso', x = 28, y = 3 },
+        { tipo = 'Hueso', x = 10, y = 8 },
+        { tipo = 'Hueso', x = 6, y = 5 },
+        { tipo = 'Hueso', x = 4, y = 9 },
+        { tipo = 'Hueso', x = 27, y = 18 },
+        { tipo = 'Escombros', x = 14, y = 16 },
+        { tipo = 'Escombros', x = 17, y = 15 },
+        { tipo = 'Escombros', x = 19, y = 13 },
+        { tipo = 'Escombros', x = 17, y = 11 },
+        { tipo = 'Escombros', x = 17, y = 9 },
+        { tipo = 'Escombros', x = 15, y = 7 },
+        { tipo = 'Escombros', x = 2, y = 1 },
+        { tipo = 'Escombros', x = 1, y = 9 },
+        { tipo = 'Escombros', x = 2, y = 16 },
+        { tipo = 'Escombros', x = 4, y = 19 },
+        { tipo = 'Escombros', x = 8, y = 22 },
+        { tipo = 'Escombros', x = 14, y = 23 },
+        { tipo = 'Escombros', x = 21, y = 22 },
+        { tipo = 'Antorcha', x = 6, y = 23 },
+        { tipo = 'Antorcha', x = 1, y = 12 },
+        { tipo = 'Antorcha', x = 3, y = 11 },
+        { tipo = 'Antorcha', x = 1, y = 7 },
+        { tipo = 'Antorcha', x = 3, y = 4 },
+        { tipo = 'Antorcha', x = 1, y = 3 },
+        { tipo = 'Antorcha', x = 14, y = 1 },
+        { tipo = 'Antorcha', x = 17, y = 2 },
+        { tipo = 'Antorcha', x = 20, y = 0 },
+        { tipo = 'Antorcha', x = 21, y = 1 },
+        { tipo = 'Antorcha', x = 25, y = 3 },
+        { tipo = 'Antorcha', x = 30, y = 1 },
+        { tipo = 'Antorcha', x = 32, y = 6 },
+        { tipo = 'Antorcha', x = 33, y = 9 },
+        { tipo = 'Candelabro', x = 13, y = 15 },
+        { tipo = 'Candelabro', x = 31, y = 19 },
+        { tipo = 'Candelabro', x = 32, y = 21 },
+        { tipo = 'Candelabro', x = 28, y = 22 },
+        { tipo = 'Candelabro', x = 21, y = 19 },
+        { tipo = 'Escudo', x = 11, y = 14 },
+        { tipo = 'Escudo', x = 12, y = 4 },
+        { tipo = 'Pozo', x = 32, y = 1 }
+    ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'Pozo', x = 1, y = 2 }, { tipo = 'SalidaCaverna', x = 32, y = 23 }, { tipo = 'Escalera', x = 7, y = 3 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 15, y = 23 }, { tipo = 'Pozo', x = 15, y = 1 }, { tipo = 'Escalera', x = 2, y = 1 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 17, y = 23 }, { tipo = 'Pozo', x = 17, y = 2 }, { tipo = 'Escalera', x = 4, y = 1 } ]
+
+    [[caverna.niveles]]
+    objetos = [
+        { tipo = 'Pozo', x = 15, y = 2 },
+        { tipo = 'Hueso', x = 15, y = 23 },
+        { tipo = 'SalidaCaverna', x = 20, y = 21 },
+        { tipo = 'Escalera', x = 4, y = 2 }
+    ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 16, y = 23 }, { tipo = 'Pozo', x = 14, y = 2 }, { tipo = 'Escalera', x = 6, y = 3 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 13, y = 12 }, { tipo = 'Pozo', x = 17, y = 12 }, { tipo = 'Escalera', x = 4, y = 2 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 11, y = 12 }, { tipo = 'Pozo', x = 19, y = 12 }, { tipo = 'Escalera', x = 8, y = 1 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 7, y = 9 }, { tipo = 'Pozo', x = 27, y = 11 }, { tipo = 'Escalera', x = 10, y = 5 } ]
+
+    [[caverna.niveles]]
+    objetos = [ { tipo = 'SalidaCaverna', x = 6, y = 5 }, { tipo = 'Escalera', x = 21, y = 15 } ]
+
+[granja]
+alto = 25
+ancho = 35
+objetos = [
+    { tipo = 'Cabania1', x = 0, y = 0 },
+    { tipo = 'Cabania4', x = 0, y = 21 },
+    { tipo = 'Cabania5', x = 32, y = 21 },
+    { tipo = 'Cabania3', x = 32, y = 0 },
+    { tipo = 'Cabania2', x = 16, y = 9 },
+    { tipo = 'SalidaPueblo', x = 18, y = 24 },
+    { tipo = 'Arbol1', x = 1, y = 11 },
+    { tipo = 'Arbol1', x = 3, y = 10 },
+    { tipo = 'Arbol1', x = 6, y = 8 },
+    { tipo = 'Arbol1', x = 8, y = 7 },
+    { tipo = 'Arbol1', x = 1, y = 8 },
+    { tipo = 'Arbol1', x = 6, y = 13 },
+    { tipo = 'Arbol1', x = 3, y = 19 },
+    { tipo = 'Arbol1', x = 4, y = 21 },
+    { tipo = 'Arbol1', x = 5, y = 19 },
+    { tipo = 'Arbol2', x = 2, y = 9 },
+    { tipo = 'Arbol2', x = 4, y = 8 },
+    { tipo = 'Arbol2', x = 4, y = 12 },
+    { tipo = 'Arbol2', x = 1, y = 14 },
+    { tipo = 'Arbol2', x = 16, y = 4 },
+    { tipo = 'Arbol2', x = 19, y = 5 },
+    { tipo = 'Arbol2', x = 17, y = 4 },
+    { tipo = 'Arbol2', x = 19, y = 3 },
+    { tipo = 'Arbol2', x = 18, y = 5 },
+    { tipo = 'Arbol2', x = 16, y = 6 },
+    { tipo = 'Arbol2', x = 21, y = 5 },
+    { tipo = 'Arbol2', x = 22, y = 4 },
+    { tipo = 'Arbol2', x = 25, y = 2 },
+    { tipo = 'Arbol2', x = 29, y = 5 },
+    { tipo = 'Arbol2', x = 26, y = 9 },
+    { tipo = 'Arbol2', x = 30, y = 15 },
+    { tipo = 'Arbol2', x = 24, y = 17 },
+    { tipo = 'Arbol2', x = 22, y = 21 },
+    { tipo = 'Agua', x = 7, y = 21 },
+    { tipo = 'Agua', x = 12, y = 17 },
+    { tipo = 'Agua', x = 8, y = 14 },
+    { tipo = 'Piedra', x = 7, y = 15 },
+    { tipo = 'Piedra', x = 7, y = 16 },
+    { tipo = 'Piedra', x = 7, y = 17 },
+    { tipo = 'Piedra', x = 7, y = 14 },
+    { tipo = 'Piedra', x = 8, y = 13 },
+    { tipo = 'Piedra', x = 7, y = 13 },
+    { tipo = 'Piedra', x = 7, y = 18 },
+    { tipo = 'Piedra', x = 12, y = 16 },
+    { tipo = 'Piedra', x = 13, y = 16 },
+    { tipo = 'Piedra', x = 14, y = 16 },
+    { tipo = 'Piedra', x = 15, y = 16 },
+    { tipo = 'Piedra', x = 16, y = 16 },
+    { tipo = 'Piedra', x = 16, y = 17 },
+    { tipo = 'Piedra', x = 12, y = 21 },
+    { tipo = 'Piedra', x = 11, y = 21 },
+    { tipo = 'Piedra', x = 11, y = 20 },
+    { tipo = 'Piedra', x = 11, y = 22 },
+    { tipo = 'Piedra', x = 11, y = 23 },
+    { tipo = 'PiedraGrisGrande', x = 11, y = 18 },
+    { tipo = 'PiedraGrisGrande', x = 11, y = 19 },
+    { tipo = 'PiedraGrisGrande', x = 12, y = 15 },
+    { tipo = 'PiedraGrisGrande', x = 14, y = 21 },
+    { tipo = 'PiedraGrisGrande', x = 13, y = 22 },
+    { tipo = 'PiedraGrisGrande', x = 13, y = 21 },
+    { tipo = 'PiedraGris', x = 11, y = 13 },
+    { tipo = 'PiedraGris', x = 10, y = 13 },
+    { tipo = 'PiedraGris', x = 14, y = 15 },
+    { tipo = 'PiedraGris', x = 13, y = 14 },
+    { tipo = 'ArbustoRedondo', x = 3, y = 17 },
+    { tipo = 'ArbustoRedondo', x = 2, y = 14 },
+    { tipo = 'ArbustoRedondo', x = 1, y = 13 },
+    { tipo = 'ArbustoRedondo', x = 0, y = 15 },
+    { tipo = 'ArbustoRedondo', x = 2, y = 16 },
+    { tipo = 'ArbustoGrande', x = 2, y = 12 },
+    { tipo = 'ArbustoGrande', x = 2, y = 13 },
+    { tipo = 'ArbustoGrande', x = 3, y = 13 },
+    { tipo = 'ArbustoGrande', x = 5, y = 11 },
+    { tipo = 'ArbustoGrande', x = 6, y = 10 },
+    { tipo = 'ArbustoGrande', x = 4, y = 7 },
+    { tipo = 'TroncoCaido', x = 4, y = 17 },
+    { tipo = 'TroncoCaido', x = 5, y = 15 },
+    { tipo = 'Tocon', x = 6, y = 19 },
+    { tipo = 'Tocon', x = 10, y = 20 },
+    { tipo = 'BuzonRojo', x = 6, y = 5 },
+    { tipo = 'BuzonRojo', x = 4, y = 5 },
+    { tipo = 'BuzonRojo', x = 1, y = 5 },
+    { tipo = 'BuzonRojo', x = 0, y = 4 },
+    { tipo = 'BuzonRojo', x = 3, y = 24 },
+    { tipo = 'BuzonRojo', x = 31, y = 24 },
+    { tipo = 'BuzonRojo', x = 31, y = 3 },
+    { tipo = 'CartelVacio', x = 3, y = 2 }
+]
+
+[pueblo]
+alto = 25
+ancho = 35
+objetos = [
+    { tipo = 'CasaMarnie', x = 0, y = 0 },
+    { tipo = 'NpcMarnie', x = 1, y = 4 },
+    { tipo = 'CasaClint', x = 19, y = 0 },
+    { tipo = 'NpcClint', x = 20, y = 4 },
+    { tipo = 'CasaPierre', x = 24, y = 15 },
+    { tipo = 'NpcPierre', x = 25, y = 20 },
+    { tipo = 'CasaRobin', x = 16, y = 11 },
+    { tipo = 'NpcRobin', x = 16, y = 15 },
+    { tipo = 'CentroComunitario', x = 2, y = 9 },
+    { tipo = 'EntradaMina', x = 0, y = 24 },
+    { tipo = 'SalidaGranja', x = 34, y = 0 },
+    { tipo = 'FarolNaranja', x = 0, y = 9 },
+    { tipo = 'FarolNaranja', x = 13, y = 19 },
+    { tipo = 'FarolNaranja', x = 25, y = 10 },
+    { tipo = 'FarolNaranja', x = 15, y = 7 },
+    { tipo = 'FarolNaranja', x = 12, y = 4 },
+    { tipo = 'FarolNaranja', x = 9, y = 6 },
+    { tipo = 'FarolNaranja', x = 6, y = 4 },
+    { tipo = 'FarolNaranja', x = 18, y = 5 },
+    { tipo = 'FarolNaranja', x = 23, y = 8 },
+    { tipo = 'FarolNaranja', x = 28, y = 5 },
+    { tipo = 'FarolAzul', x = 5, y = 7 },
+    { tipo = 'FarolAzul', x = 9, y = 4 },
+    { tipo = 'FarolAzul', x = 12, y = 7 },
+    { tipo = 'FarolAzul', x = 15, y = 4 },
+    { tipo = 'FarolAzul', x = 19, y = 8 },
+    { tipo = 'FarolAzul', x = 6, y = 20 },
+    { tipo = 'FarolAzul', x = 9, y = 17 },
+    { tipo = 'FarolAzul', x = 5, y = 16 },
+    { tipo = 'BancoMadera', x = 8, y = 8 },
+    { tipo = 'BancoMadera', x = 14, y = 9 },
+    { tipo = 'BancoMadera', x = 17, y = 8 },
+    { tipo = 'BancoMadera', x = 10, y = 4 },
+    { tipo = 'BancoMadera', x = 23, y = 10 },
+    { tipo = 'BancoMadera', x = 26, y = 5 },
+    { tipo = 'BancoMadera', x = 10, y = 21 },
+    { tipo = 'BuzonGris', x = 1, y = 15 },
+    { tipo = 'BuzonGris', x = 15, y = 14 },
+    { tipo = 'BuzonGris', x = 23, y = 18 },
+    { tipo = 'BuzonGris', x = 24, y = 3 },
+    { tipo = 'BuzonGris', x = 5, y = 3 },
+    { tipo = 'BuzonAzul', x = 10, y = 15 },
+    { tipo = 'BuzonAzul', x = 22, y = 14 },
+    { tipo = 'BuzonAzul', x = 29, y = 19 },
+    { tipo = 'BuzonAzul', x = 18, y = 3 },
+    { tipo = 'BuzonAzul', x = 6, y = 2 }
+]

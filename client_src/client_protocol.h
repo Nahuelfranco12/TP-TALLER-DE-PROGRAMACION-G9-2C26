@@ -54,10 +54,12 @@ public:
   // Protocolo de menú
   void send_create_match(const std::string &name);
   void send_list_matches();
+  void send_list_maps();
   void send_join_match(const std::string &code, const std::string &player_name,
                        const PlayerOutfitDto &outfit);
   std::string receive_created_match();
   std::vector<MatchInfoDto> receive_match_list();
+  std::vector<MapInfoDto> receive_map_list();
   bool receive_join_result();
 
   void shutdown();

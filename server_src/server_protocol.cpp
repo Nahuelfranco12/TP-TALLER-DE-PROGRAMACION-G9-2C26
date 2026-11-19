@@ -254,6 +254,9 @@ LobbyRequestDto ServerProtocol::receive_lobby_request() {
   case OP_LIST_MATCHES:
     request.action = LobbyActionDto::List;
     break;
+  case OP_LIST_MAPS:
+    request.action = LobbyActionDto::ListMaps;
+    break;
   case OP_JOIN_MATCH:
     request.action = LobbyActionDto::Join;
     request.code = protocol.receive_string();
@@ -278,6 +281,15 @@ void ServerProtocol::send_match_list(const std::vector<MatchInfoDto> &matches) {
     protocol.send_string(m.code);
     protocol.send_string(m.name);
     protocol.send_u8(static_cast<uint8_t>(m.players));
+  }
+}
+
+void ServerProtocol::send_map_list(const std::vector<MapInfoDto> &maps) {
+  protocol.send_u8(OP_LIST_MAPS);
+  protocol.send_u16(static_cast<uint16_t>(maps.size()));
+  for (const MapInfoDto &map : maps) {
+    protocol.send_string(map.name);
+    protocol.send_string(map.path);
   }
 }
 

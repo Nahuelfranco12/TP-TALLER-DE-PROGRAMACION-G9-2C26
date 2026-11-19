@@ -20,6 +20,8 @@ void ServerReceiver::run() {
         protocol.send_match_created(lobby.create_match(request.match_name));
       } else if (request.action == LobbyActionDto::List) {
         protocol.send_match_list(lobby.list_matches());
+      } else if (request.action == LobbyActionDto::ListMaps) {
+        protocol.send_map_list(lobby.list_maps());
       } else if (request.action == LobbyActionDto::Join) {
         Match *found = lobby.find_match(request.code);
         bool was_found = found != nullptr;

@@ -51,6 +51,7 @@ public:
   LobbyRequestDto receive_lobby_request();
   void send_match_created(const std::string &code);
   void send_match_list(const std::vector<MatchInfoDto> &matches);
+  void send_map_list(const std::vector<MapInfoDto> &maps);
   void send_join_result(bool result);
 
   void send_sector_state(const SectorStateDto &state);

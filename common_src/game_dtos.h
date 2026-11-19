@@ -336,7 +336,12 @@ struct MatchInfoDto {
   int players = 0;
 };
 
-enum class LobbyActionDto { Create, List, Join };
+struct MapInfoDto {
+  std::string name;
+  std::string path;
+};
+
+enum class LobbyActionDto { Create, List, Join, ListMaps };
 
 struct LobbyRequestDto {
   LobbyActionDto action = LobbyActionDto::List;
