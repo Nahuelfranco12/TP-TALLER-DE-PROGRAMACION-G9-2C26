@@ -221,6 +221,7 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
     entity.bed.sleeping = protocol.receive_u8() == 1;
+    entity.door.type = static_cast<DoorTypeDto>(protocol.receive_u8());
     state.entities[position] = entity;
   }
 
@@ -269,6 +270,7 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
     for (int y = 0; y < rows; y++) {
       TileDto &tile = tiles[x][y];
       tile.type = static_cast<TerrainTypeDto>(protocol.receive_u8());
+      tile.decoration = static_cast<TerrainDecorationDto>(protocol.receive_u8());
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
       tile.isDoor = protocol.receive_u8() == 1;

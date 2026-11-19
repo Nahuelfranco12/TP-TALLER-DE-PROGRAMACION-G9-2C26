@@ -11,6 +11,7 @@
 
 struct TerrainState {
   TerrainType type;
+  TerrainDecoration decoration;
   bool transitable;
   bool arable;
   bool isDoor;
@@ -53,6 +54,10 @@ struct BedState {
   bool sleeping;
 };
 
+struct DoorState {
+  DoorType type;
+};
+
 struct EntityState {
   EntityTypes type{};
   Position position;
@@ -63,6 +68,7 @@ struct EntityState {
   CropState crop{};       // en caso de ser mineral
   EnemyState enemy{};     // en caso de ser enemigo
   BedState bed{};
+  DoorState door{};
 
   // TODO: cultivos y npcs
 };

@@ -42,6 +42,7 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.mineral.remainingHits));
     protocol.send_u8(entity.enemy.alive ? 1 : 0);
     protocol.send_u8(entity.bed.sleeping ? 1 : 0);
+    protocol.send_u8(static_cast<uint8_t>(entity.door.type));
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
@@ -81,6 +82,7 @@ void ServerProtocol::send_tiles(
     for (int y = 0; y < rows; y++) {
       const TileDto &tile = tiles[x][y];
       protocol.send_u8(static_cast<uint8_t>(tile.type));
+      protocol.send_u8(static_cast<uint8_t>(tile.decoration));
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
       protocol.send_u8(tile.isDoor ? 1 : 0);

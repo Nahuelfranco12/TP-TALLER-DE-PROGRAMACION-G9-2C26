@@ -9,6 +9,7 @@
 #include <vector>
 
 enum class DirectionDto { Up, Down, Left, Right };
+
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
@@ -17,6 +18,11 @@ enum class TerrainTypeDto {
   HOUSE,
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
+
+enum TerrainDecorationDto { NoneDto, Tree1Dto, Tree2Dto, Tree3Dto, TreeRoundedDto, TreeBigDto, LogDto, StumpDto, StoneDto, StoneGrayDto, StoneGrayBigDto, WaterDto, MailboxRedDto, MailboxBlueDto, MailBoxGrayDto, BlankSignDto, BarrelDto, SkullDto, BoneDto, RuinsDto, TorchDto, CandleDto, ShieldDto, PitDto, LanternOrangeDto, LanternBlueDto, BenchDto };
+
+enum DoorTypeDto { VillageEntryDto, CavernEntryDto, CavernExitDto, FarmExitDto, StairsDto };
+
 enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
 
 // TODO: revisar para que sea acorde a SDL
@@ -28,6 +34,7 @@ enum PlayerHatsDto {
   CROWN_HAT,
   BOWTIE_HAT
 }; // 6
+
 enum PlayerHairsDto {
   CURLY_HAIR,
   STRAIGHT_HAIR,
@@ -36,6 +43,7 @@ enum PlayerHairsDto {
   AFRO_HAIR,
   EMO_HAIR
 }; // 6
+
 enum PlayerTShirtsDto {
   BLUE_SHIRT,
   WHITE_SHIRT,
@@ -43,6 +51,7 @@ enum PlayerTShirtsDto {
   PURPLE_SHIRT,
   GREE_SHIRT
 }; // 5
+
 enum PlayerPantsDto {
   JEANS_PANTS,
   SKIRT_PANTS,
@@ -82,8 +91,12 @@ enum class BuildingTypeDto {
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
   SHOP_MARNIE,
   SHOP_CLINT,
+  SHOP_PIERRE,
+  SHOP_ROBIN,
+  COMUNITARY_CENTRE,
 };
 
 enum class SectorIdDto {
@@ -103,6 +116,7 @@ enum class SectorIdDto {
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
 };
 
 enum class EntityTypeDto {
@@ -187,6 +201,7 @@ struct PlantDto {
 
 struct TileDto {
   TerrainTypeDto type;
+  TerrainDecorationDto decoration;
   bool transitable;
   bool arable;
   bool isDoor;
@@ -270,6 +285,10 @@ struct BedDto {
   bool sleeping = false;
 };
 
+struct DoorDto{
+  DoorTypeDto type;
+};
+
 struct EntityDto {
   EntityTypeDto type{};
   bool ready = false;   // x ahora solo se usa si es animal
@@ -277,6 +296,7 @@ struct EntityDto {
   CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
   BedDto bed{};
+  DoorDto door{};
 };
 
 struct GameTimeDto {

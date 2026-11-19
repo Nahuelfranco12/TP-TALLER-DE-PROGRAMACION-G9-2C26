@@ -15,6 +15,7 @@ private:
   static BuildingTypeDto toDto(BuildingType type);
   static SectorIdDto toDtoSectorId(IdSector id);
   static TerrainTypeDto toDto(TerrainType terrain);
+  static TerrainDecorationDto toDto(TerrainDecoration decoration);
 
 public:
   std::optional<SectorStateDto> build(const WorldState &state, int clientId);

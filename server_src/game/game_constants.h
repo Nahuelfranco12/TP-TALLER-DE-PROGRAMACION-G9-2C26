@@ -1,7 +1,7 @@
 #ifndef GAME_CONSTANTS_H_
 #define GAME_CONSTANTS_H_
 
-#define MAX_PLAYERS 4
+#define MAX_PLAYERS 5
 
 #define PLAYER_MAX_ENERGY 100
 #define ENERGY_COST_PLANT 2
@@ -138,11 +138,26 @@ enum IdSector {
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5
 };
 
 enum TerrainType { DIRT, GRASS, GROUND, WOOD, HOUSE };
+enum TerrainDecoration { NONE, Tree1, Tree2, Tree3, TreeRounded, TreeBig, Log, Stump, Stone, StoneGray, StoneGrayBig, Water, MailboxRed, MailboxBlue, MailBoxGray, BlankSign, Barrel, Skull, Bone, Ruins, Torch, Candle, Shield, Pit, LanternOrange, LanternBlue,Bench };
 
-enum class BuildingType { CABIN_PLAYER_1, CABIN_PLAYER_2, CABIN_PLAYER_3, CABIN_PLAYER_4, SHOP_MARNIE, SHOP_CLINT };
+enum DoorType { VillageEntry, CavernEntry, CavernExit, FarmExit, Stairs  };
+
+enum class BuildingType {
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
+  SHOP_MARNIE,
+  SHOP_CLINT,
+  SHOP_PIERRE,
+  SHOP_ROBIN,
+  COMUNITARY_CENTRE,
+};
 
 enum class AnimalType { COW, CHICKEN };
 

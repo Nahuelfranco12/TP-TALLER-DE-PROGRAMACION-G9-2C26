@@ -149,10 +149,18 @@ BuildingTypeDto GameDtosBuilder::toDto(BuildingType type) {
     return BuildingTypeDto::CABIN_PLAYER_3;
   case BuildingType::CABIN_PLAYER_4:
     return BuildingTypeDto::CABIN_PLAYER_4;
+  case BuildingType::CABIN_PLAYER_5:
+    return BuildingTypeDto::CABIN_PLAYER_5;
   case BuildingType::SHOP_MARNIE:
     return BuildingTypeDto::SHOP_MARNIE;
   case BuildingType::SHOP_CLINT:
     return BuildingTypeDto::SHOP_CLINT;
+  case BuildingType::SHOP_PIERRE:
+    return BuildingTypeDto::SHOP_PIERRE;
+  case BuildingType::SHOP_ROBIN:
+    return BuildingTypeDto::SHOP_ROBIN;
+  case BuildingType::COMUNITARY_CENTRE:
+    return BuildingTypeDto::COMUNITARY_CENTRE;
   }
   throw std::logic_error("BuildingType sin DTO");
 }
@@ -191,6 +199,8 @@ SectorIdDto GameDtosBuilder::toDtoSectorId(IdSector id) {
     return SectorIdDto::CABIN_PLAYER_3;
   case IdSector::CABIN_PLAYER_4:
     return SectorIdDto::CABIN_PLAYER_4;
+  case IdSector::CABIN_PLAYER_5:
+    return SectorIdDto::CABIN_PLAYER_5;
   }
   throw std::logic_error("Sector id sin DTO");
 }
@@ -209,6 +219,39 @@ TerrainTypeDto GameDtosBuilder::toDto(TerrainType terrain) {
     return TerrainTypeDto::HOUSE;
   }
   throw std::logic_error("TerrainType sin DTO");
+}
+
+TerrainDecorationDto GameDtosBuilder::toDto(TerrainDecoration decoration) {
+  switch (decoration) {
+  case NONE: return NoneDto;
+  case Tree1: return Tree1Dto;
+  case Tree2: return Tree2Dto;
+  case Tree3: return Tree3Dto;
+  case TreeRounded: return TreeRoundedDto;
+  case TreeBig: return TreeBigDto;
+  case Log: return LogDto;
+  case Stump: return StumpDto;
+  case Stone: return StoneDto;
+  case StoneGray: return StoneGrayDto;
+  case StoneGrayBig: return StoneGrayBigDto;
+  case Water: return WaterDto;
+  case MailboxRed: return MailboxRedDto;
+  case MailboxBlue: return MailboxBlueDto;
+  case MailBoxGray: return MailBoxGrayDto;
+  case BlankSign: return BlankSignDto;
+  case Barrel: return BarrelDto;
+  case Skull: return SkullDto;
+  case Bone: return BoneDto;
+  case Ruins: return RuinsDto;
+  case Torch: return TorchDto;
+  case Candle: return CandleDto;
+  case Shield: return ShieldDto;
+  case Pit: return PitDto;
+  case LanternOrange: return LanternOrangeDto;
+  case LanternBlue: return LanternBlueDto;
+  case Bench: return BenchDto;
+  }
+  throw std::logic_error("TerrainDecoration sin DTO");
 }
 
 std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
@@ -235,8 +278,9 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor, t.tilled};
+          sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
+                                    t.transitable, t.arable, t.isDoor,
+                                    t.tilled};
         }
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
@@ -347,8 +391,9 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor, t.tilled};
+          sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
+                                    t.transitable, t.arable, t.isDoor,
+                                    t.tilled};
         }
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
