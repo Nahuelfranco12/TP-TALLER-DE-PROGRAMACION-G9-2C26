@@ -10,13 +10,13 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
     ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent), dibujar(dibujar),
       datosPartida(datosPartida), servicio(servicio) {
-  ui.botJugar->setEnabled(false);
-  conectarVolver(ui.botVolverPersonaje);
+  ui.botonJugarCustomizarPersonaje->setEnabled(false);
+  conectarVolver(ui.botonVolverCustomizarPersonaje);
   connect(ui.campoNombrePersonaje, &QLineEdit::textChanged, this,
           [this]() { actualizarBotonAvanzar(); });
-  connect(ui.botJugar, &QPushButton::clicked, this, [this]() {
+  connect(ui.botonJugarCustomizarPersonaje, &QPushButton::clicked, this, [this]() {
     this->datosPartida.personaje = personajeElegido();
-    intentarJugar(this->servicio, this->datosPartida, this->ui.botJugar);
+    intentarJugar(this->servicio, this->datosPartida, this->ui.botonJugarCustomizarPersonaje);
   });
   conectarBotonesFlechas();
   actualizarPrevisualizacion();
@@ -24,7 +24,7 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
 
 void ControladorCustomizarPersonaje::actualizarBotonAvanzar() {
   bool tieneNombre = !ui.campoNombrePersonaje->text().trimmed().isEmpty();
-  ui.botJugar->setEnabled(tieneNombre);
+  ui.botonJugarCustomizarPersonaje->setEnabled(tieneNombre);
 }
 
 void ControladorCustomizarPersonaje::limpiarPagina() {
@@ -54,13 +54,13 @@ DatosPersonaje ControladorCustomizarPersonaje::personajeElegido() const {
 }
 
 void ControladorCustomizarPersonaje::conectarBotonesFlechas() {
-  conectarFlechas(ui.botAntGorro, ui.botSigGorro, indiceGorro,
+  conectarFlechas(ui.botonAnteriorGorroCustomizarPersonaje, ui.botonSiguienteGorroCustomizarPersonaje, indiceGorro,
                   dibujar.opcionesGorro());
-  conectarFlechas(ui.botAntPelo, ui.botSigPelo, indicePelo,
+  conectarFlechas(ui.botonAnteriorPeloCustomizarPersonaje, ui.botonSiguientePeloCustomizarPersonaje, indicePelo,
                   dibujar.opcionesPelo());
-  conectarFlechas(ui.botAntRemera, ui.botSigRemera, indiceRemera,
+  conectarFlechas(ui.botonAnteriorRemeraCustomizarPersonaje, ui.botonSiguienteRemeraCustomizarPersonaje, indiceRemera,
                   dibujar.opcionesRemera());
-  conectarFlechas(ui.botAntPantalon, ui.botSigPantalon, indicePantalon,
+  conectarFlechas(ui.botonAnteriorPantalonCustomizarPersonaje, ui.botonSiguientePantalonCustomizarPersonaje, indicePantalon,
                   dibujar.opcionesPantalon());
 }
 

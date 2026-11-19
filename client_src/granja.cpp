@@ -35,8 +35,8 @@ void Granja::dibujar_casa(Renderer &renderer, const Casa &casa, int camara_x,
 
   int x = casa.tile_x * lado - camara_x;
   int y = casa.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / TAMANIO_TILE_ASSET,
-               modelo.h * lado / TAMANIO_TILE_ASSET);
+  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
+               modelo.h * lado / PIXELES_POR_TILE);
   renderer.Copy(casas, origen, destino);
 }
 
@@ -46,9 +46,9 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
   int y = cultivo.tile_y * lado - camara_y;
   Rect destino(x, y, lado, lado);
 
-  Rect origen_tierra(SUELO_ARADO_COLUMNA * TAMANIO_TILE_ASSET,
-                     SUELO_ARADO_FILA * TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET,
-                     TAMANIO_TILE_ASSET);
+  Rect origen_tierra(SUELO_ARADO_COLUMNA * PIXELES_POR_TILE,
+                     SUELO_ARADO_FILA * PIXELES_POR_TILE, PIXELES_POR_TILE,
+                     PIXELES_POR_TILE);
   renderer.Copy(suelo, origen_tierra, destino);
 
   int fila =
@@ -76,7 +76,7 @@ void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
                 SPRITE_VACA_LADO);
     int x = animal.tile_x * lado - lado / 2 - camara_x;
     int y = animal.tile_y * lado - lado - camara_y;
-    int lado_vaca = SPRITE_VACA_LADO * lado / TAMANIO_TILE_ASSET;
+    int lado_vaca = SPRITE_VACA_LADO * lado / PIXELES_POR_TILE;
     Rect destino(x, y, lado_vaca, lado_vaca);
     renderer.Copy(vaca, origen, destino, 0.0, NullOpt, flip);
     if (animal.listo) {
@@ -87,7 +87,7 @@ void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
                 SPRITE_GALLINA_LADO);
     int x = animal.tile_x * lado - camara_x;
     int y = animal.tile_y * lado - camara_y;
-    int lado_gallina = SPRITE_GALLINA_LADO * lado / TAMANIO_TILE_ASSET;
+    int lado_gallina = SPRITE_GALLINA_LADO * lado / PIXELES_POR_TILE;
     Rect destino(x, y, lado_gallina, lado_gallina);
     renderer.Copy(gallina, origen, destino, 0.0, NullOpt, flip);
     if (animal.listo) {
@@ -136,7 +136,7 @@ void Granja::dibujar_producto(SDL2pp::Renderer &renderer,
 
   int salto = 0;
   if ((vueltas / PRODUCTO_VUELTAS_POR_SALTO) % 2 == 1) {
-    salto = PRODUCTO_SALTO * lado / TAMANIO_TILE_ASSET;
+    salto = PRODUCTO_SALTO * lado / PIXELES_POR_TILE;
   }
 
   Rect destino(centro_x - ancho / 2, arriba_y - alto - salto, ancho, alto);

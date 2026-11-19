@@ -13,6 +13,7 @@ target_sources(taller_client
     client_receiver.cpp
     client_sender.cpp
     caverna.cpp
+    chat.cpp
     inventario.cpp
     alrededores.cpp
     servicio_lobby_red.cpp
@@ -38,16 +39,23 @@ target_sources(taller_client
     actions/water_action.cpp
     actions/attack_action.cpp
     actions/chat_action.cpp
+    actions/sleep_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
+    actions/cheat_end_day_action.cpp
+    actions/cheat_enemies_damage_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
     centro_comunitario.cpp
+    animacion.cpp
+    animacion_enemigos.cpp
     PUBLIC
     # .h files
+    animacion.h
+    animacion_enemigos.h
     client.h
     audio.h
     personaje.h
@@ -56,6 +64,7 @@ target_sources(taller_client
     interfaz.h
     mapa.h
     granja.h
+    chat.h
     client_protocol.h
     client_receiver.h
     client_sender.h
@@ -92,6 +101,8 @@ target_sources(taller_client
     actions/attack_action.h
     actions/chat_action.h
     actions/cheat_growth_action.h
+    actions/cheat_end_day_action.h
+    actions/cheat_enemies_damage_action.h
     pueblo.h
     mapa_mundo.h
     centro_comunitario.h

@@ -9,6 +9,7 @@
 
 #include "./game/commands/attack_command.h"
 #include "./game/commands/chat_command.h"
+#include "./game/commands/sleep_command.h"
 #include "./game/commands/collect_command.h"
 #include "./game/commands/gift_offer_command.h"
 #include "./game/commands/gift_response_command.h"
@@ -21,6 +22,8 @@
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
+#include "./game/commands/cheats/cheat_end_day_command.h"
+#include "./game/commands/cheats/cheat_enemies_damage_command.h"
 
 class CommandFactory {
 public:
@@ -35,11 +38,14 @@ public:
   std::unique_ptr<Command> create(int player_id, const WaterDto &dto);
   std::unique_ptr<Command> create(int player_id, const AttackDto &dto);
   std::unique_ptr<Command> create(int player_id, const ChatDto &dto);
+  std::unique_ptr<Command> create_sleep(int player_id);
   std::unique_ptr<Command> create_join(int player_id, const std::string &name,
                                        const PlayerOutfitDto &outfit);
   std::unique_ptr<Command> create_cheat_water(int player_id,
                                               const WaterDto &dto);
   std::unique_ptr<Command> create_cheat_growth(int player_id);
+  std::unique_ptr<Command> create_cheat_end_day(int player_id);
+std::unique_ptr<Command> create_cheat_enemies_damage(int player_id);
 };
 
 #endif // COMMAND_FACTORY_H_

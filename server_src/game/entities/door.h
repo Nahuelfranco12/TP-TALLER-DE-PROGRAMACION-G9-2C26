@@ -32,7 +32,7 @@ public:
    *  - Door destine position when the destine position is empty.
    *  - Any free position finded where the entity now is placed.
    */
-  Position moveEntity(std::unique_ptr<Entity> entity);
+  bool moveEntity(std::unique_ptr<Entity>& entity, Position& destinePosition);
 };
 
 #endif // DOOR_H_

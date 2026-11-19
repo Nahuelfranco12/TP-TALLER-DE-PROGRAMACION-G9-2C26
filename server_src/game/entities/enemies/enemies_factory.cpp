@@ -6,7 +6,7 @@
 #include "skull.h"
 
 std::unique_ptr<Enemy> EnemiesFactory::createSkeleton(Position position) {
-  EnemyStats stats{SKELETON_LIFE, SKELETON_DAMAGE, SKELETON_GOLD,
+  EnemyStats stats{SKELETON_LIFE, SKELETON_DAMAGE, SKELETON_DAMAGE, SKELETON_GOLD,
                          SKELETON_TICKS_PER_MOVE, SKELETON_TICKS_PER_ATTACK,
                          SKELETON_SIGHT_RANGE};
 
@@ -14,21 +14,21 @@ std::unique_ptr<Enemy> EnemiesFactory::createSkeleton(Position position) {
 }
 
 std::unique_ptr<Enemy> EnemiesFactory::createOrc(Position position) {
-  EnemyStats stats{ORC_LIFE, ORC_DAMAGE, ORC_GOLD, ORC_TICKS_PER_MOVE,
+  EnemyStats stats{ORC_LIFE, ORC_DAMAGE, ORC_DAMAGE, ORC_GOLD, ORC_TICKS_PER_MOVE,
                          ORC_TICKS_PER_ATTACK, ORC_SIGHT_RANGE};
 
   return std::make_unique<Orc>(position.x, position.y, stats);
 }
 
 std::unique_ptr<Enemy> EnemiesFactory::createBlueSkull(Position position) {
-  EnemyStats stats{SKULL_BLUE_LIFE, SKULL_BLUE_DAMAGE, 0, SKULL_BLUE_TICKS_PER_MOVE,
+  EnemyStats stats{SKULL_BLUE_LIFE, SKULL_BLUE_DAMAGE, SKULL_BLUE_DAMAGE,  0, SKULL_BLUE_TICKS_PER_MOVE,
                          SKULL_BLUE_TICKS_PER_ATTACK, SKULL_BLUE_SIGHT_RANGE};
 
   return std::make_unique<Skull>(position.x, position.y, stats, EnemyType::SKULL_BLUE);
 }
 
 std::unique_ptr<Enemy> EnemiesFactory::createGreenSkull(Position position) {
-  EnemyStats stats{SKULL_GREEN_LIFE, SKULL_GREEN_DAMAGE, 0, SKULL_GREEN_TICKS_PER_MOVE,
+  EnemyStats stats{SKULL_GREEN_LIFE, SKULL_GREEN_DAMAGE, SKULL_GREEN_DAMAGE, 0, SKULL_GREEN_TICKS_PER_MOVE,
                          SKULL_GREEN_TICKS_PER_ATTACK, SKULL_GREEN_SIGHT_RANGE};
 
   return std::make_unique<Skull>(position.x, position.y, stats, EnemyType::SKULL_GREEN);
@@ -36,11 +36,11 @@ std::unique_ptr<Enemy> EnemiesFactory::createGreenSkull(Position position) {
 
 std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>>
 EnemiesFactory::createVampires(Position firstPos) {
-  EnemyStats maleStats{VAMPIRE_LIFE, VAMPIRE_MALE_DAMAGE, VAMPIRE_GOLD,
+  EnemyStats maleStats{VAMPIRE_LIFE, VAMPIRE_MALE_DAMAGE, VAMPIRE_MALE_DAMAGE, VAMPIRE_GOLD,
                                VAMPIRE_MALE_TICKS_PER_MOVE,
                                VAMPIRE_TICKS_PER_ATTACK, VAMPIRE_SIGHT_RANGE};
 
-  EnemyStats femaleStats{VAMPIRE_LIFE, VAMPIRE_FEMALE_DAMAGE, VAMPIRE_GOLD,
+  EnemyStats femaleStats{VAMPIRE_LIFE, VAMPIRE_FEMALE_DAMAGE, VAMPIRE_FEMALE_DAMAGE, VAMPIRE_GOLD,
                              VAMPIRE_FEMALE_TICKS_PER_MOVE,
                              VAMPIRE_TICKS_PER_ATTACK, VAMPIRE_SIGHT_RANGE};
 

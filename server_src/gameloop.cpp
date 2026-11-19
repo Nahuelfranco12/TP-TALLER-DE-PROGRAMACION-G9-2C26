@@ -17,9 +17,14 @@ void Gameloop::process_commands() {
   }
 }
 
+void Gameloop::setupFarm() {
+  auto farm = std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2);
+  this->world.addSector(std::move(farm));
+}
+
 void Gameloop::addWorldSectors() {
-  this->world.addSector(
-      std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2));
+  setupFarm();
+  
   this->world.addSector(
       std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
 
@@ -29,9 +34,10 @@ void Gameloop::addWorldSectors() {
   this->world.addSector(
       std::make_unique<CommunityCenterSector>(COMMUNITY_CENTER_WIDTH, COMMUNITY_CENTER_HEIGHT));
 
-  world.addDoor(IdSector::VILLAGE, IdSector::COMMUNITY_CENTER, Position(50, 45),
+  world.addDoor(IdSector::VILLAGE, IdSector::COMMUNITY_CENTER, Position(14, 40),
                 Position(10, 11));
 
+  // TODO: los animales los coloca el jugador, del inventario
   this->world.spawnAnimal(IdSector::FARM, Position(10, 10), AnimalType::COW);
   this->world.spawnAnimal(IdSector::FARM, Position(11, 10),
                           AnimalType::CHICKEN);

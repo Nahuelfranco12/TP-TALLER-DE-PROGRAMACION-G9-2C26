@@ -43,6 +43,7 @@ private:
   long vueltas;
 
   int tienda_abierta;
+  long vueltas_en_tienda;
   std::vector<SDL2pp::Rect> botones;
 
   void dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,

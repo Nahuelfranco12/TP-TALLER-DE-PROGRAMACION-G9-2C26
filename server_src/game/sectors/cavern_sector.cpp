@@ -8,15 +8,18 @@
 #include <random>
 #include <utility>
 
-bool CavernSector::addEntity(std::unique_ptr<Entity> entity, Position pos) {
+bool CavernSector::tryAddEntity(std::unique_ptr<Entity> &entity, Position pos) {
   if (entity->getType() == EntityTypes::PLAYER && playerCount() == 0)
     reset();
 
   if (entity->getType() == EntityTypes::PLAYER && !isEmpty(pos)) {
-    pos = randomFreePosition();
+    Position freePosition(0, 0);
+    if (!findFreePosition(freePosition))
+      return false;
+    pos = freePosition;
   }
 
-  return Sector::addEntity(std::move(entity), pos);
+  return Sector::tryAddEntity(entity, pos);
 }
 
 void CavernSector::initEntities() {
@@ -83,8 +86,9 @@ void CavernSector::spawnMinerals() {
       break;
     }
 
-    addEntity(std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits),
-              pos);
+    std::unique_ptr<Entity> mineral =
+        std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
+    tryAddEntity(mineral, pos);
   }
 }
 
@@ -135,9 +139,10 @@ void CavernSector::spawnEnemies() {
 void CavernSector::spawnTraps() {
   for (size_t i = 0; i < TRAP_PINCH_COUNT; i++) {
     Position pos = randomFreePosition();
-    auto trap = enemiesFactory.createTrap(EnemyType::TRAP_PINCH, pos);
+    std::unique_ptr<Entity> trap =
+        enemiesFactory.createTrap(EnemyType::TRAP_PINCH, pos);
     if (trap)
-      Sector::addEntity(std::move(trap), pos);
+      Sector::tryAddEntity(trap, pos);
   }
 
   std::uniform_int_distribution<size_t> sideDist(0, 1);
@@ -155,9 +160,9 @@ void CavernSector::spawnTraps() {
     if (!isEmpty(pos) || this->doors.find(pos) != this->doors.end())
       continue;
 
-    auto trap = enemiesFactory.createTrap(EnemyType::TRAP_FLAME, pos,
-                                           direction);
-    if (trap && Sector::addEntity(std::move(trap), pos))
+    std::unique_ptr<Entity> trap =
+        enemiesFactory.createTrap(EnemyType::TRAP_FLAME, pos, direction);
+    if (trap && Sector::tryAddEntity(trap, pos))
       spawned++;
   }
 }
@@ -168,14 +173,16 @@ void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
   if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_FEMALE) {
     std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> vampires =
         enemiesFactory.createVampires(center);
-    bool resultVampire = Sector::addEntity(std::move(vampires.first), center);
+    std::unique_ptr<Entity> first = std::move(vampires.first);
+    bool resultVampire = Sector::tryAddEntity(first, center);
     if (!resultVampire)
       return;
 
     Position secondPos = randomNearPosition(center, 2);
     vampires.second->setPosition(secondPos);
 
-    resultVampire = Sector::addEntity(std::move(vampires.second), secondPos);
+    std::unique_ptr<Entity> second = std::move(vampires.second);
+    resultVampire = Sector::tryAddEntity(second, secondPos);
     if (!resultVampire)
       Sector::removeEntity(center);
   } else {
@@ -184,7 +191,8 @@ void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
       auto enemy = enemiesFactory.createEnemy(type, pos);
 
       if (enemy) {
-        Sector::addEntity(std::move(enemy), pos);
+        std::unique_ptr<Entity> entity = std::move(enemy);
+        Sector::tryAddEntity(entity, pos);
       }
     }
   }

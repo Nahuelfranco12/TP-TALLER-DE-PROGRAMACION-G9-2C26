@@ -27,6 +27,7 @@ private:
   WorldState make_world_state() const;
   void process_commands();
 
+  void setupFarm();
   void addWorldSectors();
 
 public:

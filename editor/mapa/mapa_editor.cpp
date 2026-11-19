@@ -1,5 +1,6 @@
 #include "mapa_editor.h"
 #include "constantes_mapa.h"
+#include "elementos_mapa.h"
 
 #include <utility>
 #include <vector>
@@ -45,7 +46,7 @@ Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
 
 void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
   if (!dimensionesValidas(nuevas))
-    throw std::invalid_argument(ERROR_DIMENSIONES_FUERA_DE_RANGO);
+    throw std::invalid_argument(TEXTO_ERROR_DIMENSIONES_ZONA);
   switch (zona) {
   case Zona::Granja:
     mapa.granja.redimensionar(nuevas);
@@ -95,15 +96,20 @@ bool esUnico(ElementosGranja tipo) {
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
-  if (tipo == ElementosCaverna::SalidaCaverna)
+  switch (tipo) {
+  case ElementosCaverna::Pozo:
+    return {TAMANIO_OCUPADO_POZO_ANCHO_ALTO, TAMANIO_OCUPADO_POZO_ANCHO_ALTO};
+  case ElementosCaverna::SalidaCaverna:
     return {TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
-  return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
+  default:
+    return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
+  }
 }
 
 CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::CentroComunitario:
-    return {TAMANIO_OCUPADO_CENTROCOM_ANCHO, TAMANIO_OCUPADO_CENTROCOM_ALTO};
+    return {TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO, TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO};
   case ElementosPueblo::FarolNaranja:
   case ElementosPueblo::FarolAzul:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};
@@ -113,12 +119,12 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   case ElementosPueblo::CasaPierre:
   case ElementosPueblo::CasaMarnie:
   case ElementosPueblo::CasaClint:
-    return {TAMANIO_ANCHO_CASA_NPC, TAMANIO_ALTO_CASA_NPC};
+    return {TAMANIO_OCUPADO_CASA_NPC_ANCHO, TAMANIO_OCUPADO_CASA_NPC_ALTO};
   case ElementosPueblo::NpcPierre:
   case ElementosPueblo::NpcMarnie:
   case ElementosPueblo::NpcRobin:
   case ElementosPueblo::NpcClint:
-    return {TAMANIO_ALTO_ANCHO_NPC, TAMANIO_ALTO_ANCHO_NPC};
+    return {TAMANIO_OCUPADO_NPC_ANCHO_ALTO, TAMANIO_OCUPADO_NPC_ANCHO_ALTO};
   default:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_ASSET_NORMAL};
   }
@@ -126,7 +132,8 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
 
 bool esUnico(ElementosCaverna tipo) {
   return tipo == ElementosCaverna::Escalera ||
-         tipo == ElementosCaverna::SalidaCaverna;
+         tipo == ElementosCaverna::SalidaCaverna ||
+         tipo == ElementosCaverna::Pozo;
 }
 
 bool esUnico(ElementosPueblo tipo) {

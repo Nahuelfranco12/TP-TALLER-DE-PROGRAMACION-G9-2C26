@@ -28,6 +28,7 @@ void PlantCommand::execute(World &world) {
   if (!player->spendEnergy(ENERGY_COST_PLANT))
     return;
 
-  sector->addEntity(std::make_unique<Crop>(this->target, this->crop),
-                    this->target);
+  std::unique_ptr<Entity> crop =
+      std::make_unique<Crop>(this->target, this->crop);
+  sector->tryAddEntity(crop, this->target);
 }

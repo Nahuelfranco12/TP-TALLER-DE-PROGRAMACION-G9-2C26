@@ -1,6 +1,7 @@
 #include "alrededores.h"
 #include "audio.h"
 #include "caverna.h"
+#include "chat.h"
 #include "client.h"
 #include "common_src/game_dtos.h"
 #include "constantes_sdl.h"
@@ -127,6 +128,9 @@ int main(int argc, char *argv[]) try {
   Mapa mapa_pueblo(renderer, village.type, village.width, village.height,
                    SEMILLA_PUEBLO);
   Mapa mapa_centro(renderer, centro_comunitario.type, centro_comunitario.width, centro_comunitario.height, SEMILLA_PUEBLO);
+
+  Mapa mapa_cabana(renderer, SectorTypeDto::CABIN, CABANA_ANCHO, CABANA_ALTO, 0);
+
   mapa_granja.actualizar(farm.sector);
   mapa_caverna.actualizar(cavern.sector);
   mapa_pueblo.actualizar(village.sector);
@@ -144,6 +148,8 @@ int main(int argc, char *argv[]) try {
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
+  int camara_granja_x = 0;
+  int camara_granja_y = 0;
   bool viendo_mapa = false;
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
@@ -151,6 +157,7 @@ int main(int argc, char *argv[]) try {
   Interfaz interfaz(renderer, servicio.codigo());
 
   Inventario inventario(renderer);
+  Chat chat(renderer);
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -166,14 +173,23 @@ int main(int argc, char *argv[]) try {
     // Proceso eventos
     SDL_Event evento;
     while (SDL_PollEvent(&evento)) {
+      std::string mensaje;
+      if (chat.manejar_evento(evento, mensaje)) {
+        if (!mensaje.empty())
+          client.send_chat(mensaje);
+        continue;
+      }
       if (evento.type == SDL_MOUSEBUTTONDOWN &&
           evento.button.button == SDL_BUTTON_LEFT) {
         int mouse_x = evento.button.x;
         int mouse_y = evento.button.y;
         int camara_x = personaje.obtener_tile_x() * TAMANIO_TILE +
                        TAMANIO_TILE / 2 - window.GetWidth() / 2;
-        int camara_y =
-            personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
+        int camara_y = personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
+        if (zona == SectorTypeDto::FARM) {
+          camara_granja_x = camara_x;
+          camara_granja_y = camara_y;
+        }
         bool acepto = false;
 
         if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
@@ -313,6 +329,14 @@ int main(int argc, char *argv[]) try {
           evento.key.repeat == 0)
         client.send_cheat_growth();
 
+      if (evento.type == SDL_KEYDOWN &&
+          evento.key.keysym.sym == TECLA_CHEAT_DIA && evento.key.repeat == 0)
+        client.send_end_day_cheat();
+
+      if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == SDLK_k &&
+          evento.key.repeat == 0)
+        client.send_enemies_damage_cheat();
+
       if (evento.type == SDL_KEYDOWN && evento.key.keysym.sym == TECLA_ACCION &&
           evento.key.repeat == 0) {
         InventorySlotDto en_la_mano;
@@ -320,11 +344,16 @@ int main(int argc, char *argv[]) try {
 
         if (inventario.tengo_en_la_mano(ESPADA)) {
           client.send_attack(dir);
+          if (zona == SectorTypeDto::CAVERN) {
+            caverna.golpear(frente_x, frente_y);
+          }
         } else if (zona == SectorTypeDto::CAVERN) {
           if (inventario.tengo_en_la_mano(PICO) && !personaje.esta_picando()) {
             personaje.picar();
             client.send_mine(dir);
           }
+        } else if (zona == SectorTypeDto::CABIN) {
+          client.send_sleep();
         } else if (inventario.tengo_en_la_mano(PALA)) {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
@@ -366,6 +395,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      chat.agregar(state.chat);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
       // Cambio de zona y música
@@ -396,6 +426,8 @@ int main(int argc, char *argv[]) try {
         pueblo.actualizar(state.entities);
       } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
         mapa_centro.actualizar(state.sector);
+      } else if (zona == SectorTypeDto::CABIN) {
+        mapa_cabana.actualizar(state.sector);
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
@@ -481,10 +513,23 @@ int main(int argc, char *argv[]) try {
       mapa_actual = &mapa_pueblo;
     } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
       mapa_actual = &mapa_centro;
+    } else if (zona == SectorTypeDto::CABIN) {
+      mapa_actual = &mapa_cabana;
     }
 
     renderer.SetDrawColor(fondo);
     renderer.Clear();
+
+    if (zona == SectorTypeDto::CABIN) {
+      mapa_granja.dibujar(renderer, camara_granja_x, camara_granja_y, window.GetWidth(), window.GetHeight());
+      granja.dibujar(renderer, camara_granja_x, camara_granja_y);
+      alrededores.dibujar(renderer, camara_granja_x, camara_granja_y, window.GetWidth(), window.GetHeight());
+
+      const SDL2pp::Color oscurecer = COLOR_CABANA_OSCURECER;
+      renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+      renderer.SetDrawColor(oscurecer);
+      renderer.FillRect(SDL2pp::Rect(0, 0, window.GetWidth(), window.GetHeight()));
+    }
 
     mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                          window.GetHeight());
@@ -521,6 +566,7 @@ int main(int argc, char *argv[]) try {
     }
 
     interfaz.dibujar(renderer, audio);
+    chat.dibujar(window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);

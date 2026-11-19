@@ -23,6 +23,7 @@ private:
     SDL2pp::Texture ofrendas;
     SDL2pp::Font fuente;
     SDL2pp::Font fuente_chica;
+    SDL2pp::Font fuente_botones;
     std::vector<SDL2pp::Texture> titulos;
     SDL2pp::Texture texto_canjear;
     SDL2pp::Texture texto_salir;

@@ -12,6 +12,8 @@ private:
   static ToolTypeDto toDto(AvailableTools tool);
   static std::optional<EntityTypeDto> toDto(const EntityState &entity);
   static SectorTypeDto toDto(IdSector id);
+  static BuildingTypeDto toDto(BuildingType type);
+  static SectorIdDto toDtoSectorId(IdSector id);
   static TerrainTypeDto toDto(TerrainType terrain);
 
 public:

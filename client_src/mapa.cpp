@@ -30,7 +30,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
     : suelo(renderer, archivo_tileset(tipo)), muebles(renderer, RUTA_MUEBLES),
       piso_pueblo(renderer, RUTA_TILESET_PUEBLO),
-      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO), borde(LETRA_BORDE),
+      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
+      casa(renderer, RUTA_TILESET_CABANA), borde(LETRA_BORDE),
       tipo(tipo), margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
@@ -40,6 +41,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
     generar_pueblo(ancho, alto, semilla);
   } else if (tipo == SectorTypeDto::COMMUNITY_CENTER) {
     generar_centro(ancho, alto);
+  } else if (tipo == SectorTypeDto::CABIN) {
+    generar_cabana(ancho, alto);
   }
 }
 
@@ -99,6 +102,11 @@ void Mapa::generar_centro(int ancho, int alto) {
   filas.assign(alto, std::string(ancho, LETRA_PISO_PUEBLO));
 }
 
+void Mapa::generar_cabana(int ancho, int alto) {
+  borde = LETRA_VACIO;
+  filas.assign(alto, std::string(ancho, LETRA_PISO_MADERA));
+}
+
 int Mapa::obtener_ancho() const {
   if (filas.empty()) {
     return 0;
@@ -129,6 +137,9 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
       char letra = tile_en(x, y);
       if (tile.type == TerrainTypeDto::DIRT) {
         letra = LETRA_TIERRA;
+      }
+      if (tile.type == TerrainTypeDto::WOOD) {
+        letra = LETRA_PISO_MADERA;
       }
       if (tile.tilled) {
         letra = LETRA_ARADO;
@@ -218,23 +229,29 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     return;
   }
 
-  Rect piso(SPRITE_PISO_PUEBLO_X, SPRITE_PISO_PUEBLO_Y, TAMANIO_TILE_ASSET,
-            TAMANIO_TILE_ASSET);
+  Rect piso(SPRITE_PISO_PUEBLO_X, SPRITE_PISO_PUEBLO_Y, PIXELES_POR_TILE,
+            PIXELES_POR_TILE);
   if (tipo_tile == LETRA_PISO_PUEBLO && tipo != SectorTypeDto::CAVERN) {
     renderer.Copy(piso_pueblo, piso, Rect(x, y, lado, lado));
     return;
   }
 
   if (tipo_tile == LETRA_FLORES) {
-    Rect flor(SPRITE_FLORES_X, SPRITE_FLORES_Y, TAMANIO_TILE_ASSET,
-              TAMANIO_TILE_ASSET);
+    Rect flor(SPRITE_FLORES_X, SPRITE_FLORES_Y, PIXELES_POR_TILE,
+              PIXELES_POR_TILE);
     renderer.Copy(piso_pueblo, piso, Rect(x, y, lado, lado));
     renderer.Copy(flores, flor, Rect(x, y, lado, lado));
     return;
   }
 
-  Rect origen(columna * TAMANIO_TILE_ASSET, fila * TAMANIO_TILE_ASSET,
-              TAMANIO_TILE_ASSET, TAMANIO_TILE_ASSET);
+  if (tipo_tile == LETRA_PISO_MADERA) {
+    Rect madera(SPRITE_PISO_MADERA_X, SPRITE_PISO_MADERA_Y, PIXELES_POR_TILE, PIXELES_POR_TILE);
+    renderer.Copy(casa, madera, Rect(x, y, lado, lado));
+    return;
+  }
+
+  Rect origen(columna * PIXELES_POR_TILE, fila * PIXELES_POR_TILE,
+              PIXELES_POR_TILE, PIXELES_POR_TILE);
   Rect destino(x, y, lado, lado);
   renderer.Copy(suelo, origen, destino);
 }

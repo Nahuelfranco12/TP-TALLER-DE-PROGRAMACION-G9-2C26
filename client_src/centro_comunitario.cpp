@@ -69,8 +69,9 @@ CentroComunitario::CentroComunitario(Renderer &renderer)
       : ofrendas(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, CENTRO_TAMANIO_LETRA),
       fuente_chica(RUTA_FUENTE_JUEGO, CENTRO_TAMANIO_LETRA_CHICA),
-      texto_canjear(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_CANJEAR, BLANCO)),
-      texto_salir(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_SALIR, BLANCO)),
+      fuente_botones(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA),
+      texto_canjear(renderer, fuente_botones.RenderUTF8_Blended(TEXTO_JUEGO_CANJEAR, BLANCO)),
+      texto_salir(renderer, fuente_botones.RenderUTF8_Blended(TEXTO_JUEGO_SALIR, BLANCO)),
       set_abierto(SET_CERRADO) {
 
     for (const char *titulo : TITULOS) {
@@ -86,7 +87,7 @@ void CentroComunitario::dibujar_figurin(Renderer &renderer, const Set &set, int 
     const SDL_Rect &modelo = MODELOS_SETS[set.modelo];
     Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
     
-    int tamanio = modelo.w * lado / TAMANIO_TILE_ASSET;
+    int tamanio = modelo.w * lado / PIXELES_POR_TILE;
     int x = set.tile_x * lado - camara_x;
     int y = (set.tile_y + 1) * lado - tamanio - camara_y;
     renderer.Copy(ofrendas, origen, Rect(x, y, tamanio, tamanio));
@@ -229,19 +230,12 @@ void CentroComunitario::dibujar_set(Renderer &renderer,
   renderer.Copy(ofrendas, Rect(FONDO.x, FONDO.y, FONDO.w, FONDO.h), panel);
 
   // Nombre del set
-  int y = panel.y + panel.h / 8;
+  int y_titulo = panel.y + panel.h / CENTRO_TITULO_DIVISOR;
   Texture &titulo = titulos[set_abierto];
-  renderer.Copy(titulo, NullOpt,
-                Rect((ancho_ventana - titulo.GetWidth()) / 2, y,
-                     titulo.GetWidth(), titulo.GetHeight()));
-  y += titulo.GetHeight() + CENTRO_SEPARACION_LINEAS;
+  renderer.Copy(titulo, NullOpt, Rect((ancho_ventana - titulo.GetWidth()) / 2, y_titulo, titulo.GetWidth(), titulo.GetHeight()));
 
-  // El figurín grande
-  const SDL_Rect &modelo = MODELOS_SETS[set_abierto];
-  renderer.Copy(ofrendas, Rect(modelo.x, modelo.y, modelo.w, modelo.h),
-                Rect((ancho_ventana - CENTRO_LADO_FIGURIN_CAJA) / 2, y,
-                     CENTRO_LADO_FIGURIN_CAJA, CENTRO_LADO_FIGURIN_CAJA));
-  y += CENTRO_LADO_FIGURIN_CAJA + CENTRO_SEPARACION_LINEAS;
+  // El figurín
+  int y = panel.y + panel.h / CENTRO_CONTENIDO_DIVISOR + titulo.GetHeight() + CENTRO_SEPARACION_LINEAS;
 
   // Lo que pide y cuánto tengo
   actualizar_lineas(renderer, inventario, monedas);
@@ -256,7 +250,7 @@ void CentroComunitario::dibujar_set(Renderer &renderer,
   int ancho_canjear = texto_canjear.GetWidth() + 2 * TIENDA_RELLENO_BOTON;
   int ancho_salir = texto_salir.GetWidth() + 2 * TIENDA_RELLENO_BOTON;
   int x = (ancho_ventana - ancho_canjear - TIENDA_SEPARACION_BOTONES - ancho_salir) / 2;
-  int y_botones = panel.y + panel.h + CENTRO_MARGEN_BOTONES;
+  int y_botones = alto_ventana - BOTONES_DESDE_ABAJO;
   boton_canjear = Rect(x, y_botones, ancho_canjear, TIENDA_ALTO_BOTON);
   boton_salir = Rect(x + ancho_canjear + TIENDA_SEPARACION_BOTONES, y_botones,
                      ancho_salir, TIENDA_ALTO_BOTON);

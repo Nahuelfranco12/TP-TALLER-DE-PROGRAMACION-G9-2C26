@@ -20,6 +20,7 @@ private:
   void send_inventory(const InventoryDto &inventory);
   void send_slot(const InventorySlotDto &slot);
   void send_position(const GamePositionDto &position);
+  void send_building(const BuildingDto &building);
 
   PlayerOutfitDto receive_outfit();
   InventorySlotDto receive_slot(); // se usa para recibir regalos

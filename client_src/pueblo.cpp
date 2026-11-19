@@ -79,8 +79,8 @@ void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
 
   int x = puesto.tile_x * lado - camara_x;
   int y = puesto.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / TAMANIO_TILE_ASSET,
-               modelo.h * lado / TAMANIO_TILE_ASSET);
+  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
+               modelo.h * lado / PIXELES_POR_TILE);
   renderer.Copy(edificios, origen, destino);
 }
 
@@ -93,8 +93,8 @@ void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x,
   Rect origen(cuadro * datos.lado_cuadro, 0, datos.lado_cuadro,
               datos.lado_cuadro);
 
-  int tamanio = datos.lado_cuadro * lado / TAMANIO_TILE_ASSET;
-  int pie = datos.pie_y * lado / TAMANIO_TILE_ASSET;
+  int tamanio = datos.lado_cuadro * lado / PIXELES_POR_TILE;
+  int pie = datos.pie_y * lado / PIXELES_POR_TILE;
   renderer.Copy(sprites_npcs[modelo], origen,
                 Rect(centro_x - tamanio / 2, pie_y - pie, tamanio, tamanio));
 }
@@ -198,7 +198,7 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
   const SDL2pp::Color fondo_boton = COLOR_BOTON_FONDO;
   const SDL2pp::Color borde_boton = COLOR_BOTON_BORDE;
   int x = (ancho_ventana - ancho_total) / 2;
-  int y = habitacion.y + habitacion.h + TIENDA_MARGEN_BOTONES;
+  int y = alto_ventana - BOTONES_DESDE_ABAJO;
   for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
     Texture &texto = texto_botones[i];
     botones[i] = Rect(x, y, texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON,
@@ -223,7 +223,7 @@ void Pueblo::dibujar_centro_comunitario(Renderer &renderer, int camara_x,
   int y = CENTRO_EDIFICIO_TILE_Y * lado - camara_y;
   Rect origen(EDIFICIO_CENTRO.x, EDIFICIO_CENTRO.y, EDIFICIO_CENTRO.w,
               EDIFICIO_CENTRO.h);
-  Rect destino(x, y, EDIFICIO_CENTRO.w * lado / TAMANIO_TILE_ASSET,
-               EDIFICIO_CENTRO.h * lado / TAMANIO_TILE_ASSET);
+  Rect destino(x, y, EDIFICIO_CENTRO.w * lado / PIXELES_POR_TILE,
+               EDIFICIO_CENTRO.h * lado / PIXELES_POR_TILE);
   renderer.Copy(edificio_centro, origen, destino);
 }

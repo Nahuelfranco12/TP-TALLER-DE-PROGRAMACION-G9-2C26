@@ -89,12 +89,22 @@ void ClientProtocol::send_chat_dto(const ChatDto &dto) {
   protocol.send_string(dto.text);
 }
 
+void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
 }
 
 void ClientProtocol::send_growth_cheat() { protocol.send_u8(OP_CHEAT_GROWTH); }
+
+void ClientProtocol::send_end_day_cheat() {
+  protocol.send_u8(OP_CHEAT_END_DAY);
+}
+
+void ClientProtocol::send_enemies_damage_cheat() {
+  protocol.send_u8(OP_CHEAT_ENEMIES_DAMAGE);
+}
 
 int ClientProtocol::receive_player_id() {
   if (protocol.receive_u8() != OP_PLAYER_ID)
@@ -188,6 +198,10 @@ SectorStateDto ClientProtocol::receive_sector_state() {
   state.height = protocol.receive_u16();
 
   state.sector = receive_tiles();
+  int building_count = protocol.receive_u16();
+  for (int i = 0; i < building_count; i++)
+    state.buildings.push_back(receive_building());
+
   int player_count = protocol.receive_u16();
   for (int i = 0; i < player_count; i++) {
     GamePositionDto position = receive_position();
@@ -206,6 +220,7 @@ SectorStateDto ClientProtocol::receive_sector_state() {
 
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
+    entity.bed.sleeping = protocol.receive_u8() == 1;
     state.entities[position] = entity;
   }
 
@@ -237,6 +252,9 @@ WorldMapDto ClientProtocol::receive_world_map() {
     sector.width = protocol.receive_u16();
     sector.height = protocol.receive_u16();
     sector.sector = receive_tiles();
+    int building_count = protocol.receive_u16();
+    for (int j = 0; j < building_count; j++)
+      sector.buildings.push_back(receive_building());
     map.sectors.push_back(sector);
   }
   return map;
@@ -301,4 +319,16 @@ GamePositionDto ClientProtocol::receive_position() {
   position.x = protocol.receive_u16();
   position.y = protocol.receive_u16();
   return position;
+}
+
+BuildingDto ClientProtocol::receive_building() {
+  BuildingDto building;
+  building.type = static_cast<BuildingTypeDto>(protocol.receive_u8());
+  building.topLeft = receive_position();
+  building.width = protocol.receive_u16();
+  building.height = protocol.receive_u16();
+  building.door = receive_position();
+  building.interior = static_cast<SectorIdDto>(protocol.receive_u8());
+  building.ownerId = static_cast<int16_t>(protocol.receive_u16());
+  return building;
 }

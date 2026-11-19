@@ -1,27 +1,40 @@
 #ifndef CONSTANTES_SDL_H_
 #define CONSTANTES_SDL_H_
 
-// Ventana y loop
+// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas por tema
+// indico con un comentario que hace ese grupo y donde estan de la forma:
+// tema -> archivo1.cpp, archivoN.cpp
+
+// Ventana, argumentos y loop -> main.cpp
 #define CANTIDAD_ARGUMENTOS 3
 #define ARGUMENTO_HOST 1
 #define ARGUMENTO_PUERTO 2
 #define VENTANA_ANCHO 640
 #define VENTANA_ALTO 480
 #define RENDERER_DRIVER_POR_DEFECTO (-1)
-#define LOOP_PERIODO_MS 16 // 60 vueltas por segundo
+#define LOOP_PERIODO_MS 16
 
-// Mapa: tiles, escala y generación de decoración
-#define TAMANIO_TILE_ASSET 16
+// Escalas y tamaños -> alrededores.cpp, animacion.cpp, caverna.h, caverna.cpp,
+// granja.h, granja.cpp, main.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
+// pueblo.h, pueblo.cpp
+#define PIXELES_POR_TILE 16
 #define ESCALA_SPRITES 4
-#define TAMANIO_TILE (TAMANIO_TILE_ASSET * ESCALA_SPRITES)
+#define TAMANIO_TILE (PIXELES_POR_TILE * ESCALA_SPRITES)
+
+#define CABANA_ANCHO 30
+#define CABANA_ALTO 15
+
+// Mapa: márgenes y decoración -> mapa.cpp
 #define MAPA_MARGEN 30
 #define MAPA_DADO_DECORACION_MAXIMO 9
+
+// Semillas de los mapas -> main.cpp
 #define SEMILLA_GRANJA 42
 #define SEMILLA_CAVERNA 7
 #define SEMILLA_PUEBLO 42
 #define SEMILLA_ALREDEDORES 42
 
-// Letras de la grilla del mapa
+// Letras de la grilla del mapa -> mapa.cpp
 #define LETRA_PASTO '.'
 #define LETRA_BORDE ','
 #define LETRA_BORDE_CAVERNA '#'
@@ -35,9 +48,10 @@
 #define LETRA_PISO_PUEBLO 'c'
 #define LETRA_FLORES 'f'
 #define LETRA_VACIO ' '
+#define LETRA_PISO_MADERA 'm'
 
 
-// Bosque alrededor de la granja (medidas en tiles)
+// Bosque alrededor de la granja (en tiles) -> alrededores.cpp
 #define BOSQUE_ZONA 30
 #define BOSQUE_SEPARACION 3
 #define BOSQUE_DESPLAZAMIENTO_MAXIMO (BOSQUE_SEPARACION - 2)
@@ -47,7 +61,7 @@
 #define BOSQUE_MARGEN 4
 #define BOSQUE_SOMBRA 200
 
-// Mapa general, tecla M (medidas en tiles salvo que diga px)
+// Mapa general, tecla M (en tiles salvo que diga px) -> mapa_mundo.cpp
 #define MUNDO_MARGEN 8
 #define MUNDO_SEPARACION 14
 #define MUNDO_PASILLO 10
@@ -64,7 +78,7 @@
 #define MUNDO_FIGURA_TILES 4
 #define MUNDO_FIGURA_MINIMA 12
 
-// Granja
+// Granja: casa, animales, productos y cultivos -> granja.cpp
 #define GRANJA_CASA_TILE_X 2
 #define GRANJA_CASA_TILE_Y 1
 #define GRANJA_CASA_MODELO 0
@@ -76,11 +90,16 @@
   { 5, 5, 6, 5 }
 #define CULTIVO_CRECIMIENTO_MAXIMO 3
 
-// Caverna: golpes restantes de un mineral
+// Caverna: minerales y enemigos -> animacion_enemigos.cpp, caverna.cpp
 #define CAVERNA_GOLPES_GOLPEADO 2
 #define CAVERNA_GOLPES_CASI_ROTO 1
+#define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
+#define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30
+#define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
+#define VUELTAS_POR_CUADRO_ENEMIGO 6
 
-// Pueblo: tiendas (el índice es el mismo para puesto, NPC, título y fondo)
+// Pueblo y tiendas (el índice es el mismo para puesto, NPC, título y fondo) ->
+// pueblo.cpp
 #define TIENDA_PIERRE 0
 #define TIENDA_CLINT 1
 #define TIENDA_ROBIN 2
@@ -88,14 +107,14 @@
 #define TIENDA_CERRADA (-1)
 #define PUEBLO_PUESTOS                                                         \
   {                                                                            \
-    {10, 20, TIENDA_PIERRE}, {30, 36, TIENDA_CLINT}, {29, 3, TIENDA_ROBIN}, {  \
-      52, 18, TIENDA_MARNIE                                                    \
+    {2, 19, TIENDA_PIERRE}, {16, 19, TIENDA_CLINT}, {2, 1, TIENDA_ROBIN}, {  \
+      16, 1, TIENDA_MARNIE                                                    \
     }                                                                          \
   }
 #define PUEBLO_NPCS                                                            \
   {                                                                            \
-    {15, 29, TIENDA_PIERRE}, {34, 44, TIENDA_CLINT}, {37, 13, TIENDA_ROBIN}, { \
-      57, 29, TIENDA_MARNIE                                                    \
+    {7, 28, TIENDA_PIERRE}, {22, 27, TIENDA_CLINT}, {10, 11, TIENDA_ROBIN}, { \
+      21, 12, TIENDA_MARNIE                                                    \
     }                                                                          \
   }
 #define NPC_CUADROS_ANIMACION 4
@@ -125,15 +144,19 @@
 {                                                                             \
   {4, 3, SET_CULTIVOS}, {7, 3, SET_METALES}, {10, 3, SET_ANIMALES},           \
   {13, 3, SET_PELEA}, {16, 3, SET_DINERO}                                     \
-}                                                                             \
+}
 
 // Edificio en el pueblo
-#define CENTRO_EDIFICIO_TILE_X 45
-#define CENTRO_EDIFICIO_TILE_Y 39
+#define CENTRO_EDIFICIO_TILE_X 9
+#define CENTRO_EDIFICIO_TILE_Y 34
+
+// Titulo de un set
+#define CENTRO_TITULO_DIVISOR 16
+#define CENTRO_CONTENIDO_DIVISOR 8
 
 // Caja de un set
-#define CENTRO_TAMANIO_LETRA 20
-#define CENTRO_TAMANIO_LETRA_CHICA 15
+#define CENTRO_TAMANIO_LETRA 40
+#define CENTRO_TAMANIO_LETRA_CHICA 30
 #define CENTRO_LADO_FIGURIN_CAJA 64
 #define CENTRO_MARGEN_ANCHO 40
 #define CENTRO_MARGEN_ALTO 100
@@ -141,7 +164,7 @@
 #define CENTRO_MARGEN_BOTONES 10
 #define CENTRO_MONEDAS_SET 10000
 
-// Personaje: ropa inicial, caminar y picar
+// Personaje: ropa inicial, caminar y picar -> personaje.cpp
 #define PERSONAJE_PANTALON_INICIAL 0
 #define PERSONAJE_REMERA_INICIAL 5
 #define PERSONAJE_PELO_INICIAL 3
@@ -157,7 +180,7 @@
 #define PERSONAJE_DURACION_PICAR                                               \
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
 
-// Ropa elegida en el lobby: índice de Qt -> índice en las hojas de SDL
+// Ropa elegida en el lobby -> índice en las hojas de SDL -> main.cpp
 #define ROPA_SOMBREROS_SDL                                                     \
   { 45, 4, 40, 61, 121, 99 }
 #define ROPA_PELOS_SDL                                                         \
@@ -167,14 +190,14 @@
 #define ROPA_REMERAS_SDL                                                       \
   { 9, 19, 36, 27, 104 }
 
-// Barras de vida y energía (px)
+// Barras de vida y energía (px) -> personaje.cpp
 #define BARRA_VALOR_MAXIMO 100.0
 #define BARRA_ANCHO 48
 #define BARRA_ALTO 6
 #define BARRA_SEPARACION 2
 #define BARRA_BORDE 1
 
-// Día y noche
+// Día y noche -> interfaz.h, interfaz.cpp
 #define DIA_HORA_INICIO 6
 #define MINUTOS_POR_HORA 60
 #define NOCHE_HORA_ATARDECER 18
@@ -182,7 +205,7 @@
 #define NOCHE_OSCURIDAD_MAXIMA 170
 #define RELOJ_MINIMO_DOS_CIFRAS 10
 
-// HUD (px)
+// HUD (px) -> interfaz.cpp
 #define HUD_TAMANIO_LETRA 16
 #define HUD_MARGEN 16
 #define HUD_ALTO_BOTON 32
@@ -198,7 +221,7 @@
 #define HUD_RAYITA_ANCHO 8
 #define HUD_RAYITA_ALTO 20
 
-// Teclas
+// Teclas -> main.cpp
 #define TECLA_SALIR SDLK_ESCAPE
 #define TECLA_MAPA SDLK_m
 #define TECLA_PRIMER_CASILLERO SDLK_1
@@ -207,13 +230,16 @@
 #define TECLA_RECHAZAR_REGALO SDLK_n
 #define TECLA_CHEAT_RIEGO SDLK_c
 #define TECLA_CHEAT_CRECIMIENTO SDLK_COMMA
+#define TECLA_CHEAT_DIA SDLK_0
 #define TECLA_ACCION SDLK_SPACE
 #define TECLA_ARRIBA SDLK_UP
 #define TECLA_ABAJO SDLK_DOWN
 #define TECLA_IZQUIERDA SDLK_LEFT
 #define TECLA_DERECHA SDLK_RIGHT
 
-// Cartel de regalo (px)
+#define BOTONES_DESDE_ABAJO 120;
+
+// Regalos -> interfaz.cpp, main.cpp
 #define REGALO_ANCHO 280
 #define REGALO_ALTO 140
 #define REGALO_MARGEN_TITULO 10
@@ -221,8 +247,9 @@
 #define REGALO_MARGEN_BOTONES 20
 #define REGALO_BOTONES_DESDE_ABAJO 44
 #define REGALO_ANCHO_BOTON 110
+#define REGALO_DISTANCIA 1
 
-// Inventario (px)
+// Inventario (px) -> interfaz.cpp, inventario.cpp
 #define INVENTARIO_HERRAMIENTAS 4
 #define INVENTARIO_ITEMS 9
 #define INVENTARIO_CASILLEROS (INVENTARIO_HERRAMIENTAS + INVENTARIO_ITEMS)
@@ -236,38 +263,16 @@
 #define INVENTARIO_ESTRELLA_MARGEN 3
 #define DIGITOS_DECIMALES 10
 
-// Paleta de colores de la ropa
-#define COLOR_ROPA_AZUL                                                        \
-  { 60, 90, 200 }
-#define COLOR_ROPA_MARRON                                                      \
-  { 150, 80, 30 }
-#define COLOR_ROPA_NEGRO                                                       \
-  { 40, 30, 20 }
-#define COLOR_ROPA_RUBIO                                                       \
-  { 230, 190, 90 }
-#define COLOR_ROPA_ROJO                                                        \
-  { 200, 60, 40 }
-#define COLOR_ROPA_VERDE                                                       \
-  { 70, 150, 70 }
-#define COLOR_ROPA_BLANCO                                                      \
-  { 230, 230, 230 }
-#define COLOR_ROPA_VIOLETA                                                     \
-  { 150, 80, 200 }
-#define PALETA_ROPA                                                            \
-  {                                                                            \
-    COLOR_ROPA_AZUL, COLOR_ROPA_MARRON, COLOR_ROPA_NEGRO, COLOR_ROPA_RUBIO,    \
-        COLOR_ROPA_ROJO, COLOR_ROPA_VERDE, COLOR_ROPA_BLANCO,                  \
-        COLOR_ROPA_VIOLETA                                                     \
-  }
-#define PALETA_ROPA_CANTIDAD 8
-
-// Rutas de assets
+// Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
+// interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
+// pueblo.cpp
 #define RUTA_FUENTE_JUEGO "assets/fuentes/DejaVuSans-Bold.ttf"
 #define RUTA_ARBOL "assets/mapas/tree1.png"
 #define RUTA_PINO "assets/mapas/tree1_2.png"
 #define RUTA_TILESET_GRANJA "assets/mapas/ground_01_16x16.png"
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
+#define RUTA_TILESET_CABANA "assets/mapas/Tilesets_Farmhouse.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
@@ -300,9 +305,9 @@
 #define RUTA_NPC_ROBIN "assets/npcs/robin.png"
 #define RUTA_NPC_MARNIE "assets/npcs/marnie.png"
 #define RUTA_TIENDA_PIERRE "assets/tiendas/pierre.png"
-#define RUTA_TIENDA_CLINT "assets/tiendas/clint.jpeg"
-#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.jpg"
-#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.jpg"
+#define RUTA_TIENDA_CLINT "assets/tiendas/clint.png"
+#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.png"
+#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.png"
 #define RUTAS_FONDOS_TIENDAS                                                   \
   {                                                                            \
     RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,                  \
@@ -312,8 +317,6 @@
 #define RUTA_MUSICA_CAVERNA "assets/sonidos/musica_caverna.ogg"
 #define RUTA_MUSICA_PUEBLO "assets/sonidos/musica_pueblo.mp3"
 #define RUTA_SONIDO_PASO "assets/sonidos/paso.wav"
-
-// rutas para los enemigos
 #define RUTA_ESQUELETO_QUIETO                                                  \
   "assets/enemigos/esqueleto/enemies-skeleton1_idle.png"
 #define RUTA_ESQUELETO_CAMINANDO                                               \
@@ -337,16 +340,13 @@
   "assets/enemigos/vampiro/enemies-vampire_take_damage.png"
 #define RUTA_VAMPIRO_MUERTO "assets/enemigos/vampiro/enemies-vampire_death.png"
 #define RUTA_CALAVERA_AZUL_QUIETA "assets/enemigos/enemies-skull_blue_idle.png"
-#define RUTA_CALAVERA_VERDE_QUIETA "assets/enemigos/enemies-skull_green_idle.png"
+#define RUTA_CALAVERA_VERDE_QUIETA                                             \
+  "assets/enemigos/enemies-skull_green_idle.png"
 #define RUTA_PINCHES "assets/enemigos/enemies-peaks_1.png"
 #define RUTA_LANZALLAMAS1 "assets/enemigos/enemies-flamethrower_1_1.png"
 #define RUTA_LANZALLAMAS2 "assets/enemigos/enemies-flamethrower_2_1.png"
 
-#define CAVERNA_ENEMIGO_DISTANCIA_PASO 1
-#define CAVERNA_ENEMIGO_VUELTAS_CAMINANDO 30
-#define CAVERNA_ENEMIGO_DISTANCIA_ATAQUE 1
-
-// Sprites: suelo (columna y fila en tiles del tileset)
+// Suelo: columna y fila en tiles del tileset -> granja.cpp, mapa.cpp
 #define SUELO_DEFECTO_COLUMNA 4
 #define SUELO_DEFECTO_FILA 9
 #define SUELO_BORDE_CAVERNA_COLUMNA 8
@@ -365,8 +365,11 @@
 #define SUELO_CAVERNA_DECORACION_2_FILA 2
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
+#define SPRITE_PISO_MADERA_X 32
+#define SPRITE_PISO_MADERA_Y 128
 
-// Sprites: recortes del mapa (px)
+// Sprites (px) -> caverna.cpp, granja.cpp, inventario.cpp, mapa.cpp,
+// mapa_mundo.cpp, personaje.cpp, pueblo.cpp
 #define SPRITE_PUERTA_X 514
 #define SPRITE_PUERTA_Y 370
 #define SPRITE_PUERTA_ANCHO 30
@@ -377,8 +380,6 @@
 #define SPRITE_FLORES_Y 276
 #define SPRITE_PASTO_OSCURO_X 16
 #define SPRITE_PASTO_OSCURO_Y 144
-
-// Sprites: minerales (px)
 #define SPRITE_ORCO_CENTRO_X 55
 #define SPRITE_ESQUELETO_CENTRO_X 14
 #define SPRITE_VAMPIRO_CENTRO_X 13
@@ -389,8 +390,16 @@
 #define SPRITE_MINERAL_ETAPA_ENTERO 0
 #define SPRITE_MINERAL_ETAPA_GOLPEADO 1
 #define SPRITE_MINERAL_ETAPA_CASI_ROTO 2
-
-// Sprites: granja (px)
+#define SPRITE_ESQUELETO_LADO 32
+#define SPRITE_ESQUELETO_PIE 29
+#define SPRITE_ORCO_LADO 100
+#define SPRITE_ORCO_PIE 57
+#define SPRITE_VAMPIRO_LADO 32
+#define SPRITE_VAMPIRO_PIE 29
+#define SPRITE_CALAVERA_LADO 16
+#define SPRITE_CALAVERA_PIE 16
+#define SPRITE_TRAMPA_LADO 16
+#define SPRITE_TRAMPA_PIE 16
 #define SPRITE_MODELOS_CASAS                                                   \
   {                                                                            \
     {144, 0, 80, 104}, { 0, 0, 80, 96 }                                        \
@@ -400,8 +409,6 @@
 #define SPRITE_CULTIVO_LADO 16
 #define SPRITE_CULTIVO_FILAS_POR_TIPO 2
 #define SPRITE_CULTIVO_FILA_PLANTA 1
-
-// Sprites: pueblo (px)
 #define SPRITE_PUESTO_PIERRE                                                   \
   { 240, 176, 112, 144 }
 #define SPRITE_PUESTO_CLINT                                                    \
@@ -474,9 +481,18 @@
 #define SPRITE_MANO_DERECHA_X 9
 #define SPRITE_MANO_IZQUIERDA_X 7
 #define SPRITE_MANO_Y 16
-#define ICONO_PIXELES_POR_TILE 24
+#define SPRITE_ESTRELLA_BORDE                                                  \
+  {                                                                            \
+    {-1, 2, 10, 4}, { 2, -1, 4, 10 }                                           \
+  }
+#define SPRITE_ESTRELLA_RELLENO                                                \
+  {                                                                            \
+    {0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }                                 \
+  }
 
-// Sprites: íconos del inventario (px)
+// Íconos del inventario (px) -> granja.cpp, inventario.cpp,
+//   personaje.cpp
+#define ICONO_PIXELES_POR_TILE 24
 #define ICONO_MINERAL_X 100
 #define ICONO_MINERAL_Y 17
 #define ICONO_MINERAL_LADO 10
@@ -492,19 +508,37 @@
 #define ICONO_CULTIVO_FILA_CEBOLLA 3
 #define ICONO_CULTIVO_FILA_PAPA 5
 #define ICONO_CULTIVO_FILA_CALABAZA 7
-#define SPRITE_ESTRELLA_BORDE                                                  \
-  {                                                                            \
-    {-1, 2, 10, 4}, { 2, -1, 4, 10 }                                           \
-  }
-#define SPRITE_ESTRELLA_RELLENO                                                \
-  {                                                                            \
-    {0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }                                 \
-  }
 
-// Colores
+// Colores -> animacion.cpp, caverna.cpp, interfaz.cpp,
+//   inventario.cpp, main.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
+//   pueblo.cpp
 #define COLOR_ALFA_OPACO 255
-#define COLOR_SOMBRA_MARGEN 150
 #define COLOR_SIN_TINTE 255
+#define COLOR_ROPA_AZUL                                                        \
+  { 60, 90, 200 }
+#define COLOR_ROPA_MARRON                                                      \
+  { 150, 80, 30 }
+#define COLOR_ROPA_NEGRO                                                       \
+  { 40, 30, 20 }
+#define COLOR_ROPA_RUBIO                                                       \
+  { 230, 190, 90 }
+#define COLOR_ROPA_ROJO                                                        \
+  { 200, 60, 40 }
+#define COLOR_ROPA_VERDE                                                       \
+  { 70, 150, 70 }
+#define COLOR_ROPA_BLANCO                                                      \
+  { 230, 230, 230 }
+#define COLOR_ROPA_VIOLETA                                                     \
+  { 150, 80, 200 }
+#define PALETA_ROPA                                                            \
+  {                                                                            \
+    COLOR_ROPA_AZUL, COLOR_ROPA_MARRON, COLOR_ROPA_NEGRO, COLOR_ROPA_RUBIO,    \
+        COLOR_ROPA_ROJO, COLOR_ROPA_VERDE, COLOR_ROPA_BLANCO,                  \
+        COLOR_ROPA_VIOLETA                                                     \
+  }
+#define COLOR_SOMBRA_MARGEN 150
+#define COLOR_TINTE_NEUTRO                                                     \
+  { COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_ALFA_OPACO }
 #define COLOR_TEXTO                                                            \
   { 255, 255, 255, COLOR_ALFA_OPACO }
 #define COLOR_BOTON_FONDO                                                      \
@@ -542,7 +576,7 @@
 #define COLOR_MUNDO_DIFUMINADO                                                 \
   { 54, 124, 66, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_VIDA                                                       \
-  { 240, 200, 40, COLOR_ALFA_OPACO }
+  { 200, 40, 40, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_ENERGIA                                                    \
   { 70, 190, 70, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_BORDE                                                      \
@@ -553,8 +587,10 @@
   { 0, 0, 0, COLOR_ALFA_OPACO }
 #define COLOR_TEXTO_CENTRO                                                     \
  { 70, 40, 20, COLOR_ALFA_OPACO }
+ #define COLOR_CABANA_OSCURECER                                                     \
+ { 0, 0, 0, 170 }
 
-// Textos visibles
+// Textos visibles -> interfaz.cpp, main.cpp, pueblo.cpp
 #define TEXTO_JUEGO_MUSICA "Música"
 #define TEXTO_JUEGO_MENOS "-"
 #define TEXTO_JUEGO_MAS "+"
@@ -602,7 +638,7 @@
 #define TITULOS_SETS { TEXTO_JUEGO_SET_CULTIVOS, TEXTO_JUEGO_SET_METALES, TEXTO_JUEGO_SET_ANIMALES, TEXTO_JUEGO_SET_PELEA, TEXTO_JUEGO_SET_DINERO}
 #define TEXTO_JUEGO_CANJEAR "Canjear"
 
-// Audio
+// Audio -> audio.cpp, interfaz.cpp
 #define AUDIO_TAMANIO_BUFFER 1024
 #define AUDIO_INCREMENTO_VOLUMEN 16
 #define AUDIO_VOLUMEN_INICIAL (MIX_MAX_VOLUME / 2)
@@ -613,7 +649,5 @@
 #define AUDIO_MUSICA_CAVERNA 1
 #define AUDIO_MUSICA_PUEBLO 2
 #define AUDIO_CANTIDAD_MUSICAS 3
-
-#define REGALO_DISTANCIA 1
 
 #endif // CONSTANTES_SDL_H_

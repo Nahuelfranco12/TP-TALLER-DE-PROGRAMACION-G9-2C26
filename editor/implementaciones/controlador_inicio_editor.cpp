@@ -16,11 +16,11 @@ ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
                                                  DatosEditor &datos,
                                                  QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
-  connect(ui.botonEditorCrearMapa, &QPushButton::clicked, this,
+  connect(ui.botonCrearMapaInicioEditor, &QPushButton::clicked, this,
           [this]() { crearMapa(); });
-  connect(ui.botonEditorMapa, &QPushButton::clicked, this,
+  connect(ui.botonEditarMapaInicioEditor, &QPushButton::clicked, this,
           [this]() { editarMapa(); });
-  connect(ui.botonEditorSalir, &QPushButton::clicked, this,
+  connect(ui.botonSalirInicioEditor, &QPushButton::clicked, this,
           [this]() { this->ventana.close(); });
 }
 

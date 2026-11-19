@@ -60,12 +60,12 @@ public:
   MoveResult move(Position destination);
   void mine(Mineral &mineral);
   void attack(Enemy &enemy);
-
   void selectTool(AvailableTools tool);
+
+  // getters
   Tool *getSelectedTool();
   int getId() const { return id; }
   const std::string &getName() const { return name; }
-  // getters
   Sector *getActualSector() { return actualSector; }
   void setActualSector(Sector *s) { actualSector = s; }
   double getLife() const { return life; }
@@ -73,19 +73,35 @@ public:
   size_t getCoins() const { return coins; }
   Inventory &getInventory() { return inventory; }
 
+  /*
+  * Regalos
+  */
   bool hasPendingGift() const { return pendingGift.item.count > 0; }
   const PendingGift &getPendingGift() const { return pendingGift; }
   void setPendingGift(const PendingGift &gift) { pendingGift = gift; }
   void clearPendingGift() { pendingGift = PendingGift{}; }
+
+  /*
+  * Energia
+  */
   bool hasEnergy(size_t cost);
   bool spendEnergy(size_t cost);
+  void setLife(double value);
+  void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
 
+  /*
+  * Daño
+  */
   void takeDamage(double amount);
   bool isUnconscious() const { return life <= 0; }
 
-  // state para el serializar el estado del mundo
+  void startNewDay(bool sleptInBed);
+
+  /*
+  * State
+  */
   PlayerState state() const;
   EntityState entityState() const override {
     EntityState entity_state = Entity::entityState();
