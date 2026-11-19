@@ -47,6 +47,7 @@ public:
                     double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
   bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
+  bool spawnMerchant(IdSector sectorId, Position pos, MerchantType type);
 
   /*
   * getters

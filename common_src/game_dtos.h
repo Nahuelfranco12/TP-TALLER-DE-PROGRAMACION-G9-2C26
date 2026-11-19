@@ -123,6 +123,10 @@ enum class EntityTypeDto {
   MINERAL_COAL,
   CROP,
   BED,
+  NPC_PIERRE,
+  NPC_CLINT,
+  NPC_ROBIN,
+  NPC_MARNIE,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo

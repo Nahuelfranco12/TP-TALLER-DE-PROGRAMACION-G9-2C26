@@ -156,6 +156,8 @@ enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
 
+enum class MerchantType { PIERRE, CLINT, ROBIN, MARNIE };
+
 enum class EnemyType {
   SKELETON,
   ORC,

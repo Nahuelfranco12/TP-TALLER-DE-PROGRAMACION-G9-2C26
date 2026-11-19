@@ -43,6 +43,10 @@ struct AnimalState {
   bool is_ready = false;
 };
 
+struct MerchantState {
+  MerchantType type{};
+};
+
 struct EnemyState {
   EnemyType type{};
   bool is_alive = true;
@@ -63,6 +67,7 @@ struct EntityState {
   CropState crop{};       // en caso de ser mineral
   EnemyState enemy{};     // en caso de ser enemigo
   BedState bed{};
+  MerchantState merchant{}; // en caso de ser comerciante.
 
   // TODO: cultivos y npcs
 };

@@ -6,6 +6,7 @@
 #include "entities/cow.h"
 #include "entities/enemies/enemies_factory.h"
 #include "entities/mineral.h"
+#include "entities/merchant.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -123,6 +124,14 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
     return false;
   }
   return it->second->tryAddEntity(animal, pos);
+}
+
+bool World::spawnMerchant(IdSector sectorId, Position pos, MerchantType type) {
+  auto it = this->sectors.find(sectorId);
+  if (it == this->sectors.end())
+    return false;
+  std::unique_ptr<Entity> merchant = std::make_unique<Merchant>(pos, type);
+  return it->second->tryAddEntity(merchant, pos);
 }
 
 bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {

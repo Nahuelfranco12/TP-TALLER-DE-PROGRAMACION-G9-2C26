@@ -22,6 +22,24 @@ void Gameloop::setupFarm() {
   this->world.addSector(std::move(farm));
 }
 
+void Gameloop::setupVillage() {
+  //TODO : SACAR POSICIONES HARDCODEADAS
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(0, 0),
+                            MerchantType::PIERRE);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(7, 0),
+                            MerchantType::CLINT);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(0, 7),
+                            MerchantType::ROBIN);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(7, 7),
+                            MerchantType::MARNIE);
+  this->world.addSector(
+    std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
+}
+
 void Gameloop::addWorldSectors() {
   setupFarm();
   
