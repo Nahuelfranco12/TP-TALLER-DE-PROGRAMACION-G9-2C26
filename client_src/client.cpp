@@ -23,6 +23,7 @@
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
+#include "actions/interact_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -73,6 +74,10 @@ void Client::send_attack(DirectionDto direction) {
 
 void Client::send_chat(const std::string &text) {
   to_send_queue.try_push(std::make_unique<ChatAction>(text));
+}
+
+void Client::send_interact(GamePositionDto &position) {
+  to_send_queue.try_push(std::make_unique<InteractAction>(position));
 }
 
 void Client::send_sleep() {

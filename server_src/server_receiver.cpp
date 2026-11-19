@@ -86,6 +86,9 @@ void ServerReceiver::run() {
         match->push_command(factory.create(client_id, protocol.receive_chat()));
         break;
       }
+      case OP_INTERACT:
+        match->push_command(factory.create(client_id, protocol.receive_interact()));
+        break;
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
         break;

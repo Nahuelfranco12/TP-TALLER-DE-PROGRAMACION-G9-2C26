@@ -19,6 +19,7 @@
 #include "./game/commands/select_tool_command.h"
 #include "./game/commands/till_command.h"
 #include "./game/commands/water_command.h"
+#include "./game/commands/interact_command.h"
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
@@ -38,6 +39,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const WaterDto &dto);
   std::unique_ptr<Command> create(int player_id, const AttackDto &dto);
   std::unique_ptr<Command> create(int player_id, const ChatDto &dto);
+  std::unique_ptr<Command> create(int player_id, const InteractDto &dto);
   std::unique_ptr<Command> create_sleep(int player_id);
   std::unique_ptr<Command> create_join(int player_id, const std::string &name,
                                        const PlayerOutfitDto &outfit);

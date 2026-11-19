@@ -66,6 +66,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<ChatCommand>(player_id, dto.text);
 }
 
+std::unique_ptr<Command> create(int player_id, const InteractDto &dto) {
+  return std::make_unique<InteractCommand>(player_id, Position(dto.target.x, dto.target.y));
+}
+
 std::unique_ptr<Command> CommandFactory::create_sleep(int player_id) {
   return std::make_unique<SleepCommand>(player_id);
 }

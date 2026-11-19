@@ -44,6 +44,7 @@ public:
   TillDto receive_till();
   WaterDto receive_water();
   AttackDto receive_attack();
+  InteractDto receive_interact();
   ChatDto receive_chat();
   WaterDto receive_cheat_water();
 

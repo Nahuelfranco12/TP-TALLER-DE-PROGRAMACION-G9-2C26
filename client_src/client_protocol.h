@@ -46,6 +46,7 @@ public:
   void send_attack_dto(const AttackDto &dto);
   void send_chat_dto(const ChatDto &dto);
   void send_sleep();
+  void send_interact_dto(const InteractDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
   void send_end_day_cheat();

@@ -31,6 +31,7 @@ target_sources(taller_game
     commands/plant_command.cpp
     commands/water_command.cpp
     commands/attack_command.cpp
+    commands/interact_command.cpp
     commands/till_command.cpp
     commands/gift_offer_command.cpp
     commands/gift_response_command.cpp

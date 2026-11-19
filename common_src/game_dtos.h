@@ -197,6 +197,10 @@ struct TileDto {
   bool tilled;
 };
 
+struct InteractDto {
+  GamePositionDto target;
+};
+
 struct BuildingDto {
   BuildingTypeDto type{};
   GamePositionDto topLeft;
