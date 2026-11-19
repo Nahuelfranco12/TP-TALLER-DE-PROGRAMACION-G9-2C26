@@ -19,7 +19,7 @@ enum class TerrainTypeDto {
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
 
-enum TerrainDecorationDto { NoneDto, Tree1Dto, Tree2Dto, Tree3Dto, TreeRoundedDto, TreeBigDto, LogDto, StumpDto, StoneDto, StoneGrayDto, StoneGrayBigDto, WaterDto, MailboxRedDto, MailboxBlueDto, MailBoxGrayDto, BlankSignDto, BarrelDto, SkullDto, BoneDto, RuinsDto, TorchDto, CandleDto, ShieldDto, PitDto, LanternOrangeDto, LanternBlueDto, BenchDto };
+enum TerrainDecorationDto { NoneDto, Tree1Dto, Tree2Dto, Tree3Dto, TreeRoundedDto, TreeBigDto, LogDto, StumpDto, StoneDto, StoneGrayDto, StoneGrayBigDto, WaterDecoDto, MailboxRedDto, MailboxBlueDto, MailBoxGrayDto, BlankSignDto, BarrelDto, SkullDecoDto, BoneDto, RuinsDto, TorchDto, CandleDto, ShieldDto, PitDto, LanternOrangeDto, LanternBlueDto, BenchDto };
 
 enum DoorTypeDto { VillageEntryDto, CavernEntryDto, CavernExitDto, FarmExitDto, StairsDto };
 

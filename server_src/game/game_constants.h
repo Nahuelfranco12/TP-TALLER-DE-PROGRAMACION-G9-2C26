@@ -142,7 +142,7 @@ enum IdSector {
 };
 
 enum TerrainType { DIRT, GRASS, GROUND, WOOD, HOUSE };
-enum TerrainDecoration { NONE, Tree1, Tree2, Tree3, TreeRounded, TreeBig, Log, Stump, Stone, StoneGray, StoneGrayBig, Water, MailboxRed, MailboxBlue, MailBoxGray, BlankSign, Barrel, Skull, Bone, Ruins, Torch, Candle, Shield, Pit, LanternOrange, LanternBlue,Bench };
+enum TerrainDecoration { NONE, Tree1, Tree2, Tree3, TreeRounded, TreeBig, Log, Stump, Stone, StoneGray, StoneGrayBig, WaterDeco, MailboxRed, MailboxBlue, MailBoxGray, BlankSign, Barrel, SkullDeco, Bone, Ruins, Torch, Candle, Shield, Pit, LanternOrange, LanternBlue,Bench };
 
 enum DoorType { VillageEntry, CavernEntry, CavernExit, FarmExit, Stairs  };
 

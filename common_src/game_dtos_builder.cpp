@@ -123,6 +123,7 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
   case CABIN_PLAYER_2:
   case CABIN_PLAYER_3:
   case CABIN_PLAYER_4:
+  case CABIN_PLAYER_5:
     return SectorTypeDto::CABIN;
   case IdSector::CAVERN_LEVEL_1:
   case IdSector::CAVERN_LEVEL_2:
@@ -234,13 +235,13 @@ TerrainDecorationDto GameDtosBuilder::toDto(TerrainDecoration decoration) {
   case Stone: return StoneDto;
   case StoneGray: return StoneGrayDto;
   case StoneGrayBig: return StoneGrayBigDto;
-  case Water: return WaterDto;
+  case WaterDeco: return WaterDecoDto;
   case MailboxRed: return MailboxRedDto;
   case MailboxBlue: return MailboxBlueDto;
   case MailBoxGray: return MailBoxGrayDto;
   case BlankSign: return BlankSignDto;
   case Barrel: return BarrelDto;
-  case Skull: return SkullDto;
+  case SkullDeco: return SkullDecoDto;
   case Bone: return BoneDto;
   case Ruins: return RuinsDto;
   case Torch: return TorchDto;
