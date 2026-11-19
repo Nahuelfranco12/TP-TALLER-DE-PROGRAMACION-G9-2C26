@@ -34,6 +34,8 @@
 #define LETRA_CAVERNA_DECORACION_2 'r'
 #define LETRA_PISO_PUEBLO 'c'
 #define LETRA_FLORES 'f'
+#define LETRA_VACIO ' '
+
 
 // Bosque alrededor de la granja (medidas en tiles)
 #define BOSQUE_ZONA 30
@@ -108,6 +110,36 @@
 #define TIENDA_MARGEN_ALTO 140
 #define TIENDA_MARGEN_TITULO 10
 #define TIENDA_MARGEN_BOTONES 10
+
+// Centro comunitario
+#define SET_CULTIVOS 0
+#define SET_METALES 1
+#define SET_ANIMALES 2
+#define SET_PELEA 3
+#define SET_DINERO 4
+#define SET_CANTIDAD 5
+#define SET_CERRADO (-1)
+
+// Figurines dentro del centro
+#define CENTRO_SETS                                                           \
+{                                                                             \
+  {4, 3, SET_CULTIVOS}, {7, 3, SET_METALES}, {10, 3, SET_ANIMALES},           \
+  {13, 3, SET_PELEA}, {16, 3, SET_DINERO}                                     \
+}                                                                             \
+
+// Edificio en el pueblo
+#define CENTRO_EDIFICIO_TILE_X 45
+#define CENTRO_EDIFICIO_TILE_Y 39
+
+// Caja de un set
+#define CENTRO_TAMANIO_LETRA 20
+#define CENTRO_TAMANIO_LETRA_CHICA 15
+#define CENTRO_LADO_FIGURIN_CAJA 64
+#define CENTRO_MARGEN_ANCHO 40
+#define CENTRO_MARGEN_ALTO 100
+#define CENTRO_SEPARACION_LINEAS 40
+#define CENTRO_MARGEN_BOTONES 10
+#define CENTRO_MONEDAS_SET 10000
 
 // Personaje: ropa inicial, caminar y picar
 #define PERSONAJE_PANTALON_INICIAL 0
@@ -237,8 +269,8 @@
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
-#define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
-  "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"
 #define RUTA_CASAS "assets/edificios/House.png"
 #define RUTA_EDIFICIOS_PUEBLO "assets/edificios/PelicanTown_Buildings.png"
@@ -394,6 +426,20 @@
 #define SPRITE_MODELOS_NPCS                                                    \
   { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
 
+// Sprites: centro comunitario (px)
+#define SPRITE_EDIFICIO_CENTRO {17, 181, 190, 123}
+#define SPRITE_FONDO_CENTRO {0, 0, 320, 176}
+#define SPRITE_FIGURIN_LADO 32
+#define SPRITE_SET_CULTIVOS {64, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_METALES {0, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_ANIMALES {160, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_PELEA {64, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_DINERO {128, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_MODELOS_SETS                                                    \
+  {SPRITE_SET_CULTIVOS, SPRITE_SET_METALES, SPRITE_SET_ANIMALES,               \
+    SPRITE_SET_PELEA, SPRITE_SET_DINERO                                        \
+  }
+
 // Sprites: personaje (px)
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
@@ -505,6 +551,8 @@
   { 70, 70, 70, COLOR_ALFA_OPACO }
 #define COLOR_FONDO_JUEGO                                                      \
   { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_TEXTO_CENTRO                                                     \
+ { 70, 40, 20, COLOR_ALFA_OPACO }
 
 // Textos visibles
 #define TEXTO_JUEGO_MUSICA "Música"
@@ -545,6 +593,14 @@
 #define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "
 #define TEXTO_JUEGO_CONEXION_PERDIDA "Se perdió la conexión con el servidor."
+
+#define TEXTO_JUEGO_SET_CULTIVOS "Set de cultivos"
+#define TEXTO_JUEGO_SET_METALES "Set de metales"
+#define TEXTO_JUEGO_SET_ANIMALES "Set de productos animales"
+#define TEXTO_JUEGO_SET_PELEA "Set de pelea"
+#define TEXTO_JUEGO_SET_DINERO "Set de dinero"
+#define TITULOS_SETS { TEXTO_JUEGO_SET_CULTIVOS, TEXTO_JUEGO_SET_METALES, TEXTO_JUEGO_SET_ANIMALES, TEXTO_JUEGO_SET_PELEA, TEXTO_JUEGO_SET_DINERO}
+#define TEXTO_JUEGO_CANJEAR "Canjear"
 
 // Audio
 #define AUDIO_TAMANIO_BUFFER 1024

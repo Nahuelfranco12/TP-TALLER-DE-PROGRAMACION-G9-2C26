@@ -62,6 +62,8 @@ public:
   void dibujar_regalo(SDL2pp::Renderer &renderer,
                       const InventorySlotDto &regalo,
                       const SDL2pp::Rect &lugar);
+
+  int contar(ItemTypeDto item, bool solo_calidad_alta) const;
 };
 
 #endif

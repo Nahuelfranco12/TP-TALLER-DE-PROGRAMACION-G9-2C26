@@ -25,6 +25,7 @@ private:
   void generar_granja(int ancho, int alto, unsigned int semilla);
   void generar_caverna(int ancho, int alto, unsigned int semilla);
   void generar_pueblo(int ancho, int alto, unsigned int semilla);
+  void generar_centro(int ancho, int alto);
 
   char tile_en(int x, int y) const;
 

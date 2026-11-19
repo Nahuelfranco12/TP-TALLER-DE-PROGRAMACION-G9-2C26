@@ -25,6 +25,12 @@ void Gameloop::addWorldSectors() {
 
   world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15),
                 Position(0, 15));
+  
+  this->world.addSector(
+      std::make_unique<CommunityCenterSector>(COMMUNITY_CENTER_WIDTH, COMMUNITY_CENTER_HEIGHT));
+
+  world.addDoor(IdSector::VILLAGE, IdSector::COMMUNITY_CENTER, Position(50, 45),
+                Position(10, 11));
 
   this->world.spawnAnimal(IdSector::FARM, Position(10, 10), AnimalType::COW);
   this->world.spawnAnimal(IdSector::FARM, Position(11, 10),

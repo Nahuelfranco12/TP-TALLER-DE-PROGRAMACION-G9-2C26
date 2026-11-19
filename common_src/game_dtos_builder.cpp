@@ -117,6 +117,8 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
+  case COMMUNITY_CENTER:
+    return SectorTypeDto::COMMUNITY_CENTER;
   case IdSector::CAVERN_LEVEL_1:
   case IdSector::CAVERN_LEVEL_2:
   case IdSector::CAVERN_LEVEL_3:
@@ -259,7 +261,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
   sectorDto.type = sectorType;
 
   for (const SectorState &sectorState : state.sectors) {
-    if (sectorState.id == static_cast<IdSector>(sectorType)) {
+    if (toDto(sectorState.id) == sectorType) {
       sectorDto.width = sectorState.width;
       sectorDto.height = sectorState.height;
 
@@ -271,8 +273,8 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
           sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
                                     t.isDoor, t.tilled};
         }
+      break;
     }
   }
-
   return sectorDto;
 }

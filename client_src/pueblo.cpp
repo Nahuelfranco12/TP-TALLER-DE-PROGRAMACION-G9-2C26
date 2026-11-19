@@ -2,7 +2,6 @@
 #include "personaje.h"
 
 #include <algorithm>
-// #include <iterator>
 
 #include <SDL2/SDL.h>
 
@@ -13,6 +12,7 @@ using SDL2pp::Texture;
 
 namespace {
 const SDL_Rect MODELOS_PUESTOS[] = SPRITE_MODELOS_PUESTOS;
+const SDL_Rect EDIFICIO_CENTRO = SPRITE_EDIFICIO_CENTRO;
 
 struct ModeloNpc {
   const char *archivo;
@@ -41,6 +41,7 @@ int tile_de_pixel(int pixel) {
 
 Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, RUTA_EDIFICIOS_PUEBLO),
+      edificio_centro(renderer, RUTA_EDIFICIO_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA), vueltas(0),
       tienda_abierta(TIENDA_CERRADA) {
 
@@ -60,8 +61,7 @@ Pueblo::Pueblo(Renderer &renderer)
   }
   for (const char *texto : TEXTOS_BOTONES) {
     // cppcheck-suppress useStlAlgorithm
-    texto_botones.emplace_back(renderer,
-                               fuente.RenderUTF8_Blended(texto, BLANCO));
+    texto_botones.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
   }
   botones.resize(TIENDA_CANTIDAD_BOTONES);
   for (const char *archivo : FONDOS_TIENDAS) {
@@ -107,6 +107,7 @@ void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x,
 }
 
 void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
+  dibujar_centro_comunitario(renderer, camara_x, camara_y, lado);
   for (const Puesto &puesto : lista_puestos) {
     dibujar_puesto(renderer, puesto, camara_x, camara_y, lado);
   }
@@ -214,4 +215,15 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
 
     x += botones[i].w + TIENDA_SEPARACION_BOTONES;
   }
+}
+
+void Pueblo::dibujar_centro_comunitario(Renderer &renderer, int camara_x,
+                                        int camara_y, int lado) {
+  int x = CENTRO_EDIFICIO_TILE_X * lado - camara_x;
+  int y = CENTRO_EDIFICIO_TILE_Y * lado - camara_y;
+  Rect origen(EDIFICIO_CENTRO.x, EDIFICIO_CENTRO.y, EDIFICIO_CENTRO.w,
+              EDIFICIO_CENTRO.h);
+  Rect destino(x, y, EDIFICIO_CENTRO.w * lado / TAMANIO_TILE_ASSET,
+               EDIFICIO_CENTRO.h * lado / TAMANIO_TILE_ASSET);
+  renderer.Copy(edificio_centro, origen, destino);
 }

@@ -38,6 +38,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
     generar_caverna(ancho, alto, semilla);
   } else if (tipo == SectorTypeDto::VILLAGE) {
     generar_pueblo(ancho, alto, semilla);
+  } else if (tipo == SectorTypeDto::COMMUNITY_CENTER) {
+    generar_centro(ancho, alto);
   }
 }
 
@@ -90,6 +92,11 @@ void Mapa::generar_pueblo(int ancho, int alto, unsigned int semilla) {
       }
     }
   }
+}
+
+void Mapa::generar_centro(int ancho, int alto) {
+  borde = LETRA_VACIO;
+  filas.assign(alto, std::string(ancho, LETRA_PISO_PUEBLO));
 }
 
 int Mapa::obtener_ancho() const {
@@ -166,6 +173,9 @@ void Mapa::dibujar_completo(Renderer &renderer, int origen_x, int origen_y,
 
 void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
                         int lado) {
+  if (tipo_tile == LETRA_VACIO) {
+    return;
+  }
   int columna = SUELO_DEFECTO_COLUMNA;
   int fila = SUELO_DEFECTO_FILA;
   if (tipo_tile == LETRA_BORDE_CAVERNA) {

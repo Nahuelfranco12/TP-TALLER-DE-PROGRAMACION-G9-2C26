@@ -13,6 +13,7 @@
 #include "./game/sectors/cavern.h"
 #include "./game/sectors/farm_sector.h"
 #include "./game/sectors/village_sector.h"
+#include "./game/sectors/community_center_sector.h"
 #include "./game/world.h"
 
 #include "client_queues.h"

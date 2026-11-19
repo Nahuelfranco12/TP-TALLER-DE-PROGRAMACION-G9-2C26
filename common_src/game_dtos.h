@@ -15,7 +15,7 @@ enum class TerrainTypeDto {
   GROUND
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
-enum class SectorTypeDto { FARM, VILLAGE, CAVERN };
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN, COMMUNITY_CENTER };
 
 // TODO: revisar para que sea acorde a SDL
 enum PlayerHatsDto {

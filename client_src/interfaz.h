@@ -68,6 +68,8 @@ public:
 
   void dibujar_regalo(SDL2pp::Renderer &renderer);
 
+  size_t obtener_monedas() const;
+
   void actualizar_monedas(SDL2pp::Renderer &renderer, size_t nuevas_monedas);
 };
 #endif

@@ -45,6 +45,7 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    centro_comunitario.cpp
     PUBLIC
     # .h files
     client.h
@@ -93,4 +94,5 @@ target_sources(taller_client
     actions/cheat_growth_action.h
     pueblo.h
     mapa_mundo.h
+    centro_comunitario.h
     )

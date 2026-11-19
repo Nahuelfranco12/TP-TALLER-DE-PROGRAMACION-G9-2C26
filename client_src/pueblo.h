@@ -30,6 +30,7 @@ private:
   };
 
   SDL2pp::Texture edificios;
+  SDL2pp::Texture edificio_centro;
   std::vector<SDL2pp::Texture> sprites_npcs;
   std::vector<SDL2pp::Texture> fondos_tiendas;
   SDL2pp::Font fuente;
@@ -52,6 +53,8 @@ private:
 
   void dibujar_npc_en(SDL2pp::Renderer &renderer, int modelo, int centro_x,
                       int pie_y, int lado);
+
+  void dibujar_centro_comunitario(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado);
 
 public:
   explicit Pueblo(SDL2pp::Renderer &renderer);

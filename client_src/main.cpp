@@ -8,6 +8,7 @@
 #include "inventario.h"
 #include "mapa_mundo.h"
 #include "pueblo.h"
+#include "centro_comunitario.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) try {
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
   // Mapas
-  SectorStateDto farm, cavern, village;
+  SectorStateDto farm, cavern, village, centro_comunitario;
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
     if (sector.type == SectorTypeDto::FARM)
       farm = sector;
@@ -116,6 +117,8 @@ int main(int argc, char *argv[]) try {
       cavern = sector;
     if (sector.type == SectorTypeDto::VILLAGE)
       village = sector;
+    if (sector.type == SectorTypeDto::COMMUNITY_CENTER)
+      centro_comunitario = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height,
                    SEMILLA_GRANJA);
@@ -123,9 +126,11 @@ int main(int argc, char *argv[]) try {
                     SEMILLA_CAVERNA);
   Mapa mapa_pueblo(renderer, village.type, village.width, village.height,
                    SEMILLA_PUEBLO);
+  Mapa mapa_centro(renderer, centro_comunitario.type, centro_comunitario.width, centro_comunitario.height, SEMILLA_PUEBLO);
   mapa_granja.actualizar(farm.sector);
   mapa_caverna.actualizar(cavern.sector);
   mapa_pueblo.actualizar(village.sector);
+  mapa_centro.actualizar(centro_comunitario.sector);
 
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
                           mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
@@ -133,6 +138,7 @@ int main(int argc, char *argv[]) try {
   Granja granja(renderer);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
+  CentroComunitario centro(renderer);
 
   MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja,
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
@@ -191,7 +197,8 @@ int main(int argc, char *argv[]) try {
           }
         } else if (zona == SectorTypeDto::VILLAGE &&
                    pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
-          // Se abre la tienda del npc
+        } else if (zona == SectorTypeDto::COMMUNITY_CENTER &&
+                   centro.click_set(mouse_x, mouse_y, camara_x, camara_y) != CentroComunitario::NINGUNA) {
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
           if (inventario.click(mouse_x, mouse_y, window.GetWidth(),
                                window.GetHeight())) {
@@ -361,14 +368,17 @@ int main(int argc, char *argv[]) try {
       ultimo_estado = state;
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
+      // Cambio de zona y música
       if (state.type != zona) {
         pueblo.cerrar_tienda();
+        centro.cerrar_set();
         zona = state.type;
         switch (zona) {
         case SectorTypeDto::CAVERN:
           audio.poner_musica_caverna();
           break;
         case SectorTypeDto::VILLAGE:
+        case SectorTypeDto::COMMUNITY_CENTER:
           audio.poner_musica_pueblo();
           break;
         default:
@@ -377,12 +387,15 @@ int main(int argc, char *argv[]) try {
         }
       }
 
+      // Actualizar mapa
       if (zona == SectorTypeDto::CAVERN) {
         mapa_caverna.actualizar(state.sector);
         caverna.actualizar(state.entities);
       } else if (zona == SectorTypeDto::VILLAGE) {
         mapa_pueblo.actualizar(state.sector);
         pueblo.actualizar(state.entities);
+      } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+        mapa_centro.actualizar(state.sector);
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
@@ -460,11 +473,14 @@ int main(int argc, char *argv[]) try {
     int camara_y =
         personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
 
+    // Elegir mapa
     Mapa *mapa_actual = &mapa_granja;
     if (zona == SectorTypeDto::CAVERN) {
       mapa_actual = &mapa_caverna;
     } else if (zona == SectorTypeDto::VILLAGE) {
       mapa_actual = &mapa_pueblo;
+    } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+      mapa_actual = &mapa_centro;
     }
 
     renderer.SetDrawColor(fondo);
@@ -473,14 +489,17 @@ int main(int argc, char *argv[]) try {
     mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                          window.GetHeight());
 
+    // Dibujo lo que va encima del mapa
     if (zona == SectorTypeDto::CAVERN) {
       caverna.dibujar(renderer, camara_x, camara_y);
     } else if (zona == SectorTypeDto::FARM) {
       granja.dibujar(renderer, camara_x, camara_y);
       alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                           window.GetHeight());
-    } else {
+    } else if (zona == SectorTypeDto::VILLAGE) {
       pueblo.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+      centro.dibujar(renderer, camara_x, camara_y);
     }
 
     // Primero los demas jugadores
@@ -492,6 +511,8 @@ int main(int argc, char *argv[]) try {
     interfaz.dibujar_noche(renderer);
 
     pueblo.dibujar_tienda(renderer, personaje);
+
+    centro.dibujar_set(renderer, inventario, interfaz.obtener_monedas());
 
     // Mapa del mundo (M)
     if (viendo_mapa) {
