@@ -24,7 +24,7 @@ public:
   const ItemSubtype &getSubtype() const { return subtype; }
 
   virtual bool stacksWith(const Item &other) const {
-    return this->type == other.getType();
+    return isSameProduct(other);
   }
 
   int subtypeToInt() const {
