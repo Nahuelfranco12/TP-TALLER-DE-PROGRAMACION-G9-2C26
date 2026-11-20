@@ -9,74 +9,13 @@
 #include <string>
 #include <system_error>
 #include <toml++/toml.hpp>
-#include <utility>
 #include <vector>
 
 #include "constantes_persistencia.h"
+#include "ids_partida.h"
+#include "lectura_toml.h"
 
 namespace {
-struct ClaveItem {
-  ItemType tipo{};
-  ItemSubtype subtipo{};
-
-  bool operator==(const ClaveItem &) const = default;
-};
-
-template <typename T> using TablaIds = std::vector<std::pair<T, const char *>>;
-
-const TablaIds<CropTypes> &tablaIds(CropTypes) {
-  static const TablaIds<CropTypes> tabla = {
-      {CropTypes::STRAWBERRY, ID_CULTIVO_FRUTILLA},
-      {CropTypes::GREEN_ONION, ID_CULTIVO_CEBOLLA_DE_VERDEO},
-      {CropTypes::POTATO, ID_CULTIVO_PAPA},
-      {CropTypes::PUMPKIN, ID_CULTIVO_CALABAZA}};
-  return tabla;
-}
-
-const TablaIds<CropQuality> &tablaIds(CropQuality) {
-  static const TablaIds<CropQuality> tabla = {
-      {CropQuality::BASE, ID_CALIDAD_BASE},
-      {CropQuality::GOOD, ID_CALIDAD_BUENA},
-      {CropQuality::EXCELENT, ID_CALIDAD_EXCELENTE},
-      {CropQuality::INCREDIBLE, ID_CALIDAD_INCREIBLE},
-      {CropQuality::PERFECT, ID_CALIDAD_PERFECTA}};
-  return tabla;
-}
-
-const TablaIds<ClaveItem> &tablaIds(ClaveItem) {
-  static const TablaIds<ClaveItem> tabla = {
-      {{ItemType::MINERAL, MineralTypes::GOLD}, ID_MINERAL_ORO},
-      {{ItemType::MINERAL, MineralTypes::IRON}, ID_MINERAL_PLATA},
-      {{ItemType::MINERAL, MineralTypes::LAPIZLAZULI}, ID_MINERAL_LAPISLAZULI},
-      {{ItemType::MINERAL, MineralTypes::COAL}, ID_MINERAL_CARBON},
-      {{ItemType::SEED, CropTypes::STRAWBERRY}, ID_ITEM_SEMILLA_FRUTILLA},
-      {{ItemType::SEED, CropTypes::GREEN_ONION},
-       ID_ITEM_SEMILLA_CEBOLLA_DE_VERDEO},
-      {{ItemType::SEED, CropTypes::POTATO}, ID_ITEM_SEMILLA_PAPA},
-      {{ItemType::SEED, CropTypes::PUMPKIN}, ID_ITEM_SEMILLA_CALABAZA},
-      {{ItemType::CROP, CropTypes::STRAWBERRY}, ID_CULTIVO_FRUTILLA},
-      {{ItemType::CROP, CropTypes::GREEN_ONION}, ID_CULTIVO_CEBOLLA_DE_VERDEO},
-      {{ItemType::CROP, CropTypes::POTATO}, ID_CULTIVO_PAPA},
-      {{ItemType::CROP, CropTypes::PUMPKIN}, ID_CULTIVO_CALABAZA},
-      {{ItemType::ANIMAL_PRODUCT, AnimalType::COW}, ID_ITEM_LECHE},
-      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, ID_ITEM_HUEVO}};
-  return tabla;
-}
-
-template <typename T> const char *idDe(const T &tipo) {
-  for (const auto &[elemento, id] : tablaIds(T{}))
-    if (elemento == tipo)
-      return id;
-  throw std::logic_error(ERROR_PARTIDA_SIN_ID);
-}
-
-template <typename T> T tipoDesdeId(const std::string &id) {
-  for (const auto &[elemento, texto] : tablaIds(T{}))
-    if (id == texto)
-      return elemento;
-  throw std::runtime_error(ERROR_PARTIDA_TIPO + id);
-}
-
 std::int64_t entero(std::size_t valor) {
   return static_cast<std::int64_t>(valor);
 }
@@ -152,65 +91,10 @@ void crearCarpeta(const std::filesystem::path &carpeta) {
     throw std::runtime_error(ERROR_PARTIDA_ESCRIBIR + carpeta.string());
 }
 
-std::string campo(const std::string &donde, const char *clave) {
-  if (donde.empty())
-    return clave;
-  return donde + SEPARADOR_CAMPO_PARTIDA + clave;
-}
-
-template <typename T>
-T leerValor(const toml::table &tabla, const char *clave,
-            const std::string &donde) {
-  std::optional<T> valor = tabla[clave].value<T>();
-  if (!valor)
-    throw std::runtime_error(ERROR_PARTIDA_CAMPO + campo(donde, clave));
-  return *valor;
-}
-
-template <typename T>
-T leerEntero(const toml::table &tabla, const char *clave,
-             const std::string &donde) {
-  std::int64_t valor = leerValor<std::int64_t>(tabla, clave, donde);
-  if (!std::in_range<T>(valor))
-    throw std::runtime_error(ERROR_PARTIDA_RANGO + campo(donde, clave));
-  return static_cast<T>(valor);
-}
-
 template <typename T>
 T leerId(const toml::table &tabla, const char *clave,
          const std::string &donde) {
   return tipoDesdeId<T>(leerValor<std::string>(tabla, clave, donde));
-}
-
-const toml::table &leerTabla(const toml::table &tabla, const char *clave,
-                             const std::string &donde) {
-  const toml::table *subtabla = tabla[clave].as_table();
-  if (subtabla == nullptr)
-    throw std::runtime_error(ERROR_PARTIDA_CAMPO + campo(donde, clave));
-  return *subtabla;
-}
-
-template <typename T>
-std::vector<T> leerLista(const toml::table &tabla, const char *clave,
-                         const std::string &donde,
-                         T (*leer)(const toml::table &, const std::string &)) {
-  std::string lugar = campo(donde, clave);
-  const toml::array *array = tabla[clave].as_array();
-  if (array == nullptr)
-    throw std::runtime_error(ERROR_PARTIDA_CAMPO + lugar);
-
-  std::vector<T> resultado;
-  std::size_t numero = PRIMER_ELEMENTO_PARTIDA;
-  for (const toml::node &nodo : *array) {
-    std::string lugarElemento =
-        lugar + SEPARADOR_INDICE_PARTIDA + std::to_string(numero);
-    const toml::table *elemento = nodo.as_table();
-    if (elemento == nullptr)
-      throw std::runtime_error(ERROR_PARTIDA_CAMPO + lugarElemento);
-    resultado.push_back(leer(*elemento, lugarElemento));
-    ++numero;
-  }
-  return resultado;
 }
 
 OutfitGuardado outfitDe(const toml::table &jugador, const std::string &donde) {

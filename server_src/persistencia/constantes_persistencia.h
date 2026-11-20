@@ -40,40 +40,44 @@
 #define CLAVE_PARTIDA_COSECHAS_EXTRA "cosechas_extra"
 #define CLAVE_PARTIDA_SUERTE "suerte"
 
-// Archivo TOML: errores -> archivo_partida.cpp
+// Archivo TOML: errores al escribir y leer -> archivo_partida.cpp
 #define ERROR_PARTIDA_ESCRIBIR "No se pudo escribir la partida: "
 #define ERROR_PARTIDA_COPIAR_MAPA "No se pudo copiar el mapa: "
-#define ERROR_PARTIDA_SIN_ID "Hay un elemento sin identificador en la partida"
 #define ERROR_PARTIDA_LEER "No se pudo leer la partida: "
 #define ERROR_PARTIDA_VERSION "Versión de partida no soportada."
+#define SEPARADOR_DETALLE_PARTIDA ": "
+
+// Archivo TOML: errores de campos -> lectura_toml.h, lectura_toml.cpp
 #define ERROR_PARTIDA_CAMPO "Falta un dato o es inválido: "
 #define ERROR_PARTIDA_RANGO "Valor fuera de rango en "
-#define ERROR_PARTIDA_TIPO "Elemento desconocido: "
 #define SEPARADOR_CAMPO_PARTIDA "."
 #define SEPARADOR_INDICE_PARTIDA " "
-#define SEPARADOR_DETALLE_PARTIDA ": "
 #define PRIMER_ELEMENTO_PARTIDA 1
 
-// Archivo TOML: ids de cultivos -> archivo_partida.cpp
+// Archivo TOML: errores de ids -> ids_partida.h
+#define ERROR_PARTIDA_SIN_ID "Hay un elemento sin identificador en la partida"
+#define ERROR_PARTIDA_TIPO "Elemento desconocido: "
+
+// Archivo TOML: ids de cultivos -> ids_partida.cpp
 #define ID_CULTIVO_FRUTILLA "Frutilla"
 #define ID_CULTIVO_CEBOLLA_DE_VERDEO "CebollaDeVerdeo"
 #define ID_CULTIVO_PAPA "Papa"
 #define ID_CULTIVO_CALABAZA "Calabaza"
 
-// Archivo TOML: ids de calidades -> archivo_partida.cpp
+// Archivo TOML: ids de calidades -> ids_partida.cpp
 #define ID_CALIDAD_BASE "Base"
 #define ID_CALIDAD_BUENA "Buena"
 #define ID_CALIDAD_EXCELENTE "Excelente"
 #define ID_CALIDAD_INCREIBLE "Increible"
 #define ID_CALIDAD_PERFECTA "Perfecta"
 
-// Archivo TOML: ids de minerales -> archivo_partida.cpp
+// Archivo TOML: ids de minerales -> ids_partida.cpp
 #define ID_MINERAL_ORO "Oro"
 #define ID_MINERAL_PLATA "Plata"
 #define ID_MINERAL_LAPISLAZULI "Lapislazuli"
 #define ID_MINERAL_CARBON "Carbon"
 
-// Archivo TOML: ids de ítems del inventario -> archivo_partida.cpp
+// Archivo TOML: ids de ítems del inventario -> ids_partida.cpp
 #define ID_ITEM_SEMILLA_FRUTILLA "SemillaFrutilla"
 #define ID_ITEM_SEMILLA_CEBOLLA_DE_VERDEO "SemillaCebollaDeVerdeo"
 #define ID_ITEM_SEMILLA_PAPA "SemillaPapa"

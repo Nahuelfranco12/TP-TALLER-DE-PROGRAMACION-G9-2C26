@@ -1,6 +1,10 @@
 target_sources(taller_persistencia
     PRIVATE
     archivo_partida.cpp
+    ids_partida.cpp
+    ids_partida.h
+    lectura_toml.cpp
+    lectura_toml.h
 
     PUBLIC
     archivo_partida.h

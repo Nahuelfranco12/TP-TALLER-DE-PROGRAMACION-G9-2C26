@@ -1,0 +1,20 @@
+#include "lectura_toml.h"
+
+#include <stdexcept>
+#include <string>
+
+#include "constantes_persistencia.h"
+
+std::string campo(const std::string &donde, const char *clave) {
+  if (donde.empty())
+    return clave;
+  return donde + SEPARADOR_CAMPO_PARTIDA + clave;
+}
+
+const toml::table &leerTabla(const toml::table &tabla, const char *clave,
+                             const std::string &donde) {
+  const toml::table *subtabla = tabla[clave].as_table();
+  if (subtabla == nullptr)
+    throw std::runtime_error(ERROR_PARTIDA_CAMPO + campo(donde, clave));
+  return *subtabla;
+}
