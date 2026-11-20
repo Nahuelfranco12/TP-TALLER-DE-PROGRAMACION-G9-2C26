@@ -31,6 +31,14 @@ struct BuildingState {
 
 struct CropState {
   CropTypes type{};
+
+  size_t growthTicks{};
+  size_t sinceWatered{};
+  size_t thirstyTicks{};
+  size_t readyTicks{};
+  size_t extraHarvestsLeft{};
+  double luck{};
+
   CropGrowth growth{};
   bool needsWater;
 };
