@@ -52,6 +52,28 @@ bool Sector::isEmpty(Position pos) const {
   return this->entities.find(pos) == this->entities.end();
 }
 
+bool Sector::assignBuildingOwner(BuildingType type, int ownerId) {
+    for (Building &building : buildings) {
+        if (building.type == type) {
+            if (building.ownerId != INVALID_PLAYER_ID &&
+                building.ownerId != ownerId)
+                return false;
+
+            building.ownerId = ownerId;
+            return true;
+        }
+    }
+    return false;
+}
+
+std::optional<Building> Sector::findBuilding(BuildingType type) const {
+    for (const Building &building : buildings) {
+        if (building.type == type)
+            return building;
+    }
+    return std::nullopt;
+}
+
 bool Sector::placeBuilding(const Building &building) {
   for (size_t dx = 0; dx < building.width; dx++)
     for (size_t dy = 0; dy < building.height; dy++)

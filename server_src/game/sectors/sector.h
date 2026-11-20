@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <optional>
 
 #include "../../world_state.h"
 #include "../decision.h"
@@ -59,6 +60,8 @@ public:
     tiles[pos.x][pos.y] = Terrain(false, false, type, TerrainDecoration::NONE);
   }
     
+  bool assignBuildingOwner(BuildingType type, int ownerId);
+  std::optional<Building> findBuilding(BuildingType type) const;
   bool placeBuilding(const Building &building);
 
   virtual bool tryAddEntity(std::unique_ptr<Entity> &entity, Position pos);

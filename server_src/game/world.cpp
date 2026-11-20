@@ -41,7 +41,6 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
 bool World::createCabin(int playerId, Position top) {
   if (playerId < 0 || playerId >= MAX_PLAYERS)
     return false;
-
   IdSector cabinId = cabinSectorId(playerId);
   if (this->sectors.count(cabinId))
     return true;
@@ -50,16 +49,23 @@ bool World::createCabin(int playerId, Position top) {
   if (!farm)
     return false;
 
-  auto b = farm->placeCabin(playerId, top);
-  if (!b)
+  BuildingType buildingType = cabinBuildingType(playerId);
+  auto building = farm->findBuilding(cabinBuildingType(playerId));
+  if (!building) {
+      building = farm->placeCabin(playerId, top);
+      if (!building)
+        return false;
+  }
+
+  if (!farm->assignBuildingOwner(buildingType, playerId))
     return false;
 
   if (!this->addSector(std::make_unique<CabinSector>(
           playerId, cabinId, Position(CABIN_ENTRY_X - 1, CABIN_ENTRY_Y))))
-    return false;
+      return false;
 
-  return this->addDoor(IdSector::FARM, cabinId, b->door,
-                       Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
+  return this->addDoor(IdSector::FARM, cabinId, building->door,
+                      Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
 }
 
 void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
@@ -68,7 +74,6 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
   if (sectorIt == this->sectors.end())
     return;
   
-  // TODO: revisar porque se deben leer del archivo las posiciones de las cabañas
   if (!this->createCabin(id, Position(2 + 10 * id, 1)))
     return;
 
