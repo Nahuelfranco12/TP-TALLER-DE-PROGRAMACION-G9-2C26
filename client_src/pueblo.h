@@ -63,7 +63,7 @@ public:
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
 
-  bool click_npc(int x, int y, int camara_x, int camara_y);
+  bool click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto &posicion);
 
   AccionTienda click_tienda(int x, int y);
 

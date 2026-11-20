@@ -37,6 +37,25 @@ int tile_de_pixel(int pixel) {
   }
   return tile;
 }
+
+bool modelo_de_npc(EntityTypeDto tipo, int &modelo) {
+  switch (tipo) {
+  case EntityTypeDto::NPC_PIERRE:
+    modelo = TIENDA_PIERRE;
+    return true;
+  case EntityTypeDto::NPC_CLINT:
+    modelo = TIENDA_CLINT;
+    return true;
+  case EntityTypeDto::NPC_ROBIN:
+    modelo = TIENDA_ROBIN;
+    return true;
+  case EntityTypeDto::NPC_MARNIE:
+    modelo = TIENDA_MARNIE;
+    return true;
+  default:
+    return false;
+  }
+}
 } // namespace
 
 Pueblo::Pueblo(Renderer &renderer)
@@ -51,8 +70,6 @@ Pueblo::Pueblo(Renderer &renderer)
     // cppcheck-suppress useStlAlgorithm
     sprites_npcs.emplace_back(renderer, modelo.archivo);
   }
-
-  lista_npcs = PUEBLO_NPCS;
 
   for (const char *titulo : TITULOS) {
     // cppcheck-suppress useStlAlgorithm
@@ -116,11 +133,16 @@ void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
 }
 
 // cppcheck-suppress functionStatic
-void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &) {
-  // hasta que mande el servidor
+void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
+  lista_npcs.clear();
+  for (const auto &[posicion, entidad] : entidades) {
+    int modelo = TIENDA_CERRADA;
+    if (modelo_de_npc(entidad.type, modelo))
+      lista_npcs.push_back({static_cast<int>(posicion.x), static_cast<int>(posicion.y), modelo});
+  }
 }
 
-bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
+bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto &posicion) {
   int tile_x = tile_de_pixel(x + camara_x);
   int tile_y = tile_de_pixel(y + camara_y);
 
@@ -128,7 +150,7 @@ bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
     bool lo_toque = npc.tile_x == tile_x &&
                     (npc.tile_y == tile_y || npc.tile_y - 1 == tile_y);
     if (lo_toque) {
-      tienda_abierta = npc.modelo;
+      posicion = {static_cast<size_t>(npc.tile_x), static_cast<size_t>(npc.tile_y)};
       return true;
     }
   }
