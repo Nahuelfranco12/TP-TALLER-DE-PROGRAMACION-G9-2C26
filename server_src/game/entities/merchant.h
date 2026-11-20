@@ -21,7 +21,7 @@ private:
     const Offer *find(const std::vector<Offer> &offers, const std::string &productName) const;
 
 public:
-    Merchant(Position position, MerchantType MerchantType, const std::string &name, const std::string &greeting);
+    Merchant(Position position, MerchantType merchantType, const std::string &name, const std::string &greeting);
 
     void addSale(const std::string &productName, int price, std::unique_ptr<Item> sample);
     void addPurchase(const std::string &productName, int price, std::unique_ptr<Item> sample);

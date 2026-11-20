@@ -3,7 +3,7 @@
 #include "../../../common_src/constants.h"
 #include "../world.h"
 
-Merchant::Merchant(Position position, MerchantType MerchantType, const std::string &name, const std::string &greeting):
+Merchant::Merchant(Position position, MerchantType merchantType, const std::string &name, const std::string &greeting):
     Entity(position.x, position.y, EntityTypes::NPC), merchantType(merchantType), name(name), greeting(greeting) {}
 
 
