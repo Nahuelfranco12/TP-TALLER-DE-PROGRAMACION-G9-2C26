@@ -39,9 +39,9 @@ private:
 
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
-         Sector *actualSector, PlayerOutfit outfit)
+         Sector *actualSector, PlayerOutfit outfit, int coins = (rand() % 100 + 1))
       : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), name(name),
-        life(100), energy(100), coins(rand() % 100 + 1), outfit(outfit),
+        life(100), energy(100), coins(coins), outfit(outfit),
         inventory(), actualSector(actualSector) {
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
@@ -55,6 +55,11 @@ public:
     }
 
     this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
+  }
+
+  void setCoins(int coins) {
+    if (coins >= 0)
+      this->coins = coins;
   }
 
   MoveResult move(Position destination);
