@@ -13,7 +13,14 @@ ControladorNuevaPartida::ControladorNuevaPartida(
 
   mundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
-  cargarMundos();
+  // cargarMundos();
+
+  connect(&navegador, &Navegador::paginaAbierta, this,
+          [this](QWidget *pagina) {
+            if (pagina == this->ui.pageNuevaPartida && !mundosCargados) {
+              cargarMundos();
+            }
+          });
   ocultarMapa();
 
   ui.botonSiguienteNuevaPartida->setEnabled(false);
@@ -33,6 +40,12 @@ ControladorNuevaPartida::ControladorNuevaPartida(
     this->datosPartida.nombrePartida =
         this->ui.campoNombrePartida->text().trimmed();
     this->datosPartida.idMundo = mundos->seleccionado();
+    for (const MundoMock &mundo : datosMundos) {
+      if (mundo.nombreMundo == this->datosPartida.idMundo) {
+        this->datosPartida.rutaMapa = mundo.rutaMapa;
+        break;
+      }
+    }
     this->navegador.irA(this->ui.pageCustomizarPersonaje);
   });
 }
@@ -45,19 +58,32 @@ void ControladorNuevaPartida::actualizarBotonAvanzar() {
 
 void ControladorNuevaPartida::cargarMundos() {
   datosMundos = servicio.mundos();
+
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : datosMundos)
+  for (const MundoMock &mundo : datosMundos) {
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
                                  mundo.nombreMundo, QString(), QString(),
                                  TEXTO_ELEGIR_MUNDO});
+  }
+
   mundos->cargar(tarjetas);
+  mundosCargados = true;
 }
 
 void ControladorNuevaPartida::mostrarMapaSeleccionado() {
   QString id = mundos->seleccionado();
   for (const MundoMock &mundo : datosMundos) {
     if (mundo.nombreMundo == id) {
+      if (mundo.rutaImagen.isEmpty()) {
+        ocultarMapa();
+        return;
+      }
+      
       QPixmap mapa(mundo.rutaImagen);
+      if (mapa.isNull()) {
+        ocultarMapa();
+        return;
+      }
       ui.infoMundo->setPixmap(
           mapa.scaled(ui.infoMundo->contentsRect().size(),
                       Qt::KeepAspectRatio, Qt::SmoothTransformation));

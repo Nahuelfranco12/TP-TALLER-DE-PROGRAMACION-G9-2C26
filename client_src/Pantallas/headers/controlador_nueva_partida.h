@@ -15,6 +15,8 @@ public:
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
 
+  bool mundosCargados = false;
+
 private:
   ListaSeleccionable *mundos;
   QList<MundoMock> datosMundos;

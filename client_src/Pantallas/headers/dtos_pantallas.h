@@ -22,6 +22,7 @@ struct DatosPartida {
   ModoPartida modo = ModoPartida::Ninguno;
   QString nombrePartida;
   QString idMundo;
+  QString rutaMapa;
   QString codigoUnirsePartida;
   QString idRetomarPartida;
   DatosPersonaje personaje;
@@ -44,6 +45,7 @@ struct ResultadoLobby {
 struct MundoMock {
   QString nombreMundo;
   QString rutaImagen;
+  QString rutaMapa;
 };
 
 struct PartidaGuardada {

@@ -7,7 +7,14 @@
 
 ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 
-QList<MundoMock> ServicioLobbyRed::mundos() { return obtenerMundosDePrueba(); }
+QList<MundoMock> ServicioLobbyRed::mundos() {
+  QList<MundoMock> result;
+  for (const MapInfoDto &map : client.list_maps()) {
+    result.append({QString::fromStdString(map.name), QString(),
+                   QString::fromStdString(map.path)});
+  }
+  return result;
+}
 
 QList<PartidaGuardada> ServicioLobbyRed::partidasGuardadas() {
   return obtenerPartidasDePrueba();
@@ -18,7 +25,8 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     std::string codigoAUnirse;
     switch (datos.modo) {
     case ModoPartida::Nueva:
-      codigoAUnirse = client.create_match(datos.nombrePartida.toStdString());
+      codigoAUnirse = client.create_match(datos.nombrePartida.toStdString(),
+                                           datos.rutaMapa.toStdString());
       if (codigoAUnirse.empty())
         return ResultadoLobby{false, ERROR_LOBBY_CREAR};
       break;

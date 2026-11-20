@@ -16,9 +16,9 @@ QList<PartidaGuardada> obtenerPartidasDePrueba() {
   };
 }
 
-QList<MundoMock> obtenerMundosDePrueba() {
-  return {
-      {"Granja1", IMAGEN_MAPA_PRUEBA},
-      {"Granja2", IMAGEN_MAPA_PRUEBA},
-  };
-}
+// QList<MundoMock> obtenerMundosDePrueba() {
+//   return {
+//       {"Granja1", IMAGEN_MAPA_PRUEBA},
+//       {"Granja2", IMAGEN_MAPA_PRUEBA},
+//   };
+// }
