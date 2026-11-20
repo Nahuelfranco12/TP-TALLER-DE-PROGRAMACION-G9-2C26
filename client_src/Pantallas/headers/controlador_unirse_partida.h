@@ -7,7 +7,7 @@
 class ControladorUnirsePartida : public ControladorPagina {
 public:
   ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui,
-                           Navegador &navegador, DatosPartida &datosPartida,
+                           NavegadorPaginas &navegador, DatosPartida &datosPartida,
                            QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;

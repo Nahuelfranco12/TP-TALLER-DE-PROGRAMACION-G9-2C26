@@ -10,9 +10,9 @@ class ServicioLobbyRed : public ServicioLobby {
 public:
   explicit ServicioLobbyRed(Client &client);
 
-  QList<MundoMock> mundos() override;
-  QList<PartidaGuardada> partidasGuardadas() override;
-  ResultadoLobby jugar(const DatosPartida &datos) override;
+  QList<MundoMock> mundosCrearPartida() override;
+  QList<PartidaGuardada> partidasARetomar() override;
+  ResultadoLobby entrarAJugar(const DatosPartida &datos) override;
 
   bool estaEnPartida() const;
   const std::string &codigo() const;

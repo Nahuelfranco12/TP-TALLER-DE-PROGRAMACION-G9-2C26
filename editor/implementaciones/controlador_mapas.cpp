@@ -22,7 +22,7 @@
 #include "vista_zona.h"
 
 ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
-                                   Navegador &navegador, DatosEditor &datos,
+                                   NavegadorPaginas &navegador, DatosEditor &datos,
                                    QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   ui.paletaAssets->setIconSize(QSize(TAMANIO_ICONO, TAMANIO_ICONO));
@@ -44,7 +44,7 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   });
   connect(ui.valorNivelCaverna, &QSpinBox::valueChanged, this,
           [this](int nivel) { cambiarDeNivel(nivel); });
-  connect(&navegador, &Navegador::paginaAbierta, this, [this](QWidget *pagina) {
+  connect(&navegador, &NavegadorPaginas::paginaAbierta, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
       this->ui.campoNombreMundo->setText(
           QString::fromStdString(this->datos.mapa.nombre));

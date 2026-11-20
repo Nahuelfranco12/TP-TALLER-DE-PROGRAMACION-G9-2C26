@@ -5,7 +5,7 @@
 #include <QLineEdit>
 
 ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
-    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    QWidget &ventana, Ui::Pantalla &ui, NavegadorPaginas &navegador,
     DatosPartida &datosPartida, const DibujarPersonaje &dibujar,
     ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent), dibujar(dibujar),

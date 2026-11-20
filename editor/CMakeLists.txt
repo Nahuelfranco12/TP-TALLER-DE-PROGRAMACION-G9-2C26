@@ -61,7 +61,7 @@ qt_add_executable(editor
     headers/controlador_mapas.h
     headers/controlador_pagina_editor.h
     headers/datos_editor.h
-    headers/navegador.h
+    headers/navegador_paginas.h
     headers/sprites.h
     headers/ventanaeditor.h
     headers/vista_responsive.h
@@ -70,7 +70,7 @@ qt_add_executable(editor
     implementaciones/catalogo_elementos.cpp
     implementaciones/controlador_inicio_editor.cpp
     implementaciones/controlador_mapas.cpp
-    implementaciones/navegador.cpp
+    implementaciones/navegador_paginas.cpp
     implementaciones/sprites.cpp
     implementaciones/ventanaeditor.cpp
     implementaciones/vista_responsive.cpp

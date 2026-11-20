@@ -21,8 +21,8 @@ qt_add_executable(Pantallas
     implementaciones/partidas_estaticas.cpp
     headers/tarjeta_item.h
     implementaciones/tarjeta_item.cpp
-    headers/navegador.h
-    implementaciones/navegador.cpp
+    headers/navegador_paginas.h
+    implementaciones/navegador_paginas.cpp
     implementaciones/vista_responsive.cpp
     headers/lista_seleccionable.h
     implementaciones/lista_seleccionable.cpp

@@ -4,7 +4,7 @@
 
 ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
                                                    Ui::Pantalla &ui,
-                                                   Navegador &navegador,
+                                                   NavegadorPaginas &navegador,
                                                    DatosPartida &datosPartida,
                                                    QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
@@ -17,7 +17,7 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
     this->datosPartida.modo = ModoPartida::Unirse;
     this->datosPartida.codigoUnirsePartida =
         this->ui.campoCodigoPartida->text().trimmed();
-    this->navegador.irA(this->ui.pageCustomizarPersonaje);
+    this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
   });
 }
 

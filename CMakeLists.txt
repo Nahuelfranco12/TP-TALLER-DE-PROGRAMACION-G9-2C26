@@ -16,6 +16,7 @@ project(taller_tp
     LANGUAGES CXX
     )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(TALLER_TESTS "Enable / disable tests." ON)
 option(TALLER_CLIENT "Enable / disable client program." ON)
 option(TALLER_SERVER "Enable / disable server program." ON)

@@ -9,7 +9,7 @@
 class ControladorRetomarPartida : public ControladorPagina {
 public:
   ControladorRetomarPartida(QWidget &ventana, Ui::Pantalla &ui,
-                            Navegador &navegador, DatosPartida &datosPartida,
+                            NavegadorPaginas &navegador, DatosPartida &datosPartida,
                             const DibujarPersonaje &dibujante,
                             ServicioLobby &servicio, QObject *parent = nullptr);
   void limpiarPagina() override;

@@ -7,7 +7,7 @@
 
 ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 
-QList<MundoMock> ServicioLobbyRed::mundos() {
+QList<MundoMock> ServicioLobbyRed::mundosCrearPartida() {
   QList<MundoMock> result;
   for (const MapInfoDto &map : client.list_maps()) {
     result.append({QString::fromStdString(map.name), QString(),
@@ -16,11 +16,11 @@ QList<MundoMock> ServicioLobbyRed::mundos() {
   return result;
 }
 
-QList<PartidaGuardada> ServicioLobbyRed::partidasGuardadas() {
+QList<PartidaGuardada> ServicioLobbyRed::partidasARetomar() {
   return obtenerPartidasDePrueba();
 }
 
-ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
+ResultadoLobby ServicioLobbyRed::entrarAJugar(const DatosPartida &datos) {
   try {
     std::string codigoAUnirse;
     switch (datos.modo) {

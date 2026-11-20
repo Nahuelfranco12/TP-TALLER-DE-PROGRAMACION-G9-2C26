@@ -6,7 +6,7 @@
 class ControladorMenuPrincipal : public ControladorPagina {
 public:
   ControladorMenuPrincipal(QWidget &ventana, Ui::Pantalla &ui,
-                           Navegador &navegador, QObject *parent = nullptr);
+                           NavegadorPaginas &navegador, QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
 };

@@ -12,7 +12,7 @@
 
 ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
                                                  Ui::VentanaEditor &ui,
-                                                 Navegador &navegador,
+                                                 NavegadorPaginas &navegador,
                                                  DatosEditor &datos,
                                                  QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
@@ -26,7 +26,7 @@ ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
 
 void ControladorInicioEditor::crearMapa() {
   datos = DatosEditor{};
-  navegador.irA(ui.pageMapas);
+  navegador.irAPagina(ui.pageMapas);
 }
 
 void ControladorInicioEditor::editarMapa() {
@@ -37,7 +37,7 @@ void ControladorInicioEditor::editarMapa() {
   try {
     MapaEditor mapa = cargarMapa(ruta.toStdString());
     datos = DatosEditor{ruta, std::move(mapa)};
-    navegador.irA(ui.pageMapas);
+    navegador.irAPagina(ui.pageMapas);
   } catch (const std::exception &error) {
     QMessageBox::warning(&ventana, TITULO_ERROR_CARGAR,
                          QString::fromUtf8(error.what()));

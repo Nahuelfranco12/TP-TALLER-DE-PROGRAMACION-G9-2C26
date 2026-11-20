@@ -6,7 +6,7 @@
 #include <QPixmap>
 
 ControladorNuevaPartida::ControladorNuevaPartida(
-    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    QWidget &ventana, Ui::Pantalla &ui, NavegadorPaginas &navegador,
     DatosPartida &datosPartida, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), servicio(servicio) {
@@ -15,7 +15,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(
 
   // cargarMundos();
 
-  connect(&navegador, &Navegador::paginaAbierta, this,
+  connect(&navegador, &NavegadorPaginas::paginaAbierta, this,
           [this](QWidget *pagina) {
             if (pagina == this->ui.pageNuevaPartida && !mundosCargados) {
               cargarMundos();
@@ -46,7 +46,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(
         break;
       }
     }
-    this->navegador.irA(this->ui.pageCustomizarPersonaje);
+    this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
   });
 }
 
@@ -57,7 +57,7 @@ void ControladorNuevaPartida::actualizarBotonAvanzar() {
 }
 
 void ControladorNuevaPartida::cargarMundos() {
-  datosMundos = servicio.mundos();
+  datosMundos = servicio.mundosCrearPartida();
 
   QList<DatosTarjeta> tarjetas;
   for (const MundoMock &mundo : datosMundos) {
@@ -78,7 +78,7 @@ void ControladorNuevaPartida::mostrarMapaSeleccionado() {
         ocultarMapa();
         return;
       }
-      
+
       QPixmap mapa(mundo.rutaImagen);
       if (mapa.isNull()) {
         ocultarMapa();

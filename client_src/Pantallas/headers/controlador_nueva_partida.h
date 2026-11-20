@@ -10,7 +10,7 @@
 class ControladorNuevaPartida : public ControladorPagina {
 public:
   ControladorNuevaPartida(QWidget &ventana, Ui::Pantalla &ui,
-                          Navegador &navegador, DatosPartida &datosPartida,
+                          NavegadorPaginas &navegador, DatosPartida &datosPartida,
                           ServicioLobby &servicio, QObject *parent = nullptr);
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;

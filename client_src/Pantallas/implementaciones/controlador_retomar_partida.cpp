@@ -3,7 +3,7 @@
 #include "ui_pantalla.h"
 
 ControladorRetomarPartida::ControladorRetomarPartida(
-    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    QWidget &ventana, Ui::Pantalla &ui, NavegadorPaginas &navegador,
     DatosPartida &datosPartida, const DibujarPersonaje &dibujante,
     ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
@@ -34,7 +34,7 @@ void ControladorRetomarPartida::actualizarBotonAvanzar() {
 
 void ControladorRetomarPartida::cargarPartidas() {
   QList<DatosTarjeta> tarjetas;
-  for (const PartidaGuardada &partida : servicio.partidasGuardadas()) {
+  for (const PartidaGuardada &partida : servicio.partidasARetomar()) {
     QString modo = TEXTO_SINGLEPLAYER;
     if (partida.esMultiplayer)
       modo = TEXTO_MULTIPLAYER;

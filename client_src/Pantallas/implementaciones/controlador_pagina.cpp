@@ -13,7 +13,7 @@ void ControladorPagina::intentarJugar(ServicioLobby &servicio,
                                       const DatosPartida &datos,
                                       QPushButton *botonJugar) {
   botonJugar->setEnabled(false);
-  ResultadoLobby resultado = servicio.jugar(datos);
+  ResultadoLobby resultado = servicio.entrarAJugar(datos);
   if (resultado.ok) {
     emit partidaIniciada();
     return;

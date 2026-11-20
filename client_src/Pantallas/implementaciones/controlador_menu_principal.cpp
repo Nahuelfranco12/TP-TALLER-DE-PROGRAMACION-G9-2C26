@@ -3,15 +3,15 @@
 
 ControladorMenuPrincipal::ControladorMenuPrincipal(QWidget &ventana,
                                                    Ui::Pantalla &ui,
-                                                   Navegador &navegador,
+                                                   NavegadorPaginas &navegador,
                                                    QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent) {
   connect(ui.botonNuevaPartidaMenuPrincipal, &QPushButton::clicked, this,
-          [this]() { this->navegador.irA(this->ui.pageNuevaPartida); });
+          [this]() { this->navegador.irAPagina(this->ui.pageNuevaPartida); });
   connect(ui.botonUnirsePartidaMenuPrincipal, &QPushButton::clicked, this,
-          [this]() { this->navegador.irA(this->ui.pageUnirsePartida); });
+          [this]() { this->navegador.irAPagina(this->ui.pageUnirsePartida); });
   connect(ui.botonRetomarPartidaMenuPrincipal, &QPushButton::clicked, this,
-          [this]() { this->navegador.irA(this->ui.pageRetomarPartida); });
+          [this]() { this->navegador.irAPagina(this->ui.pageRetomarPartida); });
 }
 
 void ControladorMenuPrincipal::limpiarPagina() {}

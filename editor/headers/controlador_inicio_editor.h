@@ -8,7 +8,7 @@
 class ControladorInicioEditor : public ControladorPaginaEditor {
 public:
   ControladorInicioEditor(QWidget &ventana, Ui::VentanaEditor &ui,
-                          Navegador &navegador, DatosEditor &datos,
+                          NavegadorPaginas &navegador, DatosEditor &datos,
                           QObject *parent = nullptr);
 
 private:

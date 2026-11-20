@@ -8,7 +8,7 @@
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
   ControladorCustomizarPersonaje(QWidget &ventana, Ui::Pantalla &ui,
-                                 Navegador &navegador,
+                                 NavegadorPaginas &navegador,
                                  DatosPartida &datosPartida,
                                  const DibujarPersonaje &dibujar,
                                  ServicioLobby &servicio,

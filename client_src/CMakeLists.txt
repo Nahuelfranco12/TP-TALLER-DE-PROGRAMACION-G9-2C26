@@ -22,7 +22,7 @@ target_sources(taller_client
     Pantallas/implementaciones/pantalla.cpp
     Pantallas/implementaciones/partidas_estaticas.cpp
     Pantallas/implementaciones/tarjeta_item.cpp
-    Pantallas/implementaciones/navegador.cpp
+    Pantallas/implementaciones/navegador_paginas.cpp
     Pantallas/implementaciones/lista_seleccionable.cpp
     Pantallas/implementaciones/controlador_menu_principal.cpp
     Pantallas/implementaciones/controlador_nueva_partida.cpp
@@ -75,7 +75,7 @@ target_sources(taller_client
     Pantallas/headers/pantalla.h
     Pantallas/headers/partidas_estaticas.h
     Pantallas/headers/tarjeta_item.h
-    Pantallas/headers/navegador.h
+    Pantallas/headers/navegador_paginas.h
     Pantallas/headers/lista_seleccionable.h
     Pantallas/headers/controlador_pagina.h
     Pantallas/headers/controlador_menu_principal.h

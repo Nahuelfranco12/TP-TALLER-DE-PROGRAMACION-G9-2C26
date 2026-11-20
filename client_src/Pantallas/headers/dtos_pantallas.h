@@ -6,7 +6,7 @@
 
 enum class ModoPartida { Ninguno, Nueva, Unirse, Retomar };
 
-struct Apariencia {
+struct AparienciaPersonaje {
   int gorro = 0;
   int pelo = 0;
   int pantalon = 0;
@@ -15,7 +15,7 @@ struct Apariencia {
 
 struct DatosPersonaje {
   QString nombre;
-  Apariencia ropa;
+  AparienciaPersonaje ropa;
 };
 
 struct DatosPartida {

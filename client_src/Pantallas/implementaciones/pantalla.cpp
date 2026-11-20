@@ -5,7 +5,7 @@
 #include "controlador_nueva_partida.h"
 #include "controlador_retomar_partida.h"
 #include "controlador_unirse_partida.h"
-#include "navegador.h"
+#include "navegador_paginas.h"
 #include "servicio_lobby.h"
 #include "ui_pantalla.h"
 #include "vista_responsive.h"
@@ -25,7 +25,7 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
       new VistaEscalada(ui->stackedWidget, QSize(ANCHO_DISENIO, ALTO_DISENIO),
                         ui->centralwidget));
 
-  Navegador *navegador = new Navegador(ui->stackedWidget, this);
+  NavegadorPaginas *navegador = new NavegadorPaginas(ui->stackedWidget, this);
   const QList<ControladorPagina *> controladores = {
       new ControladorMenuPrincipal(*this, *ui, *navegador, this),
       new ControladorNuevaPartida(*this, *ui, *navegador, datosPartida,

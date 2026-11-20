@@ -14,7 +14,7 @@ class VistaZona;
 class ControladorMapas : public ControladorPaginaEditor {
 public:
   ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
-                   Navegador &navegador, DatosEditor &datos,
+                   NavegadorPaginas &navegador, DatosEditor &datos,
                    QObject *parent = nullptr);
 
 private:
