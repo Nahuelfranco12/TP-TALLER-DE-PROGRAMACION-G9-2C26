@@ -111,6 +111,22 @@ void Player::startNewDay(bool sleptInBed) {
   this->energy = PLAYER_MAX_ENERGY * factor;
 }
 
+int Player::buy(const Item &sample, int price, int amount) {
+  int bought = 0;
+  while (bought < amount && coins >= price && inventory.addItem(sample.clone())) {
+    coins -= price;
+    bought++;
+  }
+  return bought;
+}
+
+bool Player::sell(const Item &sample, int price, int amount) {
+  if (!inventory.remove(sample, amount))
+    return false;
+  coins += price * amount;
+  return true;
+}
+
 PlayerState Player::state() const {
   return PlayerState{this->id,
                      this->position,

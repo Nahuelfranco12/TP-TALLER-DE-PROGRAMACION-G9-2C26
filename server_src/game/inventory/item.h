@@ -2,6 +2,7 @@
 #define ITEM_H_
 
 #include <variant>
+#include <memory>
 
 #include "../game_constants.h"
 
@@ -30,6 +31,12 @@ public:
     return std::visit([](auto e) { return static_cast<int>(e); },
                       this->subtype);
   }
+
+  virtual std::unique_ptr<Item> clone() const = 0;
+
+  bool isSameProduct(const Item &other) const {
+    return getType() == other.getType() && subtypeToInt() == other.subtypeToInt();
+  } 
 };
 
 #endif // ITEM_H_

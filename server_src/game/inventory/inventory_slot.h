@@ -20,6 +20,7 @@ public:
   Item &getItem() const;
   size_t getCount() const;
   bool add();
+  bool remove();
 };
 
 #endif // INVENTORY_SLOT_H_

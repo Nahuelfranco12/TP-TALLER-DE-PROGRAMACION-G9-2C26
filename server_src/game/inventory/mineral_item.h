@@ -10,6 +10,10 @@ public:
       : Item(price, ItemType::MINERAL, mineralType) {}
 
   bool stacksWith(const Item &other) const override;
+
+  std::unique_ptr<Item> clone() const override {
+    return std::make_unique<MineralItem>(*this);
+  }
 };
 
 #endif // MINERAL_ITEM_H_

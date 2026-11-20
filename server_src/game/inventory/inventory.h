@@ -22,6 +22,17 @@ public:
   Tool *getTool(AvailableTools type);
   bool giveSlotTo(int index, Inventory &other);
 
+  /*
+  * Devuelve cuanta cantidad del item "sample" hay en el inventario
+  */
+  int countOf(const Item &sample) const;
+
+  /*
+  * Saca "amount" items iguales a sample del inventario.
+  * Devuelve false si no tiene suficientes items del tipo.
+  */
+  bool remove(const Item &sample, int amount);
+
   InventoryState state() const;
 };
 

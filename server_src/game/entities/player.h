@@ -100,6 +100,12 @@ public:
   void startNewDay(bool sleptInBed);
 
   /*
+  * Tradeo
+  */
+  int buy(const Item &sample, int price, int amount);
+  bool sell(const Item &sample, int price, int amount);
+
+  /*
   * State
   */
   PlayerState state() const;

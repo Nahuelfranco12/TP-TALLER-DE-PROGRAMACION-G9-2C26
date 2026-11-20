@@ -10,9 +10,7 @@ void InteractCommand::execute(World &world) {
     if (!player)
         return;
     
-    int distanceX = std::abs(static_cast<int>(player->position.x) - static_cast<int>(target.x));
-    int distanceY = std::abs(static_cast<int>(player->position.y) - static_cast<int>(target.y));
-    if (distanceX + distanceY > INTERACT_DISTANCE)
+    if(player->position.distanceTo(target) > INTERACT_DISTANCE)
         return;
     
     Entity *entity = player->getActualSector()->getEntity(target);

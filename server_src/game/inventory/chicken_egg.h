@@ -9,6 +9,10 @@ public:
       : Item(price, ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN) {}
 
   bool stacksWith(const Item &other) const override;
+
+  std::unique_ptr<Item> clone() const override {
+    return std::make_unique<ChickenEgg>(*this);
+  }
 };
 
 #endif // CHICKEN_EGG_H_
