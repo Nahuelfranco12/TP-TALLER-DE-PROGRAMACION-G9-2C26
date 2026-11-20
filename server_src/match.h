@@ -19,7 +19,7 @@ private:
   Gameloop gameloop;
 
 public:
-  explicit Match(const std::string &name);
+  Match(const std::string &name, const std::string &map_path);
 
   void join(int client_id, Queue<WorldState> &to_send_queue,
             std::unique_ptr<Command> join_cmd);

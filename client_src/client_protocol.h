@@ -52,7 +52,7 @@ public:
   void send_enemies_damage_cheat();
 
   // Protocolo de menú
-  void send_create_match(const std::string &name);
+  void send_create_match(const std::string &name, const std::string &map_path);
   void send_list_matches();
   void send_list_maps();
   void send_join_match(const std::string &code, const std::string &player_name,

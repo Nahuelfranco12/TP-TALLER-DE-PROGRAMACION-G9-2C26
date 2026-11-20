@@ -49,7 +49,9 @@ public:
   const WorldMapDto &get_world_map() const;
 
   // Comandos para QT
-  std::string create_match(const std::string &name);
+  std::string create_match(const std::string &name,
+                           const std::string &map_path);
+  std::vector<MapInfoDto> list_maps();
   std::vector<MatchInfoDto> list_matches();
   bool join_match(const std::string &code, const std::string &player_name,
                   const PlayerOutfitDto &outfit);

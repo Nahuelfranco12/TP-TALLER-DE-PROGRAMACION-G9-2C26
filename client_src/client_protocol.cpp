@@ -126,9 +126,11 @@ InventorySlotDto ClientProtocol::receive_slot() {
   return slot;
 }
 
-void ClientProtocol::send_create_match(const std::string &name) {
+void ClientProtocol::send_create_match(const std::string &name,
+                                       const std::string &map_path) {
   protocol.send_u8(OP_CREATE_MATCH);
   protocol.send_string(name);
+  protocol.send_string(map_path);
 }
 
 std::string ClientProtocol::receive_created_match() {

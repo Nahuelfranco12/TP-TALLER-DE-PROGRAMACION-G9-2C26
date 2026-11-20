@@ -133,9 +133,15 @@ Client::~Client() {
 
 // Métodos de menú (QT)
 
-std::string Client::create_match(const std::string &name) {
-  protocol.send_create_match(name);
+std::string Client::create_match(const std::string &name,
+                                 const std::string &map_path) {
+  protocol.send_create_match(name, map_path);
   return protocol.receive_created_match();
+}
+
+std::vector<MapInfoDto> Client::list_maps() {
+  protocol.send_list_maps();
+  return protocol.receive_map_list();
 }
 
 std::vector<MatchInfoDto> Client::list_matches() {

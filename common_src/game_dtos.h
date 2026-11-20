@@ -348,6 +348,7 @@ struct LobbyRequestDto {
 
   // Atributos para Creacion de Partida
   std::string match_name;
+  std::string map_path;
 
   // Atributos para Unirse a partida
   std::string code;

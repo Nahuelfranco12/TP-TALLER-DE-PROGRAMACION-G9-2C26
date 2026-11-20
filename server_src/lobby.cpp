@@ -48,10 +48,25 @@ Lobby::load_maps(const std::filesystem::path &maps_directory) {
   return maps;
 }
 
-std::string Lobby::create_match(const std::string &name) {
+std::string Lobby::create_match(const std::string &name,
+                                const std::string &map_path) {
   std::lock_guard<std::mutex> lock(mutex);
+  auto selected_map = std::find_if(
+      maps.begin(), maps.end(), [&map_path](const MapInfoDto &map) {
+        return map.path == map_path;
+      });
+  if (selected_map == maps.end())
+    return {};
+
   std::string code = generate_code();
-  matches[code] = std::make_unique<Match>(name);
+  try {
+    auto match = std::make_unique<Match>(name, selected_map->path);
+    matches.emplace(code, std::move(match));
+  } catch (const std::exception &exception) {
+    std::cerr << "No se pudo crear la partida con el mapa '" << map_path
+              << "': " << exception.what() << '\n';
+    return {};
+  }
   return code;
 }
 std::vector<MatchInfoDto> Lobby::list_matches() {

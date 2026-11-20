@@ -27,7 +27,8 @@ private:
 public:
   explicit Lobby(const std::filesystem::path &maps_directory = "maps");
 
-  std::string create_match(const std::string &name);
+  std::string create_match(const std::string &name,
+                           const std::string &map_path);
   std::vector<MatchInfoDto> list_matches();
   std::vector<MapInfoDto> list_maps();
   Match *find_match(const std::string &code);

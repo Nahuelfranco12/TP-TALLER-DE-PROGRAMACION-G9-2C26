@@ -250,6 +250,7 @@ LobbyRequestDto ServerProtocol::receive_lobby_request() {
   case OP_CREATE_MATCH:
     request.action = LobbyActionDto::Create;
     request.match_name = protocol.receive_string();
+    request.map_path = protocol.receive_string();
     break;
   case OP_LIST_MATCHES:
     request.action = LobbyActionDto::List;

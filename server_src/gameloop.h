@@ -26,12 +26,9 @@ private:
   WorldState make_world_state() const;
   void process_commands();
 
-  void setupFarm();
-  void addWorldSectors();
-
 public:
   Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-           ClientQueues &clients, DaySpeed worldSpeed);
+           ClientQueues &clients, const std::string &map_path);
 
   void run() override;
 };

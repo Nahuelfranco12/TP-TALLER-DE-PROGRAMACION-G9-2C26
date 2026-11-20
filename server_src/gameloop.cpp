@@ -4,42 +4,18 @@
 #include <memory>
 #include <thread>
 
+#include "editor_parser/editor_parser.h"
+
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-                   ClientQueues &clients, DaySpeed worldSpeed)
-    : received_queue(received_queue), clients(clients), world(worldSpeed) {
-  addWorldSectors();
-}
+                   ClientQueues &clients, const std::string &map_path)
+    : received_queue(received_queue), clients(clients),
+      world(EditorParser(map_path)()) {}
 
 void Gameloop::process_commands() {
   std::unique_ptr<Command> cmd;
   while (received_queue.try_pop(cmd)) {
     cmd->execute(this->world);
   }
-}
-
-void Gameloop::setupFarm() {
-  auto farm = std::make_unique<FarmSector>(SECTOR_DIMENSION_1, SECTOR_DIMENSION_2);
-  this->world.addSector(std::move(farm));
-}
-
-void Gameloop::addWorldSectors() {
-  setupFarm();
-  
-  this->world.addSector(
-      std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
-
-  world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15),
-                Position(0, 15));
-
-  // TODO: los animales los coloca el jugador, del inventario
-  this->world.spawnAnimal(IdSector::FARM, Position(10, 10), AnimalType::COW);
-  this->world.spawnAnimal(IdSector::FARM, Position(11, 10),
-                          AnimalType::CHICKEN);
-  this->world.spawnAnimal(IdSector::FARM, Position(10, 11), AnimalType::COW);
-  this->world.spawnAnimal(IdSector::FARM, Position(11, 11),
-                          AnimalType::CHICKEN);
-
-  Cavern::setup(this->world);
 }
 
 void Gameloop::run() {

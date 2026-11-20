@@ -17,7 +17,8 @@ void ServerReceiver::run() {
       LobbyRequestDto request = protocol.receive_lobby_request();
 
       if (request.action == LobbyActionDto::Create) {
-        protocol.send_match_created(lobby.create_match(request.match_name));
+        protocol.send_match_created(
+            lobby.create_match(request.match_name, request.map_path));
       } else if (request.action == LobbyActionDto::List) {
         protocol.send_match_list(lobby.list_matches());
       } else if (request.action == LobbyActionDto::ListMaps) {

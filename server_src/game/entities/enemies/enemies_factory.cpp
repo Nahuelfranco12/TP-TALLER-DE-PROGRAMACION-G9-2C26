@@ -24,14 +24,14 @@ std::unique_ptr<Enemy> EnemiesFactory::createBlueSkull(Position position) {
   EnemyStats stats{SKULL_BLUE_LIFE, SKULL_BLUE_DAMAGE, SKULL_BLUE_DAMAGE,  0, SKULL_BLUE_TICKS_PER_MOVE,
                          SKULL_BLUE_TICKS_PER_ATTACK, SKULL_BLUE_SIGHT_RANGE};
 
-  return std::make_unique<Skull>(EnemyType::SKULL_BLUE, position.x, position.y, stats);
+  return std::make_unique<Skull>(position.x, position.y, stats, EnemyType::SKULL_BLUE);
 }
 
 std::unique_ptr<Enemy> EnemiesFactory::createGreenSkull(Position position) {
   EnemyStats stats{SKULL_GREEN_LIFE, SKULL_GREEN_DAMAGE, SKULL_GREEN_DAMAGE, 0, SKULL_GREEN_TICKS_PER_MOVE,
                          SKULL_GREEN_TICKS_PER_ATTACK, SKULL_GREEN_SIGHT_RANGE};
 
-  return std::make_unique<Skull>(EnemyType::SKULL_GREEN, position.x, position.y, stats);
+  return std::make_unique<Skull>(position.x, position.y, stats, EnemyType::SKULL_GREEN);
 }
 
 std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>>
