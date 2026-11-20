@@ -123,6 +123,10 @@
 
 #define INTERACT_DISTANCE 2
 
+// PRECIOS
+
+#define PRICE_SEED 10
+
 enum IdSector {
   FARM,
   VILLAGE,

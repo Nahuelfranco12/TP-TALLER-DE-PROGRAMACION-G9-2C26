@@ -6,6 +6,7 @@
 #include "../sectors/sector.h"
 #include "enemies/enemy.h"
 #include "mineral.h"
+#include "../inventory/item_factory.h"
 
 MoveResult Player::move(Position destination) {
   if (isUnconscious())
@@ -112,8 +113,10 @@ void Player::startNewDay(bool sleptInBed) {
 }
 
 int Player::buy(const Item &sample, int price, int amount) {
+  ItemFactory factory;
   int bought = 0;
-  while (bought < amount && coins >= price && inventory.addItem(sample.clone())) {
+  while (bought < amount && coins >= price && inventory.addItem(factory.create(sample.getType(),
+                                          sample.subtypeToInt(), price))) {
     coins -= price;
     bought++;
   }

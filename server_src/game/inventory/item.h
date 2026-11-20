@@ -32,8 +32,6 @@ public:
                       this->subtype);
   }
 
-  virtual std::unique_ptr<Item> clone() const = 0;
-
   bool isSameProduct(const Item &other) const {
     return getType() == other.getType() && subtypeToInt() == other.subtypeToInt();
   } 

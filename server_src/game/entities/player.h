@@ -16,6 +16,7 @@
 class Sector;  // forward declaration
 class Mineral; // forward declaration
 class Enemy;   // forward declaration
+class Merchant; // forward declaration
 
 struct PendingGift {
   int giverId = 0;
@@ -33,6 +34,7 @@ private:
   PlayerOutfit outfit;
 
   Tool *actualTool = nullptr;
+  Merchant *talkingTo = nullptr;
   PendingGift pendingGift{};
   Inventory inventory;
   Sector *actualSector;
@@ -104,6 +106,9 @@ public:
   */
   int buy(const Item &sample, int price, int amount);
   bool sell(const Item &sample, int price, int amount);
+  
+  void startTalkingTo(Merchant &merchant) { talkingTo = &merchant; }
+  Merchant *getTalkingTo() const { return talkingTo; }
 
   /*
   * State

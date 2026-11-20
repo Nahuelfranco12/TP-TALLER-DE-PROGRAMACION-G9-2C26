@@ -5,6 +5,7 @@ target_sources(taller_game
 
     entities/mineral.cpp
     entities/merchant.cpp
+    entities/merchants_factory.cpp
     entities/door.cpp
     entities/player.cpp
     entities/crop.cpp
@@ -19,6 +20,7 @@ target_sources(taller_game
     inventory/crop_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
+    inventory/item_factory.cpp
 
     commands/move_command.cpp
     commands/join_command.cpp
@@ -37,6 +39,11 @@ target_sources(taller_game
     commands/gift_response_command.cpp
     commands/chat_command.cpp
     commands/sleep_command.cpp
+    commands/chat/merchant_command.cpp
+    commands/chat/buy_command.cpp
+    commands/chat/sell_command.cpp
+    commands/chat/catalog_command.cpp
+    commands/chat/unknown_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp

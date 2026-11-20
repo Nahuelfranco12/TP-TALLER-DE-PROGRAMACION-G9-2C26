@@ -26,6 +26,11 @@
 #include "./game/commands/cheats/cheat_end_day_command.h"
 #include "./game/commands/cheats/cheat_enemies_damage_command.h"
 
+#include "./game/commands/chat/buy_command.h"
+#include "./game/commands/chat/catalog_command.h"
+#include "./game/commands/chat/sell_command.h"
+#include "./game/commands/chat/unknown_command.h"
+
 class CommandFactory {
 public:
   std::unique_ptr<Command> create(int player_id, const MoveDto &dto);
