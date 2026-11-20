@@ -32,6 +32,8 @@ private:
 public:
   explicit World(const std::string& name) : name(name), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(1) {}
 
+  void setDayNumber(size_t dayNumber) { this->dayNumber = dayNumber; }
+
   bool addSector(std::unique_ptr<Sector> sector);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
                Position posOrigin, Position posDestine,
