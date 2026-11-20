@@ -26,10 +26,14 @@ add_library(editor_mapa STATIC
     mapa/archivo_mapa.h
     mapa/constantes_mapa.h
     mapa/elementos_mapa.h
+    mapa/ids_mapa.h
+    mapa/lectura_toml.h
     mapa/mapa_editor.h
     mapa/validacion_mapas.h
 
     mapa/archivo_mapa.cpp
+    mapa/ids_mapa.cpp
+    mapa/lectura_toml.cpp
     mapa/mapa_editor.cpp
     mapa/validacion_mapas.cpp
 )

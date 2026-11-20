@@ -79,21 +79,31 @@
 #define CLAVE_X "x"
 #define CLAVE_Y "y"
 
-// Archivo TOML: errores -> archivo_mapa.cpp
+// Archivo TOML: errores al escribir y leer -> archivo_mapa.cpp
 #define TEXTO_ERROR_ESCRIBIR "No se pudo escribir el archivo: "
-#define TEXTO_ERROR_SIN_ID "Hay un elemento sin identificador en el archivo"
 #define TEXTO_ERROR_LEER "No se pudo leer el archivo: "
 #define TEXTO_ERROR_VERSION "Version de archivo no soportada."
-#define TEXTO_ERROR_CAMPO "Falta un dato o es invalido: "
-#define TEXTO_ERROR_RANGO "Valor fuera de rango en "
-#define TEXTO_ERROR_TIPO "Elemento desconocido: "
 #define TEXTO_ERROR_DIMENSIONES "Dimensiones fuera de rango en: "
 #define TEXTO_ERROR_OBJETO "Un objeto no entra o pisa a otro en: "
 #define TEXTO_ERROR_NIVELES                                                    \
   "La caverna no tiene la cantidad de niveles esperada."
 #define TEXTO_NIVEL_ARCHIVO " nivel "
+#define TEXTO_ABRE_ID_MAPA " ("
+#define TEXTO_CIERRA_ID_MAPA ")"
+#define SEPARADOR_DETALLE_MAPA "\n"
+#define FIN_ARCHIVO_MAPA "\n"
 
-// Archivo TOML: ids de la granja -> archivo_mapa.cpp
+// Archivo TOML: errores de campos -> lectura_toml.h, lectura_toml.cpp,
+// archivo_mapa.cpp
+#define TEXTO_ERROR_CAMPO "Falta un dato o es invalido: "
+#define TEXTO_ERROR_RANGO "Valor fuera de rango en "
+#define SEPARADOR_CAMPO_MAPA "."
+
+// Archivo TOML: errores de ids -> ids_mapa.h
+#define TEXTO_ERROR_SIN_ID "Hay un elemento sin identificador en el archivo"
+#define TEXTO_ERROR_TIPO "Elemento desconocido: "
+
+// Archivo TOML: ids de la granja -> ids_mapa.cpp
 #define ID_CABANIA1 "Cabania1"
 #define ID_CABANIA2 "Cabania2"
 #define ID_CABANIA3 "Cabania3"
@@ -113,7 +123,7 @@
 #define ID_BUZON_ROJO "BuzonRojo"
 #define ID_CARTEL_VACIO "CartelVacio"
 
-// Archivo TOML: ids de la caverna -> archivo_mapa.cpp
+// Archivo TOML: ids de la caverna -> ids_mapa.cpp
 #define ID_ESCALERA "Escalera"
 #define ID_SALIDA_CAVERNA "SalidaCaverna"
 #define ID_BARRIL "Barril"
@@ -125,7 +135,7 @@
 #define ID_ESCUDO "Escudo"
 #define ID_POZO "Pozo"
 
-// Archivo TOML: ids del pueblo -> archivo_mapa.cpp
+// Archivo TOML: ids del pueblo -> ids_mapa.cpp
 #define ID_NPC_MARNIE "NpcMarnie"
 #define ID_NPC_CLINT "NpcClint"
 #define ID_NPC_PIERRE "NpcPierre"
