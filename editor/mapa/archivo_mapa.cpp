@@ -74,14 +74,14 @@ void cargarObjetos(const toml::table &tabla, MapaZona<T> &zona,
 template <typename T>
 MapaZona<T> cargarZona(const toml::table &raiz, const char *clave,
                        Zona tipoZona) {
-  const toml::table &tabla = leerTabla(raiz, clave, {});
+  const toml::table &tabla = leerTabla(raiz, clave);
   MapaZona<T> zona(leerDimensiones(tabla, clave), pisoBaseDe(tipoZona));
   cargarObjetos(tabla, zona, clave);
   return zona;
 }
 
 std::vector<MapaZona<ElementosCaverna>> cargarCaverna(const toml::table &raiz) {
-  const toml::table &caverna = leerTabla(raiz, CLAVE_CAVERNA, {});
+  const toml::table &caverna = leerTabla(raiz, CLAVE_CAVERNA);
   Dimensiones dimensiones = leerDimensiones(caverna, CLAVE_CAVERNA);
   const toml::array *niveles = caverna[CLAVE_NIVELES].as_array();
   if (niveles == nullptr || niveles->size() != CANTIDAD_NIVELES_CAVERNA)

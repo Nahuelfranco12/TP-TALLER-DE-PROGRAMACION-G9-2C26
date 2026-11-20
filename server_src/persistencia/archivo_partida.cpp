@@ -146,7 +146,7 @@ JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
 }
 
 GranjaGuardada granjaDe(const toml::table &raiz) {
-  const toml::table &tabla = leerTabla(raiz, CLAVE_PARTIDA_GRANJA, {});
+  const toml::table &tabla = leerTabla(raiz, CLAVE_PARTIDA_GRANJA);
   return GranjaGuardada{
       leerLista(tabla, CLAVE_PARTIDA_ARADAS, CLAVE_PARTIDA_GRANJA, celdaDe),
       leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,

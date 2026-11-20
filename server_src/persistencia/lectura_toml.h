@@ -16,6 +16,7 @@ std::string campo(const std::string &donde, const char *clave);
 
 const toml::table &leerTabla(const toml::table &tabla, const char *clave,
                              const std::string &donde);
+const toml::table &leerTabla(const toml::table &tabla, const char *clave);
 
 template <typename T>
 T leerValor(const toml::table &tabla, const char *clave,

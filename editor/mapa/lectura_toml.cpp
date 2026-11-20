@@ -11,11 +11,10 @@ std::string campo(const std::string &donde, const char *clave) {
   return donde + SEPARADOR_CAMPO_MAPA + clave;
 }
 
-const toml::table &leerTabla(const toml::table &tabla, const char *clave,
-                             const std::string &donde) {
+const toml::table &leerTabla(const toml::table &tabla, const char *clave) {
   const toml::table *subtabla = tabla[clave].as_table();
   if (subtabla == nullptr)
-    throw std::runtime_error(TEXTO_ERROR_CAMPO + campo(donde, clave));
+    throw std::runtime_error(TEXTO_ERROR_CAMPO + std::string(clave));
   return *subtabla;
 }
 

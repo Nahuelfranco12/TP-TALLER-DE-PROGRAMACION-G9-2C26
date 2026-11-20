@@ -12,8 +12,7 @@
 
 std::string campo(const std::string &donde, const char *clave);
 
-const toml::table &leerTabla(const toml::table &tabla, const char *clave,
-                             const std::string &donde);
+const toml::table &leerTabla(const toml::table &tabla, const char *clave);
 
 const toml::array &leerArray(const toml::table &tabla, const char *clave,
                              const std::string &donde);
