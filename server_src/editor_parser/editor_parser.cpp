@@ -60,11 +60,11 @@ CavernLevelConfig cavernConfig(size_t level) {
         .maxEnemyGroups = 6 + level,
         .availableMinerals = std::move(minerals),
         .availableEnemies = {
-            {EnemyType::SKELETON, 1, 1, 5},
-            {EnemyType::ORC, 3, 3, 4},
-            {EnemyType::VAMPIRE_MALE, 1, 1, 4},
-            {EnemyType::SKULL_BLUE, 1, 1, 1},
-            {EnemyType::SKULL_GREEN, 1, 1, 1},
+            {EnemyType::SKELETON, SKELETON_GROUP, SKELETON_GROUP, SKELETON_MAX_LEVEL_COUNT},
+            {EnemyType::ORC, ORC_MIN_GROUP, ORC_MAX_GROUP, ORC_MAX_LEVEL_COUNT},
+            {EnemyType::VAMPIRE_MALE, VAMPIRE_GROUP, VAMPIRE_GROUP, VAMPIRE_MAX_LEVEL_COUNT},
+            {EnemyType::SKULL_BLUE, SKULL_GROUP, SKULL_GROUP, SKULL_MAX_LEVEL_COUNT},
+            {EnemyType::SKULL_GREEN, SKULL_GROUP, SKULL_GROUP, SKULL_MAX_LEVEL_COUNT},
         }};
 }
 
