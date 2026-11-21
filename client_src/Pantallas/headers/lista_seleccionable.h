@@ -8,7 +8,7 @@
 #include <functional>
 
 class QWidget;
-class TarjetaItem;
+class TarjetaSeleccionable;
 
 class ListaSeleccionable : public QObject {
   Q_OBJECT
@@ -26,11 +26,11 @@ public:
 
 private:
   QWidget *contenedor;
-  TarjetaItem *tarjetaSeleccionada = nullptr;
+  TarjetaSeleccionable *tarjetaSeleccionada = nullptr;
   std::function<void()> accionAlSeleccionar = nullptr;
 
   void limpiar();
-  void seleccionar(TarjetaItem *tarjeta);
+  void seleccionar(TarjetaSeleccionable *tarjeta);
 };
 
 #endif // LISTA_SELECCIONABLE_H_

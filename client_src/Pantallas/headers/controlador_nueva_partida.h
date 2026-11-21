@@ -15,7 +15,6 @@ public:
   void limpiarPagina() override;
   void actualizarBotonAvanzar() override;
 
-  bool mundosCargados = false;
 
 private:
   ListaSeleccionable *mundos;
@@ -23,8 +22,7 @@ private:
   DatosPartida &datosPartida;
   ServicioLobby &servicio;
   void cargarMundos();
-  void mostrarMapaSeleccionado();
-  void ocultarMapa();
+  bool mundosCargados = false;
 };
 
 #endif // CONTROLADOR_NUEVA_PARTIDA_H_

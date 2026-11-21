@@ -2,6 +2,7 @@
 #include "constantes_pantallas.h"
 #include <QMessageBox>
 
+
 void ControladorPagina::conectarVolver(QPushButton *boton) {
   connect(boton, &QPushButton::clicked, this, [this]() {
     limpiarPagina();

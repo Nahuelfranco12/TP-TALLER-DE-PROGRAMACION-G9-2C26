@@ -1,5 +1,5 @@
 #include "lista_seleccionable.h"
-#include "tarjeta_item.h"
+#include "tarjeta_seleccionable.h"
 #include <QVBoxLayout>
 
 ListaSeleccionable::ListaSeleccionable(QWidget *contenedor, QObject *parent)
@@ -11,8 +11,8 @@ ListaSeleccionable::ListaSeleccionable(QWidget *contenedor, QObject *parent)
 void ListaSeleccionable::cargar(const QList<DatosTarjeta> &items) {
   limpiar();
   for (const DatosTarjeta &datos : items) {
-    TarjetaItem *tarjeta = new TarjetaItem(datos, contenedor);
-    connect(tarjeta, &TarjetaItem::clickeada, this,
+    TarjetaSeleccionable *tarjeta = new TarjetaSeleccionable(datos, contenedor);
+    connect(tarjeta, &TarjetaSeleccionable::tarjetaClickeada, this,
             &ListaSeleccionable::seleccionar);
     contenedor->layout()->addWidget(tarjeta);
   }
@@ -47,7 +47,7 @@ void ListaSeleccionable::setAlSeleccionar(std::function<void()> accion) {
   accionAlSeleccionar = accion;
 }
 
-void ListaSeleccionable::seleccionar(TarjetaItem *tarjeta) {
+void ListaSeleccionable::seleccionar(TarjetaSeleccionable *tarjeta) {
   deseleccionar();
   tarjeta->setSeleccionada(true);
   tarjetaSeleccionada = tarjeta;

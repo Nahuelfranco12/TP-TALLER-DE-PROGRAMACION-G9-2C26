@@ -13,15 +13,11 @@ ControladorNuevaPartida::ControladorNuevaPartida(
 
   mundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
-  // cargarMundos();
-
   connect(&navegador, &NavegadorPaginas::paginaAbierta, this,
           [this](QWidget *pagina) {
-            if (pagina == this->ui.pageNuevaPartida && !mundosCargados) {
+            if (pagina == this->ui.pageNuevaPartida && !mundosCargados)
               cargarMundos();
-            }
           });
-  ocultarMapa();
 
   ui.botonSiguienteNuevaPartida->setEnabled(false);
 
@@ -32,7 +28,6 @@ ControladorNuevaPartida::ControladorNuevaPartida(
 
   mundos->setAlSeleccionar([this]() {
     actualizarBotonAvanzar();
-    mostrarMapaSeleccionado();
   });
 
   connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this, [this]() {
@@ -70,38 +65,8 @@ void ControladorNuevaPartida::cargarMundos() {
   mundosCargados = true;
 }
 
-void ControladorNuevaPartida::mostrarMapaSeleccionado() {
-  QString id = mundos->seleccionado();
-  for (const MundoMock &mundo : datosMundos) {
-    if (mundo.nombreMundo == id) {
-      if (mundo.rutaImagen.isEmpty()) {
-        ocultarMapa();
-        return;
-      }
-
-      QPixmap mapa(mundo.rutaImagen);
-      if (mapa.isNull()) {
-        ocultarMapa();
-        return;
-      }
-      ui.infoMundo->setPixmap(
-          mapa.scaled(ui.infoMundo->contentsRect().size(),
-                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
-      ui.infoMundo->setVisible(true);
-      return;
-    }
-  }
-  ocultarMapa();
-}
-
-void ControladorNuevaPartida::ocultarMapa() {
-  ui.infoMundo->clear();
-  ui.infoMundo->setVisible(false);
-}
-
 void ControladorNuevaPartida::limpiarPagina() {
   mundos->deseleccionar();
-  ocultarMapa();
   ui.campoNombrePartida->clear();
   actualizarBotonAvanzar();
   datosPartida = DatosPartida{};
