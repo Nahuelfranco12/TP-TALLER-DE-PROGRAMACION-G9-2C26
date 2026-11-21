@@ -1,8 +1,11 @@
 #include "dibujar_personaje.h"
-#include "constantes_pantallas.h"
+
 #include <QColor>
 #include <QImage>
 #include <QPainter>
+#include <QPoint>
+
+#include "constantes_pantallas.h"
 
 namespace {
 QPixmap recortarCelda(const QPixmap &hoja, const CoordenadaSprite &coord,
@@ -33,14 +36,21 @@ const CoordenadaSprite &opcionValida(const QList<CoordenadaSprite> &opciones,
 }
 } // namespace
 
+QPixmap HojaPrenda::recortar(int indice) const {
+  return recortarCelda(hoja, opcionValida(opciones, indice), ancho, alto);
+}
+
 DibujarPersonaje::DibujarPersonaje()
-    : pelos(COORDENADAS_PELOS), gorros(COORDENADAS_GORROS),
-      pantalones(COORDENADAS_PANTALONES), remeras(COORDENADAS_REMERAS) {
-  hojaCuerpo.load(RUTA_TIPOS_CUERPO);
-  hojaPelo.load(RUTA_TIPOS_PELO);
-  hojaGorro.load(RUTA_TIPOS_GORRO);
-  hojaPantalon.load(RUTA_TIPOS_PANTALON);
-  hojaRemera.load(RUTA_TIPOS_REMERA);
+    : hojaSpritesCuerpo(RUTA_TIPOS_CUERPO),
+      pelo{QPixmap(RUTA_TIPOS_PELO), COORDENADAS_PELOS, ANCHO_PELO, ALTO_PELO},
+      gorro{QPixmap(RUTA_TIPOS_GORRO), COORDENADAS_GORROS, ANCHO_GORRO,
+            ALTO_GORRO},
+      pantalon{QPixmap(RUTA_TIPOS_PANTALON), COORDENADAS_PANTALONES,
+               ANCHO_PANTALON, ALTO_PANTALON},
+      remera{QPixmap(RUTA_TIPOS_REMERA), COORDENADAS_REMERAS, ANCHO_REMERA,
+             ALTO_REMERA} {
+  pantalon.hoja = colorear(pantalon.hoja, COLOR_PANTALON);
+  pelo.hoja = colorear(pelo.hoja, COLOR_PELO);
 }
 
 QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
@@ -51,29 +61,16 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
   QPainter pintor(&lienzo);
   const QPoint cuerpo(X_CUERPO_EN_LIENZO, Y_CUERPO_EN_LIENZO);
 
-  pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_CUERPO_EN_HOJA, Y_CUERPO_EN_HOJA,
-                                            ANCHO_CUERPO, ALTO_CUERPO));
-  pintor.drawPixmap(
-      cuerpo,
-      colorear(recortarCelda(hojaPantalon,
-                             opcionValida(pantalones, personaje.ropa.pantalon),
-                             ANCHO_PANTALON, ALTO_PANTALON),
-               COLOR_PANTALON));
+  pintor.drawPixmap(cuerpo,
+                    hojaSpritesCuerpo.copy(X_CUERPO_EN_HOJA, Y_CUERPO_EN_HOJA,
+                                           ANCHO_CUERPO, ALTO_CUERPO));
+  pintor.drawPixmap(cuerpo, pantalon.recortar(personaje.ropa.pantalon));
   pintor.drawPixmap(cuerpo + QPoint(X_REMERA_EN_CUERPO, Y_REMERA_EN_CUERPO),
-                    recortarCelda(hojaRemera,
-                                  opcionValida(remeras, personaje.ropa.remera),
-                                  ANCHO_REMERA, ALTO_REMERA));
-  pintor.drawPixmap(cuerpo, hojaCuerpo.copy(X_BRAZOS, Y_CUERPO_EN_HOJA,
-                                            ANCHO_CUERPO, ALTO_CUERPO));
-  pintor.drawPixmap(
-      cuerpo,
-      colorear(recortarCelda(hojaPelo, opcionValida(pelos, personaje.ropa.pelo),
-                             ANCHO_PELO, ALTO_PELO),
-               COLOR_PELO));
-  pintor.drawPixmap(QPoint(),
-                    recortarCelda(hojaGorro,
-                                  opcionValida(gorros, personaje.ropa.gorro),
-                                  ANCHO_GORRO, ALTO_GORRO));
+                    remera.recortar(personaje.ropa.remera));
+  pintor.drawPixmap(cuerpo, hojaSpritesCuerpo.copy(X_BRAZOS, Y_CUERPO_EN_HOJA,
+                                                   ANCHO_CUERPO, ALTO_CUERPO));
+  pintor.drawPixmap(cuerpo, pelo.recortar(personaje.ropa.pelo));
+  pintor.drawPixmap(QPoint(), gorro.recortar(personaje.ropa.gorro));
   pintor.end();
 
   return lienzo.scaled(ANCHO_LIENZO * escala, ALTO_LIENZO * escala,
@@ -81,14 +78,17 @@ QPixmap DibujarPersonaje::dibujar(const DatosPersonaje &personaje,
 }
 
 const QList<CoordenadaSprite> &DibujarPersonaje::opcionesPelo() const {
-  return pelos;
+  return pelo.opciones;
 }
+
 const QList<CoordenadaSprite> &DibujarPersonaje::opcionesGorro() const {
-  return gorros;
+  return gorro.opciones;
 }
+
 const QList<CoordenadaSprite> &DibujarPersonaje::opcionesPantalon() const {
-  return pantalones;
+  return pantalon.opciones;
 }
+
 const QList<CoordenadaSprite> &DibujarPersonaje::opcionesRemera() const {
-  return remeras;
+  return remera.opciones;
 }
