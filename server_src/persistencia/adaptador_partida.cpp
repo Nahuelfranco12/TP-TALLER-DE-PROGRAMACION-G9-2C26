@@ -193,3 +193,12 @@ void restaurarJugador(Player &jugador, const JugadorGuardado &guardado) {
   vaciarInventario(jugador);
   cargarInventario(jugador, guardado.inventario);
 }
+
+void restaurarPartida(World &mundo, const PartidaGuardada &partida) {
+  Sector *granja = mundo.getSector(IdSector::FARM);
+  if (granja == nullptr)
+    throw std::logic_error(ERROR_ADAPTADOR_SIN_GRANJA);
+  mundo.setDayNumber(partida.dia);
+  for (const CeldaGuardada &celda : partida.granja.aradas)
+    granja->till(Position(celda.x, celda.y));
+}
