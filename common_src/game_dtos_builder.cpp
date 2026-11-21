@@ -107,6 +107,18 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     break;
   case EntityTypes::BED:
       return EntityTypeDto::BED;
+  case EntityTypes::NPC:
+    switch (e.merchant.type) {
+    case MerchantType::PIERRE:
+      return EntityTypeDto::NPC_PIERRE;
+    case MerchantType::CLINT:
+      return EntityTypeDto::NPC_CLINT;
+    case MerchantType::ROBIN:
+      return EntityTypeDto::NPC_ROBIN;
+    case MerchantType::MARNIE:
+      return EntityTypeDto::NPC_MARNIE;
+    }
+    break;
   default:
     break;
   }

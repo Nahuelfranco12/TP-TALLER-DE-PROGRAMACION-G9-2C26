@@ -6,6 +6,7 @@
 #include "entities/cow.h"
 #include "entities/enemies/enemies_factory.h"
 #include "entities/mineral.h"
+#include "entities/merchants_factory.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -73,7 +74,7 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
   auto sectorIt = this->sectors.find(idSector);
   if (sectorIt == this->sectors.end())
     return;
-  
+
   if (!this->createCabin(id, Position(2 + 10 * id, 1)))
     return;
 
@@ -119,6 +120,57 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
     return false;
   }
   return it->second->tryAddEntity(animal, pos);
+}
+
+bool World::spawnMerchant(IdSector sectorId, Position pos, MerchantType type) {
+  auto it = this->sectors.find(sectorId);
+  if (it == this->sectors.end())
+    return false;
+
+  MerchantsFactory factory;
+  std::unique_ptr<Entity> merchant = factory.create(type, pos);
+  if (!merchant)
+    return false;
+  return it->second->tryAddEntity(merchant, pos);
+}
+
+bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
+  auto it = this->sectors.find(sectorId);
+  if (it == this->sectors.end())
+    return false;
+
+  EnemiesFactory factory;
+  std::unique_ptr<Entity> enemy;
+  switch (type) {
+  case EnemyType::SKELETON:
+    enemy = factory.createEnemy(type, pos);
+    break;
+
+  case EnemyType::ORC:
+    enemy = factory.createEnemy(type, pos);
+    break;
+
+  case EnemyType::TRAP_FLAME:
+    enemy = factory.createTrap(type, pos);
+    break;
+
+  case EnemyType::TRAP_PINCH:
+    enemy = factory.createTrap(type, pos);
+    break;
+
+  case EnemyType::VAMPIRE_MALE:
+  case EnemyType::VAMPIRE_FEMALE:
+    return false;
+
+  case EnemyType::SKULL_BLUE:
+  case EnemyType::SKULL_GREEN:
+    enemy = factory.createEnemy(type, pos);
+    break;
+  }
+
+  if (!enemy)
+    return false;
+  return it->second->tryAddEntity(enemy, pos);
 }
 
 Player *World::getPlayer(int id) {

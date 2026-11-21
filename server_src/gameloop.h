@@ -25,6 +25,9 @@ private:
 
   WorldState make_world_state() const;
   void process_commands();
+  void setupVillage();
+  void setupFarm();
+  void addWorldSectors();
 
 public:
   Gameloop(Queue<std::unique_ptr<Command>> &received_queue,

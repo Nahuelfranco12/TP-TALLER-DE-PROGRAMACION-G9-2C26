@@ -39,6 +39,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_CHEAT_END_DAY 21
 #define OP_CHEAT_ENEMIES_DAMAGE 22
 #define OP_LIST_MAPS 23
+#define OP_INTERACT 23
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

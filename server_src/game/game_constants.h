@@ -121,6 +121,12 @@
 #define VAMPIRE_MALE_DAMAGE 20
 #define VAMPIRE_MALE_TICKS_PER_MOVE 15
 
+#define INTERACT_DISTANCE 2
+
+// PRECIOS
+
+#define PRICE_SEED 10
+
 enum IdSector {
   FARM,
   VILLAGE,
@@ -170,6 +176,8 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
+
+enum class MerchantType { PIERRE, CLINT, ROBIN, MARNIE };
 
 enum class EnemyType {
   SKELETON,

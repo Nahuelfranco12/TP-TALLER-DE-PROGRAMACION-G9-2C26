@@ -89,6 +89,12 @@ void ClientProtocol::send_chat_dto(const ChatDto &dto) {
   protocol.send_string(dto.text);
 }
 
+void ClientProtocol::send_interact_dto(const InteractDto &dto) {
+  protocol.send_u8(OP_INTERACT);
+  protocol.send_u16(static_cast<uint16_t>(dto.target.x));
+  protocol.send_u16(static_cast<uint16_t>(dto.target.y));
+}
+
 void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {

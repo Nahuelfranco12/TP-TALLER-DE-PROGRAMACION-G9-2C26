@@ -11,3 +11,10 @@ bool InventorySlot::add() {
   }
   return false;
 }
+
+bool InventorySlot::remove() {
+  if (this->count == 0)
+    return false;
+  this->count--;
+  return true;
+}

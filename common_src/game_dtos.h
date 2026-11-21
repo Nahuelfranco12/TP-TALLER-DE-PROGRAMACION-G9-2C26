@@ -137,6 +137,10 @@ enum class EntityTypeDto {
   MINERAL_COAL,
   CROP,
   BED,
+  NPC_PIERRE,
+  NPC_CLINT,
+  NPC_ROBIN,
+  NPC_MARNIE,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo
@@ -207,6 +211,10 @@ struct TileDto {
   bool isDoor;
   DoorTypeDto doorType = VillageEntryDto;
   bool tilled;
+};
+
+struct InteractDto {
+  GamePositionDto target;
 };
 
 struct BuildingDto {

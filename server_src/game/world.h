@@ -49,6 +49,8 @@ public:
                  IdSector idSector);
   void removePlayer(int id);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
+  bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
+  bool spawnMerchant(IdSector sectorId, Position pos, MerchantType type);
 
   /*
   * getters
@@ -74,7 +76,7 @@ public:
   void addChat(const ChatMessageState &message);
   void clearChat();
   Player *getPlayerByName(const std::string &name);
-  
+
   void tick();
   void endDay();
 

@@ -216,6 +216,13 @@ AttackDto ServerProtocol::receive_attack() {
   return AttackDto{byte_to_direction(protocol.receive_u8())};
 }
 
+InteractDto ServerProtocol::receive_interact() {
+  InteractDto dto;
+  dto.target.x = protocol.receive_u16();
+  dto.target.y = protocol.receive_u16();
+  return dto;
+}
+
 WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }

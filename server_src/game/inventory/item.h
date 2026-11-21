@@ -2,6 +2,7 @@
 #define ITEM_H_
 
 #include <variant>
+#include <memory>
 
 #include "../game_constants.h"
 
@@ -23,13 +24,17 @@ public:
   const ItemSubtype &getSubtype() const { return subtype; }
 
   virtual bool stacksWith(const Item &other) const {
-    return this->type == other.getType();
+    return isSameProduct(other);
   }
 
   int subtypeToInt() const {
     return std::visit([](auto e) { return static_cast<int>(e); },
                       this->subtype);
   }
+
+  bool isSameProduct(const Item &other) const {
+    return getType() == other.getType() && subtypeToInt() == other.subtypeToInt();
+  } 
 };
 
 #endif // ITEM_H_

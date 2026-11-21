@@ -72,3 +72,30 @@ bool Inventory::giveSlotTo(int index, Inventory &other) {
   items.erase(it);
   return true;
 }
+
+int Inventory::countOf(const Item &sample) const {
+  int total = 0;
+  for (const InventorySlot &slot : this->items)
+    if (slot.getItem().isSameProduct(sample))
+      total += static_cast<int>(slot.getCount());
+  return total;
+}
+
+bool Inventory::remove(const Item &sample, int amount) {
+  if (amount <= 0 || countOf(sample) < amount)
+    return false;
+
+  auto it = this->items.begin();
+  while (it != this->items.end() && amount > 0) {
+    if (!it->getItem().isSameProduct(sample)) {
+      it++;
+    } else {
+      it->remove();
+      amount--;
+      if (it->getCount() == 0)
+        it = this->items.erase(it);
+    }
+  }
+  return true;
+}
+

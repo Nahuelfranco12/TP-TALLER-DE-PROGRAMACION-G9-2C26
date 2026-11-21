@@ -177,6 +177,7 @@ int main(int argc, char *argv[]) try {
         int camara_y =
             personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
         bool acepto = false;
+        GamePositionDto posicion_npc;
 
         if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
@@ -198,8 +199,8 @@ int main(int argc, char *argv[]) try {
             break;
           }
         } else if (zona == SectorTypeDto::VILLAGE &&
-                   pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
-          // Se abre la tienda del npc
+                   pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y, posicion_npc)) {
+          client.send_interact(posicion_npc);
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
           if (inventario.click(mouse_x, mouse_y, window.GetWidth(),
                                window.GetHeight())) {
