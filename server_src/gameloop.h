@@ -31,7 +31,7 @@ private:
 
 public:
   Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-           ClientQueues &clients, const std::string &map_path);
+           ClientQueues &clients, const std::string &map_path, std::string code);
 
   void run() override;
 };

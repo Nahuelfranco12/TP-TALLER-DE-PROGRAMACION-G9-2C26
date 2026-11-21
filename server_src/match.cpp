@@ -6,9 +6,9 @@
 #include "../common_src/constants.h"
 #include "game/game_constants.h"
 
-Match::Match(const std::string &name, const std::string &map_path)
-    : name(name), received_queue(QUEUE_MAX_SIZE),
-  gameloop(received_queue, clients, map_path) {
+Match::Match(const std::string &name, const std::string &map_path, std::string code)
+    : name(name), received_queue(QUEUE_MAX_SIZE), code(code),
+  gameloop(received_queue, clients, map_path, code) {
   gameloop.start();
 }
 

@@ -7,9 +7,9 @@
 #include "editor_parser/editor_parser.h"
 
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-                   ClientQueues &clients, const std::string &map_path)
+                   ClientQueues &clients, const std::string &map_path, std::string code)
     : received_queue(received_queue), clients(clients),
-      world(EditorParser(map_path)()) {}
+      world(EditorParser(map_path, code)()) {}
 
 void Gameloop::process_commands() {
   std::unique_ptr<Command> cmd;

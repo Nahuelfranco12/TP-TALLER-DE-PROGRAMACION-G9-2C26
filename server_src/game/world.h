@@ -17,6 +17,7 @@
 class World {
 private:
   std::string name;
+  std::string code;
   DaySpeed speed;
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
@@ -30,7 +31,7 @@ private:
   void sendPlayersToFarm();
 
 public:
-  explicit World(const std::string& name, size_t dayNumber = 1) : name(name), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
+  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
 
   void setDayNumber(size_t dayNumber) { this->dayNumber = dayNumber; }
 

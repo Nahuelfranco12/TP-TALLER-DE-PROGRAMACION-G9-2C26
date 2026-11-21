@@ -297,7 +297,7 @@ World EditorParser::operator()() const {
     if (!version || *version != VERSION_ARCHIVO_MAPA)
         throw std::runtime_error(TEXTO_ERROR_VERSION);
 
-    World world(*name);
+    World world(*name, this->code);
     parseFarm(world, route);
     parseVillage(world, route);
     parseCavern(world, route);

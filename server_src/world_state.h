@@ -149,6 +149,9 @@ struct GameTime {
 };
 
 struct WorldState {
+  std::string name;
+  std::string code;
+
   std::vector<SectorState> sectors;
   std::vector<PlayerState> players;
   size_t dayNumber = 1;

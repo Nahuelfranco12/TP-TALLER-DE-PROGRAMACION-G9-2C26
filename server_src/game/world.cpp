@@ -237,6 +237,9 @@ GameTime World::currentTime() const {
 
 WorldState World::state() const {
   WorldState state;
+  state.name = this->name;
+  state.code = this->code;
+
   state.sectors.reserve(sectors.size());
 
   for (const auto &[id, sector] : sectors)

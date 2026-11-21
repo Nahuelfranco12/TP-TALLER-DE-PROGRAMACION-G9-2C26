@@ -15,6 +15,7 @@ private:
     };
 
     std::string fileRoute;
+    std::string code;
 
     static std::vector<Object> readObjects(const toml::table& table,
                                            const std::string& zone,
@@ -38,7 +39,7 @@ private:
     void parseVillage(World& world, const toml::table& route) const;
 
 public:
-    explicit EditorParser(const std::string& fileRoute) : fileRoute(fileRoute) {}
+    explicit EditorParser(const std::string& fileRoute, std::string code) : fileRoute(fileRoute), code(code) {}
 
     World operator()() const;
 };

@@ -60,7 +60,7 @@ std::string Lobby::create_match(const std::string &name,
 
   std::string code = generate_code();
   try {
-    auto match = std::make_unique<Match>(name, selected_map->path);
+    auto match = std::make_unique<Match>(name, selected_map->path, code);
     matches.emplace(code, std::move(match));
   } catch (const std::exception &exception) {
     std::cerr << "No se pudo crear la partida con el mapa '" << map_path
