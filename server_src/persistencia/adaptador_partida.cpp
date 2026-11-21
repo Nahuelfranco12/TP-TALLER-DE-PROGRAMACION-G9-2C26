@@ -5,8 +5,12 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include <memory>
+#include <variant>
 
 #include "constantes_persistencia.h"
+#include "../game/inventory/item_factory.h"
+#include "ids_partida.h"
 
 namespace {
 ItemSubtype subtipoDe(const ItemState &item) {
@@ -98,6 +102,67 @@ std::vector<CultivoGuardado> cultivosDe(const WorldState &estado) {
   return cultivos;
 }
 
+using TablaPrecios = std::vector<std::pair<ClaveItem, int>>;
+
+const TablaPrecios &tablaPrecios() {
+  static const TablaPrecios tabla{
+      {{ItemType::SEED, CropTypes::STRAWBERRY}, PRICE_SEED},
+      {{ItemType::SEED, CropTypes::GREEN_ONION}, PRICE_SEED},
+      {{ItemType::SEED, CropTypes::POTATO}, PRICE_SEED},
+      {{ItemType::SEED, CropTypes::PUMPKIN}, PRICE_SEED},
+      {{ItemType::CROP, CropTypes::STRAWBERRY}, PRICE_STRAWBERRY},
+      {{ItemType::CROP, CropTypes::GREEN_ONION}, PRICE_GREEN_ONION},
+      {{ItemType::CROP, CropTypes::POTATO}, PRICE_POTATO},
+      {{ItemType::CROP, CropTypes::PUMPKIN}, PRICE_PUMPKIN},
+      {{ItemType::MINERAL, MineralTypes::GOLD}, PRICE_GOLD},
+      {{ItemType::MINERAL, MineralTypes::IRON}, PRICE_IRON},
+      {{ItemType::MINERAL, MineralTypes::LAPIZLAZULI}, PRICE_LAPIZLAZULI},
+      {{ItemType::MINERAL, MineralTypes::COAL}, PRICE_COAL},
+      {{ItemType::ANIMAL_PRODUCT, AnimalType::COW}, PRICE_MILK},
+      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, PRICE_EGG}};
+  return tabla;
+}
+
+int precioDe(const ClaveItem &clave) {
+  auto encontrado = std::ranges::find_if(
+      tablaPrecios(),
+      [&clave](const auto &entrada) { return entrada.first == clave; });
+  if (encontrado == tablaPrecios().end())
+    throw std::logic_error(ERROR_ADAPTADOR_ITEM_SIN_PRECIO);
+  return encontrado->second;
+}
+
+int subtipoEntero(const ItemSubtype &subtipo) {
+  return std::visit([](auto valor) { return static_cast<int>(valor); },
+                    subtipo);
+}
+
+std::unique_ptr<Item> crearItem(const ItemGuardado &item) {
+  const ItemFactory fabrica;
+  return fabrica.create(item.tipo, subtipoEntero(item.subtipo),
+                        precioDe(ClaveItem{item.tipo, item.subtipo}),
+                        item.calidad);
+}
+
+void vaciarInventario(Player &jugador) {
+  Inventory &inventario = jugador.getInventory();
+  const PlayerState estado = jugador.state();
+  for (const ItemState &item : estado.inventory.items) {
+    if (esGuardable(item)) {
+      std::unique_ptr<Item> muestra = crearItem(itemGuardadoDe(item));
+      inventario.remove(*muestra, inventario.countOf(*muestra));
+    }
+  }
+}
+
+void cargarInventario(Player &jugador,
+                      const std::vector<ItemGuardado> &items) {
+  Inventory &inventario = jugador.getInventory();
+  for (const ItemGuardado &item : items)
+    for (int i = 0; i < item.cantidad; ++i)
+      inventario.addItem(crearItem(item));
+}
+
 } // namespace
 
 PartidaGuardada extraerPartida(const World &mundo,
@@ -125,4 +190,6 @@ void restaurarJugador(Player &jugador, const JugadorGuardado &guardado) {
   jugador.setLife(guardado.vida);
   jugador.setEnergy(guardado.energia);
   jugador.setCoins(guardado.oro);
+  vaciarInventario(jugador);
+  cargarInventario(jugador, guardado.inventario);
 }

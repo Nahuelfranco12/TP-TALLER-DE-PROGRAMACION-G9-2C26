@@ -89,5 +89,6 @@
 #define MINIMO_JUGADORES_MULTIPLAYER 2
 #define ERROR_ADAPTADOR_SIN_GRANJA "La partida no tiene granja"
 #define ERROR_ADAPTADOR_ITEM_SIN_SUBTIPO "Hay un ítem sin subtipo para guardar"
+#define ERROR_ADAPTADOR_ITEM_SIN_PRECIO "Item sin precio"
 
 #endif // CONSTANTES_PERSISTENCIA_H_
