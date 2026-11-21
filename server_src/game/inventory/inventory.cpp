@@ -106,3 +106,22 @@ bool Inventory::remove(const Item &sample, int amount) {
   return remove(sample, amount, ignored);
 }
 
+
+const Item *Inventory::itemAt(int index) const {
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return nullptr;
+  auto it = items.begin();
+  std::advance(it, index);
+  return &it->getItem();
+}
+
+bool Inventory::removeFromSlot(int index) {
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return false;
+  auto it = items.begin();
+  std::advance(it, index); 
+  it->remove();
+  if (it->getCount() == 0)
+    items.erase(it);
+  return true;
+}
