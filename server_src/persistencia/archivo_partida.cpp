@@ -10,6 +10,7 @@
 #include <system_error>
 #include <toml++/toml.hpp>
 #include <vector>
+#include <algorithm>
 
 #include "constantes_persistencia.h"
 #include "ids_partida.h"
@@ -227,4 +228,22 @@ PartidaGuardada cargarPartida(const std::string &carpeta) {
       leerValor<bool>(raiz, CLAVE_PARTIDA_MULTIPLAYER, {}),
       leerLista(raiz, CLAVE_PARTIDA_JUGADORES, {}, jugadorDe),
       granjaDe(raiz)};
+}
+
+std::vector<PartidaGuardada> listarPartidas() {
+  std::vector<PartidaGuardada> partidas;
+  std::error_code error;
+  std::filesystem::directory_iterator carpetas(RUTA_PARTIDAS, error);
+  if (error)
+    return partidas;
+  for (const std::filesystem::directory_entry &carpeta : carpetas) {
+    if (!carpeta.is_directory(error))
+      continue;
+    try {
+      partidas.push_back(cargarPartida(carpeta.path().string()));
+    } catch (const std::runtime_error &) {
+    }
+  }
+  std::ranges::sort(partidas, {}, &PartidaGuardada::nombre);
+  return partidas;
 }
