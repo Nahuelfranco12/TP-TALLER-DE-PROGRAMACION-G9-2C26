@@ -120,3 +120,9 @@ PartidaGuardada extraerPartida(const World &mundo,
   partida.granja.cultivos = cultivosDe(estado);
   return partida;
 }
+
+void restaurarJugador(Player &jugador, const JugadorGuardado &guardado) {
+  jugador.setLife(guardado.vida);
+  jugador.setEnergy(guardado.energia);
+  jugador.setCoins(guardado.oro);
+}
