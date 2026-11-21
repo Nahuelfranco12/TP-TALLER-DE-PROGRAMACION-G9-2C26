@@ -24,6 +24,10 @@ ItemSubtype subtipoDe(const ItemState &item) {
   throw std::logic_error(ERROR_ADAPTADOR_ITEM_SIN_SUBTIPO);
 }
 
+bool esGuardable(const ItemState &item) {
+  return item.type != ItemType::DECORATION_PRODUCT;
+}
+
 ItemGuardado itemGuardadoDe(const ItemState &item) {
   return ItemGuardado{item.type, subtipoDe(item), item.quality, item.count};
 }
@@ -37,8 +41,10 @@ OutfitGuardado outfitGuardadoDe(const PlayerOutfitState &outfit) {
 JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
   PlayerState estado = jugador.state();
   std::vector<ItemGuardado> inventario;
-  for (const ItemState &item : estado.inventory.items)
-    inventario.push_back(itemGuardadoDe(item));
+  for (const ItemState &item : estado.inventory.items){
+  	if(esGuardable(item))
+   		inventario.push_back(itemGuardadoDe(item));
+  }
   return JugadorGuardado{jugador.getName(),
                          static_cast<std::size_t>(estado.id),
                          outfitGuardadoDe(estado.outfit),
@@ -68,6 +74,30 @@ std::vector<CeldaGuardada> aradasDe(const Sector &granja) {
         aradas.push_back(CeldaGuardada{x, y});
   return aradas;
 }
+
+CultivoGuardado cultivoGuardadoDe(const EntityState &entidad) {
+  const CropState &cultivo = entidad.crop;
+  return CultivoGuardado{cultivo.type,
+                         entidad.position.x,
+                         entidad.position.y,
+                         cultivo.growthTicks,
+                         cultivo.sinceWatered,
+                         cultivo.thirstyTicks,
+                         cultivo.readyTicks,
+                         cultivo.extraHarvestsLeft,
+                         cultivo.luck};
+}
+
+std::vector<CultivoGuardado> cultivosDe(const WorldState &estado) {
+  std::vector<CultivoGuardado> cultivos;
+  for (const SectorState &sector : estado.sectors)
+    if (sector.id == IdSector::FARM)
+      for (const EntityState &entidad : sector.entities)
+        if (entidad.type == EntityTypes::CROP)
+          cultivos.push_back(cultivoGuardadoDe(entidad));
+  return cultivos;
+}
+
 } // namespace
 
 PartidaGuardada extraerPartida(const World &mundo,
@@ -76,12 +106,17 @@ PartidaGuardada extraerPartida(const World &mundo,
   if (granja == nullptr)
     throw std::logic_error(ERROR_ADAPTADOR_SIN_GRANJA);
 
+  const WorldState estado = mundo.state();
   PartidaGuardada partida = anterior;
-  partida.dia = mundo.state().dayNumber;
+  partida.nombre = estado.name;
+  if (partida.codigo.empty())
+    partida.codigo = estado.code;
+  partida.dia = estado.dayNumber;
   for (const auto &[id, jugador] : mundo.getPlayers())
     actualizarJugador(partida.jugadores, jugadorGuardadoDe(*jugador));
   partida.multiplayer =
       partida.jugadores.size() >= MINIMO_JUGADORES_MULTIPLAYER;
   partida.granja.aradas = aradasDe(*granja);
+  partida.granja.cultivos = cultivosDe(estado);
   return partida;
 }
