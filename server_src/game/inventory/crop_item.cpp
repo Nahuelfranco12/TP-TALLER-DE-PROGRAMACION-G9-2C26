@@ -15,3 +15,19 @@ bool CropItem::stacksWith(const Item &other) const {
     return false;
   return this->getSubtype() == o->getSubtype() && this->quality == o->quality;
 }
+
+double CropItem::priceMultiplier() const {
+  switch (quality) {
+  case CropQuality::BASE:
+    return CROP_MULTIPLIER_BASE;
+  case CropQuality::GOOD:
+    return CROP_MULTIPLIER_GOOD;
+  case CropQuality::EXCELENT:
+    return CROP_MULITPLIER_EXCELENT;
+  case CropQuality::INCREDIBLE:
+    return CROP_MULTIPLIER_INCREDIBLE;
+  case CropQuality::PERFECT:
+    return CROP_MULTIPLIER_PERFECT;
+  }
+  return CROP_MULTIPLIER_BASE;
+}

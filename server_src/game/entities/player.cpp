@@ -123,10 +123,12 @@ int Player::buy(const Item &sample, int price, int amount) {
   return bought;
 }
 
-bool Player::sell(const Item &sample, int price, int amount) {
-  if (!inventory.remove(sample, amount))
+bool Player::sell(const Item &sample, int price, int amount, int &earned) {
+  double multipliers = 0;
+  if (!inventory.remove(sample, amount, multipliers))
     return false;
-  coins += price * amount;
+  earned = static_cast<int>(price * multipliers);
+  coins += earned;
   return true;
 }
 

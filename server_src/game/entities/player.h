@@ -105,8 +105,8 @@ public:
   * Tradeo
   */
   int buy(const Item &sample, int price, int amount);
-  bool sell(const Item &sample, int price, int amount);
-  
+  bool sell(const Item &sample, int price, int amount, int &earned);
+
   void startTalkingTo(Merchant &merchant) { talkingTo = &merchant; }
   Merchant *getTalkingTo() const { return talkingTo; }
 

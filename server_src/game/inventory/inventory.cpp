@@ -81,15 +81,17 @@ int Inventory::countOf(const Item &sample) const {
   return total;
 }
 
-bool Inventory::remove(const Item &sample, int amount) {
+bool Inventory::remove(const Item &sample, int amount,  double &multipliers) {
   if (amount <= 0 || countOf(sample) < amount)
     return false;
 
+  multipliers = 0;
   auto it = this->items.begin();
   while (it != this->items.end() && amount > 0) {
     if (!it->getItem().isSameProduct(sample)) {
       it++;
     } else {
+      multipliers += it->getItem().priceMultiplier();
       it->remove();
       amount--;
       if (it->getCount() == 0)
@@ -97,5 +99,10 @@ bool Inventory::remove(const Item &sample, int amount) {
     }
   }
   return true;
+}
+
+bool Inventory::remove(const Item &sample, int amount) {
+  double ignored = 0;
+  return remove(sample, amount, ignored);
 }
 
