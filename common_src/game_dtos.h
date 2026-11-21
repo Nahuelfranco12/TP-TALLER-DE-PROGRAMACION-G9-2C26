@@ -73,6 +73,8 @@ enum class ItemTypeDto {
   CROP_GREEN_ONION,
   CROP_POTATO,
   CROP_PUMPKIN,
+  ANIMAL_COW,
+  ANIMAL_CHICKEN,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -164,6 +166,11 @@ struct AttackDto {
 
 struct ChatDto {
   std::string text;
+};
+
+struct PlaceDto {
+  int slotIndex = 0;
+  DirectionDto direction = DirectionDto::Up;
 };
 
 struct SleepDto {};

@@ -47,6 +47,7 @@ public:
   InteractDto receive_interact();
   ChatDto receive_chat();
   WaterDto receive_cheat_water();
+  PlaceDto receive_place();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

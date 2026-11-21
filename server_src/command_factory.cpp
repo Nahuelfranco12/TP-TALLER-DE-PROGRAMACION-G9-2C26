@@ -56,6 +56,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<AttackCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const PlaceDto &dto) {
+  return std::make_unique<PlaceCommand>(player_id, dto.slotIndex, dto.direction);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
   return std::make_unique<CheatWaterCropCommand>(player_id, dto.direction);

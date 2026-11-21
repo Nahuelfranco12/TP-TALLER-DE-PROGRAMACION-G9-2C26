@@ -220,6 +220,13 @@ InteractDto ServerProtocol::receive_interact() {
   return dto;
 }
 
+PlaceDto ServerProtocol::receive_place() {
+  PlaceDto dto;
+  dto.slotIndex = protocol.receive_u8();
+  dto.direction = byte_to_direction(protocol.receive_u8());
+  return dto;
+}
+
 WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }
