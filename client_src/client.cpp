@@ -19,7 +19,6 @@
 #include "actions/mine_action.h"
 #include "actions/move_action.h"
 #include "actions/plant_action.h"
-#include "actions/sleep_action.h"
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
@@ -83,10 +82,6 @@ void Client::send_interact(GamePositionDto &position) {
 
 void Client::send_place(int slotIndex, DirectionDto direction) {
   to_send_queue.try_push(std::make_unique<PlaceAction>(slotIndex, direction));
-}
-
-void Client::send_sleep() {
-  to_send_queue.try_push(std::make_unique<SleepAction>());
 }
 
 void Client::send_cheat_water(DirectionDto direction) {

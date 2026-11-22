@@ -39,7 +39,6 @@ target_sources(taller_client
     actions/water_action.cpp
     actions/attack_action.cpp
     actions/chat_action.cpp
-    actions/sleep_action.cpp
     actions/place_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp

@@ -45,7 +45,6 @@ public:
   void send_water_dto(const WaterDto &dto);
   void send_attack_dto(const AttackDto &dto);
   void send_chat_dto(const ChatDto &dto);
-  void send_sleep();
   void send_interact_dto(const InteractDto &dto);
   void send_place_dto(const PlaceDto &dto);
   void send_water_cheat(const WaterDto &dto);

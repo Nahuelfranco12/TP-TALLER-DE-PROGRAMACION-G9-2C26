@@ -101,8 +101,6 @@ void ClientProtocol::send_place_dto(const PlaceDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
-
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));

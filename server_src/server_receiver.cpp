@@ -95,9 +95,6 @@ void ServerReceiver::run() {
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
         break;
-      case OP_SLEEP:
-        match->push_command(factory.create_sleep(client_id));
-        break;
       case OP_CHEAT_END_DAY:
         match->push_command(factory.create_cheat_end_day(client_id));
         break;

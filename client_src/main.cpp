@@ -338,8 +338,6 @@ int main(int argc, char *argv[]) try {
             personaje.picar();
             client.send_mine(dir);
           }
-        } else if (zona == SectorTypeDto::CABIN) {
-          client.send_sleep();
         } else if (inventario.tengo_en_la_mano(PALA)) {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {

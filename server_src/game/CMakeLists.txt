@@ -39,7 +39,6 @@ target_sources(taller_game
     commands/gift_offer_command.cpp
     commands/gift_response_command.cpp
     commands/chat_command.cpp
-    commands/sleep_command.cpp
     commands/chat/merchant_command.cpp
     commands/chat/buy_command.cpp
     commands/chat/sell_command.cpp
