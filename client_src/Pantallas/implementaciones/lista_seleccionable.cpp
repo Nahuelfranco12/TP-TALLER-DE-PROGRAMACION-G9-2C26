@@ -8,33 +8,33 @@ ListaSeleccionable::ListaSeleccionable(QWidget *contenedor, QObject *parent)
     contenedor->setLayout(new QVBoxLayout());
 }
 
-void ListaSeleccionable::cargar(const QList<DatosTarjeta> &items) {
-  limpiar();
+void ListaSeleccionable::cargarTarjetas(const QList<DatosTarjeta> &items) {
+  borrarTodasLasTarjetas();
   for (const DatosTarjeta &datos : items) {
     TarjetaSeleccionable *tarjeta = new TarjetaSeleccionable(datos, contenedor);
     connect(tarjeta, &TarjetaSeleccionable::tarjetaClickeada, this,
-            &ListaSeleccionable::seleccionar);
+            &ListaSeleccionable::seleccionarTarjeta);
     contenedor->layout()->addWidget(tarjeta);
   }
 }
 
-void ListaSeleccionable::deseleccionar() {
+void ListaSeleccionable::deseleccionarTarjeta() {
   if (tarjetaSeleccionada != nullptr)
     tarjetaSeleccionada->setSeleccionada(false);
   tarjetaSeleccionada = nullptr;
 }
 
-bool ListaSeleccionable::haySeleccion() const {
+bool ListaSeleccionable::hayTarjetaSeleccionada() const {
   return tarjetaSeleccionada != nullptr;
 }
 
-QString ListaSeleccionable::seleccionado() const {
-  if (!haySeleccion())
+QString ListaSeleccionable::idTarjetaSeleccionada() const {
+  if (!hayTarjetaSeleccionada())
     return QString();
   return tarjetaSeleccionada->getId();
 }
 
-void ListaSeleccionable::limpiar() {
+void ListaSeleccionable::borrarTodasLasTarjetas() {
   tarjetaSeleccionada = nullptr;
   QLayoutItem *item;
   while ((item = contenedor->layout()->takeAt(0)) != nullptr) {
@@ -43,12 +43,13 @@ void ListaSeleccionable::limpiar() {
   }
 }
 
-void ListaSeleccionable::setAlSeleccionar(std::function<void()> accion) {
+void ListaSeleccionable::setAccionAlSeleccionarTarjeta(
+    std::function<void()> accion) {
   accionAlSeleccionar = accion;
 }
 
-void ListaSeleccionable::seleccionar(TarjetaSeleccionable *tarjeta) {
-  deseleccionar();
+void ListaSeleccionable::seleccionarTarjeta(TarjetaSeleccionable *tarjeta) {
+  deseleccionarTarjeta();
   tarjeta->setSeleccionada(true);
   tarjetaSeleccionada = tarjeta;
   if (accionAlSeleccionar)

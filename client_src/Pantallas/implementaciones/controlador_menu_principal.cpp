@@ -14,5 +14,5 @@ ControladorMenuPrincipal::ControladorMenuPrincipal(QWidget &ventana,
           [this]() { this->navegador.irAPagina(this->ui.pageRetomarPartida); });
 }
 
-void ControladorMenuPrincipal::limpiarPagina() {}
-void ControladorMenuPrincipal::actualizarBotonAvanzar() {}
+void ControladorMenuPrincipal::reiniciarPagina() {}
+void ControladorMenuPrincipal::actualizarEstadoBotonAvanzar() {}

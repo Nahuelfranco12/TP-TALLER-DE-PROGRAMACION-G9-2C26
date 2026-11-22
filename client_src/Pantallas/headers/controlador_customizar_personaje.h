@@ -13,8 +13,8 @@ public:
                                  const DibujarPersonaje &dibujar,
                                  ServicioLobby &servicio,
                                  QObject *parent = nullptr);
-  void limpiarPagina() override;
-  void actualizarBotonAvanzar() override;
+  void reiniciarPagina() override;
+  void actualizarEstadoBotonAvanzar() override;
 
 private:
   int indicePelo = 0;
@@ -22,13 +22,15 @@ private:
   int indicePantalon = 0;
   int indiceRemera = 0;
 
-  DatosPersonaje personajeElegido() const;
+  DatosPersonaje armarPersonajeElegido() const;
 
-  void conectarBotonesFlechas();
-  void conectarFlechas(QPushButton *anterior, QPushButton *siguiente,
-                       int &indice, const QList<CoordenadaSprite> &opciones);
-  void actualizarPrevisualizacion();
-  void cambiarOpcion(int &indiceActual, int cantidadOpciones, int direccion);
+  void conectarFlechasDeTodasLasPrendas();
+  void conectarFlechasPrenda(QPushButton *anterior, QPushButton *siguiente,
+                             int &indice,
+                             const QList<CoordenadaSprite> &opciones);
+  void redibujarPrevisualizacionPersonaje();
+  void cambiarOpcionPrenda(int &indiceActual, int cantidadOpciones,
+                           int direccion);
   const DibujarPersonaje &dibujar;
   DatosPartida &datosPartida;
   ServicioLobby &servicio;

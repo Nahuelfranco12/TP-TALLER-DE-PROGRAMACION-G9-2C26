@@ -36,7 +36,7 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
       new ControladorCustomizarPersonaje(*this, *ui, *navegador, datosPartida,
                                          dibujante, servicio, this)};
   for (ControladorPagina *controlador : controladores)
-    connect(controlador, &ControladorPagina::partidaIniciada, this,
+    connect(controlador, &ControladorPagina::seInicioPartida, this,
             &QCoreApplication::quit);
 }
 

@@ -50,7 +50,7 @@ bool objetoOcupaCelda(const ObjetoColocado<TipoObjeto> &objeto, int x, int y) {
 
 template <typename TipoObjeto>
 bool seSuperponeConOtro(TipoObjeto tipo, int x, int y,
-                  const ObjetoColocado<TipoObjeto> &otro) {
+                        const ObjetoColocado<TipoObjeto> &otro) {
   TamanioEnCeldas objeto1 = tamanioEnCeldasDe(tipo);
   TamanioEnCeldas objeto2 = tamanioEnCeldasDe(otro.tipo);
   return x < otro.x + objeto2.ancho && otro.x < x + objeto1.ancho &&
@@ -74,7 +74,9 @@ public:
     return x >= 0 && y >= 0 && x < dimensiones.ancho && y < dimensiones.alto;
   }
 
-  Terreno pintarTerrenoEnCelda(int x, int y) const { return terrenos[indiceDeCelda(x, y)]; }
+  Terreno pintarTerrenoEnCelda(int x, int y) const {
+    return terrenos[indiceDeCelda(x, y)];
+  }
 
   void pintarTerrenoConCelda(int x, int y, Terreno terreno) {
     terrenos[indiceDeCelda(x, y)] = terreno;
@@ -88,12 +90,12 @@ public:
     if (!entraEnLaZona(tipo, x, y))
       return false;
     bool unico = esUnicoEnZona(tipo);
-    bool pisaAOtro =
-        std::any_of(objetosColocados.begin(), objetosColocados.end(),
-                    [&](const auto &otro) {
-                      bool seVaAMover = unico && otro.tipo == tipo;
-                      return !seVaAMover && seSuperponeConOtro(tipo, x, y, otro);
-                    });
+    bool pisaAOtro = std::any_of(objetosColocados.begin(),
+                                 objetosColocados.end(), [&](const auto &otro) {
+                                   bool seVaAMover = unico && otro.tipo == tipo;
+                                   return !seVaAMover &&
+                                          seSuperponeConOtro(tipo, x, y, otro);
+                                 });
     if (pisaAOtro)
       return false;
     if (unico)

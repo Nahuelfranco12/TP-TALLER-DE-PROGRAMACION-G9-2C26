@@ -17,11 +17,11 @@ void VistaZona::limpiarEscena() { escena->clear(); }
 QPixmap VistaZona::cargarImagenDeTerreno(Terreno terreno) const {
   const InfoElemento<Terreno> *info = buscarInfoTerreno(terreno);
   if (info == nullptr)
-    return cargarSpriteTratado("", Recorte{}, TEXTO_DESCONOCIDO, TAMANIO_CELDA_MAPA,
-                          TAMANIO_CELDA_MAPA);
+    return cargarSpriteTratado("", Recorte{}, TEXTO_DESCONOCIDO,
+                               TAMANIO_CELDA_MAPA, TAMANIO_CELDA_MAPA);
   return cargarSpriteTratado(info->rutaSprite, info->recorte,
-                        QString::fromUtf8(info->nombre), TAMANIO_CELDA_MAPA,
-                        TAMANIO_CELDA_MAPA);
+                             QString::fromUtf8(info->nombre),
+                             TAMANIO_CELDA_MAPA, TAMANIO_CELDA_MAPA);
 }
 
 void VistaZona::dibujarLineasCuadricula(int ancho, int alto) {

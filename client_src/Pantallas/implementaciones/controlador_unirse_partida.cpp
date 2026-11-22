@@ -10,24 +10,25 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida) {
   ui.botonSiguienteUnirsePartida->setEnabled(false);
-  conectarVolver(ui.botonVolverUnirsePartida);
+  conectarBotonVolver(ui.botonVolverUnirsePartida);
   connect(ui.campoCodigoPartida, &QLineEdit::textChanged, this,
-          [this]() { actualizarBotonAvanzar(); });
-  connect(ui.botonSiguienteUnirsePartida, &QPushButton::clicked, this, [this]() {
-    this->datosPartida.modo = ModoPartida::Unirse;
-    this->datosPartida.codigoUnirsePartida =
-        this->ui.campoCodigoPartida->text().trimmed();
-    this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
-  });
+          [this]() { actualizarEstadoBotonAvanzar(); });
+  connect(ui.botonSiguienteUnirsePartida, &QPushButton::clicked, this,
+          [this]() {
+            this->datosPartida.modo = ModoPartida::Unirse;
+            this->datosPartida.codigoUnirsePartida =
+                this->ui.campoCodigoPartida->text().trimmed();
+            this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
+          });
 }
 
-void ControladorUnirsePartida::actualizarBotonAvanzar() {
+void ControladorUnirsePartida::actualizarEstadoBotonAvanzar() {
   bool tieneCodigo = !ui.campoCodigoPartida->text().trimmed().isEmpty();
   ui.botonSiguienteUnirsePartida->setEnabled(tieneCodigo);
 }
 
-void ControladorUnirsePartida::limpiarPagina() {
+void ControladorUnirsePartida::reiniciarPagina() {
   ui.campoCodigoPartida->clear();
-  actualizarBotonAvanzar();
+  actualizarEstadoBotonAvanzar();
   datosPartida = DatosPartida{};
 }

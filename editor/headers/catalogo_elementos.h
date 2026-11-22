@@ -18,8 +18,11 @@ const InfoElemento<ElementosGranja> *buscarInfoElemento(ElementosGranja tipo);
 const InfoElemento<ElementosCaverna> *buscarInfoElemento(ElementosCaverna tipo);
 const InfoElemento<ElementosPueblo> *buscarInfoElemento(ElementosPueblo tipo);
 
-const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja();
-const std::vector<InfoElemento<ElementosCaverna>> &elementosParaColocarEnCaverna();
-const std::vector<InfoElemento<ElementosPueblo>> &elementosParaColocarEnPueblo();
+const std::vector<InfoElemento<ElementosGranja>> &
+elementosParaColocarEnGranja();
+const std::vector<InfoElemento<ElementosCaverna>> &
+elementosParaColocarEnCaverna();
+const std::vector<InfoElemento<ElementosPueblo>> &
+elementosParaColocarEnPueblo();
 
 #endif // CATALOGO_ELEMENTOS_H_

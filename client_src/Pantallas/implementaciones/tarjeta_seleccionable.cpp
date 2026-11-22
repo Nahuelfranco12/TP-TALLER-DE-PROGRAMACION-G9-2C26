@@ -7,14 +7,16 @@
 #include <QVBoxLayout>
 
 namespace {
-QLabel *crearTexto(const QString &texto, const char *estilo, QWidget *parent) {
+QLabel *crearTextoConEstilo(const QString &texto, const char *estilo,
+                            QWidget *parent) {
   QLabel *label = new QLabel(texto, parent);
   label->setStyleSheet(estilo);
   return label;
 }
 } // namespace
 
-TarjetaSeleccionable::TarjetaSeleccionable(const DatosTarjeta &datos, QWidget *parent)
+TarjetaSeleccionable::TarjetaSeleccionable(const DatosTarjeta &datos,
+                                           QWidget *parent)
     : QFrame(parent), id(datos.id) {
   setSeleccionada(false);
   setFixedHeight(ALTO_TARJETA);
@@ -34,14 +36,14 @@ TarjetaSeleccionable::TarjetaSeleccionable(const DatosTarjeta &datos, QWidget *p
   QVBoxLayout *columnaTextos = new QVBoxLayout();
   filaTarjeta->addLayout(columnaTextos);
   columnaTextos->addWidget(
-      crearTexto(datos.titulo, ESTILO_TARJETA_TITULO, this));
+      crearTextoConEstilo(datos.titulo, ESTILO_TARJETA_TITULO, this));
   if (!datos.subtitulo.isEmpty())
     columnaTextos->addWidget(
-        crearTexto(datos.subtitulo, ESTILO_TARJETA_SUBTITULO, this));
+        crearTextoConEstilo(datos.subtitulo, ESTILO_TARJETA_SUBTITULO, this));
 
   if (!datos.textoExtra.isEmpty())
     filaTarjeta->addWidget(
-        crearTexto(datos.textoExtra, ESTILO_TARJETA_EXTRA, this), 0,
+        crearTextoConEstilo(datos.textoExtra, ESTILO_TARJETA_EXTRA, this), 0,
         Qt::AlignRight);
 
   QPushButton *botonSeleccionar = new QPushButton(datos.textoBoton, this);

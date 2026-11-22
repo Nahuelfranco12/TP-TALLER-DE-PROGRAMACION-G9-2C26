@@ -9,7 +9,8 @@ class NavegadorPaginas : public QObject {
   Q_OBJECT
 
 public:
-  explicit NavegadorPaginas(QStackedWidget *contenedorPaginas, QObject *parent = nullptr);
+  explicit NavegadorPaginas(QStackedWidget *contenedorPaginas,
+                            QObject *parent = nullptr);
 
   void irAPagina(QWidget *pagina);
   void volverPaginaAnterior();

@@ -10,16 +10,17 @@ class TarjetaSeleccionable : public QFrame {
   Q_OBJECT
 
 public:
-  explicit TarjetaSeleccionable(const DatosTarjeta &datos, QWidget *parent = nullptr);
+  explicit TarjetaSeleccionable(const DatosTarjeta &datos,
+                                QWidget *parent = nullptr);
 
-  void setSeleccionada(bool estado);
+  void setSeleccionada(bool seleccionada);
   QString getId() const;
 
 signals:
   void tarjetaClickeada(TarjetaSeleccionable *tarjeta);
 
 protected:
-  void mousePressEvent(QMouseEvent *event) override;
+  void mousePressEvent(QMouseEvent *evento) override;
 
 private:
   QString id;

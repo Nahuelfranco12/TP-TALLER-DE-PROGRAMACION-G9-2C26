@@ -17,8 +17,10 @@ Terreno terrenoBaseDeZona(Zona zona) {
   return Terreno::Pasto;
 }
 
-MapaZona<ElementosCaverna> crearNivelCavernaConParedes(Dimensiones dimensiones) {
-  MapaZona<ElementosCaverna> nivel(dimensiones, terrenoBaseDeZona(Zona::Caverna));
+MapaZona<ElementosCaverna>
+crearNivelCavernaConParedes(Dimensiones dimensiones) {
+  MapaZona<ElementosCaverna> nivel(dimensiones,
+                                   terrenoBaseDeZona(Zona::Caverna));
   pintarBordeDeZona(nivel, Terreno::Pared);
   return nivel;
 }
@@ -27,9 +29,11 @@ MapaEditor crearMapaVacio() {
   std::vector<MapaZona<ElementosCaverna>> niveles(
       CANTIDAD_NIVELES_CAVERNA, crearNivelCavernaConParedes(Dimensiones{}));
   return MapaEditor{
-      "", MapaZona<ElementosGranja>(Dimensiones{}, terrenoBaseDeZona(Zona::Granja)),
+      "",
+      MapaZona<ElementosGranja>(Dimensiones{}, terrenoBaseDeZona(Zona::Granja)),
       std::move(niveles),
-      MapaZona<ElementosPueblo>(Dimensiones{}, terrenoBaseDeZona(Zona::Pueblo))};
+      MapaZona<ElementosPueblo>(Dimensiones{},
+                                terrenoBaseDeZona(Zona::Pueblo))};
 }
 
 Dimensiones dimensionesDeZona(const MapaEditor &mapa, Zona zona) {
@@ -109,7 +113,8 @@ TamanioEnCeldas tamanioEnCeldasDe(ElementosCaverna tipo) {
 TamanioEnCeldas tamanioEnCeldasDe(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::CentroComunitario:
-    return {TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO, TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO};
+    return {TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO,
+            TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO};
   case ElementosPueblo::FarolNaranja:
   case ElementosPueblo::FarolAzul:
     return {TAMANIO_OCUPADO_ASSET_NORMAL, TAMANIO_OCUPADO_FAROL_ALTO};

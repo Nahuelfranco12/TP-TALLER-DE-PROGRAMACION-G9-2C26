@@ -19,7 +19,7 @@ template <typename T> int contarObjetosDeTipo(const MapaZona<T> &zona, T tipo) {
 }
 
 std::string mensajeConLugar(const std::string &lugar,
-                          const std::string &mensaje) {
+                            const std::string &mensaje) {
   return lugar + VALIDACION_TEXTO_SEPARADOR + mensaje;
 }
 
@@ -40,11 +40,12 @@ void validarGranja(const MapaZona<ElementosGranja> &granja,
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
     errores.push_back(
         mensajeConLugar(VALIDACION_TEXTO_ZONA_GRANJA,
-                      VALIDACION_TEXTO_CABANIAS_INICIO +
-                          std::to_string(VALIDACION_CABANIAS_MINIMAS) +
-                          VALIDACION_TEXTO_CABANIAS_FIN));
+                        VALIDACION_TEXTO_CABANIAS_INICIO +
+                            std::to_string(VALIDACION_CABANIAS_MINIMAS) +
+                            VALIDACION_TEXTO_CABANIAS_FIN));
   if (contarObjetosDeTipo(granja, ElementosGranja::SalidaPueblo) == 0)
-    errores.push_back(mensajeFalta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
+    errores.push_back(
+        mensajeFalta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
 }
 
 void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
@@ -82,7 +83,8 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                         std::to_string(i + PRIMER_NIVEL_CAVERNA);
     bool esPrimero = i == 0, esUltimo = i + 1 == niveles.size();
     bool hayPozo = contarObjetosDeTipo(niveles[i], ElementosCaverna::Pozo) > 0;
-    bool hayEscalera = contarObjetosDeTipo(niveles[i], ElementosCaverna::Escalera) > 0;
+    bool hayEscalera =
+        contarObjetosDeTipo(niveles[i], ElementosCaverna::Escalera) > 0;
 
     if (contarObjetosDeTipo(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
       errores.push_back(mensajeFalta(nivel, TEXTO_SALIDA_CAVERNA));

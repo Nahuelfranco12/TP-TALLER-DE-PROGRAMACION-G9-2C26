@@ -22,8 +22,8 @@
 #include "vista_zona.h"
 
 ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
-                                   NavegadorPaginas &navegador, DatosEditor &datos,
-                                   QObject *parent)
+                                   NavegadorPaginas &navegador,
+                                   DatosEditor &datos, QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   ui.paletaAssets->setIconSize(QSize(TAMANIO_ICONO, TAMANIO_ICONO));
   ui.valorAnchoMapa->setRange(DIMENSION_MINIMA, DIMENSION_MAXIMA);
@@ -44,26 +44,34 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   });
   connect(ui.valorNivelCaverna, &QSpinBox::valueChanged, this,
           [this](int nivel) { cambiarNivelCaverna(nivel); });
-  connect(&navegador, &NavegadorPaginas::seAbrioPagina, this, [this](QWidget *pagina) {
-    if (pagina == this->ui.pageMapas) {
-      this->ui.campoNombreMundo->setText(
-          QString::fromStdString(this->datos.mapa.nombre));
-      dibujarTodasLasZonas();
-      cambiarZonaActual(zonaDePestania(this->ui.pestaniaMapas->currentWidget()));
-    }
-  });
+  connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
+          [this](QWidget *pagina) {
+            if (pagina == this->ui.pageMapas) {
+              this->ui.campoNombreMundo->setText(
+                  QString::fromStdString(this->datos.mapa.nombre));
+              dibujarTodasLasZonas();
+              cambiarZonaActual(
+                  zonaDePestania(this->ui.pestaniaMapas->currentWidget()));
+            }
+          });
   connect(ui.botonExportarMapas, &QPushButton::clicked, this,
           [this]() { validarYExportarMapa(); });
 
-  ui.vistaGranja->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
-    manejarClickEnCelda(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
-  });
-  ui.vistaCaverna->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
-    manejarClickEnCelda(nivelCavernaActual(), this->ui.vistaCaverna, x, y, boton);
-  });
-  ui.vistaPueblo->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
-    manejarClickEnCelda(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
-  });
+  ui.vistaGranja->setAccionAlClickearCelda(
+      [this](int x, int y, Qt::MouseButton boton) {
+        manejarClickEnCelda(this->datos.mapa.granja, this->ui.vistaGranja, x, y,
+                            boton);
+      });
+  ui.vistaCaverna->setAccionAlClickearCelda(
+      [this](int x, int y, Qt::MouseButton boton) {
+        manejarClickEnCelda(nivelCavernaActual(), this->ui.vistaCaverna, x, y,
+                            boton);
+      });
+  ui.vistaPueblo->setAccionAlClickearCelda(
+      [this](int x, int y, Qt::MouseButton boton) {
+        manejarClickEnCelda(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y,
+                            boton);
+      });
 
   connect(ui.campoNombreMundo, &QLineEdit::textChanged, this,
           [this](const QString &texto) {
@@ -117,7 +125,7 @@ void ControladorMapas::agregarElementosAPaleta(
   for (const auto &info : elementos) {
     QString nombre = QString::fromUtf8(info.nombre);
     QPixmap icono = cargarSpriteTratado(info.rutaSprite, info.recorte, nombre,
-                                   TAMANIO_ICONO, TAMANIO_ICONO);
+                                        TAMANIO_ICONO, TAMANIO_ICONO);
     auto *item = new QListWidgetItem(QIcon(icono), nombre);
     item->setData(ROL_VALOR, static_cast<int>(info.elemento));
     ui.paletaAssets->addItem(item);
@@ -158,8 +166,9 @@ void ControladorMapas::dibujarTodasLasZonas() {
 }
 
 template <typename T>
-void ControladorMapas::manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista, int x,
-                               int y, Qt::MouseButton boton) {
+void ControladorMapas::manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista,
+                                           int x, int y,
+                                           Qt::MouseButton boton) {
   if (!zona.existeCelda(x, y))
     return;
   if (boton == Qt::RightButton)
@@ -170,8 +179,9 @@ void ControladorMapas::manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista, 
 }
 
 template <typename T>
-void ControladorMapas::colocarElementoSeleccionadEnCelda(MapaZona<T> &zona, VistaZona *vista,
-                                           int x, int y) {
+void ControladorMapas::colocarElementoSeleccionadEnCelda(MapaZona<T> &zona,
+                                                         VistaZona *vista,
+                                                         int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();
   if (item == nullptr) {
     QToolTip::showText(QCursor::pos(), TEXTO_ELEGIR_ELEMENTO, vista);
@@ -188,13 +198,12 @@ void ControladorMapas::validarYExportarMapa() {
     QStringList lineas;
     for (const auto &error : errores)
       lineas.append(QString::fromStdString(error));
-    QMessageBox::warning(&ventana, TITULO_MAPA_INVALIDO,
-                         lineas.join('\n'));
+    QMessageBox::warning(&ventana, TITULO_MAPA_INVALIDO, lineas.join('\n'));
     return;
   }
 
-  QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
-                                              crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
+  QString ruta = QFileDialog::getSaveFileName(
+      &ventana, TITULO_GUARDAR, crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   if (!ruta.endsWith(EXTENSION_MAPA))

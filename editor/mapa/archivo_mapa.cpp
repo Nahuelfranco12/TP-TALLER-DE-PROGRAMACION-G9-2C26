@@ -38,7 +38,8 @@ tablaCavernaTOML(const std::vector<MapaZona<ElementosCaverna>> &niveles) {
                       {CLAVE_ALTO, niveles.front().alto()}};
   toml::array listaNiveles;
   for (const auto &nivel : niveles)
-    listaNiveles.push_back(toml::table{{CLAVE_OBJETOS, objetosComoTOML(nivel)}});
+    listaNiveles.push_back(
+        toml::table{{CLAVE_OBJETOS, objetosComoTOML(nivel)}});
   caverna.insert(CLAVE_NIVELES, std::move(listaNiveles));
   return caverna;
 }
@@ -54,7 +55,7 @@ Dimensiones leerDimensiones(const toml::table &tabla,
 
 template <typename T>
 void leerYColocarObjetos(const toml::table &tabla, MapaZona<T> &zona,
-                   const std::string &donde) {
+                         const std::string &donde) {
   const toml::array &objetos = leerArray(tabla, CLAVE_OBJETOS, donde);
   for (const toml::node &nodo : objetos) {
     const toml::table *objeto = nodo.as_table();
@@ -66,21 +67,22 @@ void leerYColocarObjetos(const toml::table &tabla, MapaZona<T> &zona,
     int x = leerEntero<int>(*objeto, CLAVE_X, donde);
     int y = leerEntero<int>(*objeto, CLAVE_Y, donde);
     if (!zona.colocarObjetoEnCelda(tipo, x, y))
-      throw std::runtime_error(TEXTO_ERROR_OBJETO + donde +
-                               TEXTO_ABRE_ID_MAPA + id + TEXTO_CIERRA_ID_MAPA);
+      throw std::runtime_error(TEXTO_ERROR_OBJETO + donde + TEXTO_ABRE_ID_MAPA +
+                               id + TEXTO_CIERRA_ID_MAPA);
   }
 }
 
 template <typename T>
 MapaZona<T> leerZona(const toml::table &raiz, const char *clave,
-                       Zona tipoZona) {
+                     Zona tipoZona) {
   const toml::table &tabla = leerSubtabla(raiz, clave);
   MapaZona<T> zona(leerDimensiones(tabla, clave), terrenoBaseDeZona(tipoZona));
   leerYColocarObjetos(tabla, zona, clave);
   return zona;
 }
 
-std::vector<MapaZona<ElementosCaverna>> leerNivelesCaverna(const toml::table &raiz) {
+std::vector<MapaZona<ElementosCaverna>>
+leerNivelesCaverna(const toml::table &raiz) {
   const toml::table &caverna = leerSubtabla(raiz, CLAVE_CAVERNA);
   Dimensiones dimensiones = leerDimensiones(caverna, CLAVE_CAVERNA);
   const toml::array *niveles = caverna[CLAVE_NIVELES].as_array();

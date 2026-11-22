@@ -18,7 +18,7 @@ QPixmap placeholder(const QString &nombre, int ancho, int alto) {
 } // namespace
 
 QPixmap cargarSpriteTratado(const char *rutaSprite, const Recorte &recorte,
-                       const QString &nombre, int ancho, int alto) {
+                            const QString &nombre, int ancho, int alto) {
   QPixmap hoja(QString::fromUtf8(rutaSprite));
   if (hoja.isNull())
     return placeholder(nombre, ancho, alto);

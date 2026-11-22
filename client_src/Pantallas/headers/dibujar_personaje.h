@@ -17,14 +17,14 @@ struct HojaPrenda {
   int ancho{};
   int alto{};
 
-  QPixmap recortar(int indice) const;
+  QPixmap recortarOpcion(int indice) const;
 };
 
 class DibujarPersonaje {
 public:
   DibujarPersonaje();
 
-  QPixmap dibujar(const DatosPersonaje &personaje, int escala) const;
+  QPixmap dibujarPersonaje(const DatosPersonaje &personaje, int escala) const;
 
   const QList<CoordenadaSprite> &opcionesPelo() const;
   const QList<CoordenadaSprite> &opcionesGorro() const;

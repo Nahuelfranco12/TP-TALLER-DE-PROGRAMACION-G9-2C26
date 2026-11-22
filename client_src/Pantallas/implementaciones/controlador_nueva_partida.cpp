@@ -11,31 +11,30 @@ ControladorNuevaPartida::ControladorNuevaPartida(
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), servicio(servicio) {
 
-  mundos = new ListaSeleccionable(ui.contenedorMundos, this);
+  listaMundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
   connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
           [this](QWidget *pagina) {
             if (pagina == this->ui.pageNuevaPartida && !mundosCargados)
-              cargarMundos();
+              pedirYMostrarMundos();
           });
 
   ui.botonSiguienteNuevaPartida->setEnabled(false);
 
-  conectarVolver(ui.botonVolverNuevaPartida);
+  conectarBotonVolver(ui.botonVolverNuevaPartida);
 
   connect(ui.campoNombrePartida, &QLineEdit::textChanged, this,
-          [this]() { actualizarBotonAvanzar(); });
+          [this]() { actualizarEstadoBotonAvanzar(); });
 
-  mundos->setAlSeleccionar([this]() {
-    actualizarBotonAvanzar();
-  });
+  listaMundos->setAccionAlSeleccionarTarjeta(
+      [this]() { actualizarEstadoBotonAvanzar(); });
 
   connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Nueva;
     this->datosPartida.nombrePartida =
         this->ui.campoNombrePartida->text().trimmed();
-    this->datosPartida.idMundo = mundos->seleccionado();
-    for (const MundoMock &mundo : datosMundos) {
+    this->datosPartida.idMundo = listaMundos->idTarjetaSeleccionada();
+    for (const MundoMock &mundo : mundosDisponibles) {
       if (mundo.nombreMundo == this->datosPartida.idMundo) {
         this->datosPartida.rutaMapa = mundo.rutaMapa;
         break;
@@ -45,29 +44,29 @@ ControladorNuevaPartida::ControladorNuevaPartida(
   });
 }
 
-void ControladorNuevaPartida::actualizarBotonAvanzar() {
+void ControladorNuevaPartida::actualizarEstadoBotonAvanzar() {
   bool tieneNombre = !ui.campoNombrePartida->text().trimmed().isEmpty();
-  bool tieneMundo = mundos->haySeleccion();
+  bool tieneMundo = listaMundos->hayTarjetaSeleccionada();
   ui.botonSiguienteNuevaPartida->setEnabled(tieneNombre && tieneMundo);
 }
 
-void ControladorNuevaPartida::cargarMundos() {
-  datosMundos = servicio.mundosCrearPartida();
+void ControladorNuevaPartida::pedirYMostrarMundos() {
+  mundosDisponibles = servicio.pedirMundosDisponibles();
 
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : datosMundos) {
+  for (const MundoMock &mundo : mundosDisponibles) {
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
                                  mundo.nombreMundo, QString(), QString(),
                                  TEXTO_ELEGIR_MUNDO});
   }
 
-  mundos->cargar(tarjetas);
+  listaMundos->cargarTarjetas(tarjetas);
   mundosCargados = true;
 }
 
-void ControladorNuevaPartida::limpiarPagina() {
-  mundos->deseleccionar();
+void ControladorNuevaPartida::reiniciarPagina() {
+  listaMundos->deseleccionarTarjeta();
   ui.campoNombrePartida->clear();
-  actualizarBotonAvanzar();
+  actualizarEstadoBotonAvanzar();
   datosPartida = DatosPartida{};
 }

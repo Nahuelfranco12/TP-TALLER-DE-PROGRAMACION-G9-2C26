@@ -1,9 +1,9 @@
 #ifndef CONSTANTES_QT_H_
 #define CONSTANTES_QT_H_
 
-// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas por tema
-// indico con un comentario que hace ese grupo y donde estan de la forma:
-// tema -> archivo1.cpp, archivoN.cpp
+// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas
+// por tema indico con un comentario que hace ese grupo y donde estan de la
+// forma: tema -> archivo1.cpp, archivoN.cpp
 
 // Ventana -> ventanaeditor.cpp
 #define ANCHO_DISENIO 1366
@@ -134,7 +134,7 @@
   { 24, 16, 16, 32 }
 #define RECORTE_CASA_CLINT                                                     \
   { 80, 320, 144, 128 }
-#define RECORTE_PIERRE_CLINT                                                             \
+#define RECORTE_PIERRE_CLINT                                                   \
   { 0, 0, 32, 32 }
 #define RECORTE_CASA_PIERRE                                                    \
   { 240, 176, 112, 144 }

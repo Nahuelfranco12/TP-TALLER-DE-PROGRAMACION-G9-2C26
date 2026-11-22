@@ -2,23 +2,22 @@
 #include "constantes_pantallas.h"
 #include <QMessageBox>
 
-
-void ControladorPagina::conectarVolver(QPushButton *boton) {
+void ControladorPagina::conectarBotonVolver(QPushButton *boton) {
   connect(boton, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
+    reiniciarPagina();
     navegador.volverPaginaAnterior();
   });
 }
 
-void ControladorPagina::intentarJugar(ServicioLobby &servicio,
-                                      const DatosPartida &datos,
-                                      QPushButton *botonJugar) {
+void ControladorPagina::intentarEntrarAJugar(ServicioLobby &servicio,
+                                             const DatosPartida &datos,
+                                             QPushButton *botonJugar) {
   botonJugar->setEnabled(false);
   ResultadoLobby resultado = servicio.entrarAJugar(datos);
   if (resultado.ok) {
-    emit partidaIniciada();
+    emit seInicioPartida();
     return;
   }
   QMessageBox::warning(&ventana, TITULO_ERROR_JUGAR, resultado.mensajeError);
-  actualizarBotonAvanzar();
+  actualizarEstadoBotonAvanzar();
 }

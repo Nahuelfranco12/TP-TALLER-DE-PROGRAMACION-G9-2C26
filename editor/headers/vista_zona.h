@@ -19,9 +19,11 @@ class VistaZona : public QGraphicsView {
 public:
   explicit VistaZona(QWidget *parent = nullptr);
 
-  template <typename TipoObjeto> void dibujarZona(const MapaZona<TipoObjeto> &zona);
+  template <typename TipoObjeto>
+  void dibujarZona(const MapaZona<TipoObjeto> &zona);
   void limpiarEscena();
-  void setAccionAlClickearCelda(std::function<void(int, int, Qt::MouseButton)> accion);
+  void setAccionAlClickearCelda(
+      std::function<void(int, int, Qt::MouseButton)> accion);
 
 protected:
   void mousePressEvent(QMouseEvent *evento) override;
@@ -58,7 +60,8 @@ void VistaZona::dibujarZona(const MapaZona<TipoObjeto> &zona) {
 }
 
 template <typename TipoObjeto>
-void VistaZona::dibujarObjetoColocado(const ObjetoColocado<TipoObjeto> &objeto) {
+void VistaZona::dibujarObjetoColocado(
+    const ObjetoColocado<TipoObjeto> &objeto) {
   TamanioEnCeldas celdaOcupada = tamanioEnCeldasDe(objeto.tipo);
   int ancho = celdaOcupada.ancho * TAMANIO_CELDA_MAPA;
   int alto = celdaOcupada.alto * TAMANIO_CELDA_MAPA;
@@ -68,7 +71,7 @@ void VistaZona::dibujarObjetoColocado(const ObjetoColocado<TipoObjeto> &objeto) 
     imagen = cargarSpriteTratado("", Recorte{}, TEXTO_DESCONOCIDO, ancho, alto);
   else
     imagen = cargarSpriteTratado(info->rutaSprite, info->recorte,
-                            QString::fromUtf8(info->nombre), ancho, alto);
+                                 QString::fromUtf8(info->nombre), ancho, alto);
   int x = objeto.x * TAMANIO_CELDA_MAPA + (ancho - imagen.width()) / 2;
   int y = objeto.y * TAMANIO_CELDA_MAPA + (alto - imagen.height());
   escena->addPixmap(imagen)->setPos(x, y);

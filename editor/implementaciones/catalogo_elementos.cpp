@@ -29,8 +29,8 @@ const std::vector<InfoElemento<Terreno>> &terrenosDisponiblesEnZona(Zona zona) {
 }
 
 template <typename T>
-const InfoElemento<T> *buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &catalogo,
-                              T tipo) {
+const InfoElemento<T> *
+buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &catalogo, T tipo) {
   auto encontrado = std::ranges::find_if(
       catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
   if (encontrado != catalogo.end())
@@ -39,7 +39,8 @@ const InfoElemento<T> *buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &
 }
 } // namespace
 
-const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja() {
+const std::vector<InfoElemento<ElementosGranja>> &
+elementosParaColocarEnGranja() {
   static const std::vector<InfoElemento<ElementosGranja>> catalogo = {
       {ElementosGranja::Cabania1, TEXTO_CABANIA1, RUTA_CABANIAS,
        RECORTE_CABANIA1},
@@ -57,8 +58,8 @@ const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja()
       {ElementosGranja::Arbol2, TEXTO_ARBOL2, RUTA_ARBOL2, {}},
       {ElementosGranja::Agua, TEXTO_AGUA, RUTA_NATURALEZA, RECORTE_AGUA},
       {ElementosGranja::Piedra, TEXTO_PIEDRA, RUTA_PIEDRAS, RECORTE_PIEDRA},
-      {ElementosGranja::PiedraGrisGrande, TEXTO_PIEDRA_GRIS_GRANDE, RUTA_NATURALEZA,
-       RECORTE_PIEDRA_GRIS_GRANDE},
+      {ElementosGranja::PiedraGrisGrande, TEXTO_PIEDRA_GRIS_GRANDE,
+       RUTA_NATURALEZA, RECORTE_PIEDRA_GRIS_GRANDE},
       {ElementosGranja::PiedraGris, TEXTO_PIEDRA_GRIS, RUTA_NATURALEZA,
        RECORTE_PIEDRA_GRIS},
       {ElementosGranja::ArbustoRedondo, TEXTO_ARBUSTO_REDONDO, RUTA_NATURALEZA,
@@ -67,7 +68,8 @@ const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja()
        RECORTE_ARBUSTO_GRANDE},
       {ElementosGranja::TroncoCaido, TEXTO_TRONCO_CAIDO, RUTA_NATURALEZA,
        RECORTE_TRONCO_CAIDO},
-      {ElementosGranja::Tocon, TEXTO_TRONCO_CORTADO, RUTA_NATURALEZA, RECORTE_TOCON},
+      {ElementosGranja::Tocon, TEXTO_TRONCO_CORTADO, RUTA_NATURALEZA,
+       RECORTE_TOCON},
       {ElementosGranja::BuzonRojo, TEXTO_BUZON_ROJO, RUTA_OBJETOS,
        RECORTE_BUZON_ROJO},
       {ElementosGranja::CartelVacio, TEXTO_CARTEL_VACIO, RUTA_OBJETOS,
@@ -75,7 +77,8 @@ const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja()
   return catalogo;
 }
 
-const std::vector<InfoElemento<ElementosCaverna>> &elementosParaColocarEnCaverna() {
+const std::vector<InfoElemento<ElementosCaverna>> &
+elementosParaColocarEnCaverna() {
   static const std::vector<InfoElemento<ElementosCaverna>> catalogo = {
       {ElementosCaverna::Escalera, TEXTO_ESCALERA, RUTA_CAVERNA,
        RECORTE_ESCALERA},
@@ -96,7 +99,8 @@ const std::vector<InfoElemento<ElementosCaverna>> &elementosParaColocarEnCaverna
   return catalogo;
 }
 
-const std::vector<InfoElemento<ElementosPueblo>> &elementosParaColocarEnPueblo() {
+const std::vector<InfoElemento<ElementosPueblo>> &
+elementosParaColocarEnPueblo() {
   static const std::vector<InfoElemento<ElementosPueblo>> catalogo = {
       {ElementosPueblo::CasaMarnie, TEXTO_CASA_MARNIE, RUTA_CASA_NPC,
        RECORTE_CASA_MARNIE},
@@ -104,10 +108,12 @@ const std::vector<InfoElemento<ElementosPueblo>> &elementosParaColocarEnPueblo()
        RECORTE_MARNIE_ROBIN},
       {ElementosPueblo::CasaClint, TEXTO_CASA_CLINT, RUTA_CASA_NPC,
        RECORTE_CASA_CLINT},
-      {ElementosPueblo::NpcClint, TEXTO_CLINT, RUTA_CLINT, RECORTE_PIERRE_CLINT},
+      {ElementosPueblo::NpcClint, TEXTO_CLINT, RUTA_CLINT,
+       RECORTE_PIERRE_CLINT},
       {ElementosPueblo::CasaPierre, TEXTO_CASA_PIERRE, RUTA_CASA_NPC,
        RECORTE_CASA_PIERRE},
-      {ElementosPueblo::NpcPierre, TEXTO_PIERRE, RUTA_PIERRE, RECORTE_PIERRE_CLINT},
+      {ElementosPueblo::NpcPierre, TEXTO_PIERRE, RUTA_PIERRE,
+       RECORTE_PIERRE_CLINT},
       {ElementosPueblo::CasaRobin, TEXTO_CASA_ROBIN, RUTA_CASA_NPC,
        RECORTE_CASA_ROBIN},
       {ElementosPueblo::NpcRobin, TEXTO_ROBIN, RUTA_ROBIN,
@@ -133,7 +139,8 @@ const std::vector<InfoElemento<ElementosPueblo>> &elementosParaColocarEnPueblo()
 
 const InfoElemento<Terreno> *buscarInfoTerreno(Terreno terreno) {
   for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo}) {
-    const InfoElemento<Terreno> *info = buscarInfoEnCatalogo(terrenosDisponiblesEnZona(zona), terreno);
+    const InfoElemento<Terreno> *info =
+        buscarInfoEnCatalogo(terrenosDisponiblesEnZona(zona), terreno);
     if (info != nullptr)
       return info;
   }
@@ -144,7 +151,8 @@ const InfoElemento<ElementosGranja> *buscarInfoElemento(ElementosGranja tipo) {
   return buscarInfoEnCatalogo(elementosParaColocarEnGranja(), tipo);
 }
 
-const InfoElemento<ElementosCaverna> *buscarInfoElemento(ElementosCaverna tipo) {
+const InfoElemento<ElementosCaverna> *
+buscarInfoElemento(ElementosCaverna tipo) {
   return buscarInfoEnCatalogo(elementosParaColocarEnCaverna(), tipo);
 }
 

@@ -1,7 +1,8 @@
 #include "navegador_paginas.h"
 #include <QStackedWidget>
 
-NavegadorPaginas::NavegadorPaginas(QStackedWidget *contenedorPaginas, QObject *parent)
+NavegadorPaginas::NavegadorPaginas(QStackedWidget *contenedorPaginas,
+                                   QObject *parent)
     : QObject(parent), contenedorPaginas(contenedorPaginas) {}
 
 void NavegadorPaginas::irAPagina(QWidget *pagina) {

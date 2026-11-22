@@ -16,21 +16,21 @@ class ListaSeleccionable : public QObject {
 public:
   explicit ListaSeleccionable(QWidget *contenedor, QObject *parent = nullptr);
 
-  void cargar(const QList<DatosTarjeta> &items);
-  void deseleccionar();
+  void cargarTarjetas(const QList<DatosTarjeta> &datosTarjetas);
+  void deseleccionarTarjeta();
 
-  bool haySeleccion() const;
-  QString seleccionado() const;
+  bool hayTarjetaSeleccionada() const;
+  QString idTarjetaSeleccionada() const;
 
-  void setAlSeleccionar(std::function<void()> accion);
+  void setAccionAlSeleccionarTarjeta(std::function<void()> accion);
 
 private:
   QWidget *contenedor;
   TarjetaSeleccionable *tarjetaSeleccionada = nullptr;
   std::function<void()> accionAlSeleccionar = nullptr;
 
-  void limpiar();
-  void seleccionar(TarjetaSeleccionable *tarjeta);
+  void borrarTodasLasTarjetas();
+  void seleccionarTarjeta(TarjetaSeleccionable *tarjeta);
 };
 
 #endif // LISTA_SELECCIONABLE_H_

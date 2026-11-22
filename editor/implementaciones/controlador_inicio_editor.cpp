@@ -30,8 +30,8 @@ void ControladorInicioEditor::crearMapa() {
 }
 
 void ControladorInicioEditor::cargarMapaExistente() {
-  QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
-                                              crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
+  QString ruta = QFileDialog::getOpenFileName(
+      &ventana, TITULO_ABRIR, crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   try {

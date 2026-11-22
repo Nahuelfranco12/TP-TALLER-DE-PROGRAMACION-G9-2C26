@@ -7,8 +7,8 @@
 class ServicioLobby {
 public:
   virtual ~ServicioLobby() = default;
-  virtual QList<MundoMock> mundosCrearPartida() = 0;
-  virtual QList<PartidaGuardada> partidasARetomar() = 0;
+  virtual QList<MundoMock> pedirMundosDisponibles() = 0;
+  virtual QList<PartidaGuardada> pedirPartidasGuardadas() = 0;
   virtual ResultadoLobby entrarAJugar(const DatosPartida &datos) = 0;
 };
 

@@ -9,18 +9,19 @@
 class ControladorRetomarPartida : public ControladorPagina {
 public:
   ControladorRetomarPartida(QWidget &ventana, Ui::Pantalla &ui,
-                            NavegadorPaginas &navegador, DatosPartida &datosPartida,
+                            NavegadorPaginas &navegador,
+                            DatosPartida &datosPartida,
                             const DibujarPersonaje &dibujante,
                             ServicioLobby &servicio, QObject *parent = nullptr);
-  void limpiarPagina() override;
-  void actualizarBotonAvanzar() override;
+  void reiniciarPagina() override;
+  void actualizarEstadoBotonAvanzar() override;
 
 private:
-  ListaSeleccionable *partidas;
+  ListaSeleccionable *listaPartidas;
   DatosPartida &datosPartida;
   const DibujarPersonaje &dibujante;
   ServicioLobby &servicio;
-  void cargarPartidas();
+  void pedirYMostrarPartidas();
 };
 
 #endif // CONTROLADOR_RETOMAR_PARTIDA_H_
