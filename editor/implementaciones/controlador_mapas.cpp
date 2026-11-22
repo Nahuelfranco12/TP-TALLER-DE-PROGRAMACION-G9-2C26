@@ -93,7 +93,7 @@ Zona ControladorMapas::zonaDe(QWidget *pestania) const {
 void ControladorMapas::cambiarDeZona(Zona zona) {
   zonaActual = zona;
   cargarPaleta(zona);
-  mostrarDimensiones(dimensionesDe(datos.mapa, zona));
+  mostrarDimensiones(dimensionesDeZona(datos.mapa, zona));
 }
 
 void ControladorMapas::cargarPaleta(Zona zona) {
@@ -141,11 +141,11 @@ void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
 void ControladorMapas::aplicarDimensiones() {
   Dimensiones nuevas{ui.valorAnchoMapa->value(), ui.valorAltoMapa->value()};
   try {
-    redimensionar(datos.mapa, zonaActual, nuevas);
+    redimensionarZonaDelMapa(datos.mapa, zonaActual, nuevas);
   } catch (const std::invalid_argument &error) {
     QMessageBox::warning(&ventana, TITULO_ERROR_DIMENSIONES,
                          QString::fromUtf8(error.what()));
-    mostrarDimensiones(dimensionesDe(datos.mapa, zonaActual));
+    mostrarDimensiones(dimensionesDeZona(datos.mapa, zonaActual));
     return;
   }
   dibujarMapa();
@@ -163,7 +163,7 @@ void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
   if (!zona.existeCelda(x, y))
     return;
   if (boton == Qt::RightButton)
-    zona.quitarEn(x, y);
+    zona.quitarObjetoEnCelda(x, y);
   else if (boton == Qt::LeftButton)
     colocarSeleccionado(zona, vista, x, y);
   vista->mostrar(zona);
@@ -178,12 +178,12 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
     return;
   }
   int valor = item->data(ROL_VALOR).toInt();
-  if (!zona.colocar(static_cast<T>(valor), x, y))
+  if (!zona.colocarObjetoEnCelda(static_cast<T>(valor), x, y))
     QToolTip::showText(QCursor::pos(), TEXTO_NO_SE_PUEDE_COLOCAR, vista);
 }
 
 void ControladorMapas::exportar() {
-  std::vector<std::string> errores = erroresDe(datos.mapa);
+  std::vector<std::string> errores = erroresParaExportar(datos.mapa);
   if (!errores.empty()) {
     QStringList lineas;
     for (const auto &error : errores)
@@ -201,7 +201,7 @@ void ControladorMapas::exportar() {
     ruta += EXTENSION_MAPA;
 
   try {
-    escribirMapa(datos.mapa, ruta.toStdString());
+    escribirMapaEnArchivo(datos.mapa, ruta.toStdString());
     QMessageBox::information(&ventana, TITULO_MAPA_GUARDADO,
                              TEXTO_MAPA_GUARDADO + ruta);
   } catch (const std::exception &error) {

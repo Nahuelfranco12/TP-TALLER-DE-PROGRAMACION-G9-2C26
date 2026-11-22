@@ -29,7 +29,7 @@ template <typename T> const char *idDe(const T &tipo) {
   throw std::logic_error(ERROR_PARTIDA_SIN_ID);
 }
 
-template <typename T> T tipoDesdeId(const std::string &id) {
+template <typename T> T elementoDesdeId(const std::string &id) {
   for (const auto &[elemento, texto] : tablaIds(T{}))
     if (id == texto)
       return elemento;

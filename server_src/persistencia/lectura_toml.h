@@ -12,18 +12,18 @@
 
 #include "constantes_persistencia.h"
 
-std::string campo(const std::string &donde, const char *clave);
+std::string rutaDelCampo(const std::string &donde, const char *clave);
 
 const toml::table &leerTabla(const toml::table &tabla, const char *clave,
                              const std::string &donde);
-const toml::table &leerTabla(const toml::table &tabla, const char *clave);
+const toml::table &leerSubtabla(const toml::table &tabla, const char *clave);
 
 template <typename T>
 T leerValor(const toml::table &tabla, const char *clave,
             const std::string &donde) {
   std::optional<T> valor = tabla[clave].value<T>();
   if (!valor)
-    throw std::runtime_error(ERROR_PARTIDA_CAMPO + campo(donde, clave));
+    throw std::runtime_error(ERROR_PARTIDA_CAMPO + rutaDelCampo(donde, clave));
   return *valor;
 }
 
@@ -32,7 +32,7 @@ T leerEntero(const toml::table &tabla, const char *clave,
              const std::string &donde) {
   std::int64_t valor = leerValor<std::int64_t>(tabla, clave, donde);
   if (!std::in_range<T>(valor))
-    throw std::runtime_error(ERROR_PARTIDA_RANGO + campo(donde, clave));
+    throw std::runtime_error(ERROR_PARTIDA_RANGO + rutaDelCampo(donde, clave));
   return static_cast<T>(valor);
 }
 
@@ -40,7 +40,7 @@ template <typename T>
 std::vector<T> leerLista(const toml::table &tabla, const char *clave,
                          const std::string &donde,
                          T (*leer)(const toml::table &, const std::string &)) {
-  std::string lugar = campo(donde, clave);
+  std::string lugar = rutaDelCampo(donde, clave);
   const toml::array *array = tabla[clave].as_array();
   if (array == nullptr)
     throw std::runtime_error(ERROR_PARTIDA_CAMPO + lugar);

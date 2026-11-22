@@ -42,7 +42,7 @@ void VistaZona::mostrar(const MapaZona<TipoObjeto> &zona) {
   std::map<Terreno, QPixmap> tiles;
   for (int y = 0; y < zona.alto(); ++y) {
     for (int x = 0; x < zona.ancho(); ++x) {
-      Terreno terreno = zona.terrenoEnCelda(x, y);
+      Terreno terreno = zona.pintarTerrenoEnCelda(x, y);
       auto tile = tiles.find(terreno);
       if (tile == tiles.end())
         tile = tiles.emplace(terreno, imagenTerrenoDe(terreno)).first;
@@ -59,7 +59,7 @@ void VistaZona::mostrar(const MapaZona<TipoObjeto> &zona) {
 
 template <typename TipoObjeto>
 void VistaZona::dibujarObjeto(const ObjetoColocado<TipoObjeto> &objeto) {
-  CeldasOcupadasPorObjeto celdaOcupada = OcupadaPor(objeto.tipo);
+  TamanioEnCeldas celdaOcupada = tamanioEnCeldasDe(objeto.tipo);
   int ancho = celdaOcupada.ancho * TAMANIO_CELDA_MAPA;
   int alto = celdaOcupada.alto * TAMANIO_CELDA_MAPA;
   QPixmap imagen;

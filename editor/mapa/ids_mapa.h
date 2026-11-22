@@ -15,14 +15,14 @@ const TablaIds<ElementosGranja> &tablaIds(ElementosGranja);
 const TablaIds<ElementosCaverna> &tablaIds(ElementosCaverna);
 const TablaIds<ElementosPueblo> &tablaIds(ElementosPueblo);
 
-template <typename T> const char *idDe(T tipo) {
+template <typename T> const char *idDeElemento(T tipo) {
   for (const auto &[elemento, id] : tablaIds(T{}))
     if (elemento == tipo)
       return id;
   throw std::logic_error(TEXTO_ERROR_SIN_ID);
 }
 
-template <typename T> T tipoDesdeId(const std::string &id) {
+template <typename T> T elementoDesdeId(const std::string &id) {
   for (const auto &[elemento, texto] : tablaIds(T{}))
     if (id == texto)
       return elemento;

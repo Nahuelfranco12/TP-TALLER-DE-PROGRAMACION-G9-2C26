@@ -7,7 +7,7 @@
 
 struct DatosEditor {
   QString rutaArchivo;
-  MapaEditor mapa = crearMapaPredeterminado();
+  MapaEditor mapa = crearMapaVacio();
 };
 
 #endif // DATOS_EDITOR_H_

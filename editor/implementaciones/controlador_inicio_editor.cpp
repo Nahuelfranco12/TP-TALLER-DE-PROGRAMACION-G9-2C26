@@ -35,7 +35,7 @@ void ControladorInicioEditor::editarMapa() {
   if (ruta.isEmpty())
     return;
   try {
-    MapaEditor mapa = cargarMapa(ruta.toStdString());
+    MapaEditor mapa = cargarMapaDeArchivo(ruta.toStdString());
     datos = DatosEditor{ruta, std::move(mapa)};
     navegador.irAPagina(ui.pageMapas);
   } catch (const std::exception &error) {

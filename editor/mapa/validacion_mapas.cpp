@@ -11,23 +11,23 @@
 #include "mapa_editor.h"
 
 namespace {
-template <typename T> int cantidadDe(const MapaZona<T> &zona, T tipo) {
+template <typename T> int contarObjetosDeTipo(const MapaZona<T> &zona, T tipo) {
   return static_cast<int>(
       std::ranges::count_if(zona.objetos(), [tipo](const auto &objeto) {
         return objeto.tipo == tipo;
       }));
 }
 
-std::string conEncabezado(const std::string &lugar,
+std::string mensajeConLugar(const std::string &lugar,
                           const std::string &mensaje) {
   return lugar + VALIDACION_TEXTO_SEPARADOR + mensaje;
 }
 
-std::string falta(const std::string &lugar, const char *nombre) {
-  return conEncabezado(lugar, std::string(VALIDACION_TEXTO_FALTA) + nombre);
+std::string mensajeFalta(const std::string &lugar, const char *nombre) {
+  return mensajeConLugar(lugar, std::string(VALIDACION_TEXTO_FALTA) + nombre);
 }
 
-std::string sobra(const std::string &zona, const std::string &elemento) {
+std::string mensajeSobra(const std::string &zona, const std::string &elemento) {
   return zona + VALIDACION_TEXTO_SEPARADOR + VALIDACION_TEXTO_SOBRA + elemento;
 }
 
@@ -39,12 +39,12 @@ void validarGranja(const MapaZona<ElementosGranja> &granja,
       }));
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
     errores.push_back(
-        conEncabezado(VALIDACION_TEXTO_ZONA_GRANJA,
+        mensajeConLugar(VALIDACION_TEXTO_ZONA_GRANJA,
                       VALIDACION_TEXTO_CABANIAS_INICIO +
                           std::to_string(VALIDACION_CABANIAS_MINIMAS) +
                           VALIDACION_TEXTO_CABANIAS_FIN));
-  if (cantidadDe(granja, ElementosGranja::SalidaPueblo) == 0)
-    errores.push_back(falta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
+  if (contarObjetosDeTipo(granja, ElementosGranja::SalidaPueblo) == 0)
+    errores.push_back(mensajeFalta(VALIDACION_TEXTO_ZONA_GRANJA, TEXTO_SALIDA_PUEBLO));
 }
 
 void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
@@ -63,8 +63,8 @@ void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
           {ElementosPueblo::SalidaGranja, TEXTO_SALIDA_GRANJA},
           {ElementosPueblo::EntradaMina, TEXTO_ENTRADA_MINA}};
   for (const auto &[tipo, nombre] : obligatorios)
-    if (cantidadDe(pueblo, tipo) == 0)
-      errores.push_back(falta(VALIDACION_TEXTO_ZONA_PUEBLO, nombre));
+    if (contarObjetosDeTipo(pueblo, tipo) == 0)
+      errores.push_back(mensajeFalta(VALIDACION_TEXTO_ZONA_PUEBLO, nombre));
 }
 
 struct ReglaCaverna {
@@ -81,26 +81,26 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                         VALIDACION_TEXTO_NIVEL +
                         std::to_string(i + PRIMER_NIVEL_CAVERNA);
     bool esPrimero = i == 0, esUltimo = i + 1 == niveles.size();
-    bool hayPozo = cantidadDe(niveles[i], ElementosCaverna::Pozo) > 0;
-    bool hayEscalera = cantidadDe(niveles[i], ElementosCaverna::Escalera) > 0;
+    bool hayPozo = contarObjetosDeTipo(niveles[i], ElementosCaverna::Pozo) > 0;
+    bool hayEscalera = contarObjetosDeTipo(niveles[i], ElementosCaverna::Escalera) > 0;
 
-    if (cantidadDe(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
-      errores.push_back(falta(nivel, TEXTO_SALIDA_CAVERNA));
+    if (contarObjetosDeTipo(niveles[i], ElementosCaverna::SalidaCaverna) == 0)
+      errores.push_back(mensajeFalta(nivel, TEXTO_SALIDA_CAVERNA));
 
     if (!esUltimo && !hayPozo)
-      errores.push_back(falta(nivel, TEXTO_POZO));
+      errores.push_back(mensajeFalta(nivel, TEXTO_POZO));
     if (esUltimo && hayPozo)
-      errores.push_back(sobra(nivel, TEXTO_POZO));
+      errores.push_back(mensajeSobra(nivel, TEXTO_POZO));
 
     if (!esPrimero && !hayEscalera)
-      errores.push_back(falta(nivel, TEXTO_ESCALERA));
+      errores.push_back(mensajeFalta(nivel, TEXTO_ESCALERA));
     if (esPrimero && hayEscalera)
-      errores.push_back(sobra(nivel, TEXTO_ESCALERA));
+      errores.push_back(mensajeSobra(nivel, TEXTO_ESCALERA));
   }
 }
 } // namespace
 
-std::vector<std::string> erroresDe(const MapaEditor &mapa) {
+std::vector<std::string> erroresParaExportar(const MapaEditor &mapa) {
   std::vector<std::string> errores;
   if (mapa.nombre.empty())
     errores.push_back(VALIDACION_TEXTO_ERROR_NOMBRE);

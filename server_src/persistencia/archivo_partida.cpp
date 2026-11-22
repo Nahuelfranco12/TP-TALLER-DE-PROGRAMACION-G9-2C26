@@ -95,12 +95,12 @@ void crearCarpeta(const std::filesystem::path &carpeta) {
 template <typename T>
 T leerId(const toml::table &tabla, const char *clave,
          const std::string &donde) {
-  return tipoDesdeId<T>(leerValor<std::string>(tabla, clave, donde));
+  return elementoDesdeId<T>(leerValor<std::string>(tabla, clave, donde));
 }
 
 OutfitGuardado outfitDe(const toml::table &jugador, const std::string &donde) {
   const toml::table &tabla = leerTabla(jugador, CLAVE_PARTIDA_OUTFIT, donde);
-  std::string lugar = campo(donde, CLAVE_PARTIDA_OUTFIT);
+  std::string lugar = rutaDelCampo(donde, CLAVE_PARTIDA_OUTFIT);
   return OutfitGuardado{
       leerEntero<int>(tabla, CLAVE_PARTIDA_GORRO, lugar),
       leerEntero<int>(tabla, CLAVE_PARTIDA_PELO, lugar),
@@ -147,7 +147,7 @@ JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
 }
 
 GranjaGuardada granjaDe(const toml::table &raiz) {
-  const toml::table &tabla = leerTabla(raiz, CLAVE_PARTIDA_GRANJA);
+  const toml::table &tabla = leerSubtabla(raiz, CLAVE_PARTIDA_GRANJA);
   return GranjaGuardada{
       leerLista(tabla, CLAVE_PARTIDA_ARADAS, CLAVE_PARTIDA_GRANJA, celdaDe),
       leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,

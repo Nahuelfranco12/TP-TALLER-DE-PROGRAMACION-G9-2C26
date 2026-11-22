@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-Terreno pisoBaseDe(Zona zona) {
+Terreno terrenoBaseDeZona(Zona zona) {
   switch (zona) {
   case Zona::Granja:
     return Terreno::Pasto;
@@ -17,22 +17,22 @@ Terreno pisoBaseDe(Zona zona) {
   return Terreno::Pasto;
 }
 
-MapaZona<ElementosCaverna> crearNivelCaverna(Dimensiones dimensiones) {
-  MapaZona<ElementosCaverna> nivel(dimensiones, pisoBaseDe(Zona::Caverna));
-  pintarBorde(nivel, Terreno::Pared);
+MapaZona<ElementosCaverna> crearNivelCavernaConParedes(Dimensiones dimensiones) {
+  MapaZona<ElementosCaverna> nivel(dimensiones, terrenoBaseDeZona(Zona::Caverna));
+  pintarBordeDeZona(nivel, Terreno::Pared);
   return nivel;
 }
 
-MapaEditor crearMapaPredeterminado() {
+MapaEditor crearMapaVacio() {
   std::vector<MapaZona<ElementosCaverna>> niveles(
-      CANTIDAD_NIVELES_CAVERNA, crearNivelCaverna(Dimensiones{}));
+      CANTIDAD_NIVELES_CAVERNA, crearNivelCavernaConParedes(Dimensiones{}));
   return MapaEditor{
-      "", MapaZona<ElementosGranja>(Dimensiones{}, pisoBaseDe(Zona::Granja)),
+      "", MapaZona<ElementosGranja>(Dimensiones{}, terrenoBaseDeZona(Zona::Granja)),
       std::move(niveles),
-      MapaZona<ElementosPueblo>(Dimensiones{}, pisoBaseDe(Zona::Pueblo))};
+      MapaZona<ElementosPueblo>(Dimensiones{}, terrenoBaseDeZona(Zona::Pueblo))};
 }
 
-Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
+Dimensiones dimensionesDeZona(const MapaEditor &mapa, Zona zona) {
   switch (zona) {
   case Zona::Granja:
     return mapa.granja.tamanio();
@@ -44,22 +44,22 @@ Dimensiones dimensionesDe(const MapaEditor &mapa, Zona zona) {
   return Dimensiones{};
 }
 
-void redimensionar(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
-  if (!dimensionesValidas(nuevas))
+void redimensionarZonaDelMapa(MapaEditor &mapa, Zona zona, Dimensiones nuevas) {
+  if (!sonDimensionesValidas(nuevas))
     throw std::invalid_argument(TEXTO_ERROR_DIMENSIONES_ZONA);
   switch (zona) {
   case Zona::Granja:
-    mapa.granja.redimensionar(nuevas);
+    mapa.granja.redimensionarZona(nuevas);
     break;
   case Zona::Caverna:
     for (auto &nivel : mapa.nivelesCaverna) {
-      pintarBorde(nivel, pisoBaseDe(Zona::Caverna));
-      nivel.redimensionar(nuevas);
-      pintarBorde(nivel, Terreno::Pared);
+      pintarBordeDeZona(nivel, terrenoBaseDeZona(Zona::Caverna));
+      nivel.redimensionarZona(nuevas);
+      pintarBordeDeZona(nivel, Terreno::Pared);
     }
     break;
   case Zona::Pueblo:
-    mapa.pueblo.redimensionar(nuevas);
+    mapa.pueblo.redimensionarZona(nuevas);
     break;
   }
 }
@@ -77,7 +77,7 @@ bool esCabania(ElementosGranja tipo) {
   }
 }
 
-CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
+TamanioEnCeldas tamanioEnCeldasDe(ElementosGranja tipo) {
   if (esCabania(tipo))
     return {TAMANIO_OCUPADO_CABANIA_ANCHO, TAMANIO_OCUPADO_CABANIA_ALTO};
   switch (tipo) {
@@ -91,11 +91,11 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosGranja tipo) {
   }
 }
 
-bool esUnico(ElementosGranja tipo) {
+bool esUnicoEnZona(ElementosGranja tipo) {
   return esCabania(tipo) || tipo == ElementosGranja::SalidaPueblo;
 }
 
-CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
+TamanioEnCeldas tamanioEnCeldasDe(ElementosCaverna tipo) {
   switch (tipo) {
   case ElementosCaverna::Pozo:
     return {TAMANIO_OCUPADO_POZO_ANCHO_ALTO, TAMANIO_OCUPADO_POZO_ANCHO_ALTO};
@@ -106,7 +106,7 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosCaverna tipo) {
   }
 }
 
-CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
+TamanioEnCeldas tamanioEnCeldasDe(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::CentroComunitario:
     return {TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ANCHO, TAMANIO_OCUPADO_CENTRO_COMUNITARIO_ALTO};
@@ -130,13 +130,13 @@ CeldasOcupadasPorObjeto OcupadaPor(ElementosPueblo tipo) {
   }
 }
 
-bool esUnico(ElementosCaverna tipo) {
+bool esUnicoEnZona(ElementosCaverna tipo) {
   return tipo == ElementosCaverna::Escalera ||
          tipo == ElementosCaverna::SalidaCaverna ||
          tipo == ElementosCaverna::Pozo;
 }
 
-bool esUnico(ElementosPueblo tipo) {
+bool esUnicoEnZona(ElementosPueblo tipo) {
   switch (tipo) {
   case ElementosPueblo::NpcMarnie:
   case ElementosPueblo::NpcClint:
