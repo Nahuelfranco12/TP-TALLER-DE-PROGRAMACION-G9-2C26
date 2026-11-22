@@ -9,13 +9,13 @@ class NavegadorPaginas : public QObject {
   Q_OBJECT
 
 public:
-  explicit NavegadorPaginas(QStackedWidget *stack, QObject *parent = nullptr);
+  explicit NavegadorPaginas(QStackedWidget *contenedorPaginas, QObject *parent = nullptr);
 
   void irAPagina(QWidget *pagina);
-  void volver();
+  void volverPaginaAnterior();
 
 signals:
-  void paginaAbierta(QWidget *pagina);
+  void seAbrioPagina(QWidget *pagina);
 
 private:
   QStackedWidget *contenedorPaginas;

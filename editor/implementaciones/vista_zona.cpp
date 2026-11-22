@@ -12,14 +12,14 @@ VistaZona::VistaZona(QWidget *parent)
   setAlignment(Qt::AlignCenter);
 }
 
-void VistaZona::limpiar() { escena->clear(); }
+void VistaZona::limpiarEscena() { escena->clear(); }
 
-QPixmap VistaZona::imagenTerrenoDe(Terreno terreno) const {
-  const InfoElemento<Terreno> *info = infoTerreno(terreno);
+QPixmap VistaZona::cargarImagenDeTerreno(Terreno terreno) const {
+  const InfoElemento<Terreno> *info = buscarInfoTerreno(terreno);
   if (info == nullptr)
-    return imagenSpriteDe("", Recorte{}, TEXTO_DESCONOCIDO, TAMANIO_CELDA_MAPA,
+    return cargarSpriteTratado("", Recorte{}, TEXTO_DESCONOCIDO, TAMANIO_CELDA_MAPA,
                           TAMANIO_CELDA_MAPA);
-  return imagenSpriteDe(info->rutaSprite, info->recorte,
+  return cargarSpriteTratado(info->rutaSprite, info->recorte,
                         QString::fromUtf8(info->nombre), TAMANIO_CELDA_MAPA,
                         TAMANIO_CELDA_MAPA);
 }
@@ -35,7 +35,7 @@ void VistaZona::dibujarLineasCuadricula(int ancho, int alto) {
                     y * TAMANIO_CELDA_MAPA, lapiz);
 }
 
-void VistaZona::setAlClickear(
+void VistaZona::setAccionAlClickearCelda(
     std::function<void(int, int, Qt::MouseButton)> accion) {
   accionAlClickear = std::move(accion);
 }

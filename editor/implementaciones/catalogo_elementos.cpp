@@ -8,7 +8,7 @@
 #include "constantes_qt.h"
 
 namespace {
-const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
+const std::vector<InfoElemento<Terreno>> &terrenosDisponiblesEnZona(Zona zona) {
   static const std::vector<InfoElemento<Terreno>> granja = {
       {Terreno::Pasto, TEXTO_PASTO, RUTA_SUELO, RECORTE_PASTO}};
   static const std::vector<InfoElemento<Terreno>> caverna = {
@@ -29,7 +29,7 @@ const std::vector<InfoElemento<Terreno>> &terrenosDe(Zona zona) {
 }
 
 template <typename T>
-const InfoElemento<T> *buscar(const std::vector<InfoElemento<T>> &catalogo,
+const InfoElemento<T> *buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &catalogo,
                               T tipo) {
   auto encontrado = std::ranges::find_if(
       catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
@@ -39,7 +39,7 @@ const InfoElemento<T> *buscar(const std::vector<InfoElemento<T>> &catalogo,
 }
 } // namespace
 
-const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
+const std::vector<InfoElemento<ElementosGranja>> &elementosParaColocarEnGranja() {
   static const std::vector<InfoElemento<ElementosGranja>> catalogo = {
       {ElementosGranja::Cabania1, TEXTO_CABANIA1, RUTA_CABANIAS,
        RECORTE_CABANIA1},
@@ -75,7 +75,7 @@ const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja() {
   return catalogo;
 }
 
-const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna() {
+const std::vector<InfoElemento<ElementosCaverna>> &elementosParaColocarEnCaverna() {
   static const std::vector<InfoElemento<ElementosCaverna>> catalogo = {
       {ElementosCaverna::Escalera, TEXTO_ESCALERA, RUTA_CAVERNA,
        RECORTE_ESCALERA},
@@ -96,7 +96,7 @@ const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna() {
   return catalogo;
 }
 
-const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
+const std::vector<InfoElemento<ElementosPueblo>> &elementosParaColocarEnPueblo() {
   static const std::vector<InfoElemento<ElementosPueblo>> catalogo = {
       {ElementosPueblo::CasaMarnie, TEXTO_CASA_MARNIE, RUTA_CASA_NPC,
        RECORTE_CASA_MARNIE},
@@ -131,23 +131,23 @@ const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo() {
   return catalogo;
 }
 
-const InfoElemento<Terreno> *infoTerreno(Terreno terreno) {
+const InfoElemento<Terreno> *buscarInfoTerreno(Terreno terreno) {
   for (Zona zona : {Zona::Granja, Zona::Caverna, Zona::Pueblo}) {
-    const InfoElemento<Terreno> *info = buscar(terrenosDe(zona), terreno);
+    const InfoElemento<Terreno> *info = buscarInfoEnCatalogo(terrenosDisponiblesEnZona(zona), terreno);
     if (info != nullptr)
       return info;
   }
   return nullptr;
 }
 
-const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo) {
-  return buscar(catalogoGranja(), tipo);
+const InfoElemento<ElementosGranja> *buscarInfoElemento(ElementosGranja tipo) {
+  return buscarInfoEnCatalogo(elementosParaColocarEnGranja(), tipo);
 }
 
-const InfoElemento<ElementosCaverna> *infoDe(ElementosCaverna tipo) {
-  return buscar(catalogoCaverna(), tipo);
+const InfoElemento<ElementosCaverna> *buscarInfoElemento(ElementosCaverna tipo) {
+  return buscarInfoEnCatalogo(elementosParaColocarEnCaverna(), tipo);
 }
 
-const InfoElemento<ElementosPueblo> *infoDe(ElementosPueblo tipo) {
-  return buscar(catalogoPueblo(), tipo);
+const InfoElemento<ElementosPueblo> *buscarInfoElemento(ElementosPueblo tipo) {
+  return buscarInfoEnCatalogo(elementosParaColocarEnPueblo(), tipo);
 }

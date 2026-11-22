@@ -14,7 +14,7 @@ public:
 private:
   DatosEditor &datos;
   void crearMapa();
-  void editarMapa();
+  void cargarMapaExistente();
 };
 
 #endif // CONTROLADOR_INICIO_EDITOR_H_

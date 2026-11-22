@@ -34,35 +34,35 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   ui.campoNombreMundo->setPlaceholderText(TEXTO_AYUDA_NOMBRE_MUNDO);
 
   connect(ui.botonVolverMapas, &QPushButton::clicked, this, [this]() {
-    limpiarPagina();
-    this->navegador.volver();
+    reiniciarPaginaMapas();
+    this->navegador.volverPaginaAnterior();
   });
   connect(ui.botonAplicarMapas, &QPushButton::clicked, this,
-          [this]() { aplicarDimensiones(); });
+          [this]() { redimensionarZonaActual(); });
   connect(ui.pestaniaMapas, &QTabWidget::currentChanged, this, [this](int i) {
-    cambiarDeZona(zonaDe(this->ui.pestaniaMapas->widget(i)));
+    cambiarZonaActual(zonaDePestania(this->ui.pestaniaMapas->widget(i)));
   });
   connect(ui.valorNivelCaverna, &QSpinBox::valueChanged, this,
-          [this](int nivel) { cambiarDeNivel(nivel); });
-  connect(&navegador, &NavegadorPaginas::paginaAbierta, this, [this](QWidget *pagina) {
+          [this](int nivel) { cambiarNivelCaverna(nivel); });
+  connect(&navegador, &NavegadorPaginas::seAbrioPagina, this, [this](QWidget *pagina) {
     if (pagina == this->ui.pageMapas) {
       this->ui.campoNombreMundo->setText(
           QString::fromStdString(this->datos.mapa.nombre));
-      dibujarMapa();
-      cambiarDeZona(zonaDe(this->ui.pestaniaMapas->currentWidget()));
+      dibujarTodasLasZonas();
+      cambiarZonaActual(zonaDePestania(this->ui.pestaniaMapas->currentWidget()));
     }
   });
   connect(ui.botonExportarMapas, &QPushButton::clicked, this,
-          [this]() { exportar(); });
+          [this]() { validarYExportarMapa(); });
 
-  ui.vistaGranja->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
-    clickEn(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
+  ui.vistaGranja->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
+    manejarClickEnCelda(this->datos.mapa.granja, this->ui.vistaGranja, x, y, boton);
   });
-  ui.vistaCaverna->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
-    clickEn(cavernaActual(), this->ui.vistaCaverna, x, y, boton);
+  ui.vistaCaverna->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
+    manejarClickEnCelda(nivelCavernaActual(), this->ui.vistaCaverna, x, y, boton);
   });
-  ui.vistaPueblo->setAlClickear([this](int x, int y, Qt::MouseButton boton) {
-    clickEn(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
+  ui.vistaPueblo->setAccionAlClickearCelda([this](int x, int y, Qt::MouseButton boton) {
+    manejarClickEnCelda(this->datos.mapa.pueblo, this->ui.vistaPueblo, x, y, boton);
   });
 
   connect(ui.campoNombreMundo, &QLineEdit::textChanged, this,
@@ -70,19 +70,19 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
             this->datos.mapa.nombre = texto.trimmed().toStdString();
           });
 
-  cambiarDeZona(zonaDe(ui.pestaniaMapas->currentWidget()));
+  cambiarZonaActual(zonaDePestania(ui.pestaniaMapas->currentWidget()));
 }
 
-void ControladorMapas::limpiarPagina() {
+void ControladorMapas::reiniciarPaginaMapas() {
   ui.campoNombreMundo->clear();
   ui.valorNivelCaverna->setValue(PRIMER_NIVEL_CAVERNA);
   ui.pestaniaMapas->setCurrentWidget(ui.tabGranja);
-  ui.vistaGranja->limpiar();
-  ui.vistaCaverna->limpiar();
-  ui.vistaPueblo->limpiar();
+  ui.vistaGranja->limpiarEscena();
+  ui.vistaCaverna->limpiarEscena();
+  ui.vistaPueblo->limpiarEscena();
 }
 
-Zona ControladorMapas::zonaDe(QWidget *pestania) const {
+Zona ControladorMapas::zonaDePestania(QWidget *pestania) const {
   if (pestania == ui.tabCaverna)
     return Zona::Caverna;
   if (pestania == ui.tabPueblo)
@@ -90,33 +90,33 @@ Zona ControladorMapas::zonaDe(QWidget *pestania) const {
   return Zona::Granja;
 }
 
-void ControladorMapas::cambiarDeZona(Zona zona) {
+void ControladorMapas::cambiarZonaActual(Zona zona) {
   zonaActual = zona;
-  cargarPaleta(zona);
-  mostrarDimensiones(dimensionesDeZona(datos.mapa, zona));
+  cargarPaletaDeZona(zona);
+  mostrarDimensionesEnCampos(dimensionesDeZona(datos.mapa, zona));
 }
 
-void ControladorMapas::cargarPaleta(Zona zona) {
+void ControladorMapas::cargarPaletaDeZona(Zona zona) {
   ui.paletaAssets->clear();
   switch (zona) {
   case Zona::Granja:
-    agregarAPaleta(catalogoGranja());
+    agregarElementosAPaleta(elementosParaColocarEnGranja());
     break;
   case Zona::Caverna:
-    agregarAPaleta(catalogoCaverna());
+    agregarElementosAPaleta(elementosParaColocarEnCaverna());
     break;
   case Zona::Pueblo:
-    agregarAPaleta(catalogoPueblo());
+    agregarElementosAPaleta(elementosParaColocarEnPueblo());
     break;
   }
 }
 
 template <typename T>
-void ControladorMapas::agregarAPaleta(
+void ControladorMapas::agregarElementosAPaleta(
     const std::vector<InfoElemento<T>> &elementos) {
   for (const auto &info : elementos) {
     QString nombre = QString::fromUtf8(info.nombre);
-    QPixmap icono = imagenSpriteDe(info.rutaSprite, info.recorte, nombre,
+    QPixmap icono = cargarSpriteTratado(info.rutaSprite, info.recorte, nombre,
                                    TAMANIO_ICONO, TAMANIO_ICONO);
     auto *item = new QListWidgetItem(QIcon(icono), nombre);
     item->setData(ROL_VALOR, static_cast<int>(info.elemento));
@@ -124,53 +124,53 @@ void ControladorMapas::agregarAPaleta(
   }
 }
 
-MapaZona<ElementosCaverna> &ControladorMapas::cavernaActual() {
-  return datos.mapa.nivelesCaverna[nivelCaverna];
+MapaZona<ElementosCaverna> &ControladorMapas::nivelCavernaActual() {
+  return datos.mapa.nivelesCaverna[indiceNivelCaverna];
 }
 
-void ControladorMapas::cambiarDeNivel(int nivel) {
-  nivelCaverna = static_cast<std::size_t>(nivel - PRIMER_NIVEL_CAVERNA);
-  ui.vistaCaverna->mostrar(cavernaActual());
+void ControladorMapas::cambiarNivelCaverna(int nivel) {
+  indiceNivelCaverna = static_cast<std::size_t>(nivel - PRIMER_NIVEL_CAVERNA);
+  ui.vistaCaverna->dibujarZona(nivelCavernaActual());
 }
 
-void ControladorMapas::mostrarDimensiones(Dimensiones dimensiones) {
+void ControladorMapas::mostrarDimensionesEnCampos(Dimensiones dimensiones) {
   ui.valorAnchoMapa->setValue(dimensiones.ancho);
   ui.valorAltoMapa->setValue(dimensiones.alto);
 }
 
-void ControladorMapas::aplicarDimensiones() {
+void ControladorMapas::redimensionarZonaActual() {
   Dimensiones nuevas{ui.valorAnchoMapa->value(), ui.valorAltoMapa->value()};
   try {
     redimensionarZonaDelMapa(datos.mapa, zonaActual, nuevas);
   } catch (const std::invalid_argument &error) {
     QMessageBox::warning(&ventana, TITULO_ERROR_DIMENSIONES,
                          QString::fromUtf8(error.what()));
-    mostrarDimensiones(dimensionesDeZona(datos.mapa, zonaActual));
+    mostrarDimensionesEnCampos(dimensionesDeZona(datos.mapa, zonaActual));
     return;
   }
-  dibujarMapa();
+  dibujarTodasLasZonas();
 }
 
-void ControladorMapas::dibujarMapa() {
-  ui.vistaGranja->mostrar(datos.mapa.granja);
-  ui.vistaCaverna->mostrar(cavernaActual());
-  ui.vistaPueblo->mostrar(datos.mapa.pueblo);
+void ControladorMapas::dibujarTodasLasZonas() {
+  ui.vistaGranja->dibujarZona(datos.mapa.granja);
+  ui.vistaCaverna->dibujarZona(nivelCavernaActual());
+  ui.vistaPueblo->dibujarZona(datos.mapa.pueblo);
 }
 
 template <typename T>
-void ControladorMapas::clickEn(MapaZona<T> &zona, VistaZona *vista, int x,
+void ControladorMapas::manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista, int x,
                                int y, Qt::MouseButton boton) {
   if (!zona.existeCelda(x, y))
     return;
   if (boton == Qt::RightButton)
     zona.quitarObjetoEnCelda(x, y);
   else if (boton == Qt::LeftButton)
-    colocarSeleccionado(zona, vista, x, y);
-  vista->mostrar(zona);
+    colocarElementoSeleccionadEnCelda(zona, vista, x, y);
+  vista->dibujarZona(zona);
 }
 
 template <typename T>
-void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
+void ControladorMapas::colocarElementoSeleccionadEnCelda(MapaZona<T> &zona, VistaZona *vista,
                                            int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();
   if (item == nullptr) {
@@ -182,7 +182,7 @@ void ControladorMapas::colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista,
     QToolTip::showText(QCursor::pos(), TEXTO_NO_SE_PUEDE_COLOCAR, vista);
 }
 
-void ControladorMapas::exportar() {
+void ControladorMapas::validarYExportarMapa() {
   std::vector<std::string> errores = erroresParaExportar(datos.mapa);
   if (!errores.empty()) {
     QStringList lineas;
@@ -194,7 +194,7 @@ void ControladorMapas::exportar() {
   }
 
   QString ruta = QFileDialog::getSaveFileName(&ventana, TITULO_GUARDAR,
-                                              carpetaMapas(), FILTRO_MAPAS);
+                                              crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   if (!ruta.endsWith(EXTENSION_MAPA))

@@ -25,7 +25,7 @@ protected:
   Ui::VentanaEditor &ui;
   NavegadorPaginas &navegador;
 
-  static QString carpetaMapas() {
+  static QString crearYObtenerCarpetaMapas() {
     QDir actual = QDir::current();
     actual.mkpath(CARPETA_MAPAS);
     return actual.absoluteFilePath(CARPETA_MAPAS);

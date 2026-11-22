@@ -19,7 +19,7 @@ ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
   connect(ui.botonCrearMapaInicioEditor, &QPushButton::clicked, this,
           [this]() { crearMapa(); });
   connect(ui.botonEditarMapaInicioEditor, &QPushButton::clicked, this,
-          [this]() { editarMapa(); });
+          [this]() { cargarMapaExistente(); });
   connect(ui.botonSalirInicioEditor, &QPushButton::clicked, this,
           [this]() { this->ventana.close(); });
 }
@@ -29,9 +29,9 @@ void ControladorInicioEditor::crearMapa() {
   navegador.irAPagina(ui.pageMapas);
 }
 
-void ControladorInicioEditor::editarMapa() {
+void ControladorInicioEditor::cargarMapaExistente() {
   QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
-                                              carpetaMapas(), FILTRO_MAPAS);
+                                              crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   try {

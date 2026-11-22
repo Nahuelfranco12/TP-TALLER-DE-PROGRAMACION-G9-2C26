@@ -13,7 +13,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(
 
   mundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
-  connect(&navegador, &NavegadorPaginas::paginaAbierta, this,
+  connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
           [this](QWidget *pagina) {
             if (pagina == this->ui.pageNuevaPartida && !mundosCargados)
               cargarMundos();

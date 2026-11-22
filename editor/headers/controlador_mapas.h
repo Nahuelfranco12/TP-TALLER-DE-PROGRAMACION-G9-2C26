@@ -20,29 +20,29 @@ public:
 private:
   DatosEditor &datos;
   Zona zonaActual = Zona::Granja;
-  std::size_t nivelCaverna = 0;
+  std::size_t indiceNivelCaverna = 0;
 
-  void limpiarPagina();
-  Zona zonaDe(QWidget *pestania) const;
-  void cambiarDeZona(Zona zona);
-  void cargarPaleta(Zona zona);
+  void reiniciarPaginaMapas();
+  Zona zonaDePestania(QWidget *pestania) const;
+  void cambiarZonaActual(Zona zona);
+  void cargarPaletaDeZona(Zona zona);
   template <typename T>
-  void agregarAPaleta(const std::vector<InfoElemento<T>> &elementos);
+  void agregarElementosAPaleta(const std::vector<InfoElemento<T>> &elementos);
 
-  MapaZona<ElementosCaverna> &cavernaActual();
-  void cambiarDeNivel(int nivel);
+  MapaZona<ElementosCaverna> &nivelCavernaActual();
+  void cambiarNivelCaverna(int nivel);
 
-  void mostrarDimensiones(Dimensiones dimensiones);
-  void aplicarDimensiones();
+  void mostrarDimensionesEnCampos(Dimensiones dimensiones);
+  void redimensionarZonaActual();
 
-  void dibujarMapa();
+  void dibujarTodasLasZonas();
   template <typename T>
-  void clickEn(MapaZona<T> &zona, VistaZona *vista, int x, int y,
+  void manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista, int x, int y,
                Qt::MouseButton boton);
   template <typename T>
-  void colocarSeleccionado(MapaZona<T> &zona, VistaZona *vista, int x, int y);
+  void colocarElementoSeleccionadEnCelda(MapaZona<T> &zona, VistaZona *vista, int x, int y);
 
-  void exportar();
+  void validarYExportarMapa();
 };
 
 #endif // CONTROLADOR_MAPAS_H_

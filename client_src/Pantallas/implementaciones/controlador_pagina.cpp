@@ -6,7 +6,7 @@
 void ControladorPagina::conectarVolver(QPushButton *boton) {
   connect(boton, &QPushButton::clicked, this, [this]() {
     limpiarPagina();
-    navegador.volver();
+    navegador.volverPaginaAnterior();
   });
 }
 
