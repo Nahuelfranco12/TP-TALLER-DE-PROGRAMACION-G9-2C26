@@ -76,7 +76,7 @@ void Client::send_chat(const std::string &text) {
   to_send_queue.try_push(std::make_unique<ChatAction>(text));
 }
 
-void Client::send_interact(GamePositionDto &position) {
+void Client::send_interact(GamePositionDto position) {
   to_send_queue.try_push(std::make_unique<InteractAction>(position));
 }
 

@@ -67,7 +67,7 @@ public:
   void cavernCheat();
 
 
-  bool allPlayersSleeping() const;
+  bool allPlayersDoneForTheDay() const;
 
   /*
   * Chat

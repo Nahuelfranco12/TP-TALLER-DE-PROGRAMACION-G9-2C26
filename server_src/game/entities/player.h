@@ -9,6 +9,7 @@
 #include "../game_constants.h"
 #include "../inventory/inventory.h"
 #include "../inventory/seed.h"
+#include "../inventory/bed_item.h"
 #include "../move_result.h"
 #include "entity.h"
 #include "player_outfit.h"
@@ -52,6 +53,8 @@ public:
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
     this->inventory.addTool(
         std::make_unique<Tool>(AvailableTools::WATERING_CAN));
+    
+    this->inventory.addItem(std::make_unique<BedItem>(id));
 
     for (int i = 0; i < 5; i++) {
       this->inventory.addItem(
@@ -118,6 +121,7 @@ public:
   bool isSleeping() const { return sleeping; }
   void goToSleep() { sleeping = true; }
   void wakeUp() { sleeping = false; }
+  bool isDoneForTheDay() const { return sleeping || isUnconscious();}
 
   /*
   * State

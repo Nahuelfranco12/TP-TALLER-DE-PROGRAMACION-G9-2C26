@@ -7,6 +7,7 @@ target_sources(taller_game
     entities/merchant.cpp
     entities/merchants_factory.cpp
     entities/door.cpp
+    entities/bed.cpp
     entities/player.cpp
     entities/crop.cpp
     entities/enemies/enemy.cpp
@@ -18,6 +19,7 @@ target_sources(taller_game
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
     inventory/crop_item.cpp
+    inventory/bed_item.cpp
     inventory/animal_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp

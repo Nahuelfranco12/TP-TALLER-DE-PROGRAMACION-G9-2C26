@@ -200,12 +200,12 @@ void World::growthCheatAll() {
     sector->growthCheatAll();
 }
 
-bool World::allPlayersSleeping() const {
+bool World::allPlayersDoneForTheDay() const {
   if (players.empty())
     return false;
 
   for (const auto &[playerId, player] : players) {
-    if(!player->isSleeping())
+    if(!player->isDoneForTheDay())
       return false;
   }
   return true;
@@ -253,7 +253,7 @@ void World::tick() {
   }
 
   dayTick++;
-  if (allPlayersSleeping() || dayTick >= TICKS_PER_DAY) {
+  if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
     dayTick = 0;
     dayNumber++;
     // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).

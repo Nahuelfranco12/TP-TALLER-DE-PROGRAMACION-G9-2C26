@@ -342,7 +342,7 @@ int main(int argc, char *argv[]) try {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
           client.send_water(dir);
-        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN)) {
+        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN || en_la_mano.item == ItemTypeDto::BED)) {
           int casillero = 0;
           if (inventario.indice_item_seleccionado(casillero))
             client.send_place(casillero, dir);
@@ -351,6 +351,8 @@ int main(int argc, char *argv[]) try {
           client.send_plant(frente_x, frente_y, cultivo);
         } else {
           client.send_collect(dir);
+          client.send_interact({static_cast<size_t>(frente_x),
+                                static_cast<size_t>(frente_y)});
         }
       }
 

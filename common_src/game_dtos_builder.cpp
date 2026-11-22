@@ -51,6 +51,8 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
     if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
       return ItemTypeDto::ANIMAL_COW;
     return ItemTypeDto::ANIMAL_CHICKEN;
+  case ItemType::FURNITURE:
+    return ItemTypeDto::BED;
   default:
     break;
   }

@@ -75,6 +75,7 @@ enum class ItemTypeDto {
   CROP_PUMPKIN,
   ANIMAL_COW,
   ANIMAL_CHICKEN,
+  BED,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
