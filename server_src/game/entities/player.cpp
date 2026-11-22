@@ -9,7 +9,7 @@
 #include "../inventory/item_factory.h"
 
 MoveResult Player::move(Position destination) {
-  if (isUnconscious())
+  if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
   return this->actualSector->move(this->position, destination);
 }
@@ -110,6 +110,7 @@ void Player::startNewDay(bool sleptInBed) {
   double factor = sleptInBed ? 1.0 : 0.5;
   this->life = PLAYER_MAX_LIFE * factor;
   this->energy = PLAYER_MAX_ENERGY * factor;
+  this->sleeping = false;
 }
 
 int Player::buy(const Item &sample, int price, int amount) {

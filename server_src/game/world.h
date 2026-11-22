@@ -12,6 +12,7 @@
 #include "position.h"
 #include "sectors/farm_sector.h"
 #include "sectors/cabin_sector.h"
+#include "entities/bed.h"
 
 class World {
 private:
@@ -26,6 +27,7 @@ private:
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
+  void respawnNextTo(Player &player, Sector &sector, Position spot);
 
 public:
   explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
@@ -76,6 +78,7 @@ public:
   
   void tick();
   void endDay();
+  Bed *findBedOf(int playerId, Sector *&bedSector);
 
   /*
   * State

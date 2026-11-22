@@ -39,6 +39,8 @@ private:
   Inventory inventory;
   Sector *actualSector;
 
+  bool sleeping = false;
+
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
          Sector *actualSector, PlayerOutfit outfit)
@@ -109,6 +111,13 @@ public:
 
   void startTalkingTo(Merchant &merchant) { talkingTo = &merchant; }
   Merchant *getTalkingTo() const { return talkingTo; }
+
+  /*
+  * Dormir
+  */
+  bool isSleeping() const { return sleeping; }
+  void goToSleep() { sleeping = true; }
+  void wakeUp() { sleeping = false; }
 
   /*
   * State

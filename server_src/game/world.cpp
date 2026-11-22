@@ -54,8 +54,7 @@ bool World::createCabin(int playerId, Position top) {
   if (!b)
     return false;
 
-  if (!this->addSector(std::make_unique<CabinSector>(
-          playerId, cabinId, Position(CABIN_ENTRY_X - 1, CABIN_ENTRY_Y))))
+  if (!this->addSector(std::make_unique<CabinSector>(playerId, cabinId)))
     return false;
 
   return this->addDoor(IdSector::FARM, cabinId, b->door,
@@ -206,14 +205,7 @@ bool World::allPlayersSleeping() const {
     return false;
 
   for (const auto &[playerId, player] : players) {
-    IdSector cabinId = cabinSectorId(playerId);
-    auto cabinIt = sectors.find(cabinId);
-    if (cabinIt == sectors.end())
-      return false;
-
-    const CabinSector *cabin =
-        dynamic_cast<const CabinSector *>(cabinIt->second.get());
-    if (!cabin || !cabin->isPlayerSleeping())
+    if(!player->isSleeping())
       return false;
   }
   return true;
@@ -316,33 +308,55 @@ void World::sendPlayersToFarm() {
 
 void World::endDay() {
   for (auto &[playerId, player] : players) {
-    CabinSector *cabin = dynamic_cast<CabinSector *>(
-        getSector(cabinSectorId(playerId)));
+    bool slept = player->isSleeping();
+
+    CabinSector *cabin = dynamic_cast<CabinSector *>(getSector(cabinSectorId(playerId)));
     if (!cabin)
       continue;
 
-    if (cabin->isPlayerSleeping()) {
-      player->setLife(PLAYER_MAX_LIFE);
-      player->setEnergy(PLAYER_MAX_ENERGY);
+    Sector *bedSector = nullptr;
+    Bed *ownBed = findBedOf(playerId, bedSector);
+    if (ownBed) {
+      respawnNextTo(*player, *bedSector, ownBed->position);
     } else {
-      Position spawn(0, 0);
-      if (!cabin->findBedSpawnPosition(spawn))
-        continue;
-      Sector *origin = player->getActualSector();
-      std::unique_ptr<Entity> entity = origin->removeEntity(player->position);
-      if (entity) {
-        if (!cabin->tryAddEntity(entity, spawn))
-          origin->tryAddEntity(entity, player->position);
-        else
-          player->setActualSector(cabin);
-      }
-      player->setLife(PLAYER_MAX_LIFE / 2);
-      player->setEnergy(PLAYER_MAX_ENERGY / 2);
+      Sector *cabin = getSector(cabinSectorId(playerId));
+      if (cabin)
+        respawnNextTo(*player, *cabin, Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
+    }
+
+    player->startNewDay(slept);
+  }
+  for (auto &[id, sector] : sectors){
+    sector->releaseBeds();
+    sector->endDay();
+  }
+}
+
+Bed *World::findBedOf(int playerId, Sector *&bedSector) {
+  for (auto &[id, sector] : this->sectors) {
+    Bed *bed = sector->findBedOf(playerId);
+    if (bed) {
+      bedSector = sector.get();
+      return bed;
     }
   }
+  return nullptr;
+}
 
-  for (auto &[id, sector] : sectors)
-    sector->endDay();
+void World::respawnNextTo(Player &player, Sector &sector, Position spot) {
+  Position spawn(0, 0);
+  if (!sector.findFreeNextTo(spot, spawn))
+    return;
+
+  Sector *origin = player.getActualSector();
+  std::unique_ptr<Entity> entity = origin->removeEntity(player.position);
+  if (!entity)
+    return;
+
+  if (sector.tryAddEntity(entity, spawn))
+    player.setActualSector(&sector);
+  else
+    origin->tryAddEntity(entity, player.position);
 }
 
 void World::addChat(const ChatMessageState &message) {

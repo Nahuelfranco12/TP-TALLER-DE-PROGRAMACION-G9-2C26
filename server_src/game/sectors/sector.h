@@ -13,6 +13,7 @@
 #include "../entities/entity.h"
 #include "../entities/enemies/trap.h"
 #include "../entities/player.h"
+#include "../entities/bed.h"
 #include "../game_constants.h"
 #include "../move_result.h"
 #include "../position.h"
@@ -94,6 +95,13 @@ public:
     }
     return false;
   }
+
+  /*
+  * Beds
+  */
+  Bed *findBedOf(int ownerId);
+  bool findFreeNextTo(Position center, Position &result) const;
+  void releaseBeds();
 
   /*
    * State para obtener el estado del sector completo y poder serializarlo.
