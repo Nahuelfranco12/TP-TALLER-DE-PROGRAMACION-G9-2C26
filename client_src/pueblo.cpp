@@ -187,6 +187,7 @@ bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto
     bool lo_toque = npc.tile_x == tile_x &&
                     (npc.tile_y == tile_y || npc.tile_y - 1 == tile_y);
     if (lo_toque) {
+      tienda_abierta = npc.modelo;
       posicion = {static_cast<size_t>(npc.tile_x), static_cast<size_t>(npc.tile_y)};
       return true;
     }
