@@ -65,6 +65,7 @@ void Player::attack(Enemy &enemy) {
     damage /= 2;
 
   if (enemy.hit(damage)) {
+    this->spendEnergy(ENERGY_COST_ATTACK);
     this->coins += enemy.getGoldDrop();
     if (enemy.removeOnDeath()) {
       this->actualSector->removeEntity(enemy.position);
