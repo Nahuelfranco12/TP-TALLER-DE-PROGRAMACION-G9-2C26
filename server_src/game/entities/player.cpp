@@ -11,6 +11,7 @@
 MoveResult Player::move(Position destination) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
+  this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, destination);
 }
 

@@ -76,6 +76,7 @@ enum class ItemTypeDto {
   ANIMAL_COW,
   ANIMAL_CHICKEN,
   BED,
+  CHEST,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -126,6 +127,7 @@ enum class EntityTypeDto {
   MINERAL_COAL,
   CROP,
   BED,
+  CHEST,
   NPC_PIERRE,
   NPC_CLINT,
   NPC_ROBIN,
@@ -282,6 +284,11 @@ struct ChatMessageDto {
   bool isPrivate = false;
 };
 
+struct ChestDto {
+  bool openedByMe = false;
+  std::list<InventorySlotDto> slots;
+};
+
 struct BedDto {
   bool sleeping = false;
 };
@@ -293,6 +300,7 @@ struct EntityDto {
   CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
   BedDto bed{};
+  ChestDto chest{};
 };
 
 struct GameTimeDto {

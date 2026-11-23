@@ -91,6 +91,7 @@ void World::removePlayer(int id) {
   if (player) {
     Sector *sector = player->getActualSector();
     if (sector)
+      sector->closeChestsOf(id);
       sector->removeEntity(player->position);
   }
   this->players.erase(id);
@@ -349,6 +350,7 @@ void World::respawnNextTo(Player &player, Sector &sector, Position spot) {
     return;
 
   Sector *origin = player.getActualSector();
+  origin->closeChestsOf(player.getId());
   std::unique_ptr<Entity> entity = origin->removeEntity(player.position);
   if (!entity)
     return;

@@ -11,7 +11,7 @@ private:
 
 public:
   Bed(Position position, int ownerId)
-      : Entity(position.x, position.y, EntityTypes::BED), ownerId(ownerId) {}
+      : Entity(position.x, position.y, EntityTypes::FURNITURE), ownerId(ownerId) {}
 
   int getOwnerId() const { return ownerId; }
   void release() { occupied = false; }
@@ -20,7 +20,9 @@ public:
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();
+    state.furniture.type = FurnitureType::BED;
     state.bed.sleeping = occupied;
+    state.bed.ownerId = ownerId;
     return state;
   }
 };

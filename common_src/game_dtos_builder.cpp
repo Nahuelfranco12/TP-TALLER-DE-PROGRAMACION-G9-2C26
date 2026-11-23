@@ -52,6 +52,8 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
       return ItemTypeDto::ANIMAL_COW;
     return ItemTypeDto::ANIMAL_CHICKEN;
   case ItemType::FURNITURE:
+    if (static_cast<FurnitureType>(item.subtype) == FurnitureType::CHEST)
+      return ItemTypeDto::CHEST;
     return ItemTypeDto::BED;
   default:
     break;
@@ -111,8 +113,14 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     case EnemyType::SKULL_GREEN:
       return EntityTypeDto::SKULL_GREEN;    }
     break;
-  case EntityTypes::BED:
+  case EntityTypes::FURNITURE:
+    switch (e.furniture.type) {
+    case FurnitureType::BED:
       return EntityTypeDto::BED;
+    case FurnitureType::CHEST:
+      return EntityTypeDto::CHEST;
+    }
+    break;
   case EntityTypes::NPC:
     switch (e.merchant.type) {
     case MerchantType::PIERRE:
@@ -328,6 +336,12 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           entityDto.enemy.alive = e.enemy.is_alive;
           entityDto.enemy.direction = e.enemy.direction;
+          entityDto.bed.sleeping = e.bed.sleeping;
+          if (e.chest.openedBy == clientId) {
+            entityDto.chest.openedByMe = true;
+            for (const ItemState &i : e.chest.inventory.items)
+              entityDto.chest.slots.push_back({i.count, toDto(i), static_cast<CropQualityDto>(i.quality)});
+          }
           sectorDto.entities[pos] = entityDto;
         }
       }

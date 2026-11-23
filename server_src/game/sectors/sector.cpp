@@ -252,6 +252,23 @@ void Sector::releaseBeds() {
   }
 }
 
+Chest *Sector::findChestOpenedBy(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest && chest->isOpenedBy(playerId))
+      return chest;
+  }
+  return nullptr;
+}
+
+void Sector::closeChestsOf(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest)
+      chest->closeFor(playerId);
+  }
+}
+
 void Sector::apply(Position origin, const Decision &decision) {
   Enemy *enemy = dynamic_cast<Enemy *>(getEntity(origin));
   if (!enemy || enemy->isDead())

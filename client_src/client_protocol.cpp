@@ -231,6 +231,12 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
     entity.bed.sleeping = protocol.receive_u8() == 1;
+    entity.chest.openedByMe = protocol.receive_u8() == 1;
+    if (entity.chest.openedByMe) {
+      int slot_count = protocol.receive_u8();
+      for (int j = 0; j < slot_count; j++)
+        entity.chest.slots.push_back(receive_slot());
+    }
     state.entities[position] = entity;
   }
 

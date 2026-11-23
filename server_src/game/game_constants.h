@@ -61,6 +61,7 @@
 #define PRICE_PUMPKIN 40
 #define PRICE_COW 150
 #define PRICE_CHICKEN 50
+#define PRICE_CHEST 100
 
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
@@ -161,7 +162,7 @@ enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED, FURNITURE };
 
 enum class MerchantType { PIERRE, CLINT, ROBIN, MARNIE };
 
