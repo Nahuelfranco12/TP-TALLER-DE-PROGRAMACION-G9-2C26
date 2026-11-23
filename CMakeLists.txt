@@ -30,8 +30,12 @@ add_library(taller_common STATIC)
 
 # add the source files that make the lib
 # HEY!! TODO XXX: add more subfolders here
-add_subdirectory(common/)
+add_subdirectory(common_src/)
 
+add_library(taller_game STATIC)
+add_subdirectory(server_src/game/)
+target_include_directories(taller_game PUBLIC .)
+target_link_libraries(taller_game taller_common)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
@@ -96,29 +100,45 @@ if(TALLER_CLIENT OR TALLER_EDITOR)
         URL https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip
     )
 
+    set(SDL2PP_WITH_IMAGE ON)
+    set(SDL2PP_WITH_MIXER ON)
+    set(SDL2PP_WITH_TTF ON)
+
     FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_mixer SDL2_ttf libSDL2pp)
 endif()
 
 # Program section
 # ---------------
 if(TALLER_CLIENT)
+    # Qt para el lobby
+    find_package(Qt6 6.4 REQUIRED COMPONENTS Core Widgets)
+
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(taller_client)
+
+    # moc, uic y rcc automáticos para el lobby Qt
+    set_target_properties(taller_client PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON
+        AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/client_src/Pantallas)
 
     # Make them depend on taller_common lib
     add_dependencies(taller_client taller_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(client)
+    add_subdirectory(client_src)
 
     set_project_warnings(taller_client ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # add libSDL2pp's headers
-    target_include_directories(taller_client PRIVATE ${libSDL2pp_SOURCE_DIR})
+    # add libSDL2pp's headers y los headers del lobby
+    target_include_directories(taller_client PRIVATE
+        ${libSDL2pp_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/client_src/Pantallas/headers)
 
     # Link the taller_common lib target
-    target_link_libraries(taller_client taller_common SDL2pp::SDL2pp)
+    target_link_libraries(taller_client taller_common SDL2pp::SDL2pp Qt6::Widgets)
 endif()
 
 if(TALLER_SERVER)
@@ -130,32 +150,16 @@ if(TALLER_SERVER)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(server)
+    add_subdirectory(server_src)
 
     set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the taller_common lib target
-    target_link_libraries(taller_server taller_common)
+    target_link_libraries(taller_server taller_common taller_game)
 endif()
 
 if(TALLER_EDITOR)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(taller_editor)
-
-    # Make them depend on taller_common lib
-    add_dependencies(taller_editor taller_common SDL2pp::SDL2pp)
-
-    # Add source files and enable warnings
-    # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(editor)
-
-    set_project_warnings(taller_editor ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
-
-    # add libSDL2pp's headers
-    target_include_directories(taller_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
-
-    # Link the taller_common lib target
-    target_link_libraries(taller_editor taller_common SDL2pp::SDL2pp)
 endif()
 
 
@@ -206,6 +210,8 @@ if(TALLER_TESTS)
     # Change this if you have to.
     target_link_libraries(taller_tests
         taller_common
+        taller_game
         GTest::gtest_main
     )
+    gtest_discover_tests(taller_tests)
 endif()

@@ -1,0 +1,43 @@
+# estas son carpetas compiladas
+
+build/
+build-*/
+**/build/
+cmake-build-*/
+.cache/
+
+# estos son binarios y cosas como librerias
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.out
+*.d
+*.gch
+*.pch
+
+#ESTO LO puede generar CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+
+#estas son cosas que puede crear QT
+*_autogen/
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.user
+*.user.*
+.qtcreator/
+
+# editores y cosas del sistema
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+otro/

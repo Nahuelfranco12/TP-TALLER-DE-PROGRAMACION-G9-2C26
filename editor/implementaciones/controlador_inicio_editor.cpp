@@ -1,0 +1,45 @@
+#include <QDir>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QPushButton>
+#include <exception>
+#include <utility>
+
+#include "archivo_mapa.h"
+#include "constantes_qt.h"
+#include "controlador_inicio_editor.h"
+#include "ui_ventanaeditor.h"
+
+ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
+                                                 Ui::VentanaEditor &ui,
+                                                 Navegador &navegador,
+                                                 DatosEditor &datos,
+                                                 QObject *parent)
+    : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
+  connect(ui.botonCrearMapaInicioEditor, &QPushButton::clicked, this,
+          [this]() { crearMapa(); });
+  connect(ui.botonEditarMapaInicioEditor, &QPushButton::clicked, this,
+          [this]() { editarMapa(); });
+  connect(ui.botonSalirInicioEditor, &QPushButton::clicked, this,
+          [this]() { this->ventana.close(); });
+}
+
+void ControladorInicioEditor::crearMapa() {
+  datos = DatosEditor{};
+  navegador.irA(ui.pageMapas);
+}
+
+void ControladorInicioEditor::editarMapa() {
+  QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
+                                              carpetaMapas(), FILTRO_MAPAS);
+  if (ruta.isEmpty())
+    return;
+  try {
+    MapaEditor mapa = cargarMapa(ruta.toStdString());
+    datos = DatosEditor{ruta, std::move(mapa)};
+    navegador.irA(ui.pageMapas);
+  } catch (const std::exception &error) {
+    QMessageBox::warning(&ventana, TITULO_ERROR_CARGAR,
+                         QString::fromUtf8(error.what()));
+  }
+}
