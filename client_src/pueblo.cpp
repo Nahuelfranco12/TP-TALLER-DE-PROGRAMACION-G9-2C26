@@ -56,6 +56,28 @@ bool modelo_de_npc(EntityTypeDto tipo, int &modelo) {
     return false;
   }
 }
+
+bool modelo_de_edificio(BuildingTypeDto tipo, int &modelo) {
+  switch (tipo) {
+  case BuildingTypeDto::SHOP_PIERRE:
+    modelo = TIENDA_PIERRE;
+    return true;
+  case BuildingTypeDto::SHOP_CLINT:
+    modelo = TIENDA_CLINT;
+    return true;
+  case BuildingTypeDto::SHOP_ROBIN:
+    modelo = TIENDA_ROBIN;
+    return true;
+  case BuildingTypeDto::SHOP_MARNIE:
+    modelo = TIENDA_MARNIE;
+    return true;
+  case BuildingTypeDto::COMUNITARY_CENTRE:
+    modelo = PUEBLO_MODELO_CENTRO;
+    return true;
+  default:
+    return false;
+  }
+}
 } // namespace
 
 Pueblo::Pueblo(Renderer &renderer)
@@ -63,9 +85,6 @@ Pueblo::Pueblo(Renderer &renderer)
       edificio_centro(renderer, RUTA_EDIFICIO_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA), vueltas(0),
       tienda_abierta(TIENDA_CERRADA) {
-
-  // cppcheck-suppress useInitializationList
-  lista_puestos = PUEBLO_PUESTOS;
 
   for (const ModeloNpc &modelo : MODELOS_NPCS) {
     // cppcheck-suppress useStlAlgorithm
@@ -89,16 +108,21 @@ Pueblo::Pueblo(Renderer &renderer)
 
 void Pueblo::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
-void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
+void Pueblo::dibujar_edificio(Renderer &renderer, const Edificio &edificio,
                             int camara_x, int camara_y, int lado) {
-  const SDL_Rect &modelo = MODELOS_PUESTOS[puesto.modelo];
-  Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
+  Texture *textura = &edificios;
+  SDL_Rect modelo = EDIFICIO_CENTRO;
+  if (edificio.modelo == PUEBLO_MODELO_CENTRO) {
+    textura = &edificio_centro;
+  } else {
+    modelo = MODELOS_PUESTOS[edificio.modelo];
+  }
 
-  int x = puesto.tile_x * lado - camara_x;
-  int y = puesto.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
-               modelo.h * lado / PIXELES_POR_TILE);
-  renderer.Copy(edificios, origen, destino);
+  int ancho = edificio.ancho * lado;
+  int alto = modelo.h * ancho / modelo.w;
+  int x = edificio.tile_x * lado - camara_x;
+  int pie = (edificio.tile_y + edificio.alto) * lado - camara_y;
+  renderer.Copy(*textura, Rect(modelo.x, modelo.y, modelo.w, modelo.h), Rect(x, pie - alto, ancho, alto));
 }
 
 void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x,
@@ -124,9 +148,8 @@ void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x,
 }
 
 void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
-  dibujar_centro_comunitario(renderer, camara_x, camara_y, lado);
-  for (const Puesto &puesto : lista_puestos) {
-    dibujar_puesto(renderer, puesto, camara_x, camara_y, lado);
+  for (const Edificio &edificio : lista_edificios) {
+    dibujar_edificio(renderer, edificio, camara_x, camara_y, lado);
   }
   for (const Npc &npc : lista_npcs) {
     dibujar_npc(renderer, npc, camara_x, camara_y, lado);
@@ -140,6 +163,19 @@ void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
     int modelo = TIENDA_CERRADA;
     if (modelo_de_npc(entidad.type, modelo))
       lista_npcs.push_back({static_cast<int>(posicion.x), static_cast<int>(posicion.y), modelo});
+  }
+}
+
+void Pueblo::actualizar_edificios(const std::vector<BuildingDto> &del_servidor) {
+  lista_edificios.clear();
+  for (const BuildingDto &edificio : del_servidor) {
+    int modelo = TIENDA_CERRADA;
+    if (modelo_de_edificio(edificio.type, modelo)) {
+      lista_edificios.push_back({static_cast<int>(edificio.topLeft.x),
+                                 static_cast<int>(edificio.topLeft.y),
+                                 static_cast<int>(edificio.width),
+                                 static_cast<int>(edificio.height), modelo});
+    }
   }
 }
 
@@ -237,15 +273,4 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
 
     x += botones[i].w + TIENDA_SEPARACION_BOTONES;
   }
-}
-
-void Pueblo::dibujar_centro_comunitario(Renderer &renderer, int camara_x,
-                                        int camara_y, int lado) {
-  int x = CENTRO_EDIFICIO_TILE_X * lado - camara_x;
-  int y = CENTRO_EDIFICIO_TILE_Y * lado - camara_y;
-  Rect origen(EDIFICIO_CENTRO.x, EDIFICIO_CENTRO.y, EDIFICIO_CENTRO.w,
-              EDIFICIO_CENTRO.h);
-  Rect destino(x, y, EDIFICIO_CENTRO.w * lado / PIXELES_POR_TILE,
-               EDIFICIO_CENTRO.h * lado / PIXELES_POR_TILE);
-  renderer.Copy(edificio_centro, origen, destino);
 }

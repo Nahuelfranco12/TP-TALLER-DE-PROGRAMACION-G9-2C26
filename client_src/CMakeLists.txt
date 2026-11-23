@@ -54,6 +54,7 @@ target_sources(taller_client
     centro_comunitario.cpp
     animacion.cpp
     animacion_enemigos.cpp
+    decoraciones.cpp
     PUBLIC
     # .h files
     animacion.h
@@ -109,4 +110,5 @@ target_sources(taller_client
     pueblo.h
     mapa_mundo.h
     centro_comunitario.h
+    decoraciones.h
     )

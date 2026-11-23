@@ -38,10 +38,6 @@ private:
   void dibujar_numero(SDL2pp::Renderer &renderer, int numero,
                       const SDL2pp::Rect &lugar);
 
-  static void dibujar_calidad(SDL2pp::Renderer &renderer,
-                              CropQualityDto calidad,
-                              const SDL2pp::Rect &lugar);
-
 public:
   explicit Inventario(SDL2pp::Renderer &renderer);
 

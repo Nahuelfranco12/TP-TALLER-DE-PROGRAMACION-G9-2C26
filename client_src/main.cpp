@@ -10,6 +10,7 @@
 #include "mapa_mundo.h"
 #include "pueblo.h"
 #include "centro_comunitario.h"
+#include "decoraciones.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -140,8 +141,11 @@ int main(int argc, char *argv[]) try {
                           mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
 
   Granja granja(renderer);
+  granja.actualizar_edificios(farm.buildings);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
+  Decoraciones decoraciones(renderer);
+  pueblo.actualizar_edificios(village.buildings);
   CentroComunitario centro(renderer);
 
   MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja,
@@ -432,6 +436,7 @@ int main(int argc, char *argv[]) try {
       } else if (zona == SectorTypeDto::VILLAGE) {
         mapa_pueblo.actualizar(state.sector);
         pueblo.actualizar(state.entities);
+        pueblo.actualizar_edificios(state.buildings);
       } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
         mapa_centro.actualizar(state.sector);
       } else if (zona == SectorTypeDto::CABIN) {
@@ -439,6 +444,7 @@ int main(int argc, char *argv[]) try {
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
+        granja.actualizar_edificios(state.buildings);
       }
 
       // Actualizar jugadores
@@ -541,6 +547,7 @@ int main(int argc, char *argv[]) try {
 
     mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                          window.GetHeight());
+                         decoraciones.dibujar(renderer, mapa_actual->obtener_decoraciones(), camara_x, camara_y);
 
     // Dibujo lo que va encima del mapa
     if (zona == SectorTypeDto::CAVERN) {

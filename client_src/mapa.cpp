@@ -116,9 +116,9 @@ int Mapa::obtener_ancho() const {
 
 int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
-// bool Mapa::es_escalera(int x, int y) const {
-//   return tile_en(x, y) == LETRA_PUERTA;
-// }
+const std::vector<Decoracion> & Mapa::obtener_decoraciones() const {
+  return decoraciones;
+}
 
 void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
   int ancho = static_cast<int>(tiles.size());
@@ -128,11 +128,15 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
   }
 
   std::vector<std::string> nueva(alto, std::string(ancho, LETRA_PASTO));
+  decoraciones.clear();
 
   // El servidor decide que hay en cada lugar
-  for (int x = 0; x < ancho; ++x) {
-    for (int y = 0; y < alto; ++y) {
+  for (int x = 0; x < ancho; x++) {
+    for (int y = 0; y < alto; y++) {
       const TileDto &tile = tiles[x][y];
+      if (tile.decoration != NoneDto) {
+        decoraciones.push_back({x, y, tile.decoration});
+      }
 
       char letra = tile_en(x, y);
       if (tile.type == TerrainTypeDto::DIRT) {

@@ -14,6 +14,8 @@ private:
   struct Casa {
     int tile_x;
     int tile_y;
+    int ancho;
+    int alto;
     int modelo;
   };
 
@@ -68,6 +70,8 @@ public:
                int lado = TAMANIO_TILE);
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
+
+  void actualizar_edificios(const std::vector<BuildingDto> &del_servidor);
 };
 
 #endif
