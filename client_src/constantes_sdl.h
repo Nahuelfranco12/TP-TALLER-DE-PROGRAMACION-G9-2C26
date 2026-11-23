@@ -221,6 +221,17 @@
 #define INVENTARIO_ESTRELLA_MARGEN 3
 #define DIGITOS_DECIMALES 10
 
+// Muebles: cofre y cama -> granja.cpp, inventario.cpp, ventana_cofre.cpp
+#define SPRITE_COFRE_X 8
+#define SPRITE_COFRE_CERRADO_Y 0
+#define SPRITE_COFRE_ABIERTO_Y 16
+#define SPRITE_COFRE_LADO 16
+#define COFRE_SEPARACION 8
+
+#define COFRE_COLUMNAS 10
+#define COFRE_FILAS 3
+#define COFRE_CASILLEROS (COFRE_COLUMNAS * COFRE_FILAS)
+
 // Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
 // interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
 // pueblo.cpp
@@ -231,6 +242,7 @@
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
+#define RUTA_COFRE "assets/muebles/chest.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
   "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"

@@ -9,6 +9,7 @@
 #include "inventario.h"
 #include "mapa_mundo.h"
 #include "pueblo.h"
+#include "ventana_cofre.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -147,6 +148,7 @@ int main(int argc, char *argv[]) try {
 
   Inventario inventario(renderer);
   Chat chat(renderer);
+  VentanaCofre ventana_cofre;
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -179,7 +181,16 @@ int main(int argc, char *argv[]) try {
         bool acepto = false;
         GamePositionDto posicion_npc;
 
-        if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
+        int casillero_cofre = 0;
+        if (ventana_cofre.click(mouse_x, mouse_y, window.GetWidth(),
+                                window.GetHeight(), casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, false); 
+        } else if (ventana_cofre.esta_abierta() &&
+                   inventario.click(mouse_x, mouse_y, window.GetWidth(),
+                                    window.GetHeight()) &&
+                   inventario.indice_item_seleccionado(casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, true); 
+        } else if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
         } else if (pueblo.hay_tienda_abierta()) {
           switch (pueblo.click_tienda(mouse_x, mouse_y)) {
@@ -386,6 +397,7 @@ int main(int argc, char *argv[]) try {
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
       chat.agregar(state.chat);
+      ventana_cofre.actualizar(state.entities);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
       if (state.type != zona) {
@@ -528,6 +540,7 @@ int main(int argc, char *argv[]) try {
 
     interfaz.dibujar(renderer, audio);
     chat.dibujar(window.GetHeight());
+    ventana_cofre.dibujar(renderer, inventario, window.GetWidth(), window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);

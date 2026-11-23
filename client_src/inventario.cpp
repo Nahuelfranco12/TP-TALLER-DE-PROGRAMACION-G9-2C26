@@ -28,7 +28,7 @@ Rect icono_cultivo(int columna, int fila) {
 Inventario::Inventario(Renderer &renderer)
     : minerales(renderer, RUTA_ICONOS_MINERALES),
       cultivos(renderer, RUTA_ICONOS_CULTIVOS), huevo(renderer, RUTA_HUEVO),
-      leche(renderer, RUTA_LECHE),
+      leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
       fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
   for (int i = 0; i < DIGITOS_DECIMALES; i++) {
     digitos.emplace_back(renderer,
@@ -240,6 +240,9 @@ void Inventario::dibujar_item(Renderer &renderer,
         renderer, cultivos,
         icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
         lugar);
+    break;
+  case ItemTypeDto::CHEST:
+    dibujar_icono(renderer, cofre, Rect(SPRITE_COFRE_X, SPRITE_COFRE_CERRADO_Y, SPRITE_COFRE_LADO, SPRITE_COFRE_LADO), lugar);
     break;
   default:
     break;

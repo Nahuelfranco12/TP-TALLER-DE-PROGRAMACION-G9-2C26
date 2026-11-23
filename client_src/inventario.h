@@ -15,6 +15,7 @@ private:
   SDL2pp::Texture cultivos;
   SDL2pp::Texture huevo;
   SDL2pp::Texture leche;
+  SDL2pp::Texture cofre;
   std::vector<SDL2pp::Texture> iconos_herramienta;
   SDL2pp::Font fuente;
   std::vector<SDL2pp::Texture> digitos;
@@ -62,6 +63,7 @@ public:
   void dibujar_regalo(SDL2pp::Renderer &renderer,
                       const InventorySlotDto &regalo,
                       const SDL2pp::Rect &lugar);
+
 };
 
 #endif

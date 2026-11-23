@@ -51,6 +51,7 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    ventana_cofre.cpp
     animacion.cpp
     animacion_enemigos.cpp
 
@@ -59,6 +60,7 @@ target_sources(taller_client
     animacion.h
     animacion_enemigos.h
     client.h
+    ventana_cofre.h
     audio.h
     personaje.h
     direccion.h
