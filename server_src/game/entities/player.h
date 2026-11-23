@@ -9,6 +9,7 @@
 #include "../game_constants.h"
 #include "../inventory/inventory.h"
 #include "../inventory/seed.h"
+#include "../inventory/bed_item.h"
 #include "../move_result.h"
 #include "entity.h"
 #include "player_outfit.h"
@@ -16,6 +17,7 @@
 class Sector;  // forward declaration
 class Mineral; // forward declaration
 class Enemy;   // forward declaration
+class Merchant; // forward declaration
 
 struct PendingGift {
   int giverId = 0;
@@ -33,21 +35,26 @@ private:
   PlayerOutfit outfit;
 
   Tool *actualTool = nullptr;
+  Merchant *talkingTo = nullptr;
   PendingGift pendingGift{};
   Inventory inventory;
   Sector *actualSector;
 
+  bool sleeping = false;
+
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
-         Sector *actualSector, PlayerOutfit outfit)
+         Sector *actualSector, PlayerOutfit outfit, int coins = (rand() % 100 + 1))
       : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), name(name),
-        life(100), energy(100), coins(rand() % 100 + 1), outfit(outfit),
-        inventory(), actualSector(actualSector) {
+        life(100), energy(100), coins(coins), outfit(outfit),
+        inventory(MAX_INVENTORY_ITEMS, MAX_INVETORY_STACK), actualSector(actualSector) {
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
     this->inventory.addTool(
         std::make_unique<Tool>(AvailableTools::WATERING_CAN));
+
+    this->inventory.addItem(std::make_unique<BedItem>(id));
 
     for (int i = 0; i < 5; i++) {
       this->inventory.addItem(
@@ -55,6 +62,11 @@ public:
     }
 
     this->actualTool = this->inventory.getTool(AvailableTools::PICKAXE);
+  }
+
+  void setCoins(int coins) {
+    if (coins >= 0)
+      this->coins = coins;
   }
 
   MoveResult move(Position destination);
@@ -95,9 +107,26 @@ public:
   * Daño
   */
   void takeDamage(double amount);
-  bool isUnconscious() const { return life <= 0; }
+  bool isUnconscious() const { return life <= 0 || energy <= 0; }
 
   void startNewDay(bool sleptInBed);
+
+  /*
+  * Tradeo
+  */
+  int buy(const Item &sample, int price, int amount);
+  bool sell(const Item &sample, int price, int amount, int &earned);
+
+  void startTalkingTo(Merchant &merchant) { talkingTo = &merchant; }
+  Merchant *getTalkingTo() const { return talkingTo; }
+
+  /*
+  * Dormir
+  */
+  bool isSleeping() const { return sleeping; }
+  void goToSleep() { sleeping = true; }
+  void wakeUp() { sleeping = false; }
+  bool isDoneForTheDay() const { return sleeping || isUnconscious();}
 
   /*
   * State

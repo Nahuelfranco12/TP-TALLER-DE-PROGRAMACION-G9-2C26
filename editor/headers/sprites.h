@@ -11,7 +11,7 @@ struct Recorte {
   int alto = 0;
 };
 
-QPixmap imagenSpriteDe(const char *rutaSprite, const Recorte &recorte,
-                       const QString &nombre, int ancho, int alto);
+QPixmap cargarSpriteTratado(const char *rutaSprite, const Recorte &recorte,
+                            const QString &nombre, int ancho, int alto);
 
 #endif // SPRITES_H_

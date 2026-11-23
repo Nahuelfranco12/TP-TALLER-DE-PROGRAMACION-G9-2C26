@@ -3,7 +3,7 @@
 #include "constantes_qt.h"
 #include "controlador_inicio_editor.h"
 #include "controlador_mapas.h"
-#include "navegador.h"
+#include "navegador_paginas.h"
 #include "ui_ventanaeditor.h"
 #include "vista_responsive.h"
 
@@ -19,7 +19,7 @@ VentanaEditor::VentanaEditor(QWidget *parent)
       new VistaEscalada(ui->stackedWidget, QSize(ANCHO_DISENIO, ALTO_DISENIO),
                         ui->centralwidget));
 
-  Navegador *navegador = new Navegador(ui->stackedWidget, this);
+  NavegadorPaginas *navegador = new NavegadorPaginas(ui->stackedWidget, this);
   new ControladorInicioEditor(*this, *ui, *navegador, datos, this);
   new ControladorMapas(*this, *ui, *navegador, datos, this);
 }

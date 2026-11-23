@@ -9,6 +9,9 @@
 #include "inventario.h"
 #include "mapa_mundo.h"
 #include "pueblo.h"
+#include "centro_comunitario.h"
+#include "ventana_cofre.h"
+#include "decoraciones.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -93,7 +96,7 @@ int main(int argc, char *argv[]) try {
   SDLTTF ttf;
 
   // Ventana redimensionable, con el código de la partida en el título
-  Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigo(),
+  Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigoPartidaActual(),
                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, VENTANA_ANCHO,
                 VENTANA_ALTO, SDL_WINDOW_RESIZABLE);
 
@@ -103,13 +106,13 @@ int main(int argc, char *argv[]) try {
 
   // El granjero: carga sus texturas, su ropa y su posición
   Personaje personaje(renderer);
-  const DatosPersonaje &elegido = servicio.personajeElegido();
+  const DatosPersonaje &elegido = servicio.personajeEnPartida();
   personaje.vestir(
       SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
 
   // Mapas
-  SectorStateDto farm, cavern, village;
+  SectorStateDto farm, cavern, village, centro_comunitario;
   for (const SectorStateDto &sector : client.get_world_map().sectors) {
     if (sector.type == SectorTypeDto::FARM)
       farm = sector;
@@ -117,6 +120,8 @@ int main(int argc, char *argv[]) try {
       cavern = sector;
     if (sector.type == SectorTypeDto::VILLAGE)
       village = sector;
+    if (sector.type == SectorTypeDto::COMMUNITY_CENTER)
+      centro_comunitario = sector;
   }
   Mapa mapa_granja(renderer, farm.type, farm.width, farm.height,
                    SEMILLA_GRANJA);
@@ -124,29 +129,43 @@ int main(int argc, char *argv[]) try {
                     SEMILLA_CAVERNA);
   Mapa mapa_pueblo(renderer, village.type, village.width, village.height,
                    SEMILLA_PUEBLO);
+  Mapa mapa_centro(renderer, centro_comunitario.type, centro_comunitario.width, centro_comunitario.height, SEMILLA_PUEBLO);
+
+  Mapa mapa_cabana(renderer, SectorTypeDto::CABIN, CABANA_ANCHO, CABANA_ALTO, 0);
+
   mapa_granja.actualizar(farm.sector);
   mapa_caverna.actualizar(cavern.sector);
   mapa_pueblo.actualizar(village.sector);
+  mapa_centro.actualizar(centro_comunitario.sector);
 
   Alrededores alrededores(renderer, mapa_granja.obtener_ancho(),
                           mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
 
   Granja granja(renderer);
+  Granja muebles_cabana(renderer);
+  granja.actualizar_edificios(farm.buildings);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
+  Decoraciones decoraciones(renderer);
+  pueblo.actualizar_edificios(village.buildings);
+  CentroComunitario centro(renderer);
 
   MapaMundo mapa_mundo(renderer, client.get_world_map(), mapa_granja,
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
+  long vueltas_hasta_paso = 0;
+  int camara_granja_x = 0;
+  int camara_granja_y = 0;
   bool viendo_mapa = false;
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
-  Interfaz interfaz(renderer, servicio.codigo());
+  Interfaz interfaz(renderer, servicio.codigoPartidaActual());
 
   Inventario inventario(renderer);
   Chat chat(renderer);
+  VentanaCofre ventana_cofre;
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -174,11 +193,24 @@ int main(int argc, char *argv[]) try {
         int mouse_y = evento.button.y;
         int camara_x = personaje.obtener_tile_x() * TAMANIO_TILE +
                        TAMANIO_TILE / 2 - window.GetWidth() / 2;
-        int camara_y =
-            personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
+        int camara_y = personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
+        if (zona == SectorTypeDto::FARM) {
+          camara_granja_x = camara_x;
+          camara_granja_y = camara_y;
+        }
         bool acepto = false;
+        GamePositionDto posicion_npc;
 
-        if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
+        int casillero_cofre = 0;
+        if (ventana_cofre.click(mouse_x, mouse_y, window.GetWidth(),
+                                window.GetHeight(), casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, false); 
+        } else if (ventana_cofre.esta_abierta() &&
+                   inventario.click(mouse_x, mouse_y, window.GetWidth(),
+                                    window.GetHeight()) &&
+                   inventario.indice_item_seleccionado(casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, true); 
+        } else if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
         } else if (pueblo.hay_tienda_abierta()) {
           switch (pueblo.click_tienda(mouse_x, mouse_y)) {
@@ -198,8 +230,12 @@ int main(int argc, char *argv[]) try {
             break;
           }
         } else if (zona == SectorTypeDto::VILLAGE &&
-                   pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y)) {
-          // Se abre la tienda del npc
+                   pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y,
+                                    posicion_npc)) {
+          client.send_interact(posicion_npc);
+        } else if (zona == SectorTypeDto::COMMUNITY_CENTER &&
+                   centro.click_set(mouse_x, mouse_y, camara_x, camara_y) !=
+                       CentroComunitario::NINGUNA) {
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
           if (inventario.click(mouse_x, mouse_y, window.GetWidth(),
                                window.GetHeight())) {
@@ -337,41 +373,21 @@ int main(int argc, char *argv[]) try {
             personaje.picar();
             client.send_mine(dir);
           }
-        } else if (zona == SectorTypeDto::CABIN) {
-          client.send_sleep();
         } else if (inventario.tengo_en_la_mano(PALA)) {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
           client.send_water(dir);
+        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN || en_la_mano.item == ItemTypeDto::BED || en_la_mano.item == ItemTypeDto::CHEST)) {
+          int casillero = 0;
+          if (inventario.indice_item_seleccionado(casillero))
+            client.send_place(casillero, dir);
         } else if (inventario.item_seleccionado(en_la_mano) &&
                    es_semilla(en_la_mano.item, cultivo)) {
           client.send_plant(frente_x, frente_y, cultivo);
         } else {
           client.send_collect(dir);
-        }
-      }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 &&
-          !pueblo.hay_tienda_abierta()) {
-        switch (evento.key.keysym.sym) {
-        case TECLA_ARRIBA:
-          personaje.mirar(ARRIBA);
-          client.send_move(DirectionDto::Up);
-          break;
-        case TECLA_ABAJO:
-          personaje.mirar(ABAJO);
-          client.send_move(DirectionDto::Down);
-          break;
-        case TECLA_IZQUIERDA:
-          personaje.mirar(IZQUIERDA);
-          client.send_move(DirectionDto::Left);
-          break;
-        case TECLA_DERECHA:
-          personaje.mirar(DERECHA);
-          client.send_move(DirectionDto::Right);
-          break;
-        default:
-          break;
+          client.send_interact({static_cast<size_t>(frente_x),
+                                static_cast<size_t>(frente_y)});
         }
       }
     }
@@ -381,16 +397,20 @@ int main(int argc, char *argv[]) try {
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
       chat.agregar(state.chat);
+      ventana_cofre.actualizar(state.entities);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
+      // Cambio de zona y música
       if (state.type != zona) {
         pueblo.cerrar_tienda();
+        centro.cerrar_set();
         zona = state.type;
         switch (zona) {
         case SectorTypeDto::CAVERN:
           audio.poner_musica_caverna();
           break;
         case SectorTypeDto::VILLAGE:
+        case SectorTypeDto::COMMUNITY_CENTER:
           audio.poner_musica_pueblo();
           break;
         default:
@@ -399,15 +419,23 @@ int main(int argc, char *argv[]) try {
         }
       }
 
+      // Actualizar mapa
       if (zona == SectorTypeDto::CAVERN) {
         mapa_caverna.actualizar(state.sector);
         caverna.actualizar(state.entities);
       } else if (zona == SectorTypeDto::VILLAGE) {
         mapa_pueblo.actualizar(state.sector);
         pueblo.actualizar(state.entities);
+        pueblo.actualizar_edificios(state.buildings);
+      } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+        mapa_centro.actualizar(state.sector);
+      } else if (zona == SectorTypeDto::CABIN) {
+        mapa_cabana.actualizar(state.sector);
+        muebles_cabana.actualizar(state.entities);
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
+        granja.actualizar_edificios(state.buildings);
       }
 
       // Actualizar jugadores
@@ -468,11 +496,37 @@ int main(int argc, char *argv[]) try {
       corriendo = false;
     }
 
+    vueltas_hasta_paso -= vueltas;
+    bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto();
+    if (vueltas_hasta_paso <= 0 && puede_caminar) {
+      const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
+      bool camino = true;
+      if (teclado[SDL_GetScancodeFromKey(TECLA_ARRIBA)]) {
+        personaje.mirar(ARRIBA);
+        client.send_move(DirectionDto::Up);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_ABAJO)]) {
+        personaje.mirar(ABAJO);
+        client.send_move(DirectionDto::Down);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_IZQUIERDA)]) {
+        personaje.mirar(IZQUIERDA);
+        client.send_move(DirectionDto::Left);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_DERECHA)]) {
+        personaje.mirar(DERECHA);
+        client.send_move(DirectionDto::Right);
+      } else {
+        camino = false;
+      }
+      if (camino) {
+        vueltas_hasta_paso = PERSONAJE_VUELTAS_POR_PASO;
+      }
+    }
+
     personaje.animar(vueltas);
     for (auto &par : otros)
       par.second->animar(vueltas);
 
     granja.animar(vueltas);
+    muebles_cabana.animar(vueltas);
     caverna.animar(vueltas);
     pueblo.animar(vueltas);
 
@@ -482,27 +536,49 @@ int main(int argc, char *argv[]) try {
     int camara_y =
         personaje.obtener_tile_y() * TAMANIO_TILE - window.GetHeight() / 2;
 
+    // Elegir mapa
     Mapa *mapa_actual = &mapa_granja;
     if (zona == SectorTypeDto::CAVERN) {
       mapa_actual = &mapa_caverna;
     } else if (zona == SectorTypeDto::VILLAGE) {
       mapa_actual = &mapa_pueblo;
+    } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+      mapa_actual = &mapa_centro;
+    } else if (zona == SectorTypeDto::CABIN) {
+      mapa_actual = &mapa_cabana;
     }
 
     renderer.SetDrawColor(fondo);
     renderer.Clear();
 
+    if (zona == SectorTypeDto::CABIN) {
+      mapa_granja.dibujar(renderer, camara_granja_x, camara_granja_y, window.GetWidth(), window.GetHeight());
+      granja.dibujar(renderer, camara_granja_x, camara_granja_y);
+      alrededores.dibujar(renderer, camara_granja_x, camara_granja_y, window.GetWidth(), window.GetHeight());
+
+      const SDL2pp::Color oscurecer = COLOR_CABANA_OSCURECER;
+      renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+      renderer.SetDrawColor(oscurecer);
+      renderer.FillRect(SDL2pp::Rect(0, 0, window.GetWidth(), window.GetHeight()));
+    }
+
     mapa_actual->dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                          window.GetHeight());
+                         decoraciones.dibujar(renderer, mapa_actual->obtener_decoraciones(), camara_x, camara_y);
 
+    // Dibujo lo que va encima del mapa
     if (zona == SectorTypeDto::CAVERN) {
       caverna.dibujar(renderer, camara_x, camara_y);
     } else if (zona == SectorTypeDto::FARM) {
       granja.dibujar(renderer, camara_x, camara_y);
       alrededores.dibujar(renderer, camara_x, camara_y, window.GetWidth(),
                           window.GetHeight());
-    } else {
+    } else if (zona == SectorTypeDto::VILLAGE) {
       pueblo.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+      centro.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::CABIN) {
+      muebles_cabana.dibujar(renderer, camara_x, camara_y);
     }
 
     // Primero los demas jugadores
@@ -515,6 +591,8 @@ int main(int argc, char *argv[]) try {
 
     pueblo.dibujar_tienda(renderer, personaje);
 
+    centro.dibujar_set(renderer, inventario, interfaz.obtener_monedas());
+
     // Mapa del mundo (M)
     if (viendo_mapa) {
       mapa_mundo.dibujar(renderer, window.GetWidth(), window.GetHeight(), zona,
@@ -523,6 +601,7 @@ int main(int argc, char *argv[]) try {
 
     interfaz.dibujar(renderer, audio);
     chat.dibujar(window.GetHeight());
+    ventana_cofre.dibujar(renderer, inventario, window.GetWidth(), window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);

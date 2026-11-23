@@ -52,6 +52,28 @@ bool Sector::isEmpty(Position pos) const {
   return this->entities.find(pos) == this->entities.end();
 }
 
+bool Sector::assignBuildingOwner(BuildingType type, int ownerId) {
+    for (Building &building : buildings) {
+        if (building.type == type) {
+            if (building.ownerId != INVALID_PLAYER_ID &&
+                building.ownerId != ownerId)
+                return false;
+
+            building.ownerId = ownerId;
+            return true;
+        }
+    }
+    return false;
+}
+
+std::optional<Building> Sector::findBuilding(BuildingType type) const {
+    for (const Building &building : buildings) {
+        if (building.type == type)
+            return building;
+    }
+    return std::nullopt;
+}
+
 bool Sector::placeBuilding(const Building &building) {
   for (size_t dx = 0; dx < building.width; dx++)
     for (size_t dy = 0; dy < building.height; dy++)
@@ -143,7 +165,7 @@ bool Sector::findFreePosition(Position &freePosition) const {
       Position pos(x, y);
       if (this->tiles[x][y].isTransitable() &&
           this->entities.find(pos) == this->entities.end() &&
-          this->traps.find(pos) == this->traps.end()) {
+            this->traps.find(pos) == this->traps.end()) {
         freePosition = pos;
         return true;
       }
@@ -184,9 +206,11 @@ SectorState Sector::state() const {
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
       const Terrain &terrain = tiles[x][y];
+        auto door = this->doors.find(Position(x, y));
+        bool isDoor = door != this->doors.end();
       state.tiles[x][y] = {
-          terrain.getTerrainType(), terrain.isTransitable(), terrain.isArable(),
-          this->doors.find(Position(x, y)) != this->doors.end(),
+          terrain.getTerrainType(), terrain.getTerrainDecoration(), terrain.isTransitable(), terrain.isArable(),
+            isDoor, isDoor ? door->second->getDoorType() : VillageEntry,
           terrain.isTilled()};
     }
 
@@ -220,6 +244,53 @@ bool Sector::closestPlayer(Position origin, int maxDistance,
     }
   }
   return foundAny;
+}
+
+Bed *Sector::findBedOf(int ownerId) {
+  for (auto &[position, entity] : this->entities) {
+    Bed *bed = dynamic_cast<Bed *>(entity.get());
+    if (bed && bed->getOwnerId() == ownerId)
+      return bed;
+  }
+  return nullptr;
+}
+
+bool Sector::findFreeNextTo(Position center, Position &result) const {
+  Position candidates[] = {
+      Position(center.x + 1, center.y), Position(center.x, center.y + 1),
+      Position(center.x - 1, center.y), Position(center.x, center.y - 1)};
+
+  for (const Position &candidate : candidates)
+    if (canMoveTo(candidate)) {
+      result = candidate;
+      return true;
+    }
+  return findFreePosition(result);
+}
+
+void Sector::releaseBeds() {
+  for (auto &[position, entity] : this->entities) {
+    Bed *bed = dynamic_cast<Bed *>(entity.get());
+    if (bed)
+      bed->release();
+  }
+}
+
+Chest *Sector::findChestOpenedBy(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest && chest->isOpenedBy(playerId))
+      return chest;
+  }
+  return nullptr;
+}
+
+void Sector::closeChestsOf(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest)
+      chest->closeFor(playerId);
+  }
 }
 
 void Sector::apply(Position origin, const Decision &decision) {

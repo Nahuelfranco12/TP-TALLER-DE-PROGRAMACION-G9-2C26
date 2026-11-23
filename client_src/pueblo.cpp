@@ -2,7 +2,6 @@
 #include "personaje.h"
 
 #include <algorithm>
-// #include <iterator>
 
 #include <SDL2/SDL.h>
 
@@ -13,6 +12,7 @@ using SDL2pp::Texture;
 
 namespace {
 const SDL_Rect MODELOS_PUESTOS[] = SPRITE_MODELOS_PUESTOS;
+const SDL_Rect EDIFICIO_CENTRO = SPRITE_EDIFICIO_CENTRO;
 
 struct ModeloNpc {
   const char *archivo;
@@ -37,22 +37,59 @@ int tile_de_pixel(int pixel) {
   }
   return tile;
 }
+
+bool modelo_de_npc(EntityTypeDto tipo, int &modelo) {
+  switch (tipo) {
+  case EntityTypeDto::NPC_PIERRE:
+    modelo = TIENDA_PIERRE;
+    return true;
+  case EntityTypeDto::NPC_CLINT:
+    modelo = TIENDA_CLINT;
+    return true;
+  case EntityTypeDto::NPC_ROBIN:
+    modelo = TIENDA_ROBIN;
+    return true;
+  case EntityTypeDto::NPC_MARNIE:
+    modelo = TIENDA_MARNIE;
+    return true;
+  default:
+    return false;
+  }
+}
+
+bool modelo_de_edificio(BuildingTypeDto tipo, int &modelo) {
+  switch (tipo) {
+  case BuildingTypeDto::SHOP_PIERRE:
+    modelo = TIENDA_PIERRE;
+    return true;
+  case BuildingTypeDto::SHOP_CLINT:
+    modelo = TIENDA_CLINT;
+    return true;
+  case BuildingTypeDto::SHOP_ROBIN:
+    modelo = TIENDA_ROBIN;
+    return true;
+  case BuildingTypeDto::SHOP_MARNIE:
+    modelo = TIENDA_MARNIE;
+    return true;
+  case BuildingTypeDto::COMUNITARY_CENTRE:
+    modelo = PUEBLO_MODELO_CENTRO;
+    return true;
+  default:
+    return false;
+  }
+}
 } // namespace
 
 Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, RUTA_EDIFICIOS_PUEBLO),
+      edificio_centro(renderer, RUTA_EDIFICIO_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA), vueltas(0),
       tienda_abierta(TIENDA_CERRADA) {
-
-  // cppcheck-suppress useInitializationList
-  lista_puestos = PUEBLO_PUESTOS;
 
   for (const ModeloNpc &modelo : MODELOS_NPCS) {
     // cppcheck-suppress useStlAlgorithm
     sprites_npcs.emplace_back(renderer, modelo.archivo);
   }
-
-  lista_npcs = PUEBLO_NPCS;
 
   for (const char *titulo : TITULOS) {
     // cppcheck-suppress useStlAlgorithm
@@ -60,8 +97,7 @@ Pueblo::Pueblo(Renderer &renderer)
   }
   for (const char *texto : TEXTOS_BOTONES) {
     // cppcheck-suppress useStlAlgorithm
-    texto_botones.emplace_back(renderer,
-                               fuente.RenderUTF8_Blended(texto, BLANCO));
+    texto_botones.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
   }
   botones.resize(TIENDA_CANTIDAD_BOTONES);
   for (const char *archivo : FONDOS_TIENDAS) {
@@ -72,16 +108,21 @@ Pueblo::Pueblo(Renderer &renderer)
 
 void Pueblo::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
-void Pueblo::dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
+void Pueblo::dibujar_edificio(Renderer &renderer, const Edificio &edificio,
                             int camara_x, int camara_y, int lado) {
-  const SDL_Rect &modelo = MODELOS_PUESTOS[puesto.modelo];
-  Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
+  Texture *textura = &edificios;
+  SDL_Rect modelo = EDIFICIO_CENTRO;
+  if (edificio.modelo == PUEBLO_MODELO_CENTRO) {
+    textura = &edificio_centro;
+  } else {
+    modelo = MODELOS_PUESTOS[edificio.modelo];
+  }
 
-  int x = puesto.tile_x * lado - camara_x;
-  int y = puesto.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
-               modelo.h * lado / PIXELES_POR_TILE);
-  renderer.Copy(edificios, origen, destino);
+  int ancho = edificio.ancho * lado;
+  int alto = modelo.h * ancho / modelo.w;
+  int x = edificio.tile_x * lado - camara_x;
+  int pie = (edificio.tile_y + edificio.alto) * lado - camara_y;
+  renderer.Copy(*textura, Rect(modelo.x, modelo.y, modelo.w, modelo.h), Rect(x, pie - alto, ancho, alto));
 }
 
 void Pueblo::dibujar_npc_en(Renderer &renderer, int modelo, int centro_x,
@@ -107,8 +148,8 @@ void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x,
 }
 
 void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
-  for (const Puesto &puesto : lista_puestos) {
-    dibujar_puesto(renderer, puesto, camara_x, camara_y, lado);
+  for (const Edificio &edificio : lista_edificios) {
+    dibujar_edificio(renderer, edificio, camara_x, camara_y, lado);
   }
   for (const Npc &npc : lista_npcs) {
     dibujar_npc(renderer, npc, camara_x, camara_y, lado);
@@ -116,11 +157,29 @@ void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
 }
 
 // cppcheck-suppress functionStatic
-void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &) {
-  // hasta que mande el servidor
+void Pueblo::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
+  lista_npcs.clear();
+  for (const auto &[posicion, entidad] : entidades) {
+    int modelo = TIENDA_CERRADA;
+    if (modelo_de_npc(entidad.type, modelo))
+      lista_npcs.push_back({static_cast<int>(posicion.x), static_cast<int>(posicion.y), modelo});
+  }
 }
 
-bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
+void Pueblo::actualizar_edificios(const std::vector<BuildingDto> &del_servidor) {
+  lista_edificios.clear();
+  for (const BuildingDto &edificio : del_servidor) {
+    int modelo = TIENDA_CERRADA;
+    if (modelo_de_edificio(edificio.type, modelo)) {
+      lista_edificios.push_back({static_cast<int>(edificio.topLeft.x),
+                                 static_cast<int>(edificio.topLeft.y),
+                                 static_cast<int>(edificio.width),
+                                 static_cast<int>(edificio.height), modelo});
+    }
+  }
+}
+
+bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto &posicion) {
   int tile_x = tile_de_pixel(x + camara_x);
   int tile_y = tile_de_pixel(y + camara_y);
 
@@ -129,6 +188,7 @@ bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
                     (npc.tile_y == tile_y || npc.tile_y - 1 == tile_y);
     if (lo_toque) {
       tienda_abierta = npc.modelo;
+      posicion = {static_cast<size_t>(npc.tile_x), static_cast<size_t>(npc.tile_y)};
       return true;
     }
   }
@@ -136,10 +196,9 @@ bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y) {
 }
 
 Pueblo::AccionTienda Pueblo::click_tienda(int x, int y) {
-  for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
-    // cppcheck-suppress useStlAlgorithm
-    if (botones[i].Contains(x, y)) {
-      return static_cast<AccionTienda>(i + 1);
+  for (const Rect &boton : botones) {
+    if (boton.Contains(x, y)) {
+      return SALIR;
     }
   }
   return NINGUNA;
@@ -197,7 +256,7 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
   const SDL2pp::Color fondo_boton = COLOR_BOTON_FONDO;
   const SDL2pp::Color borde_boton = COLOR_BOTON_BORDE;
   int x = (ancho_ventana - ancho_total) / 2;
-  int y = habitacion.y + habitacion.h + TIENDA_MARGEN_BOTONES;
+  int y = alto_ventana - BOTONES_DESDE_ABAJO;
   for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
     Texture &texto = texto_botones[i];
     botones[i] = Rect(x, y, texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON,

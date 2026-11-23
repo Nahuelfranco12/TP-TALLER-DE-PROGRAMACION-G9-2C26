@@ -1,17 +1,21 @@
 #ifndef GAME_CONSTANTS_H_
 #define GAME_CONSTANTS_H_
 
-#define MAX_PLAYERS 4
+#define MAX_PLAYERS 5
 
 #define PLAYER_MAX_ENERGY 100
 #define ENERGY_COST_PLANT 2
-#define ENERGY_COST_WATER 1
-#define ENERGY_COST_HARVEST_CROP 3
-#define ENERGY_COST_COLLECT_ANIMAL 1
-#define ENERGY_COST_MINE 5
+#define ENERGY_COST_WATER 2
+#define ENERGY_COST_HARVEST_CROP 4
+#define ENERGY_COST_COLLECT_ANIMAL 2
+#define ENERGY_COST_MINE 6
+#define ENERGY_COST_ATTACK 4
 
 #define SECTOR_DIMENSION_1 50
 #define SECTOR_DIMENSION_2 30
+
+#define COMMUNITY_CENTER_WIDTH 20
+#define COMMUNITY_CENTER_HEIGHT 12
 
 #define CABIN_DIMENSION_1 30
 #define CABIN_DIMENSION_2 15
@@ -33,6 +37,9 @@
 #define MAX_INVETORY_STACK 50
 #define MAX_INVENTORY_TOOLS 4
 
+#define CHEST_MAX_SLOTS 30
+#define CHEST_MAX_STACK 50
+
 #define MAX_CAVERN_LEVELS 10
 
 #define FARM_MAX_COWS 5
@@ -48,6 +55,7 @@
 #define PICKAXE_COUNT_IRON 6
 #define PICKAXE_COUNT_GOLD 8
 
+#define PRICE_SEED 10
 #define PRICE_GOLD 80
 #define PRICE_IRON 50
 #define PRICE_LAPIZLAZULI 40
@@ -58,6 +66,9 @@
 #define PRICE_GREEN_ONION 20
 #define PRICE_POTATO 30
 #define PRICE_PUMPKIN 40
+#define PRICE_COW 150
+#define PRICE_CHICKEN 50
+#define PRICE_CHEST 100
 
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
@@ -81,6 +92,8 @@
 #define SKELETON_TICKS_PER_ATTACK 30
 #define SKELETON_SIGHT_RANGE 6
 #define SKELETON_REVIVE_TICKS (10 * TICKS_PER_SECOND)
+#define SKELETON_MAX_LEVEL_COUNT 5
+#define SKELETON_GROUP 1
 
 #define ORC_LIFE 40
 #define ORC_DAMAGE 15
@@ -88,12 +101,18 @@
 #define ORC_TICKS_PER_MOVE 20
 #define ORC_TICKS_PER_ATTACK 35
 #define ORC_SIGHT_RANGE 6
+#define ORC_MIN_GROUP 3
+#define ORC_MAX_GROUP 6
+#define ORC_MAX_LEVEL_COUNT 6
 
 #define SKULL_BLUE_LIFE 100
 #define SKULL_BLUE_DAMAGE 10
 #define SKULL_BLUE_TICKS_PER_MOVE 10
 #define SKULL_BLUE_TICKS_PER_ATTACK 30
 #define SKULL_BLUE_SIGHT_RANGE 6
+
+#define SKULL_GROUP 1
+#define SKULL_MAX_LEVEL_COUNT 1
 
 #define SKULL_GREEN_LIFE 100
 #define SKULL_GREEN_DAMAGE 20
@@ -114,12 +133,16 @@
 #define VAMPIRE_TICKS_PER_ATTACK 30
 #define VAMPIRE_BLOOD_RANGE 4
 #define VAMPIRE_REVIVE_TICKS (5 * TICKS_PER_SECOND)
+#define VAMPIRE_GROUP 1
+#define VAMPIRE_MAX_LEVEL_COUNT 4
 
 #define VAMPIRE_FEMALE_DAMAGE 10
 #define VAMPIRE_FEMALE_TICKS_PER_MOVE 8
 
 #define VAMPIRE_MALE_DAMAGE 20
 #define VAMPIRE_MALE_TICKS_PER_MOVE 15
+
+#define INTERACT_DISTANCE 2
 
 enum IdSector {
   FARM,
@@ -134,27 +157,48 @@ enum IdSector {
   CAVERN_LEVEL_8,
   CAVERN_LEVEL_9,
   CAVERN_LEVEL_10,
+
   CABIN_PLAYER_1,
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
+  COMMUNITY_CENTER
 };
 
 enum TerrainType { DIRT, GRASS, GROUND, WOOD, HOUSE };
+enum TerrainDecoration { NONE, Tree1, Tree2, Tree3, TreeRounded, TreeBig, Log, Stump, Stone, StoneGray, StoneGrayBig, WaterDeco, MailboxRed, MailboxBlue, MailBoxGray, BlankSign, Barrel, SkullDeco, Bone, Ruins, Torch, Candle, Shield, Pit, LanternOrange, LanternBlue,Bench };
 
-enum class BuildingType { CABIN_PLAYER_1, CABIN_PLAYER_2, CABIN_PLAYER_3, CABIN_PLAYER_4, SHOP_MARNIE, SHOP_CLINT };
+enum DoorType { VillageEntry, CavernEntry, CavernExit, FarmExit, Stairs  };
+
+enum class BuildingType {
+  CABIN_PLAYER_1,
+  CABIN_PLAYER_2,
+  CABIN_PLAYER_3,
+  CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
+  SHOP_MARNIE,
+  SHOP_CLINT,
+  SHOP_PIERRE,
+  SHOP_ROBIN,
+  COMUNITARY_CENTRE,
+};
 
 enum class AnimalType { COW, CHICKEN };
 
 enum class DaySpeed { SLOW, MEDIUM, FAST };
 
-enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT };
+enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT, ANIMAL, FURNITURE };
+
+enum class FurnitureType { BED, CHEST };
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED, FURNITURE };
+
+enum class MerchantType { PIERRE, CLINT, ROBIN, MARNIE };
 
 enum class EnemyType {
   SKELETON,

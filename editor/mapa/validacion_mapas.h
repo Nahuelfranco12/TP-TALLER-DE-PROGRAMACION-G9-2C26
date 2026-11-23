@@ -6,5 +6,5 @@
 
 #include "mapa_editor.h"
 
-std::vector<std::string> erroresDe(const MapaEditor &mapa);
+std::vector<std::string> erroresParaExportar(const MapaEditor &mapa);
 #endif // VALIDACION_MAPA_H_

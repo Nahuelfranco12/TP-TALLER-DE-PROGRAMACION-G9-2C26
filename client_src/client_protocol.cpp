@@ -89,7 +89,23 @@ void ClientProtocol::send_chat_dto(const ChatDto &dto) {
   protocol.send_string(dto.text);
 }
 
-void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
+void ClientProtocol::send_interact_dto(const InteractDto &dto) {
+  protocol.send_u8(OP_INTERACT);
+  protocol.send_u16(static_cast<uint16_t>(dto.target.x));
+  protocol.send_u16(static_cast<uint16_t>(dto.target.y));
+}
+
+void ClientProtocol::send_place_dto(const PlaceDto &dto) {
+  protocol.send_u8(OP_PLACE);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
+void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
+  protocol.send_u8(OP_CHEST_MOVE);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u8(dto.toChest ? 1 : 0);
+}
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
@@ -126,9 +142,11 @@ InventorySlotDto ClientProtocol::receive_slot() {
   return slot;
 }
 
-void ClientProtocol::send_create_match(const std::string &name) {
+void ClientProtocol::send_create_match(const std::string &name,
+                                       const std::string &map_path) {
   protocol.send_u8(OP_CREATE_MATCH);
   protocol.send_string(name);
+  protocol.send_string(map_path);
 }
 
 std::string ClientProtocol::receive_created_match() {
@@ -138,6 +156,8 @@ std::string ClientProtocol::receive_created_match() {
 }
 
 void ClientProtocol::send_list_matches() { protocol.send_u8(OP_LIST_MATCHES); }
+
+void ClientProtocol::send_list_maps() { protocol.send_u8(OP_LIST_MAPS); }
 
 std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
   if (protocol.receive_u8() != OP_LIST_MATCHES)
@@ -153,6 +173,21 @@ std::vector<MatchInfoDto> ClientProtocol::receive_match_list() {
     matches.push_back(matchinfo);
   }
   return matches;
+}
+
+std::vector<MapInfoDto> ClientProtocol::receive_map_list() {
+  if (protocol.receive_u8() != OP_LIST_MAPS)
+    throw std::runtime_error("Mensaje inesperado");
+
+  std::vector<MapInfoDto> maps;
+  int count = protocol.receive_u16();
+  for (int i = 0; i < count; i++) {
+    MapInfoDto map;
+    map.name = protocol.receive_string();
+    map.path = protocol.receive_string();
+    maps.push_back(std::move(map));
+  }
+  return maps;
 }
 
 void ClientProtocol::send_join_match(const std::string &code,
@@ -221,6 +256,13 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.mineral.remainingHits = protocol.receive_u8();
     entity.enemy.alive = protocol.receive_u8() == 1;
     entity.bed.sleeping = protocol.receive_u8() == 1;
+    entity.door.type = static_cast<DoorTypeDto>(protocol.receive_u8());
+    entity.chest.openedByMe = protocol.receive_u8() == 1;
+    if (entity.chest.openedByMe) {
+      int slot_count = protocol.receive_u8();
+      for (int j = 0; j < slot_count; j++)
+        entity.chest.slots.push_back(receive_slot());
+    }
     state.entities[position] = entity;
   }
 
@@ -269,9 +311,11 @@ std::vector<std::vector<TileDto>> ClientProtocol::receive_tiles() {
     for (int y = 0; y < rows; y++) {
       TileDto &tile = tiles[x][y];
       tile.type = static_cast<TerrainTypeDto>(protocol.receive_u8());
+      tile.decoration = static_cast<TerrainDecorationDto>(protocol.receive_u8());
       tile.transitable = protocol.receive_u8() == 1;
       tile.arable = protocol.receive_u8() == 1;
       tile.isDoor = protocol.receive_u8() == 1;
+      tile.doorType = static_cast<DoorTypeDto>(protocol.receive_u8());
       tile.tilled = protocol.receive_u8() == 1;
     }
   }

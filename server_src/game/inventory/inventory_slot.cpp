@@ -4,10 +4,13 @@ Item &InventorySlot::getItem() const { return *this->item; }
 
 size_t InventorySlot::getCount() const { return this->count; }
 
-bool InventorySlot::add() {
-  if (this->count < MAX_INVETORY_STACK) {
-    this->count++;
-    return true;
-  }
-  return false;
+void InventorySlot::add(size_t amount) {
+  count += amount;
+}
+
+bool InventorySlot::remove() {
+  if (this->count == 0)
+    return false;
+  this->count--;
+  return true;
 }

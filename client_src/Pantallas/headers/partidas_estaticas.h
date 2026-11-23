@@ -6,6 +6,6 @@
 #include <QString>
 
 QList<PartidaGuardada> obtenerPartidasDePrueba();
-QList<MundoMock> obtenerMundosDePrueba();
+// QList<MundoMock> obtenerMundosDePrueba();
 
 #endif // PARTIDAS_ESTATICAS_H_

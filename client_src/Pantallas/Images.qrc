@@ -16,6 +16,7 @@
         <file alias="assets/Pantallas/pantalla_retomar.jpg">../../assets/Pantallas/pantalla_retomar.jpg</file>
         <file alias="assets/Pantallas/fondo_noche.png">../../assets/Pantallas/fondo_noche.png</file>
         <file alias="assets/Pantallas/01-background_inicio.jpg">../../assets/Pantallas/01-background_inicio.jpg</file>
+        <file alias="assets/Pantallas/pantalla_fin_juego.jpeg">../../assets/Pantallas/pantalla_fin_juego.jpeg</file>
     </qresource>
     <qresource prefix="/ropas">
         <file alias="assets/ropas/StardewValley_Character_Farmer Base.png">../../assets/personaje/StardewValley_Character_Farmer Base.png</file>

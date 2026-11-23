@@ -45,19 +45,23 @@ public:
   void send_water_dto(const WaterDto &dto);
   void send_attack_dto(const AttackDto &dto);
   void send_chat_dto(const ChatDto &dto);
-  void send_sleep();
+  void send_interact_dto(const InteractDto &dto);
+  void send_place_dto(const PlaceDto &dto);
+  void send_chest_move_dto(const ChestMoveDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
   void send_end_day_cheat();
   void send_enemies_damage_cheat();
 
   // Protocolo de menú
-  void send_create_match(const std::string &name);
+  void send_create_match(const std::string &name, const std::string &map_path);
   void send_list_matches();
+  void send_list_maps();
   void send_join_match(const std::string &code, const std::string &player_name,
                        const PlayerOutfitDto &outfit);
   std::string receive_created_match();
   std::vector<MatchInfoDto> receive_match_list();
+  std::vector<MapInfoDto> receive_map_list();
   bool receive_join_result();
 
   void shutdown();

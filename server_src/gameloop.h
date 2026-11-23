@@ -10,9 +10,10 @@
 
 #include "./game/command.h"
 #include "./game/game_constants.h"
-#include "./game/sectors/cavern.h"
+//#include "./game/sectors/cavern.h"
 #include "./game/sectors/farm_sector.h"
 #include "./game/sectors/village_sector.h"
+#include "./game/sectors/community_center_sector.h"
 #include "./game/world.h"
 
 #include "client_queues.h"
@@ -25,13 +26,13 @@ private:
 
   WorldState make_world_state() const;
   void process_commands();
-
+  void setupVillage();
   void setupFarm();
   void addWorldSectors();
 
 public:
   Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-           ClientQueues &clients, DaySpeed worldSpeed);
+           ClientQueues &clients, const std::string &map_path, std::string code);
 
   void run() override;
 };

@@ -2,26 +2,29 @@
 #define BED_H_
 
 #include "entity.h"
+#include "interactable.h"
 
-class Bed : public Entity {
+class Bed : public Entity, public Interactable {
 private:
-    bool sleeping;
+  int ownerId;
+  bool occupied = false;
 
 public:
-    Bed(Position position) : Entity(position.x, position.y, EntityTypes::BED), sleeping(false) {}
+  Bed(Position position, int ownerId)
+      : Entity(position.x, position.y, EntityTypes::FURNITURE), ownerId(ownerId) {}
 
-    bool isSleeping() const { return this->sleeping; }
-    bool sleep() {
-        this->sleeping = !this->sleeping;
-        return this->sleeping;
-    }
-    void setSleeping(bool value) { this->sleeping = value; }
+  int getOwnerId() const { return ownerId; }
+  void release() { occupied = false; }
 
-    EntityState entityState() const override {
-        EntityState state = Entity::entityState();
-        state.bed.sleeping = sleeping;
-        return state;
-    }
+  void interact(World &world, Player &player) override;
+
+  EntityState entityState() const override {
+    EntityState state = Entity::entityState();
+    state.furniture.type = FurnitureType::BED;
+    state.bed.sleeping = occupied;
+    state.bed.ownerId = ownerId;
+    return state;
+  }
 };
 
 #endif // BED_H_

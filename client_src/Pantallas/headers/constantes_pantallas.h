@@ -1,20 +1,23 @@
 #ifndef CONSTANTES_PANTALLAS_H_
 #define CONSTANTES_PANTALLAS_H_
 
-// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas por tema
-// indico con un comentario que hace ese grupo y donde estan de la forma:
-// tema -> archivo1.cpp, archivoN.cpp
+// ACLARACION: las constantes estan centralizadas en este archivo, y agrupadas
+// por tema indico con un comentario que hace ese grupo y donde estan de la
+// forma: tema -> archivo1.cpp, archivoN.cpp
 
 // Diseño responsive -> pantalla.cpp
 #define ANCHO_DISENIO 1366
 #define ALTO_DISENIO 768
 
 // Rutas de recursos -> dibujar_personaje.cpp, pantalla.cpp
-#define RUTA_TIPOS_PELO ":/ropas/assets/ropas/StardewValley_Character_Hairstyles.png"
+#define RUTA_TIPOS_PELO                                                        \
+  ":/ropas/assets/ropas/StardewValley_Character_Hairstyles.png"
 #define RUTA_TIPOS_GORRO ":/ropas/assets/ropas/StardewValley_Character_Hats.png"
-#define RUTA_TIPOS_PANTALON ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
-#define RUTA_TIPOS_REMERA ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
-#define RUTA_TIPOS_CUERPO                                                           \
+#define RUTA_TIPOS_PANTALON                                                    \
+  ":/ropas/assets/ropas/StardewValley_Character_Pants.png"
+#define RUTA_TIPOS_REMERA                                                      \
+  ":/ropas/assets/ropas/StardewValley_Character_Shirts.png"
+#define RUTA_TIPOS_CUERPO                                                      \
   ":/ropas/assets/ropas/StardewValley_Character_Farmer Base.png"
 #define RUTA_FUENTE ":/fuentes/assets/fuentes/Stardew_Valley.otf"
 

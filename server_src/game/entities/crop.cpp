@@ -119,6 +119,14 @@ double Crop::price() const {
 EntityState Crop::entityState() const {
   EntityState state = Entity::entityState();
   state.crop.type = type;
+
+  state.crop.growthTicks = this->growthTicks;
+  state.crop.sinceWatered = this->sinceWatered;
+  state.crop.thirstyTicks = this->thirstyTicks;
+  state.crop.readyTicks = this->readyTicks;
+  state.crop.extraHarvestsLeft = this->extraHarvestsLeft;
+  state.crop.luck = this->luck;
+
   state.crop.growth = growth();
   state.crop.needsWater = needsWater();
   return state;

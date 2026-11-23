@@ -4,11 +4,12 @@
 #include <memory>
 #include <thread>
 
+#include "editor_parser/editor_parser.h"
+
 Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
-                   ClientQueues &clients, DaySpeed worldSpeed)
-    : received_queue(received_queue), clients(clients), world(worldSpeed) {
-  addWorldSectors();
-}
+                   ClientQueues &clients, const std::string &map_path, std::string code)
+    : received_queue(received_queue), clients(clients),
+      world(EditorParser(map_path, code)()) {}
 
 void Gameloop::process_commands() {
   std::unique_ptr<Command> cmd;
@@ -22,14 +23,37 @@ void Gameloop::setupFarm() {
   this->world.addSector(std::move(farm));
 }
 
+void Gameloop::setupVillage() {
+  //TODO : SACAR POSICIONES HARDCODEADAS
+  this->world.addSector(
+    std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
+
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(0, 0),
+                            MerchantType::PIERRE);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(7, 0),
+                            MerchantType::CLINT);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(0, 7),
+                            MerchantType::ROBIN);
+  this->world.spawnMerchant(IdSector::VILLAGE,
+                            Position(7, 7),
+                            MerchantType::MARNIE);
+}
+
 void Gameloop::addWorldSectors() {
   setupFarm();
-  
-  this->world.addSector(
-      std::make_unique<VillageSector>(SECTOR_DIMENSION_2, SECTOR_DIMENSION_1));
+  setupVillage();
 
   world.addDoor(IdSector::FARM, IdSector::VILLAGE, Position(0, 15),
                 Position(0, 15));
+
+  this->world.addSector(
+      std::make_unique<CommunityCenterSector>(COMMUNITY_CENTER_WIDTH, COMMUNITY_CENTER_HEIGHT));
+
+  world.addDoor(IdSector::VILLAGE, IdSector::COMMUNITY_CENTER, Position(14, 40),
+                Position(10, 11));
 
   // TODO: los animales los coloca el jugador, del inventario
   this->world.spawnAnimal(IdSector::FARM, Position(10, 10), AnimalType::COW);
@@ -39,7 +63,7 @@ void Gameloop::addWorldSectors() {
   this->world.spawnAnimal(IdSector::FARM, Position(11, 11),
                           AnimalType::CHICKEN);
 
-  Cavern::setup(this->world);
+  //Cavern::setup(this->world);
 }
 
 void Gameloop::run() {

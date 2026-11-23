@@ -30,7 +30,8 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
            unsigned int semilla)
     : suelo(renderer, archivo_tileset(tipo)), muebles(renderer, RUTA_MUEBLES),
       piso_pueblo(renderer, RUTA_TILESET_PUEBLO),
-      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO), borde(LETRA_BORDE),
+      flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
+      casa(renderer, RUTA_TILESET_CABANA), borde(LETRA_BORDE),
       tipo(tipo), margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
@@ -38,6 +39,10 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
     generar_caverna(ancho, alto, semilla);
   } else if (tipo == SectorTypeDto::VILLAGE) {
     generar_pueblo(ancho, alto, semilla);
+  } else if (tipo == SectorTypeDto::COMMUNITY_CENTER) {
+    generar_centro(ancho, alto);
+  } else if (tipo == SectorTypeDto::CABIN) {
+    generar_cabana(ancho, alto);
   }
 }
 
@@ -92,6 +97,16 @@ void Mapa::generar_pueblo(int ancho, int alto, unsigned int semilla) {
   }
 }
 
+void Mapa::generar_centro(int ancho, int alto) {
+  borde = LETRA_VACIO;
+  filas.assign(alto, std::string(ancho, LETRA_PISO_PUEBLO));
+}
+
+void Mapa::generar_cabana(int ancho, int alto) {
+  borde = LETRA_VACIO;
+  filas.assign(alto, std::string(ancho, LETRA_PISO_MADERA));
+}
+
 int Mapa::obtener_ancho() const {
   if (filas.empty()) {
     return 0;
@@ -101,9 +116,9 @@ int Mapa::obtener_ancho() const {
 
 int Mapa::obtener_alto() const { return static_cast<int>(filas.size()); }
 
-// bool Mapa::es_escalera(int x, int y) const {
-//   return tile_en(x, y) == LETRA_PUERTA;
-// }
+const std::vector<Decoracion> & Mapa::obtener_decoraciones() const {
+  return decoraciones;
+}
 
 void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
   int ancho = static_cast<int>(tiles.size());
@@ -113,15 +128,22 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
   }
 
   std::vector<std::string> nueva(alto, std::string(ancho, LETRA_PASTO));
+  decoraciones.clear();
 
   // El servidor decide que hay en cada lugar
-  for (int x = 0; x < ancho; ++x) {
-    for (int y = 0; y < alto; ++y) {
+  for (int x = 0; x < ancho; x++) {
+    for (int y = 0; y < alto; y++) {
       const TileDto &tile = tiles[x][y];
+      if (tile.decoration != NoneDto) {
+        decoraciones.push_back({x, y, tile.decoration});
+      }
 
       char letra = tile_en(x, y);
       if (tile.type == TerrainTypeDto::DIRT) {
         letra = LETRA_TIERRA;
+      }
+      if (tile.type == TerrainTypeDto::WOOD) {
+        letra = LETRA_PISO_MADERA;
       }
       if (tile.tilled) {
         letra = LETRA_ARADO;
@@ -166,6 +188,9 @@ void Mapa::dibujar_completo(Renderer &renderer, int origen_x, int origen_y,
 
 void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
                         int lado) {
+  if (tipo_tile == LETRA_VACIO) {
+    return;
+  }
   int columna = SUELO_DEFECTO_COLUMNA;
   int fila = SUELO_DEFECTO_FILA;
   if (tipo_tile == LETRA_BORDE_CAVERNA) {
@@ -220,6 +245,12 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
               PIXELES_POR_TILE);
     renderer.Copy(piso_pueblo, piso, Rect(x, y, lado, lado));
     renderer.Copy(flores, flor, Rect(x, y, lado, lado));
+    return;
+  }
+
+  if (tipo_tile == LETRA_PISO_MADERA) {
+    Rect madera(SPRITE_PISO_MADERA_X, SPRITE_PISO_MADERA_Y, PIXELES_POR_TILE, PIXELES_POR_TILE);
+    renderer.Copy(casa, madera, Rect(x, y, lado, lado));
     return;
   }
 

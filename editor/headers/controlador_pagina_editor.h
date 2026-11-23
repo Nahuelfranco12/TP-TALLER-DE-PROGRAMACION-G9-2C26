@@ -6,7 +6,7 @@
 #include <QString>
 
 #include "constantes_qt.h"
-#include "navegador.h"
+#include "navegador_paginas.h"
 
 class QWidget;
 
@@ -17,15 +17,15 @@ class VentanaEditor;
 class ControladorPaginaEditor : public QObject {
 public:
   ControladorPaginaEditor(QWidget &ventana, Ui::VentanaEditor &ui,
-                          Navegador &navegador, QObject *parent)
+                          NavegadorPaginas &navegador, QObject *parent)
       : QObject(parent), ventana(ventana), ui(ui), navegador(navegador) {}
 
 protected:
   QWidget &ventana;
   Ui::VentanaEditor &ui;
-  Navegador &navegador;
+  NavegadorPaginas &navegador;
 
-  static QString carpetaMapas() {
+  static QString crearYObtenerCarpetaMapas() {
     QDir actual = QDir::current();
     actual.mkpath(CARPETA_MAPAS);
     return actual.absoluteFilePath(CARPETA_MAPAS);

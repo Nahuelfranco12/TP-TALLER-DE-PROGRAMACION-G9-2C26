@@ -16,11 +16,20 @@ project(taller_tp
     LANGUAGES CXX
     )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(TALLER_TESTS "Enable / disable tests." ON)
 option(TALLER_CLIENT "Enable / disable client program." ON)
 option(TALLER_SERVER "Enable / disable server program." ON)
 option(TALLER_EDITOR "Enable / disable editor program." ON)
 option(TALLER_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
+
+include(FetchContent)
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG v3.4.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
 
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
@@ -35,11 +44,18 @@ add_subdirectory(common_src/)
 add_library(taller_game STATIC)
 add_subdirectory(server_src/game/)
 target_include_directories(taller_game PUBLIC .)
-target_link_libraries(taller_game taller_common)
+target_link_libraries(taller_game taller_common tomlplusplus::tomlplusplus)
+
+add_library(taller_persistencia STATIC)
+add_subdirectory(server_src/persistencia/)
+target_include_directories(taller_persistencia PUBLIC .)
+target_link_libraries(taller_persistencia PRIVATE tomlplusplus::tomlplusplus)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(taller_common ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+set_project_warnings(taller_persistencia ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
+set_project_warnings(taller_adaptador_partida ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
 # Say where the headers will be found required by library target
 # Make this PUBLIC so any dependant linking lib will inherit this
@@ -155,7 +171,7 @@ if(TALLER_SERVER)
     set_project_warnings(taller_server ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the taller_common lib target
-    target_link_libraries(taller_server taller_common taller_game)
+    target_link_libraries(taller_server taller_common taller_game taller_adaptador_partida)
 endif()
 
 if(TALLER_EDITOR)

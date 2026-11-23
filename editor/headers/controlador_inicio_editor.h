@@ -8,13 +8,13 @@
 class ControladorInicioEditor : public ControladorPaginaEditor {
 public:
   ControladorInicioEditor(QWidget &ventana, Ui::VentanaEditor &ui,
-                          Navegador &navegador, DatosEditor &datos,
+                          NavegadorPaginas &navegador, DatosEditor &datos,
                           QObject *parent = nullptr);
 
 private:
   DatosEditor &datos;
   void crearMapa();
-  void editarMapa();
+  void cargarMapaExistente();
 };
 
 #endif // CONTROLADOR_INICIO_EDITOR_H_

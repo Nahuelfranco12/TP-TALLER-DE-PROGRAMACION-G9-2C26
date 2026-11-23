@@ -9,6 +9,7 @@
 #include <vector>
 
 enum class DirectionDto { Up, Down, Left, Right };
+
 enum class TerrainTypeDto {
   DIRT,
   GRASS,
@@ -17,7 +18,11 @@ enum class TerrainTypeDto {
   HOUSE,
 }; // TODO: en principio puerta es parte del enum (por si se quiere mostrar
    // distinto)
-enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
+
+enum TerrainDecorationDto { NoneDto, Tree1Dto, Tree2Dto, Tree3Dto, TreeRoundedDto, TreeBigDto, LogDto, StumpDto, StoneDto, StoneGrayDto, StoneGrayBigDto, WaterDecoDto, MailboxRedDto, MailboxBlueDto, MailBoxGrayDto, BlankSignDto, BarrelDto, SkullDecoDto, BoneDto, RuinsDto, TorchDto, CandleDto, ShieldDto, PitDto, LanternOrangeDto, LanternBlueDto, BenchDto };
+enum DoorTypeDto { VillageEntryDto, CavernEntryDto, CavernExitDto, FarmExitDto, StairsDto };
+//enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN, COMMUNITY_CENTER };
 
 // TODO: revisar para que sea acorde a SDL
 enum PlayerHatsDto {
@@ -28,6 +33,7 @@ enum PlayerHatsDto {
   CROWN_HAT,
   BOWTIE_HAT
 }; // 6
+
 enum PlayerHairsDto {
   CURLY_HAIR,
   STRAIGHT_HAIR,
@@ -36,6 +42,7 @@ enum PlayerHairsDto {
   AFRO_HAIR,
   EMO_HAIR
 }; // 6
+
 enum PlayerTShirtsDto {
   BLUE_SHIRT,
   WHITE_SHIRT,
@@ -43,6 +50,7 @@ enum PlayerTShirtsDto {
   PURPLE_SHIRT,
   GREE_SHIRT
 }; // 5
+
 enum PlayerPantsDto {
   JEANS_PANTS,
   SKIRT_PANTS,
@@ -73,6 +81,10 @@ enum class ItemTypeDto {
   CROP_GREEN_ONION,
   CROP_POTATO,
   CROP_PUMPKIN,
+  ANIMAL_COW,
+  ANIMAL_CHICKEN,
+  BED,
+  CHEST,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -82,8 +94,12 @@ enum class BuildingTypeDto {
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
   SHOP_MARNIE,
   SHOP_CLINT,
+  SHOP_PIERRE,
+  SHOP_ROBIN,
+  COMUNITARY_CENTRE,
 };
 
 enum class SectorIdDto {
@@ -103,6 +119,8 @@ enum class SectorIdDto {
   CABIN_PLAYER_2,
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
+  CABIN_PLAYER_5,
+  COMMUNITY_CENTER
 };
 
 enum class EntityTypeDto {
@@ -123,6 +141,11 @@ enum class EntityTypeDto {
   MINERAL_COAL,
   CROP,
   BED,
+  CHEST,
+  NPC_PIERRE,
+  NPC_CLINT,
+  NPC_ROBIN,
+  NPC_MARNIE,
 
   // TODO: resto de enemigos
   // TODO: NPCs del pueblo
@@ -162,6 +185,11 @@ struct ChatDto {
   std::string text;
 };
 
+struct PlaceDto {
+  int slotIndex = 0;
+  DirectionDto direction = DirectionDto::Up;
+};
+
 struct SleepDto {};
 
 // TODO: ver de eliminarlo
@@ -187,10 +215,16 @@ struct PlantDto {
 
 struct TileDto {
   TerrainTypeDto type;
+  TerrainDecorationDto decoration;
   bool transitable;
   bool arable;
   bool isDoor;
+  DoorTypeDto doorType = VillageEntryDto;
   bool tilled;
+};
+
+struct InteractDto {
+  GamePositionDto target;
 };
 
 struct BuildingDto {
@@ -266,8 +300,22 @@ struct ChatMessageDto {
   bool isPrivate = false;
 };
 
+struct ChestMoveDto {
+  int slotIndex; 
+  bool toChest;
+};
+
+struct ChestDto {
+  bool openedByMe = false;
+  std::list<InventorySlotDto> slots;
+};
+
 struct BedDto {
   bool sleeping = false;
+};
+
+struct DoorDto{
+  DoorTypeDto type;
 };
 
 struct EntityDto {
@@ -277,6 +325,8 @@ struct EntityDto {
   CropDto crop{};       // Solo se usa si es cultivo
   EnemyDto enemy{};
   BedDto bed{};
+  DoorDto door{};
+  ChestDto chest{};
 };
 
 struct GameTimeDto {
@@ -315,13 +365,19 @@ struct MatchInfoDto {
   int players = 0;
 };
 
-enum class LobbyActionDto { Create, List, Join };
+struct MapInfoDto {
+  std::string name;
+  std::string path;
+};
+
+enum class LobbyActionDto { Create, List, Join, ListMaps };
 
 struct LobbyRequestDto {
   LobbyActionDto action = LobbyActionDto::List;
 
   // Atributos para Creacion de Partida
   std::string match_name;
+  std::string map_path;
 
   // Atributos para Unirse a partida
   std::string code;
