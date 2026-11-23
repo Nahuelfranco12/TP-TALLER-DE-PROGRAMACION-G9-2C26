@@ -37,6 +37,9 @@ const TablaIds<ClaveItem> &tablaIds(ClaveItem) {
       {{ItemType::CROP, CropTypes::POTATO}, ID_CULTIVO_PAPA},
       {{ItemType::CROP, CropTypes::PUMPKIN}, ID_CULTIVO_CALABAZA},
       {{ItemType::ANIMAL_PRODUCT, AnimalType::COW}, ID_ITEM_LECHE},
-      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, ID_ITEM_HUEVO}};
+      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, ID_ITEM_HUEVO},
+      {{ItemType::ANIMAL, AnimalType::COW}, ID_ITEM_VACA},
+      {{ItemType::ANIMAL, AnimalType::CHICKEN}, ID_ITEM_GALLINA},
+      {{ItemType::FURNITURE, FurnitureType::CHEST}, ID_ITEM_COFRE}};
   return tabla;
 }

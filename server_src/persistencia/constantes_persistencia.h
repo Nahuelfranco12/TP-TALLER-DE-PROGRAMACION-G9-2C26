@@ -84,6 +84,9 @@
 #define ID_ITEM_SEMILLA_CALABAZA "SemillaCalabaza"
 #define ID_ITEM_LECHE "Leche"
 #define ID_ITEM_HUEVO "Huevo"
+#define ID_ITEM_VACA "vaca"
+#define ID_ITEM_GALLINA "gallina"
+#define ID_ITEM_COFRE "cofre"
 
 // Adaptador del mundo -> adaptador_partida.cpp
 #define MINIMO_JUGADORES_MULTIPLAYER 2
