@@ -53,7 +53,7 @@ public:
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));
     this->inventory.addTool(
         std::make_unique<Tool>(AvailableTools::WATERING_CAN));
-    
+
     this->inventory.addItem(std::make_unique<BedItem>(id));
 
     for (int i = 0; i < 5; i++) {
@@ -107,7 +107,7 @@ public:
   * Daño
   */
   void takeDamage(double amount);
-  bool isUnconscious() const { return life <= 0; }
+  bool isUnconscious() const { return life <= 0 || energy <= 0; }
 
   void startNewDay(bool sleptInBed);
 
