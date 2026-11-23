@@ -18,15 +18,7 @@ public:
   bool placeAnimal(Position position, AnimalType animalType);
 
   std::optional<Building> placeCabin(int playerId, Position top) {
-    Building b{
-        .type = cabinBuildingType(playerId),
-        .topLeft = top,
-        .width = CABIN_OUTSIDE_WIDTH,
-        .height = CABIN_OUTSIDE_HEIGHT,
-        .door = Position(top.x + CABIN_OUTSIDE_WIDTH / 2,
-                        top.y + CABIN_OUTSIDE_HEIGHT - 1),
-        .interior = cabinSectorId(playerId),
-        .ownerId = playerId};
+    Building b(cabinBuildingType(playerId), top, CABIN_OUTSIDE_WIDTH, CABIN_OUTSIDE_HEIGHT, Position(top.x + CABIN_OUTSIDE_WIDTH / 2, top.y + CABIN_OUTSIDE_HEIGHT - 1), cabinSectorId(playerId), playerId);
 
     if (!placeBuilding(b))
       return std::nullopt;
