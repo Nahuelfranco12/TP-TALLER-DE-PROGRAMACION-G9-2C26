@@ -274,6 +274,11 @@
 #define COFRE_FILAS 3
 #define COFRE_CASILLEROS (COFRE_COLUMNAS * COFRE_FILAS)
 
+#define SPRITE_CAMA_X 87
+#define SPRITE_CAMA_Y 8
+#define SPRITE_CAMA_ANCHO 18
+#define SPRITE_CAMA_ALTO 34
+
 // Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
 // interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
 // pueblo.cpp
@@ -288,6 +293,7 @@
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
 #define RUTA_COFRE "assets/muebles/chest.png"
+#define RUTA_INTERIOR "assets/muebles/Interior.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
   "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"

@@ -18,7 +18,8 @@ Granja::Granja(Renderer &renderer)
     : casas(renderer, RUTA_CASAS), vaca(renderer, RUTA_VACA),
       gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
       suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
-      leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE), vueltas(0) {
+      leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
+      interior(renderer, RUTA_INTERIOR), vueltas(0) {
 
   // Por ahora fijos
   // Hacer después con servidor
@@ -105,6 +106,12 @@ void Granja::dibujar_mueble(Renderer &renderer, const Mueble &mueble,
     int fila = mueble.abierto ? SPRITE_COFRE_ABIERTO_Y : SPRITE_COFRE_CERRADO_Y;
     Rect origen(SPRITE_COFRE_X, fila, SPRITE_COFRE_LADO, SPRITE_COFRE_LADO);
     renderer.Copy(cofre, origen, destino);
+  } else if (mueble.tipo == CAMA) {
+    Rect origen(SPRITE_CAMA_X, SPRITE_CAMA_Y, SPRITE_CAMA_ANCHO, SPRITE_CAMA_ALTO);
+    int ancho = SPRITE_CAMA_ANCHO * lado / PIXELES_POR_TILE;
+    int alto = SPRITE_CAMA_ALTO * lado / PIXELES_POR_TILE;
+    Rect destino(x + (lado - ancho) / 2, y + lado - alto, ancho, alto);
+    renderer.Copy(interior, origen, destino);
   }
 }
 
@@ -143,6 +150,8 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
       lista_cultivos.push_back({tipo, x, y, etapa});
     } else if (entidad.type == EntityTypeDto::CHEST) {
       lista_muebles.push_back({COFRE, x, y, entidad.chest.openedByMe});
+    } else if (entidad.type == EntityTypeDto::BED) {
+      lista_muebles.push_back({CAMA, x, y, false});
     }
   }
 }

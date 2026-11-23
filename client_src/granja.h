@@ -21,7 +21,7 @@ private:
 
   enum TipoCultivo { FRUTILLA, CEBOLLA_DE_VERDEO, PAPA, CALABAZA };
 
-  enum TipoMueble { COFRE };
+  enum TipoMueble { COFRE, CAMA };
 
   struct Animal {
     TipoAnimal tipo;
@@ -53,6 +53,7 @@ private:
   SDL2pp::Texture huevo;
   SDL2pp::Texture leche;
   SDL2pp::Texture cofre;
+  SDL2pp::Texture interior;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;

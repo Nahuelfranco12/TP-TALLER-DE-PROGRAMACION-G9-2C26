@@ -29,7 +29,8 @@ Inventario::Inventario(Renderer &renderer)
     : minerales(renderer, RUTA_ICONOS_MINERALES),
       cultivos(renderer, RUTA_ICONOS_CULTIVOS), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
-      fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
+      interior(renderer, RUTA_INTERIOR), vaca(renderer, RUTA_VACA),
+      gallina(renderer, RUTA_GALLINA), fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
   for (int i = 0; i < DIGITOS_DECIMALES; i++) {
     digitos.emplace_back(renderer,
                          fuente.RenderUTF8_Blended(std::to_string(i), BLANCO));
@@ -244,6 +245,21 @@ void Inventario::dibujar_item(Renderer &renderer,
   case ItemTypeDto::CHEST:
     dibujar_icono(renderer, cofre, Rect(SPRITE_COFRE_X, SPRITE_COFRE_CERRADO_Y, SPRITE_COFRE_LADO, SPRITE_COFRE_LADO), lugar);
     break;
+  case ItemTypeDto::ANIMAL_COW:
+    dibujar_icono(renderer, vaca,
+                  Rect(0, 0, SPRITE_VACA_LADO, SPRITE_VACA_LADO), lugar);
+    break;
+  case ItemTypeDto::ANIMAL_CHICKEN:
+    dibujar_icono(renderer, gallina,
+                  Rect(0, 0, SPRITE_GALLINA_LADO, SPRITE_GALLINA_LADO), lugar);
+    break;
+  case ItemTypeDto::BED: {
+    int alto = INVENTARIO_LADO_ICONO;
+    int ancho = SPRITE_CAMA_ANCHO * alto / SPRITE_CAMA_ALTO;
+    Rect destino(lugar.x + (INVENTARIO_LADO_CASILLERO - ancho) / 2, lugar.y + (INVENTARIO_LADO_CASILLERO - alto) / 2, ancho, alto);
+    renderer.Copy(interior,Rect(SPRITE_CAMA_X, SPRITE_CAMA_Y, SPRITE_CAMA_ANCHO, SPRITE_CAMA_ALTO), destino);
+    break;
+  }
   default:
     break;
   }

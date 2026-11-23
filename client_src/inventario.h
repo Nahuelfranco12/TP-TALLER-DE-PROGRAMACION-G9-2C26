@@ -16,6 +16,9 @@ private:
   SDL2pp::Texture huevo;
   SDL2pp::Texture leche;
   SDL2pp::Texture cofre;
+  SDL2pp::Texture interior;
+  SDL2pp::Texture vaca;
+  SDL2pp::Texture gallina;
   std::vector<SDL2pp::Texture> iconos_herramienta;
   SDL2pp::Font fuente;
   std::vector<SDL2pp::Texture> digitos;
