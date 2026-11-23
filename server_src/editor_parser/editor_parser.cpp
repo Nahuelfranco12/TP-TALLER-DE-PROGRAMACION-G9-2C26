@@ -10,6 +10,8 @@
 #include "../game/sectors/cavern_sector.h"
 #include "../game/sectors/farm_sector.h"
 #include "../game/sectors/village_sector.h"
+#include "server_src/game/building.h"
+#include "server_src/game/sectors/community_center_sector.h"
 
 namespace {
 const toml::table& requiredTable(const toml::table& route,
@@ -184,7 +186,8 @@ std::vector<Building> EditorParser::farmBuildings(
 }
 
 std::vector<Building> EditorParser::villageBuildings(
-    const std::vector<Object>& objects) {
+    const std::vector<Object>& objects,
+    Building& communityCenterBuilding) {
     std::vector<Building> result;
     const std::map<std::string, BuildingType> types = {
         {"CasaMarnie", BuildingType::SHOP_MARNIE},
@@ -196,10 +199,14 @@ std::vector<Building> EditorParser::villageBuildings(
         auto it = types.find(object.type);
         if (it == types.end())
             continue;
-        size_t width = object.type == "CentroComunitario" ? 8 : 5;
-        size_t height = object.type == "CentroComunitario" ? 6 : 4;
-        result.push_back(makeBuilding(it->second, object.position, width,
-                                      height));
+        bool isCommunityCenter = it->second == BuildingType::COMUNITARY_CENTRE;
+        size_t width = isCommunityCenter ? 8 : 5;
+        size_t height = isCommunityCenter ? 6 : 4;
+        Building building = makeBuilding(it->second, object.position, width,
+                                         height);
+        if (isCommunityCenter)
+            communityCenterBuilding = building;
+        result.push_back(std::move(building));
     }
     return result;
 }
@@ -266,9 +273,17 @@ void EditorParser::parseVillage(World& world, const toml::table& route) const {
     size_t width = requiredInteger(table, CLAVE_ANCHO, CLAVE_PUEBLO);
     size_t height = requiredInteger(table, CLAVE_ALTO, CLAVE_PUEBLO);
     std::vector<Object> objects = readObjects(table, CLAVE_PUEBLO, width, height);
+
+    Building communityCenterBuilding;
+    auto buildings = EditorParser::villageBuildings(objects, communityCenterBuilding);
+
     auto village = std::make_unique<VillageSector>(
-        width, height, villageDecorations(objects), villageBuildings(objects));
+        width, height, villageDecorations(objects), buildings);
     world.addSector(std::move(village));
+
+    auto communityCenter = std::make_unique<CommunityCenterSector>(20, 10);
+    world.addSector(std::move(communityCenter));
+    world.addDoor(IdSector::VILLAGE, IdSector::COMMUNITY_CENTER, communityCenterBuilding.door, {10, 9}, DoorType::VillageEntry, DoorType::VillageEntry);
 
     Position farmExit = uniqueObject(objects, "SalidaGranja", CLAVE_PUEBLO);
     const toml::table& farmTable = requiredTable(route, CLAVE_GRANJA);

@@ -32,7 +32,8 @@ private:
     static std::vector<Building> farmBuildings(
         const std::vector<Object>& objects);
     static std::vector<Building> villageBuildings(
-        const std::vector<Object>& objects);
+        const std::vector<Object>& objects,
+        Building& communityCenterBuilding);
 
     void parseFarm(World& world, const toml::table& route) const;
     void parseCavern(World& world, const toml::table& route) const;
