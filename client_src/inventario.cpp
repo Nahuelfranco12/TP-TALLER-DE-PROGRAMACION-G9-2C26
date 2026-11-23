@@ -313,3 +313,20 @@ void Inventario::dibujar_regalo(Renderer &renderer,
                                 const Rect &lugar) {
   dibujar_item(renderer, regalo, lugar);
 }
+
+int Inventario::contar(ItemTypeDto item, bool solo_calidad_alta) const {
+  int total = 0;
+  for (const InventorySlotDto &casillero : casilleros) {
+    if (casillero.item != item) {
+      continue;
+    }
+    if (solo_calidad_alta) {
+      bool es_alta = casillero.quality == CropQualityDto::INCREDIBLE || casillero.quality == CropQualityDto::PERFECT;
+      if (!es_alta) {
+        continue;
+      }
+    }
+    total += static_cast<int>(casillero.count);
+  }
+  return total;
+}

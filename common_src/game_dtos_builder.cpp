@@ -135,6 +135,9 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
+
+  case COMMUNITY_CENTER:
+    return SectorTypeDto::COMMUNITY_CENTER;
   case CABIN_PLAYER_1:
   case CABIN_PLAYER_2:
   case CABIN_PLAYER_3:
@@ -218,6 +221,8 @@ SectorIdDto GameDtosBuilder::toDtoSectorId(IdSector id) {
     return SectorIdDto::CABIN_PLAYER_4;
   case IdSector::CABIN_PLAYER_5:
     return SectorIdDto::CABIN_PLAYER_5;
+  case COMMUNITY_CENTER:
+    return SectorIdDto::COMMUNITY_CENTER;
   }
   throw std::logic_error("Sector id sin DTO");
 }
@@ -400,7 +405,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
   sectorDto.type = sectorType;
 
   for (const SectorState &sectorState : state.sectors) {
-    if (sectorState.id == static_cast<IdSector>(sectorType)) {
+    if (toDto(sectorState.id) == sectorType) {
       sectorDto.width = sectorState.width;
       sectorDto.height = sectorState.height;
 
@@ -414,6 +419,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
                                     static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
+      break;
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
       for (const BuildingState &building : sectorState.buildings) {
@@ -426,8 +432,8 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
              toDtoSectorId(building.interior),
              building.ownerId});
       }
+      break;
     }
   }
-
   return sectorDto;
 }

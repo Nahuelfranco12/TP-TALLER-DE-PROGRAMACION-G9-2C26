@@ -21,6 +21,7 @@ ItemSubtype subtipoDe(const ItemState &item) {
   case ItemType::CROP:
     return static_cast<CropTypes>(item.subtype);
   case ItemType::ANIMAL_PRODUCT:
+  case ItemType::ANIMAL:
     return static_cast<AnimalType>(item.subtype);
   case ItemType::DECORATION_PRODUCT:
     break;
@@ -119,7 +120,9 @@ const TablaPrecios &tablaPrecios() {
       {{ItemType::MINERAL, MineralTypes::LAPIZLAZULI}, PRICE_LAPIZLAZULI},
       {{ItemType::MINERAL, MineralTypes::COAL}, PRICE_COAL},
       {{ItemType::ANIMAL_PRODUCT, AnimalType::COW}, PRICE_MILK},
-      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, PRICE_EGG}};
+      {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, PRICE_EGG},
+      {{ItemType::ANIMAL, AnimalType::COW}, PRICE_COW},
+      {{ItemType::ANIMAL, AnimalType::CHICKEN}, PRICE_CHICKEN}};
   return tabla;
 }
 

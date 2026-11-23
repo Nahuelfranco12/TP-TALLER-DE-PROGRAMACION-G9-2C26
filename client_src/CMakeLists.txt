@@ -51,9 +51,9 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    centro_comunitario.cpp
     animacion.cpp
     animacion_enemigos.cpp
-
     PUBLIC
     # .h files
     animacion.h
@@ -108,4 +108,5 @@ target_sources(taller_client
     actions/interact_action.h
     pueblo.h
     mapa_mundo.h
+    centro_comunitario.h
     )

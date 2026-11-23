@@ -14,6 +14,7 @@ private:
   SDL2pp::Texture muebles;
   SDL2pp::Texture piso_pueblo;
   SDL2pp::Texture flores;
+  SDL2pp::Texture casa;
   std::vector<std::string> filas;
   char borde;
 
@@ -25,6 +26,8 @@ private:
   void generar_granja(int ancho, int alto, unsigned int semilla);
   void generar_caverna(int ancho, int alto, unsigned int semilla);
   void generar_pueblo(int ancho, int alto, unsigned int semilla);
+  void generar_centro(int ancho, int alto);
+  void generar_cabana(int ancho, int alto);
 
   char tile_en(int x, int y) const;
 

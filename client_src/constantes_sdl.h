@@ -21,6 +21,9 @@
 #define ESCALA_SPRITES 4
 #define TAMANIO_TILE (PIXELES_POR_TILE * ESCALA_SPRITES)
 
+#define CABANA_ANCHO 30
+#define CABANA_ALTO 15
+
 // Mapa: márgenes y decoración -> mapa.cpp
 #define MAPA_MARGEN 30
 #define MAPA_DADO_DECORACION_MAXIMO 9
@@ -44,6 +47,9 @@
 #define LETRA_CAVERNA_DECORACION_2 'r'
 #define LETRA_PISO_PUEBLO 'c'
 #define LETRA_FLORES 'f'
+#define LETRA_VACIO ' '
+#define LETRA_PISO_MADERA 'm'
+
 
 // Bosque alrededor de la granja (en tiles) -> alrededores.cpp
 #define BOSQUE_ZONA 30
@@ -101,14 +107,14 @@
 #define TIENDA_CERRADA (-1)
 #define PUEBLO_PUESTOS                                                         \
   {                                                                            \
-    {10, 20, TIENDA_PIERRE}, {30, 36, TIENDA_CLINT}, {29, 3, TIENDA_ROBIN}, {  \
-      52, 18, TIENDA_MARNIE                                                    \
+    {2, 19, TIENDA_PIERRE}, {16, 19, TIENDA_CLINT}, {2, 1, TIENDA_ROBIN}, {  \
+      16, 1, TIENDA_MARNIE                                                    \
     }                                                                          \
   }
 #define PUEBLO_NPCS                                                            \
   {                                                                            \
-    {15, 29, TIENDA_PIERRE}, {34, 44, TIENDA_CLINT}, {37, 13, TIENDA_ROBIN}, { \
-      57, 29, TIENDA_MARNIE                                                    \
+    {7, 28, TIENDA_PIERRE}, {22, 27, TIENDA_CLINT}, {10, 11, TIENDA_ROBIN}, { \
+      21, 12, TIENDA_MARNIE                                                    \
     }                                                                          \
   }
 #define NPC_CUADROS_ANIMACION 4
@@ -123,6 +129,40 @@
 #define TIENDA_MARGEN_ALTO 140
 #define TIENDA_MARGEN_TITULO 10
 #define TIENDA_MARGEN_BOTONES 10
+
+// Centro comunitario
+#define SET_CULTIVOS 0
+#define SET_METALES 1
+#define SET_ANIMALES 2
+#define SET_PELEA 3
+#define SET_DINERO 4
+#define SET_CANTIDAD 5
+#define SET_CERRADO (-1)
+
+// Figurines dentro del centro
+#define CENTRO_SETS                                                           \
+{                                                                             \
+  {4, 3, SET_CULTIVOS}, {7, 3, SET_METALES}, {10, 3, SET_ANIMALES},           \
+  {13, 3, SET_PELEA}, {16, 3, SET_DINERO}                                     \
+}
+
+// Edificio en el pueblo
+#define CENTRO_EDIFICIO_TILE_X 9
+#define CENTRO_EDIFICIO_TILE_Y 34
+
+// Titulo de un set
+#define CENTRO_TITULO_DIVISOR 16
+#define CENTRO_CONTENIDO_DIVISOR 8
+
+// Caja de un set
+#define CENTRO_TAMANIO_LETRA 40
+#define CENTRO_TAMANIO_LETRA_CHICA 30
+#define CENTRO_LADO_FIGURIN_CAJA 64
+#define CENTRO_MARGEN_ANCHO 40
+#define CENTRO_MARGEN_ALTO 100
+#define CENTRO_SEPARACION_LINEAS 40
+#define CENTRO_MARGEN_BOTONES 10
+#define CENTRO_MONEDAS_SET 10000
 
 // Personaje: ropa inicial, caminar y picar -> personaje.cpp
 #define PERSONAJE_PANTALON_INICIAL 0
@@ -197,6 +237,8 @@
 #define TECLA_IZQUIERDA SDLK_LEFT
 #define TECLA_DERECHA SDLK_RIGHT
 
+#define BOTONES_DESDE_ABAJO 120;
+
 // Regalos -> interfaz.cpp, main.cpp
 #define REGALO_ANCHO 280
 #define REGALO_ALTO 140
@@ -230,9 +272,10 @@
 #define RUTA_TILESET_GRANJA "assets/mapas/ground_01_16x16.png"
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
+#define RUTA_TILESET_CABANA "assets/mapas/Tilesets_Farmhouse.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
-#define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
-  "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"
 #define RUTA_CASAS "assets/edificios/House.png"
 #define RUTA_EDIFICIOS_PUEBLO "assets/edificios/PelicanTown_Buildings.png"
@@ -262,9 +305,9 @@
 #define RUTA_NPC_ROBIN "assets/npcs/robin.png"
 #define RUTA_NPC_MARNIE "assets/npcs/marnie.png"
 #define RUTA_TIENDA_PIERRE "assets/tiendas/pierre.png"
-#define RUTA_TIENDA_CLINT "assets/tiendas/clint.jpeg"
-#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.jpg"
-#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.jpg"
+#define RUTA_TIENDA_CLINT "assets/tiendas/clint.png"
+#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.png"
+#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.png"
 #define RUTAS_FONDOS_TIENDAS                                                   \
   {                                                                            \
     RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,                  \
@@ -322,6 +365,8 @@
 #define SUELO_CAVERNA_DECORACION_2_FILA 2
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
+#define SPRITE_PISO_MADERA_X 32
+#define SPRITE_PISO_MADERA_Y 128
 
 // Sprites (px) -> caverna.cpp, granja.cpp, inventario.cpp, mapa.cpp,
 // mapa_mundo.cpp, personaje.cpp, pueblo.cpp
@@ -387,6 +432,22 @@
   { RUTA_NPC_MARNIE, 64, 48 }
 #define SPRITE_MODELOS_NPCS                                                    \
   { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
+
+// Sprites: centro comunitario (px)
+#define SPRITE_EDIFICIO_CENTRO {17, 181, 190, 123}
+#define SPRITE_FONDO_CENTRO {0, 0, 320, 176}
+#define SPRITE_FIGURIN_LADO 32
+#define SPRITE_SET_CULTIVOS {64, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_METALES {0, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_ANIMALES {160, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_PELEA {64, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_DINERO {128, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_MODELOS_SETS                                                    \
+  {SPRITE_SET_CULTIVOS, SPRITE_SET_METALES, SPRITE_SET_ANIMALES,               \
+    SPRITE_SET_PELEA, SPRITE_SET_DINERO                                        \
+  }
+
+// Sprites: personaje (px)
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
 #define SPRITE_PERSONAJE_PASOS                                                 \
@@ -515,7 +576,7 @@
 #define COLOR_MUNDO_DIFUMINADO                                                 \
   { 54, 124, 66, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_VIDA                                                       \
-  { 240, 200, 40, COLOR_ALFA_OPACO }
+  { 200, 40, 40, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_ENERGIA                                                    \
   { 70, 190, 70, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_BORDE                                                      \
@@ -524,6 +585,10 @@
   { 70, 70, 70, COLOR_ALFA_OPACO }
 #define COLOR_FONDO_JUEGO                                                      \
   { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_TEXTO_CENTRO                                                     \
+ { 70, 40, 20, COLOR_ALFA_OPACO }
+ #define COLOR_CABANA_OSCURECER                                                     \
+ { 0, 0, 0, 170 }
 
 // Textos visibles -> interfaz.cpp, main.cpp, pueblo.cpp
 #define TEXTO_JUEGO_MUSICA "Música"
@@ -564,6 +629,14 @@
 #define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "
 #define TEXTO_JUEGO_CONEXION_PERDIDA "Se perdió la conexión con el servidor."
+
+#define TEXTO_JUEGO_SET_CULTIVOS "Set de cultivos"
+#define TEXTO_JUEGO_SET_METALES "Set de metales"
+#define TEXTO_JUEGO_SET_ANIMALES "Set de productos animales"
+#define TEXTO_JUEGO_SET_PELEA "Set de pelea"
+#define TEXTO_JUEGO_SET_DINERO "Set de dinero"
+#define TITULOS_SETS { TEXTO_JUEGO_SET_CULTIVOS, TEXTO_JUEGO_SET_METALES, TEXTO_JUEGO_SET_ANIMALES, TEXTO_JUEGO_SET_PELEA, TEXTO_JUEGO_SET_DINERO}
+#define TEXTO_JUEGO_CANJEAR "Canjear"
 
 // Audio -> audio.cpp, interfaz.cpp
 #define AUDIO_TAMANIO_BUFFER 1024

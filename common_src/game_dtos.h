@@ -20,10 +20,9 @@ enum class TerrainTypeDto {
    // distinto)
 
 enum TerrainDecorationDto { NoneDto, Tree1Dto, Tree2Dto, Tree3Dto, TreeRoundedDto, TreeBigDto, LogDto, StumpDto, StoneDto, StoneGrayDto, StoneGrayBigDto, WaterDecoDto, MailboxRedDto, MailboxBlueDto, MailBoxGrayDto, BlankSignDto, BarrelDto, SkullDecoDto, BoneDto, RuinsDto, TorchDto, CandleDto, ShieldDto, PitDto, LanternOrangeDto, LanternBlueDto, BenchDto };
-
 enum DoorTypeDto { VillageEntryDto, CavernEntryDto, CavernExitDto, FarmExitDto, StairsDto };
-
-enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
+//enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN };
+enum class SectorTypeDto { FARM, VILLAGE, CAVERN, CABIN, COMMUNITY_CENTER };
 
 // TODO: revisar para que sea acorde a SDL
 enum PlayerHatsDto {
@@ -119,6 +118,7 @@ enum class SectorIdDto {
   CABIN_PLAYER_3,
   CABIN_PLAYER_4,
   CABIN_PLAYER_5,
+  COMMUNITY_CENTER
 };
 
 enum class EntityTypeDto {

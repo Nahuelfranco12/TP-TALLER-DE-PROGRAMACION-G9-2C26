@@ -2,7 +2,6 @@
 #include "personaje.h"
 
 #include <algorithm>
-// #include <iterator>
 
 #include <SDL2/SDL.h>
 
@@ -13,6 +12,7 @@ using SDL2pp::Texture;
 
 namespace {
 const SDL_Rect MODELOS_PUESTOS[] = SPRITE_MODELOS_PUESTOS;
+const SDL_Rect EDIFICIO_CENTRO = SPRITE_EDIFICIO_CENTRO;
 
 struct ModeloNpc {
   const char *archivo;
@@ -60,6 +60,7 @@ bool modelo_de_npc(EntityTypeDto tipo, int &modelo) {
 
 Pueblo::Pueblo(Renderer &renderer)
     : edificios(renderer, RUTA_EDIFICIOS_PUEBLO),
+      edificio_centro(renderer, RUTA_EDIFICIO_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, TIENDA_TAMANIO_LETRA), vueltas(0),
       tienda_abierta(TIENDA_CERRADA) {
 
@@ -77,8 +78,7 @@ Pueblo::Pueblo(Renderer &renderer)
   }
   for (const char *texto : TEXTOS_BOTONES) {
     // cppcheck-suppress useStlAlgorithm
-    texto_botones.emplace_back(renderer,
-                               fuente.RenderUTF8_Blended(texto, BLANCO));
+    texto_botones.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
   }
   botones.resize(TIENDA_CANTIDAD_BOTONES);
   for (const char *archivo : FONDOS_TIENDAS) {
@@ -124,6 +124,7 @@ void Pueblo::dibujar_npc(Renderer &renderer, const Npc &npc, int camara_x,
 }
 
 void Pueblo::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
+  dibujar_centro_comunitario(renderer, camara_x, camara_y, lado);
   for (const Puesto &puesto : lista_puestos) {
     dibujar_puesto(renderer, puesto, camara_x, camara_y, lado);
   }
@@ -219,7 +220,7 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
   const SDL2pp::Color fondo_boton = COLOR_BOTON_FONDO;
   const SDL2pp::Color borde_boton = COLOR_BOTON_BORDE;
   int x = (ancho_ventana - ancho_total) / 2;
-  int y = habitacion.y + habitacion.h + TIENDA_MARGEN_BOTONES;
+  int y = alto_ventana - BOTONES_DESDE_ABAJO;
   for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
     Texture &texto = texto_botones[i];
     botones[i] = Rect(x, y, texto.GetWidth() + 2 * TIENDA_RELLENO_BOTON,
@@ -236,4 +237,15 @@ void Pueblo::dibujar_tienda(Renderer &renderer, Personaje &personaje) {
 
     x += botones[i].w + TIENDA_SEPARACION_BOTONES;
   }
+}
+
+void Pueblo::dibujar_centro_comunitario(Renderer &renderer, int camara_x,
+                                        int camara_y, int lado) {
+  int x = CENTRO_EDIFICIO_TILE_X * lado - camara_x;
+  int y = CENTRO_EDIFICIO_TILE_Y * lado - camara_y;
+  Rect origen(EDIFICIO_CENTRO.x, EDIFICIO_CENTRO.y, EDIFICIO_CENTRO.w,
+              EDIFICIO_CENTRO.h);
+  Rect destino(x, y, EDIFICIO_CENTRO.w * lado / PIXELES_POR_TILE,
+               EDIFICIO_CENTRO.h * lado / PIXELES_POR_TILE);
+  renderer.Copy(edificio_centro, origen, destino);
 }
