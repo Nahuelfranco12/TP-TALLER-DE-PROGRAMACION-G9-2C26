@@ -152,6 +152,7 @@ int main(int argc, char *argv[]) try {
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
+  long vueltas_hasta_paso = 0;
   int camara_granja_x = 0;
   int camara_granja_y = 0;
   bool viendo_mapa = false;
@@ -377,30 +378,6 @@ int main(int argc, char *argv[]) try {
           client.send_collect(dir);
         }
       }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 &&
-          !pueblo.hay_tienda_abierta()) {
-        switch (evento.key.keysym.sym) {
-        case TECLA_ARRIBA:
-          personaje.mirar(ARRIBA);
-          client.send_move(DirectionDto::Up);
-          break;
-        case TECLA_ABAJO:
-          personaje.mirar(ABAJO);
-          client.send_move(DirectionDto::Down);
-          break;
-        case TECLA_IZQUIERDA:
-          personaje.mirar(IZQUIERDA);
-          client.send_move(DirectionDto::Left);
-          break;
-        case TECLA_DERECHA:
-          personaje.mirar(DERECHA);
-          client.send_move(DirectionDto::Right);
-          break;
-        default:
-          break;
-        }
-      }
     }
 
     // Respuesta del servidor
@@ -503,6 +480,31 @@ int main(int argc, char *argv[]) try {
     if (!client.is_connected()) {
       std::cerr << TEXTO_JUEGO_CONEXION_PERDIDA << STRING_BRK;
       corriendo = false;
+    }
+
+    vueltas_hasta_paso -= vueltas;
+    bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto();
+    if (vueltas_hasta_paso <= 0 && puede_caminar) {
+      const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
+      bool camino = true;
+      if (teclado[SDL_GetScancodeFromKey(TECLA_ARRIBA)]) {
+        personaje.mirar(ARRIBA);
+        client.send_move(DirectionDto::Up);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_ABAJO)]) {
+        personaje.mirar(ABAJO);
+        client.send_move(DirectionDto::Down);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_IZQUIERDA)]) {
+        personaje.mirar(IZQUIERDA);
+        client.send_move(DirectionDto::Left);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_DERECHA)]) {
+        personaje.mirar(DERECHA);
+        client.send_move(DirectionDto::Right);
+      } else {
+        camino = false;
+      }
+      if (camino) {
+        vueltas_hasta_paso = PERSONAJE_VUELTAS_POR_PASO;
+      }
     }
 
     personaje.animar(vueltas);
