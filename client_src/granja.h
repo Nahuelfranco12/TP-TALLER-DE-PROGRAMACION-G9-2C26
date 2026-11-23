@@ -21,6 +21,8 @@ private:
 
   enum TipoCultivo { FRUTILLA, CEBOLLA_DE_VERDEO, PAPA, CALABAZA };
 
+  enum TipoMueble { COFRE };
+
   struct Animal {
     TipoAnimal tipo;
     int tile_x;
@@ -36,6 +38,13 @@ private:
     int etapa;
   };
 
+  struct Mueble {
+    TipoMueble tipo;
+    int tile_x;
+    int tile_y;
+    bool abierto;
+  };
+
   SDL2pp::Texture casas;
   SDL2pp::Texture vaca;
   SDL2pp::Texture gallina;
@@ -43,10 +52,12 @@ private:
   SDL2pp::Texture suelo;
   SDL2pp::Texture huevo;
   SDL2pp::Texture leche;
+  SDL2pp::Texture cofre;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
   std::vector<Cultivo> lista_cultivos;
+  std::vector<Mueble> lista_muebles;
 
   long vueltas;
 
@@ -58,6 +69,8 @@ private:
                       int camara_x, int camara_y, int lado);
   void dibujar_producto(SDL2pp::Renderer &renderer, SDL2pp::Texture &producto,
                         int centro_x, int arriba_y, int lado);
+  void dibujar_mueble(SDL2pp::Renderer &renderer, const Mueble &mueble,
+                      int camara_x, int camara_y, int lado);
 
 public:
   explicit Granja(SDL2pp::Renderer &renderer);

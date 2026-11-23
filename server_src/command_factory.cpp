@@ -89,8 +89,8 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const InteractDto
   return std::make_unique<InteractCommand>(player_id, Position(dto.target.x, dto.target.y));
 }
 
-std::unique_ptr<Command> CommandFactory::create_sleep(int player_id) {
-  return std::make_unique<SleepCommand>(player_id);
+std::unique_ptr<Command> CommandFactory::create(int player_id, const ChestMoveDto &dto) {
+  return std::make_unique<ChestMoveCommand>(player_id, dto.slotIndex, dto.toChest);
 }
 
 std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {

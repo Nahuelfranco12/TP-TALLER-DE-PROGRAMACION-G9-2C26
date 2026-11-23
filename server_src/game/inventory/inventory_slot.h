@@ -19,7 +19,7 @@ public:
 
   Item &getItem() const;
   size_t getCount() const;
-  bool add();
+  void add(size_t amount);
   bool remove();
 };
 

@@ -13,9 +13,13 @@ class Inventory {
 private:
   std::list<InventorySlot> items;
   std::list<std::unique_ptr<Tool>> tools;
+  size_t maxSlots;
+  size_t maxStack;
+
+  bool receive(InventorySlot &slot);
 
 public:
-  Inventory() : items(), tools() {}
+  Inventory(size_t maxSlots, size_t maxStack) : items(), tools(), maxSlots(maxSlots), maxStack(maxStack) {}
 
   bool addItem(std::unique_ptr<Item> item);
   bool addTool(std::unique_ptr<Tool> tool);

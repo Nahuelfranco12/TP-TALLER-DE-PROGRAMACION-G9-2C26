@@ -101,7 +101,11 @@ void ClientProtocol::send_place_dto(const PlaceDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
-void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
+void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
+  protocol.send_u8(OP_CHEST_MOVE);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u8(dto.toChest ? 1 : 0);
+}
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
@@ -253,6 +257,12 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     entity.enemy.alive = protocol.receive_u8() == 1;
     entity.bed.sleeping = protocol.receive_u8() == 1;
     entity.door.type = static_cast<DoorTypeDto>(protocol.receive_u8());
+    entity.chest.openedByMe = protocol.receive_u8() == 1;
+    if (entity.chest.openedByMe) {
+      int slot_count = protocol.receive_u8();
+      for (int j = 0; j < slot_count; j++)
+        entity.chest.slots.push_back(receive_slot());
+    }
     state.entities[position] = entity;
   }
 

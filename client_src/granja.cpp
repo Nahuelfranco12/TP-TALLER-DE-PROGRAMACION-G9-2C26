@@ -18,7 +18,7 @@ Granja::Granja(Renderer &renderer)
     : casas(renderer, RUTA_CASAS), vaca(renderer, RUTA_VACA),
       gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
       suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
-      leche(renderer, RUTA_LECHE), vueltas(0) {
+      leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE), vueltas(0) {
 
   // Por ahora fijos
   // Hacer después con servidor
@@ -95,6 +95,18 @@ void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
     }
   }
 }
+void Granja::dibujar_mueble(Renderer &renderer, const Mueble &mueble,
+                            int camara_x, int camara_y, int lado) {
+  int x = mueble.tile_x * lado - camara_x;
+  int y = mueble.tile_y * lado - camara_y;
+  Rect destino(x, y, lado, lado);
+
+  if (mueble.tipo == COFRE) {
+    int fila = mueble.abierto ? SPRITE_COFRE_ABIERTO_Y : SPRITE_COFRE_CERRADO_Y;
+    Rect origen(SPRITE_COFRE_X, fila, SPRITE_COFRE_LADO, SPRITE_COFRE_LADO);
+    renderer.Copy(cofre, origen, destino);
+  }
+}
 
 void Granja::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
   for (const Cultivo &cultivo : lista_cultivos) {
@@ -107,11 +119,16 @@ void Granja::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
   for (const Animal &animal : lista_animales) {
     dibujar_animal(renderer, animal, camara_x, camara_y, lado);
   }
+
+  for (const Mueble &mueble : lista_muebles) {
+    dibujar_mueble(renderer, mueble, camara_x, camara_y, lado);
+  }
 }
 
 void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
   lista_animales.clear();
   lista_cultivos.clear();
+  lista_muebles.clear();
   for (const auto &[pos, entidad] : entidades) {
     int x = static_cast<int>(pos.x);
     int y = static_cast<int>(pos.y);
@@ -124,6 +141,8 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
       int etapa = static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] /
                   CULTIVO_CRECIMIENTO_MAXIMO;
       lista_cultivos.push_back({tipo, x, y, etapa});
+    } else if (entidad.type == EntityTypeDto::CHEST) {
+      lista_muebles.push_back({COFRE, x, y, entidad.chest.openedByMe});
     }
   }
 }

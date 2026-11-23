@@ -9,6 +9,23 @@
 #include <cstdint>
 #include <vector>
 
+struct ItemState {
+  ItemType type;
+  int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso
+               // contrario
+  int count;
+  CropQuality quality{};
+};
+
+struct ToolState {
+  AvailableTools type;
+};
+
+struct InventoryState {
+  std::vector<ItemState> items;
+  std::vector<ToolState> tools;
+};
+
 struct TerrainState {
   TerrainType type;
   TerrainDecoration decoration;
@@ -57,6 +74,15 @@ struct MerchantState {
   MerchantType type{};
 };
 
+struct FurnitureState {
+  FurnitureType type{};
+};
+
+struct ChestState {
+  InventoryState inventory;
+  int openedBy = INVALID_PLAYER_ID;
+};
+
 struct EnemyState {
   EnemyType type{};
   bool is_alive = true;
@@ -65,6 +91,7 @@ struct EnemyState {
 
 struct BedState {
   bool sleeping;
+  int ownerId = INVALID_PLAYER_ID;
 };
 
 struct DoorState {
@@ -83,25 +110,10 @@ struct EntityState {
   BedState bed{};
   DoorState door{};
   MerchantState merchant{}; // en caso de ser comerciante.
+  FurnitureState furniture{}; // en caso de ser mueble
+  ChestState chest{};         // en caso de ser cofre
 
   // TODO: cultivos y npcs
-};
-
-struct ItemState {
-  ItemType type;
-  int subtype; // MineralTypes/AnimalTypes/SeedTypes casteado, 0 en caso
-               // contrario
-  int count;
-  CropQuality quality{};
-};
-
-struct ToolState {
-  AvailableTools type;
-};
-
-struct InventoryState {
-  std::vector<ItemState> items;
-  std::vector<ToolState> tools;
 };
 
 struct PlayerOutfitState {

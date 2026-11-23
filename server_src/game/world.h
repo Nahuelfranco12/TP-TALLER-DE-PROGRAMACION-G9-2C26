@@ -13,6 +13,7 @@
 #include "position.h"
 #include "sectors/farm_sector.h"
 #include "sectors/cabin_sector.h"
+#include "entities/bed.h"
 
 class World {
 private:
@@ -29,6 +30,7 @@ private:
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
+  void respawnNextTo(Player &player, Sector &sector, Position spot);
 
 public:
   explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
@@ -69,7 +71,7 @@ public:
   void cavernCheat();
 
 
-  bool allPlayersSleeping() const;
+  bool allPlayersDoneForTheDay() const;
 
   /*
   * Chat
@@ -80,6 +82,7 @@ public:
 
   void tick();
   void endDay();
+  Bed *findBedOf(int playerId, Sector *&bedSector);
 
   /*
   * State
