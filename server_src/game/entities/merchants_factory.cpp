@@ -36,10 +36,11 @@ std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
     clint->addPurchase("carbon", PRICE_COAL, std::make_unique<MineralItem>(PRICE_COAL, MineralTypes::COAL));
     return clint;
   }
-  case MerchantType::ROBIN:
-    return std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
-    robin->addSale("cofre", PRICE_CHEST, std::make_unique<ChestItem>());
+  case MerchantType::ROBIN: {
+    auto robin = std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
+    robin->addSale("cofre", PRICE_CHEST, std::make_unique<ChestItem>(PRICE_CHEST));
     return robin;
+  }
   case MerchantType::MARNIE: {
     auto marnie = std::make_unique<Merchant>(position, type, "Marnie", "Hola, soy Marnie! Compro y vendo animales de granja.");
     marnie->addSale("vaca", PRICE_COW, std::make_unique<AnimalItem>(PRICE_COW, AnimalType::COW));

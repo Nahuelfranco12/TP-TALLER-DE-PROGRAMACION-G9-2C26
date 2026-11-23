@@ -2,21 +2,27 @@
 #include "crop_item.h"
 #include <utility>
 
-bool Inventory::addItem(std::unique_ptr<Item> item) {
-  if (!item)
-    return false;
-  for (InventorySlot &slot : this->items) {
-    if (slot.getItem().stacksWith(*item)) {
-      bool result = slot.add();
-      if (result)
-        return true;
+bool Inventory::receive(InventorySlot &slot) {
+  for (InventorySlot &mine : items) {
+    bool isTheSameItem = mine.getItem().stacksWith(slot.getItem());
+    bool fitsInSlot = mine.getCount() + slot.getCount() <= maxStack;
+    if (isTheSameItem && fitsInSlot) {
+      mine.add(slot.getCount());
+      return true;
     }
   }
-  if (this->items.size() < MAX_INVENTORY_ITEMS) {
-    this->items.emplace_back(std::move(item));
+  if (items.size() < maxSlots) {
+    items.push_back(std::move(slot));
     return true;
   }
   return false;
+}
+
+bool Inventory::addItem(std::unique_ptr<Item> item) {
+  if (!item)
+    return false;
+  InventorySlot slot(std::move(item));
+  return receive(slot);
 }
 
 bool Inventory::addTool(std::unique_ptr<Tool> tool) {
@@ -64,11 +70,11 @@ InventoryState Inventory::state() const {
 bool Inventory::giveSlotTo(int index, Inventory &other) {
   if (index < 0 || index >= static_cast<int>(items.size()))
     return false;
-  if (other.items.size() >= MAX_INVENTORY_ITEMS)
-    return false;
   auto it = items.begin();
   std::advance(it, index);
-  other.items.push_back(std::move(*it));
+
+  if (!other.receive(*it))
+    return false;
   items.erase(it);
   return true;
 }

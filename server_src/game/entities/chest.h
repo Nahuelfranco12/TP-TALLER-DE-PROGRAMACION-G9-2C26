@@ -1,6 +1,7 @@
 #ifndef CHEST_H_
 #define CHEST_H_
 
+#include "../game_constants.h"
 #include "../inventory/inventory.h"
 #include "entity.h"
 #include "interactable.h"
@@ -12,7 +13,7 @@ private:
 
 public:
   explicit Chest(Position position)
-      : Entity(position.x, position.y, EntityTypes::FURNITURE) {}
+      : Entity(position.x, position.y, EntityTypes::FURNITURE), inventory(CHEST_MAX_SLOTS, CHEST_MAX_STACK) {}
 
   Inventory &getInventory() { return inventory; }
   bool isOpenedBy(int playerId) const { return openedBy == playerId; }

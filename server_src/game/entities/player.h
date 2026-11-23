@@ -47,7 +47,7 @@ public:
          Sector *actualSector, PlayerOutfit outfit)
       : Entity(pos_x, pos_y, EntityTypes::PLAYER), id(id), name(name),
         life(100), energy(100), coins(rand() % 100 + 1), outfit(outfit),
-        inventory(), actualSector(actualSector) {
+        inventory(MAX_INVENTORY_ITEMS, MAX_INVETORY_STACK), actualSector(actualSector) {
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::PICKAXE));
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SWORD));
     this->inventory.addTool(std::make_unique<Tool>(AvailableTools::SHOVEL));

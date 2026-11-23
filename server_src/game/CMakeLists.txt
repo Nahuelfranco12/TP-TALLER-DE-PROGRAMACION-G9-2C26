@@ -14,6 +14,7 @@ target_sources(taller_game
     entities/enemies/enemies_factory.cpp
     entities/enemies/trap.cpp
     entities/enemies/vampire.cpp
+    entities/chest.cpp
 
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
@@ -21,6 +22,7 @@ target_sources(taller_game
     inventory/crop_item.cpp
     inventory/bed_item.cpp
     inventory/animal_item.cpp
+    inventory/chest_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
     inventory/item_factory.cpp
