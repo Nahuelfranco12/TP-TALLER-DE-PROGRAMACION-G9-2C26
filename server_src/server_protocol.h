@@ -48,6 +48,7 @@ public:
   ChatDto receive_chat();
   WaterDto receive_cheat_water();
   PlaceDto receive_place();
+  ChestMoveDto receive_chest_move();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

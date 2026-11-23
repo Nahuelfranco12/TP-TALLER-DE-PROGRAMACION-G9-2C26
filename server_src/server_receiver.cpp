@@ -92,6 +92,9 @@ void ServerReceiver::run() {
       case OP_PLACE:
         match->push_command(factory.create(client_id, protocol.receive_place()));
         break;
+      case OP_CHEST_MOVE:
+        match->push_command(factory.create(client_id, protocol.receive_chest_move()));
+        break;
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
         break;

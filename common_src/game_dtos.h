@@ -284,6 +284,11 @@ struct ChatMessageDto {
   bool isPrivate = false;
 };
 
+struct ChestMoveDto {
+  int slotIndex; 
+  bool toChest;
+};
+
 struct ChestDto {
   bool openedByMe = false;
   std::list<InventorySlotDto> slots;

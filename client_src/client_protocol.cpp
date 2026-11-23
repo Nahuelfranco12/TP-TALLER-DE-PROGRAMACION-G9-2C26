@@ -101,6 +101,12 @@ void ClientProtocol::send_place_dto(const PlaceDto &dto) {
   protocol.send_u8(direction_to_byte(dto.direction));
 }
 
+void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
+  protocol.send_u8(OP_CHEST_MOVE);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u8(dto.toChest ? 1 : 0);
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));

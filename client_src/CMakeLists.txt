@@ -40,6 +40,7 @@ target_sources(taller_client
     actions/attack_action.cpp
     actions/chat_action.cpp
     actions/place_action.cpp
+    actions/chest_move_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
@@ -105,6 +106,7 @@ target_sources(taller_client
     actions/cheat_end_day_action.h
     actions/cheat_enemies_damage_action.h
     actions/interact_action.h
+    actions/chest_move_action.h
     pueblo.h
     mapa_mundo.h
     )

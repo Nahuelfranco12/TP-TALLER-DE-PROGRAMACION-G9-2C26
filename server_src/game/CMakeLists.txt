@@ -47,6 +47,7 @@ target_sources(taller_game
     commands/chat/catalog_command.cpp
     commands/chat/unknown_command.cpp
     commands/place_command.cpp
+    commands/chest_move_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp

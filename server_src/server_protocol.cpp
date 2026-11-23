@@ -232,6 +232,13 @@ PlaceDto ServerProtocol::receive_place() {
   return dto;
 }
 
+ChestMoveDto ServerProtocol::receive_chest_move() {
+  ChestMoveDto dto;
+  dto.slotIndex = protocol.receive_u8();
+  dto.toChest = protocol.receive_u8() == 1;
+  return dto;
+}
+
 WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }
