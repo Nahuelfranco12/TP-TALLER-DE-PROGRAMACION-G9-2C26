@@ -196,10 +196,9 @@ bool Pueblo::click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto
 }
 
 Pueblo::AccionTienda Pueblo::click_tienda(int x, int y) {
-  for (int i = 0; i < TIENDA_CANTIDAD_BOTONES; i++) {
-    // cppcheck-suppress useStlAlgorithm
-    if (botones[i].Contains(x, y)) {
-      return static_cast<AccionTienda>(i + 1);
+  for (const Rect &boton : botones) {
+    if (boton.Contains(x, y)) {
+      return SALIR;
     }
   }
   return NINGUNA;

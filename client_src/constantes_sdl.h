@@ -114,7 +114,7 @@
 #define NPC_CUADROS_ANIMACION 4
 #define NPC_VUELTAS_POR_CUADRO 12
 #define TIENDA_TAMANIO_LETRA 20
-#define TIENDA_CANTIDAD_BOTONES 4
+#define TIENDA_CANTIDAD_BOTONES 1
 #define TIENDA_ALTO_BOTON 36
 #define TIENDA_SEPARACION_BOTONES 12
 #define TIENDA_RELLENO_BOTON 12
@@ -617,11 +617,7 @@
 #define TEXTO_JUEGO_VENDER "Vender"
 #define TEXTO_JUEGO_HABLAR "Hablar"
 #define TEXTO_JUEGO_SALIR "Salir"
-#define TEXTOS_BOTONES_TIENDA                                                  \
-  {                                                                            \
-    TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,               \
-        TEXTO_JUEGO_SALIR                                                      \
-  }
+#define TEXTOS_BOTONES_TIENDA {TEXTO_JUEGO_SALIR}
 #define TEXTO_JUEGO_USO "Uso: "
 #define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "

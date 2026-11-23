@@ -142,6 +142,7 @@ int main(int argc, char *argv[]) try {
                           mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
 
   Granja granja(renderer);
+  Granja muebles_cabana(renderer);
   granja.actualizar_edificios(farm.buildings);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
@@ -153,6 +154,7 @@ int main(int argc, char *argv[]) try {
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
+  long vueltas_hasta_paso = 0;
   int camara_granja_x = 0;
   int camara_granja_y = 0;
   bool viendo_mapa = false;
@@ -388,30 +390,6 @@ int main(int argc, char *argv[]) try {
                                 static_cast<size_t>(frente_y)});
         }
       }
-
-      if (evento.type == SDL_KEYDOWN && evento.key.repeat == 0 &&
-          !pueblo.hay_tienda_abierta()) {
-        switch (evento.key.keysym.sym) {
-        case TECLA_ARRIBA:
-          personaje.mirar(ARRIBA);
-          client.send_move(DirectionDto::Up);
-          break;
-        case TECLA_ABAJO:
-          personaje.mirar(ABAJO);
-          client.send_move(DirectionDto::Down);
-          break;
-        case TECLA_IZQUIERDA:
-          personaje.mirar(IZQUIERDA);
-          client.send_move(DirectionDto::Left);
-          break;
-        case TECLA_DERECHA:
-          personaje.mirar(DERECHA);
-          client.send_move(DirectionDto::Right);
-          break;
-        default:
-          break;
-        }
-      }
     }
 
     // Respuesta del servidor
@@ -453,6 +431,7 @@ int main(int argc, char *argv[]) try {
         mapa_centro.actualizar(state.sector);
       } else if (zona == SectorTypeDto::CABIN) {
         mapa_cabana.actualizar(state.sector);
+        muebles_cabana.actualizar(state.entities);
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
@@ -517,11 +496,37 @@ int main(int argc, char *argv[]) try {
       corriendo = false;
     }
 
+    vueltas_hasta_paso -= vueltas;
+    bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto();
+    if (vueltas_hasta_paso <= 0 && puede_caminar) {
+      const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
+      bool camino = true;
+      if (teclado[SDL_GetScancodeFromKey(TECLA_ARRIBA)]) {
+        personaje.mirar(ARRIBA);
+        client.send_move(DirectionDto::Up);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_ABAJO)]) {
+        personaje.mirar(ABAJO);
+        client.send_move(DirectionDto::Down);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_IZQUIERDA)]) {
+        personaje.mirar(IZQUIERDA);
+        client.send_move(DirectionDto::Left);
+      } else if (teclado[SDL_GetScancodeFromKey(TECLA_DERECHA)]) {
+        personaje.mirar(DERECHA);
+        client.send_move(DirectionDto::Right);
+      } else {
+        camino = false;
+      }
+      if (camino) {
+        vueltas_hasta_paso = PERSONAJE_VUELTAS_POR_PASO;
+      }
+    }
+
     personaje.animar(vueltas);
     for (auto &par : otros)
       par.second->animar(vueltas);
 
     granja.animar(vueltas);
+    muebles_cabana.animar(vueltas);
     caverna.animar(vueltas);
     pueblo.animar(vueltas);
 
@@ -572,6 +577,8 @@ int main(int argc, char *argv[]) try {
       pueblo.dibujar(renderer, camara_x, camara_y);
     } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
       centro.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::CABIN) {
+      muebles_cabana.dibujar(renderer, camara_x, camara_y);
     }
 
     // Primero los demas jugadores
