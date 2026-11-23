@@ -14,6 +14,8 @@ public:
 
   bool canBePlacedAt(const Sector &sector, Position position) const override;
   std::unique_ptr<Entity> toEntity(Position position) const override;
+
+  bool isTransferable() const override { return false; }
 };
 
 #endif // BED_ITEM_H_

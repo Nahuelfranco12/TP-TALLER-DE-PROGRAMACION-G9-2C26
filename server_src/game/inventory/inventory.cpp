@@ -72,6 +72,9 @@ bool Inventory::giveSlotTo(int index, Inventory &other) {
     return false;
   auto it = items.begin();
   std::advance(it, index);
+  
+  if (!it->getItem().isTransferable())
+    return false;
 
   if (!other.receive(*it))
     return false;

@@ -36,6 +36,8 @@ public:
   bool isSameProduct(const Item &other) const {
     return getType() == other.getType() && subtypeToInt() == other.subtypeToInt();
   } 
+
+  virtual bool isTransferable() const { return true; }
 };
 
 #endif // ITEM_H_
