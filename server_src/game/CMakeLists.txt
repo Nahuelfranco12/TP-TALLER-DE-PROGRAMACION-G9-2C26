@@ -50,6 +50,10 @@ target_sources(taller_game
     commands/chat/unknown_command.cpp
     commands/place_command.cpp
     commands/chest_move_command.cpp
+    commands/cheats/amount_cheat_command.cpp
+    commands/cheats/life_cheat_command.cpp
+    commands/cheats/energy_cheat_command.cpp
+    commands/cheats/gold_cheat_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp

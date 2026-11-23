@@ -25,6 +25,9 @@
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
 #include "./game/commands/cheats/cheat_end_day_command.h"
+#include "./game/commands/cheats/life_cheat_command.h"
+#include "./game/commands/cheats/gold_cheat_command.h"
+#include "./game/commands/cheats/energy_cheat_command.h"
 #include "./game/commands/cheats/cheat_enemies_damage_command.h"
 
 #include "./game/commands/chat/buy_command.h"

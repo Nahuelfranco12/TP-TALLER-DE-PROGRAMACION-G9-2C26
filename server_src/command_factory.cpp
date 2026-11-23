@@ -82,6 +82,18 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
     return std::make_unique<BuyCommand>(player_id, args);
   if (word == "/vender")
     return std::make_unique<SellCommand>(player_id, args);
+  if (word == "/vida")
+    return std::make_unique<LifeCheatCommand>(player_id, args);
+  if (word == "/energia")
+    return std::make_unique<EnergyCheatCommand>(player_id, args);
+  if (word == "/oro")
+    return std::make_unique<GoldCheatCommand>(player_id, args);
+  if (word == "/crecer")
+    return create_cheat_growth(player_id);
+  if (word == "/terminar_dia")
+    return create_cheat_end_day(player_id);
+  if (word == "/danio_enemigos")
+    return create_cheat_enemies_damage(player_id);
   return std::make_unique<UnknownCommand>(player_id, word);
 }
 
