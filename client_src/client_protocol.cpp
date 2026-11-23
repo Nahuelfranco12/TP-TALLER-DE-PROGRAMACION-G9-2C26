@@ -95,6 +95,12 @@ void ClientProtocol::send_interact_dto(const InteractDto &dto) {
   protocol.send_u16(static_cast<uint16_t>(dto.target.y));
 }
 
+void ClientProtocol::send_place_dto(const PlaceDto &dto) {
+  protocol.send_u8(OP_PLACE);
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u8(direction_to_byte(dto.direction));
+}
+
 void ClientProtocol::send_sleep() { protocol.send_u8(OP_SLEEP); }
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {

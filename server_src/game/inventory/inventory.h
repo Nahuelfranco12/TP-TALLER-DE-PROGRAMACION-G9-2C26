@@ -33,6 +33,15 @@ public:
   */
   bool remove(const Item &sample, int amount);
 
+  /*
+  * Variante de la función remove que guarda la suma de todos los multiplicadores de precio lo que removió en "multipliers".
+  */
+  bool remove(const Item &sample, int amount,  double &multipliers);
+
+  const Item *itemAt(int index) const;
+
+  bool removeFromSlot(int index);
+
   InventoryState state() const;
 };
 

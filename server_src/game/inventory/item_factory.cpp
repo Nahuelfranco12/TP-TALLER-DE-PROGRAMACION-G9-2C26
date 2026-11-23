@@ -5,6 +5,7 @@
 #include "crop_item.h"
 #include "seed.h"
 #include "mineral_item.h"
+#include "animal_item.h"
 
 std::unique_ptr<Item> ItemFactory::create(ItemType type, int subtype, int price, CropQuality quality) const {
   switch (type) {
@@ -18,6 +19,8 @@ std::unique_ptr<Item> ItemFactory::create(ItemType type, int subtype, int price,
     if (static_cast<AnimalType>(subtype) == AnimalType::COW)
       return std::make_unique<CowMilk>(price);
     return std::make_unique<ChickenEgg>(price);
+  case ItemType::ANIMAL:
+    return std::make_unique<AnimalItem>(price, static_cast<AnimalType>(subtype));
   case ItemType::DECORATION_PRODUCT:
     return nullptr; // TODO: PONER DECOS
   }

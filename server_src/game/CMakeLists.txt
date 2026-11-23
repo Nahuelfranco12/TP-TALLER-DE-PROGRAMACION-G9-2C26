@@ -19,6 +19,7 @@ target_sources(taller_game
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
     inventory/crop_item.cpp
+    inventory/animal_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
     inventory/item_factory.cpp
@@ -44,6 +45,7 @@ target_sources(taller_game
     commands/chat/sell_command.cpp
     commands/chat/catalog_command.cpp
     commands/chat/unknown_command.cpp
+    commands/place_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp
@@ -52,4 +54,5 @@ target_sources(taller_game
 
     sectors/sector.cpp
     sectors/cavern_sector.cpp
+    sectors/farm_sector.cpp
 )

@@ -81,15 +81,17 @@ int Inventory::countOf(const Item &sample) const {
   return total;
 }
 
-bool Inventory::remove(const Item &sample, int amount) {
+bool Inventory::remove(const Item &sample, int amount,  double &multipliers) {
   if (amount <= 0 || countOf(sample) < amount)
     return false;
 
+  multipliers = 0;
   auto it = this->items.begin();
   while (it != this->items.end() && amount > 0) {
     if (!it->getItem().isSameProduct(sample)) {
       it++;
     } else {
+      multipliers += it->getItem().priceMultiplier();
       it->remove();
       amount--;
       if (it->getCount() == 0)
@@ -99,3 +101,27 @@ bool Inventory::remove(const Item &sample, int amount) {
   return true;
 }
 
+bool Inventory::remove(const Item &sample, int amount) {
+  double ignored = 0;
+  return remove(sample, amount, ignored);
+}
+
+
+const Item *Inventory::itemAt(int index) const {
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return nullptr;
+  auto it = items.begin();
+  std::advance(it, index);
+  return &it->getItem();
+}
+
+bool Inventory::removeFromSlot(int index) {
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return false;
+  auto it = items.begin();
+  std::advance(it, index); 
+  it->remove();
+  if (it->getCount() == 0)
+    items.erase(it);
+  return true;
+}

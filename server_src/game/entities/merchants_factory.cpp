@@ -5,6 +5,7 @@
 #include "../inventory/crop_item.h"
 #include "../inventory/seed.h"
 #include "../inventory/mineral_item.h"
+#include "../inventory/animal_item.h"
 
 std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
                                                    Position position) const {
@@ -36,8 +37,14 @@ std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
   }
   case MerchantType::ROBIN: // TODO 
     return std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
-  case MerchantType::MARNIE: // TODO
-    return std::make_unique<Merchant>(position, type, "Marnie", "Hola, soy Marnie! Compro y vendo animales de granja.");
+  case MerchantType::MARNIE: {
+    auto marnie = std::make_unique<Merchant>(position, type, "Marnie", "Hola, soy Marnie! Compro y vendo animales de granja.");
+    marnie->addSale("vaca", PRICE_COW, std::make_unique<AnimalItem>(PRICE_COW, AnimalType::COW));
+    marnie->addSale("gallina", PRICE_CHICKEN, std::make_unique<AnimalItem>(PRICE_CHICKEN,  AnimalType::CHICKEN));
+    marnie->addPurchase("vaca", PRICE_COW, std::make_unique<AnimalItem>(PRICE_COW, AnimalType::COW));
+    marnie->addPurchase("gallina", PRICE_CHICKEN, std::make_unique<AnimalItem>(PRICE_CHICKEN, AnimalType::CHICKEN));
+    return marnie;
   }
   return nullptr;
+}
 }

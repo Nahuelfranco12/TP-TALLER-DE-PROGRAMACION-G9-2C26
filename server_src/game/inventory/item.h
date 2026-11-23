@@ -20,6 +20,7 @@ public:
   virtual ~Item() = default;
 
   double getPrice() const { return this->price; }
+  virtual double priceMultiplier() const {return 1.0;} 
   ItemType getType() const { return this->type; }
   const ItemSubtype &getSubtype() const { return subtype; }
 

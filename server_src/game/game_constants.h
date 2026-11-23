@@ -48,6 +48,7 @@
 #define PICKAXE_COUNT_IRON 6
 #define PICKAXE_COUNT_GOLD 8
 
+#define PRICE_SEED 10
 #define PRICE_GOLD 80
 #define PRICE_IRON 50
 #define PRICE_LAPIZLAZULI 40
@@ -58,6 +59,8 @@
 #define PRICE_GREEN_ONION 20
 #define PRICE_POTATO 30
 #define PRICE_PUMPKIN 40
+#define PRICE_COW 150
+#define PRICE_CHICKEN 50
 
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
@@ -123,10 +126,6 @@
 
 #define INTERACT_DISTANCE 2
 
-// PRECIOS
-
-#define PRICE_SEED 10
-
 enum IdSector {
   FARM,
   VILLAGE,
@@ -169,7 +168,7 @@ enum class AnimalType { COW, CHICKEN };
 
 enum class DaySpeed { SLOW, MEDIUM, FAST };
 
-enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT };
+enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT, ANIMAL };
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 

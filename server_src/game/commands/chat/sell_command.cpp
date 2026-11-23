@@ -17,10 +17,11 @@ void SellCommand::trade(World &world, Player &player, const Merchant &merchant) 
     return;
   }
 
-  if (!player.sell(*offer->sample, offer->price, amount)) {
+  int earned = 0;
+  if (!player.sell(*offer->sample, offer->price, amount, earned)) {
     reply(world, merchant, "No tenes " + std::to_string(amount) + " " + productName);
     return;
   }
 
-  reply(world, merchant, "Te pague $" + std::to_string(offer->price * amount));
+  reply(world, merchant, "Te pague $" + std::to_string(earned));
 }

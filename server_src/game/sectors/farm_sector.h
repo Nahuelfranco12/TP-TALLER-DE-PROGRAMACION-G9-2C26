@@ -32,6 +32,8 @@ public:
       return std::nullopt;
     return b;
   }
+
+  bool hasRoomFor(AnimalType type) const;
 };
 
 #endif // FARM_SECTOR_H_
