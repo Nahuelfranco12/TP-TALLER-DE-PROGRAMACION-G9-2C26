@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) try {
   SDLTTF ttf;
 
   // Ventana redimensionable, con el código de la partida en el título
-  Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigo(),
+  Window window(TEXTO_JUEGO_TITULO_VENTANA + servicio.codigoPartidaActual(),
                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, VENTANA_ANCHO,
                 VENTANA_ALTO, SDL_WINDOW_RESIZABLE);
 
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) try {
 
   // El granjero: carga sus texturas, su ropa y su posición
   Personaje personaje(renderer);
-  const DatosPersonaje &elegido = servicio.personajeElegido();
+  const DatosPersonaje &elegido = servicio.personajeEnPartida();
   personaje.vestir(
       SOMBREROS_SDL[elegido.ropa.gorro], PELOS_SDL[elegido.ropa.pelo],
       PANTALONES_SDL[elegido.ropa.pantalon], REMERAS_SDL[elegido.ropa.remera]);
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) try {
 
   // Todo el sonido (música, pasos y volúmenes) está en la clase Audio
   Audio audio;
-  Interfaz interfaz(renderer, servicio.codigo());
+  Interfaz interfaz(renderer, servicio.codigoPartidaActual());
 
   Inventario inventario(renderer);
   Chat chat(renderer);
