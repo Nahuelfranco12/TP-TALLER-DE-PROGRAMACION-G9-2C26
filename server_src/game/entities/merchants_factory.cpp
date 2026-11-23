@@ -6,6 +6,7 @@
 #include "../inventory/seed.h"
 #include "../inventory/mineral_item.h"
 #include "../inventory/animal_item.h"
+#include "../inventory/chest_item.h"
 
 std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
                                                    Position position) const {
@@ -35,8 +36,11 @@ std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
     clint->addPurchase("carbon", PRICE_COAL, std::make_unique<MineralItem>(PRICE_COAL, MineralTypes::COAL));
     return clint;
   }
-  case MerchantType::ROBIN: // TODO 
-    return std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
+  case MerchantType::ROBIN: {
+    auto robin = std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
+    robin->addSale("cofre", PRICE_CHEST, std::make_unique<ChestItem>(PRICE_CHEST));
+    return robin;
+  }
   case MerchantType::MARNIE: {
     auto marnie = std::make_unique<Merchant>(position, type, "Marnie", "Hola, soy Marnie! Compro y vendo animales de granja.");
     marnie->addSale("vaca", PRICE_COW, std::make_unique<AnimalItem>(PRICE_COW, AnimalType::COW));

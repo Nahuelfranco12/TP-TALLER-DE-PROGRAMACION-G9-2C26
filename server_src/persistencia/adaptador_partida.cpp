@@ -23,6 +23,8 @@ ItemSubtype subtipoDe(const ItemState &item) {
   case ItemType::ANIMAL_PRODUCT:
   case ItemType::ANIMAL:
     return static_cast<AnimalType>(item.subtype);
+  case ItemType::FURNITURE:
+    return static_cast<FurnitureType>(item.subtype);
   case ItemType::DECORATION_PRODUCT:
     break;
   }
@@ -30,7 +32,8 @@ ItemSubtype subtipoDe(const ItemState &item) {
 }
 
 bool esGuardable(const ItemState &item) {
-  return item.type != ItemType::DECORATION_PRODUCT;
+  bool esCama = item.type == ItemType::FURNITURE && static_cast<FurnitureType>(item.subtype) == FurnitureType::BED;
+  return item.type != ItemType::DECORATION_PRODUCT&& !esCama;
 }
 
 ItemGuardado itemGuardadoDe(const ItemState &item) {
@@ -122,7 +125,8 @@ const TablaPrecios &tablaPrecios() {
       {{ItemType::ANIMAL_PRODUCT, AnimalType::COW}, PRICE_MILK},
       {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, PRICE_EGG},
       {{ItemType::ANIMAL, AnimalType::COW}, PRICE_COW},
-      {{ItemType::ANIMAL, AnimalType::CHICKEN}, PRICE_CHICKEN}};
+      {{ItemType::ANIMAL, AnimalType::CHICKEN}, PRICE_CHICKEN},
+      {{ItemType::FURNITURE, FurnitureType::CHEST}, PRICE_CHEST}};
   return tabla;
 }
 

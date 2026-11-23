@@ -8,18 +8,22 @@ target_sources(taller_game
     entities/merchant.cpp
     entities/merchants_factory.cpp
     entities/door.cpp
+    entities/bed.cpp
     entities/player.cpp
     entities/crop.cpp
     entities/enemies/enemy.cpp
     entities/enemies/enemies_factory.cpp
     entities/enemies/trap.cpp
     entities/enemies/vampire.cpp
+    entities/chest.cpp
 
     inventory/inventory.cpp
     inventory/inventory_slot.cpp
     inventory/mineral_item.cpp
     inventory/crop_item.cpp
+    inventory/bed_item.cpp
     inventory/animal_item.cpp
+    inventory/chest_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
     inventory/item_factory.cpp
@@ -39,13 +43,13 @@ target_sources(taller_game
     commands/gift_offer_command.cpp
     commands/gift_response_command.cpp
     commands/chat_command.cpp
-    commands/sleep_command.cpp
     commands/chat/merchant_command.cpp
     commands/chat/buy_command.cpp
     commands/chat/sell_command.cpp
     commands/chat/catalog_command.cpp
     commands/chat/unknown_command.cpp
     commands/place_command.cpp
+    commands/chest_move_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp

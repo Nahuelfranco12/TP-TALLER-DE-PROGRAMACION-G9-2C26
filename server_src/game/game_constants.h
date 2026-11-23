@@ -36,6 +36,9 @@
 #define MAX_INVETORY_STACK 50
 #define MAX_INVENTORY_TOOLS 4
 
+#define CHEST_MAX_SLOTS 30
+#define CHEST_MAX_STACK 50
+
 #define MAX_CAVERN_LEVELS 10
 
 #define FARM_MAX_COWS 5
@@ -64,6 +67,7 @@
 #define PRICE_PUMPKIN 40
 #define PRICE_COW 150
 #define PRICE_CHICKEN 50
+#define PRICE_CHEST 100
 
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
@@ -183,13 +187,15 @@ enum class AnimalType { COW, CHICKEN };
 
 enum class DaySpeed { SLOW, MEDIUM, FAST };
 
-enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT, ANIMAL };
+enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT, ANIMAL, FURNITURE };
+
+enum class FurnitureType { BED, CHEST };
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
 enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
 
-enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED };
+enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED, FURNITURE };
 
 enum class MerchantType { PIERRE, CLINT, ROBIN, MARNIE };
 

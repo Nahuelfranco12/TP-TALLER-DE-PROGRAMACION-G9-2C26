@@ -11,6 +11,7 @@
 #include "pueblo.h"
 #include "centro_comunitario.h"
 #include "decoraciones.h"
+#include "ventana_cofre.h"
 
 #include "interfaz.h"
 #include "mapa.h"
@@ -141,6 +142,7 @@ int main(int argc, char *argv[]) try {
                           mapa_granja.obtener_alto(), SEMILLA_ALREDEDORES);
 
   Granja granja(renderer);
+  Granja muebles_cabana(renderer);
   granja.actualizar_edificios(farm.buildings);
   Caverna caverna(renderer);
   Pueblo pueblo(renderer);
@@ -163,6 +165,7 @@ int main(int argc, char *argv[]) try {
 
   Inventario inventario(renderer);
   Chat chat(renderer);
+  VentanaCofre ventana_cofre;
 
   TasaConstante tasa(std::chrono::milliseconds(LOOP_PERIODO_MS));
   long vueltas = 1;
@@ -198,7 +201,16 @@ int main(int argc, char *argv[]) try {
         bool acepto = false;
         GamePositionDto posicion_npc;
 
-        if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
+        int casillero_cofre = 0;
+        if (ventana_cofre.click(mouse_x, mouse_y, window.GetWidth(),
+                                window.GetHeight(), casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, false); 
+        } else if (ventana_cofre.esta_abierta() &&
+                   inventario.click(mouse_x, mouse_y, window.GetWidth(),
+                                    window.GetHeight()) &&
+                   inventario.indice_item_seleccionado(casillero_cofre)) {
+          client.send_chest_move(casillero_cofre, true); 
+        } else if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
         } else if (pueblo.hay_tienda_abierta()) {
           switch (pueblo.click_tienda(mouse_x, mouse_y)) {
@@ -361,13 +373,11 @@ int main(int argc, char *argv[]) try {
             personaje.picar();
             client.send_mine(dir);
           }
-        } else if (zona == SectorTypeDto::CABIN) {
-          client.send_sleep();
         } else if (inventario.tengo_en_la_mano(PALA)) {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
           client.send_water(dir);
-        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN)) {
+        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN || en_la_mano.item == ItemTypeDto::BED || en_la_mano.item == ItemTypeDto::CHEST)) {
           int casillero = 0;
           if (inventario.indice_item_seleccionado(casillero))
             client.send_place(casillero, dir);
@@ -376,6 +386,8 @@ int main(int argc, char *argv[]) try {
           client.send_plant(frente_x, frente_y, cultivo);
         } else {
           client.send_collect(dir);
+          client.send_interact({static_cast<size_t>(frente_x),
+                                static_cast<size_t>(frente_y)});
         }
       }
     }
@@ -385,6 +397,7 @@ int main(int argc, char *argv[]) try {
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
       chat.agregar(state.chat);
+      ventana_cofre.actualizar(state.entities);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
 
       // Cambio de zona y música
@@ -418,6 +431,7 @@ int main(int argc, char *argv[]) try {
         mapa_centro.actualizar(state.sector);
       } else if (zona == SectorTypeDto::CABIN) {
         mapa_cabana.actualizar(state.sector);
+        muebles_cabana.actualizar(state.entities);
       } else {
         mapa_granja.actualizar(state.sector);
         granja.actualizar(state.entities);
@@ -512,6 +526,7 @@ int main(int argc, char *argv[]) try {
       par.second->animar(vueltas);
 
     granja.animar(vueltas);
+    muebles_cabana.animar(vueltas);
     caverna.animar(vueltas);
     pueblo.animar(vueltas);
 
@@ -562,6 +577,8 @@ int main(int argc, char *argv[]) try {
       pueblo.dibujar(renderer, camara_x, camara_y);
     } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
       centro.dibujar(renderer, camara_x, camara_y);
+    } else if (zona == SectorTypeDto::CABIN) {
+      muebles_cabana.dibujar(renderer, camara_x, camara_y);
     }
 
     // Primero los demas jugadores
@@ -584,6 +601,7 @@ int main(int argc, char *argv[]) try {
 
     interfaz.dibujar(renderer, audio);
     chat.dibujar(window.GetHeight());
+    ventana_cofre.dibujar(renderer, inventario, window.GetWidth(), window.GetHeight());
 
     if (interfaz.hay_regalo_pendiente()) {
       interfaz.dibujar_regalo(renderer);

@@ -246,6 +246,53 @@ bool Sector::closestPlayer(Position origin, int maxDistance,
   return foundAny;
 }
 
+Bed *Sector::findBedOf(int ownerId) {
+  for (auto &[position, entity] : this->entities) {
+    Bed *bed = dynamic_cast<Bed *>(entity.get());
+    if (bed && bed->getOwnerId() == ownerId)
+      return bed;
+  }
+  return nullptr;
+}
+
+bool Sector::findFreeNextTo(Position center, Position &result) const {
+  Position candidates[] = {
+      Position(center.x + 1, center.y), Position(center.x, center.y + 1),
+      Position(center.x - 1, center.y), Position(center.x, center.y - 1)};
+
+  for (const Position &candidate : candidates)
+    if (canMoveTo(candidate)) {
+      result = candidate;
+      return true;
+    }
+  return findFreePosition(result);
+}
+
+void Sector::releaseBeds() {
+  for (auto &[position, entity] : this->entities) {
+    Bed *bed = dynamic_cast<Bed *>(entity.get());
+    if (bed)
+      bed->release();
+  }
+}
+
+Chest *Sector::findChestOpenedBy(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest && chest->isOpenedBy(playerId))
+      return chest;
+  }
+  return nullptr;
+}
+
+void Sector::closeChestsOf(int playerId) {
+  for (auto &[position, entity] : this->entities) {
+    Chest *chest = dynamic_cast<Chest *>(entity.get());
+    if (chest)
+      chest->closeFor(playerId);
+  }
+}
+
 void Sector::apply(Position origin, const Decision &decision) {
   Enemy *enemy = dynamic_cast<Enemy *>(getEntity(origin));
   if (!enemy || enemy->isDead())

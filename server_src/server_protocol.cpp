@@ -35,7 +35,6 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.type));
     protocol.send_u8(entity.ready ? 1 : 0);
 
-    // TODO: revisar
     protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.needsWater));
@@ -43,6 +42,12 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(entity.enemy.alive ? 1 : 0);
     protocol.send_u8(entity.bed.sleeping ? 1 : 0);
     protocol.send_u8(static_cast<uint8_t>(entity.door.type));
+    protocol.send_u8(entity.chest.openedByMe ? 1 : 0);
+    if (entity.chest.openedByMe) {
+      protocol.send_u8(static_cast<uint8_t>(entity.chest.slots.size()));
+      for (const InventorySlotDto &slot : entity.chest.slots)
+        send_slot(slot);
+    }
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
@@ -227,6 +232,13 @@ PlaceDto ServerProtocol::receive_place() {
   PlaceDto dto;
   dto.slotIndex = protocol.receive_u8();
   dto.direction = byte_to_direction(protocol.receive_u8());
+  return dto;
+}
+
+ChestMoveDto ServerProtocol::receive_chest_move() {
+  ChestMoveDto dto;
+  dto.slotIndex = protocol.receive_u8();
+  dto.toChest = protocol.receive_u8() == 1;
   return dto;
 }
 

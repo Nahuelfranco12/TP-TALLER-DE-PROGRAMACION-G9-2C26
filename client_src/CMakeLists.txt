@@ -39,8 +39,8 @@ target_sources(taller_client
     actions/water_action.cpp
     actions/attack_action.cpp
     actions/chat_action.cpp
-    actions/sleep_action.cpp
     actions/place_action.cpp
+    actions/chest_move_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
@@ -52,6 +52,7 @@ target_sources(taller_client
     pueblo.cpp
     mapa_mundo.cpp
     centro_comunitario.cpp
+    ventana_cofre.cpp
     animacion.cpp
     animacion_enemigos.cpp
     decoraciones.cpp
@@ -60,6 +61,7 @@ target_sources(taller_client
     animacion.h
     animacion_enemigos.h
     client.h
+    ventana_cofre.h
     audio.h
     personaje.h
     direccion.h
@@ -107,6 +109,7 @@ target_sources(taller_client
     actions/cheat_end_day_action.h
     actions/cheat_enemies_damage_action.h
     actions/interact_action.h
+    actions/chest_move_action.h
     pueblo.h
     mapa_mundo.h
     centro_comunitario.h
