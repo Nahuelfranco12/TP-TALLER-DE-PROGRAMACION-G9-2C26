@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
 # informacion del proyecto y los puertos que se usan
 NOMBRE="Stardew-Valley"
@@ -62,14 +62,7 @@ EOF
 }
 
 es_raiz_del_repo() {
-  [[ -f "$1/CMakeLists.txt" && -d "$1/client_src" && -d "$1/server_src" &&
-    -d "$1/common_src" ]]
-}
-
-verificar_entorno() {
-  if [[ $EUID -eq 0 ]]; then
-    fallar "no corras el script como root: pide sudo solo para instalar dependencias."
-  fi
+  [[ -f "$1/CMakeLists.txt" && -d "$1/client_src" && -d "$1/server_src" && -d "$1/common_src" ]]
 }
 
 ir_al_repo() {
@@ -243,8 +236,6 @@ run() {
     ;;
   esac
 }
-
-verificar_entorno
 
 if [[ $# -eq 0 ]]; then
   instalar_dependencias
