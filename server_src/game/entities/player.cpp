@@ -7,6 +7,7 @@
 #include "enemies/enemy.h"
 #include "mineral.h"
 #include "../inventory/item_factory.h"
+#include "server_src/game/game_constants.h"
 
 MoveResult Player::move(Position destination) {
   if (isUnconscious() || sleeping)
@@ -38,6 +39,7 @@ void Player::mine(Mineral &mineral) {
   // TODO: Falta el chequeo de efecto secundario de algunos minerales
 
   if (mineral.hit()) {
+    this->spendEnergy(ENERGY_COST_MINE);
     auto item = mineral.toItem();
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)

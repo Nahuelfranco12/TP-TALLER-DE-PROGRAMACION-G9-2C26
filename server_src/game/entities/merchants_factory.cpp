@@ -49,6 +49,8 @@ std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
     marnie->addPurchase("gallina", PRICE_CHICKEN, std::make_unique<AnimalItem>(PRICE_CHICKEN, AnimalType::CHICKEN));
     return marnie;
   }
-  return nullptr;
+  default:
+    break;
 }
+  return nullptr;
 }
