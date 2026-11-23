@@ -204,6 +204,20 @@ std::vector<Building> EditorParser::villageBuildings(
     return result;
 }
 
+std::map<Position, MerchantType> EditorParser::villageMerchants(
+    const std::vector<Object>& objects) {
+    const std::map<std::string, MerchantType> types = {
+        {"NpcPierre", MerchantType::PIERRE}, {"NpcClint", MerchantType::CLINT},
+        {"NpcRobin", MerchantType::ROBIN},   {"NpcMarnie", MerchantType::MARNIE}};
+    std::map<Position, MerchantType> result;
+    for (const auto& object : objects) {
+        auto it = types.find(object.type);
+        if (it != types.end())
+            result.emplace(object.position, it->second);
+    }
+    return result;
+}
+
 void EditorParser::parseFarm(World& world, const toml::table& route) const {
     const toml::table& table = requiredTable(route, CLAVE_GRANJA);
     size_t width = requiredInteger(table, CLAVE_ANCHO, CLAVE_GRANJA);
@@ -269,7 +283,8 @@ void EditorParser::parseVillage(World& world, const toml::table& route) const {
     auto village = std::make_unique<VillageSector>(
         width, height, villageDecorations(objects), villageBuildings(objects));
     world.addSector(std::move(village));
-
+    for (const auto& [position, type] : villageMerchants(objects))
+        world.spawnMerchant(IdSector::VILLAGE, position, type);
     Position farmExit = uniqueObject(objects, "SalidaGranja", CLAVE_PUEBLO);
     const toml::table& farmTable = requiredTable(route, CLAVE_GRANJA);
     size_t farmWidth = requiredInteger(farmTable, CLAVE_ANCHO, CLAVE_GRANJA);
