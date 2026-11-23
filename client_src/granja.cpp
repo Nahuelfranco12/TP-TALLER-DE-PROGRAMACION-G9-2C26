@@ -10,35 +10,49 @@ namespace {
 // En House.png hay dos edificios enteros
 const SDL_Rect MODELOS_CASAS[] = SPRITE_MODELOS_CASAS;
 
+bool modelo_de_cabana(BuildingTypeDto tipo, int &modelo) {
+  switch (tipo) {
+    case BuildingTypeDto::CABIN_PLAYER_1:
+      modelo = 0;
+      return true;
+    case BuildingTypeDto::CABIN_PLAYER_2:
+      modelo = 1;
+      return true;
+    case BuildingTypeDto::CABIN_PLAYER_3:
+      modelo = 2;
+      return true;
+    case BuildingTypeDto::CABIN_PLAYER_4:
+      modelo = 3;
+      return true;
+    case BuildingTypeDto::CABIN_PLAYER_5:
+      modelo = 4;
+      return true;
+    default:
+      return false;
+  }
+}
+
 const int ULTIMA_ETAPA[] = CULTIVO_ULTIMA_ETAPA;
 } // namespace
 
 Granja::Granja(Renderer &renderer)
     // Cargar texturas
-    : casas(renderer, RUTA_CASAS), vaca(renderer, RUTA_VACA),
+    : casas(renderer, RUTA_TILESET_CABANAS), vaca(renderer, RUTA_VACA),
       gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
       suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
-      interior(renderer, RUTA_INTERIOR), vueltas(0) {
-
-  // Por ahora fijos
-  // Hacer después con servidor
-  lista_casas.push_back(
-      {GRANJA_CASA_TILE_X, GRANJA_CASA_TILE_Y, GRANJA_CASA_MODELO});
-}
+      interior(renderer, RUTA_INTERIOR), vueltas(0) {}
 
 void Granja::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
 void Granja::dibujar_casa(Renderer &renderer, const Casa &casa, int camara_x,
                           int camara_y, int lado) {
   const SDL_Rect &modelo = MODELOS_CASAS[casa.modelo];
-  Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
-
+  int ancho = casa.ancho * lado;
+  int alto = modelo.h * ancho / modelo.w;
   int x = casa.tile_x * lado - camara_x;
-  int y = casa.tile_y * lado - camara_y;
-  Rect destino(x, y, modelo.w * lado / PIXELES_POR_TILE,
-               modelo.h * lado / PIXELES_POR_TILE);
-  renderer.Copy(casas, origen, destino);
+  int pie = (casa.tile_y + casa.alto) * lado - camara_y;
+  renderer.Copy(casas, Rect(modelo.x, modelo.y, modelo.w, modelo.h), Rect(x, pie - alto, ancho, alto));
 }
 
 void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
@@ -169,4 +183,17 @@ void Granja::dibujar_producto(SDL2pp::Renderer &renderer,
 
   Rect destino(centro_x - ancho / 2, arriba_y - alto - salto, ancho, alto);
   renderer.Copy(producto, NullOpt, destino);
+}
+
+void Granja::actualizar_edificios(const std::vector<BuildingDto> &del_servidor) {
+  lista_casas.clear();
+  for (const BuildingDto &edificio : del_servidor) {
+    int modelo = 0;
+    if (modelo_de_cabana(edificio.type, modelo)) {
+      lista_casas.push_back({static_cast<int>(edificio.topLeft.x),
+                            static_cast<int>(edificio.topLeft.y),
+                            static_cast<int>(edificio.width),
+                            static_cast<int>(edificio.height), modelo});
+    }
+  }
 }

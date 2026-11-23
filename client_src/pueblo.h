@@ -17,9 +17,11 @@ public:
   enum AccionTienda { NINGUNA, COMPRAR, VENDER, HABLAR, SALIR };
 
 private:
-  struct Puesto {
+  struct Edificio {
     int tile_x;
     int tile_y;
+    int ancho;
+    int alto;
     int modelo;
   };
 
@@ -37,7 +39,7 @@ private:
   std::vector<SDL2pp::Texture> titulos;
   std::vector<SDL2pp::Texture> texto_botones;
 
-  std::vector<Puesto> lista_puestos;
+  std::vector<Edificio> lista_edificios;
   std::vector<Npc> lista_npcs;
 
   long vueltas;
@@ -46,7 +48,7 @@ private:
   long vueltas_en_tienda;
   std::vector<SDL2pp::Rect> botones;
 
-  void dibujar_puesto(SDL2pp::Renderer &renderer, const Puesto &puesto,
+  void dibujar_edificio(SDL2pp::Renderer &renderer, const Edificio &edificio,
                       int camara_x, int camara_y, int lado);
 
   void dibujar_npc(SDL2pp::Renderer &renderer, const Npc &npc, int camara_x,
@@ -54,8 +56,6 @@ private:
 
   void dibujar_npc_en(SDL2pp::Renderer &renderer, int modelo, int centro_x,
                       int pie_y, int lado);
-
-  void dibujar_centro_comunitario(SDL2pp::Renderer &renderer, int camara_x, int camara_y, int lado);
 
 public:
   explicit Pueblo(SDL2pp::Renderer &renderer);
@@ -66,6 +66,8 @@ public:
                int lado = TAMANIO_TILE);
 
   void actualizar(const std::map<GamePositionDto, EntityDto> &entidades);
+
+  void actualizar_edificios(const std::vector<BuildingDto> &del_servidor);
 
   bool click_npc(int x, int y, int camara_x, int camara_y, GamePositionDto &posicion);
 

@@ -11,8 +11,6 @@ using SDL2pp::Texture;
 
 namespace {
 const SDL_Color BLANCO = COLOR_TEXTO;
-const SDL_Rect ESTRELLA_BORDE[] = SPRITE_ESTRELLA_BORDE;
-const SDL_Rect ESTRELLA_RELLENO[] = SPRITE_ESTRELLA_RELLENO;
 
 Rect icono_mineral(int fila) {
   return Rect(ICONO_MINERAL_X, fila * ICONO_MINERAL_CELDA + ICONO_MINERAL_Y,
@@ -22,6 +20,19 @@ Rect icono_mineral(int fila) {
 Rect icono_cultivo(int columna, int fila) {
   return Rect(columna * ICONO_CULTIVO_LADO, fila * ICONO_CULTIVO_LADO,
               ICONO_CULTIVO_LADO, ICONO_CULTIVO_LADO);
+}
+
+int columna_de_cosecha(CropQualityDto calidad) {
+  switch (calidad) {
+    case CropQualityDto::EXCELENT:
+      return ICONO_COSECHA_PLATA_COLUMNA;
+    case CropQualityDto::INCREDIBLE:
+      return ICONO_COSECHA_ORO_COLUMNA;
+    case CropQualityDto::PERFECT:
+      return ICONO_COSECHA_IRIDIO_COLUMNA;
+    default:
+      return ICONO_COSECHA_COLUMNA;
+  }
 }
 } // namespace
 
@@ -128,43 +139,6 @@ void Inventario::dibujar_numero(Renderer &renderer, int numero,
   }
 }
 
-void Inventario::dibujar_calidad(Renderer &renderer, CropQualityDto calidad,
-                                 const Rect &lugar) {
-  SDL2pp::Color color = COLOR_ESTRELLA_BORDE;
-  switch (calidad) {
-  case CropQualityDto::GOOD:
-    color = COLOR_CALIDAD_BUENA;
-    break;
-  case CropQualityDto::EXCELENT:
-    color = COLOR_CALIDAD_EXCELENTE;
-    break;
-  case CropQualityDto::INCREDIBLE:
-    color = COLOR_CALIDAD_INCREIBLE;
-    break;
-  case CropQualityDto::PERFECT:
-    color = COLOR_CALIDAD_PERFECTA;
-    break;
-  default:
-    return;
-  }
-
-  // Estrellita
-  int x = lugar.x + INVENTARIO_ESTRELLA_MARGEN;
-  int y = lugar.y + INVENTARIO_ESTRELLA_MARGEN;
-
-  // Borde negro
-  const SDL2pp::Color borde = COLOR_ESTRELLA_BORDE;
-  renderer.SetDrawColor(borde);
-  for (const SDL_Rect &parte : ESTRELLA_BORDE) {
-    renderer.FillRect(Rect(x + parte.x, y + parte.y, parte.w, parte.h));
-  }
-
-  renderer.SetDrawColor(color);
-  for (const SDL_Rect &parte : ESTRELLA_RELLENO) {
-    renderer.FillRect(Rect(x + parte.x, y + parte.y, parte.w, parte.h));
-  }
-}
-
 void Inventario::dibujar_item(Renderer &renderer,
                               const InventorySlotDto &casillero,
                               const Rect &lugar) {
@@ -194,7 +168,7 @@ void Inventario::dibujar_item(Renderer &renderer,
                   Rect(0, 0, leche.GetWidth(), leche.GetHeight()), lugar);
     break;
 
-  // SEMILLAS (revisar)
+  // Semillas
   case ItemTypeDto::SEED_STRAWBERRY:
     dibujar_icono(
         renderer, cultivos,
@@ -218,28 +192,28 @@ void Inventario::dibujar_item(Renderer &renderer,
         icono_cultivo(ICONO_SEMILLA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
         lugar);
     break;
-  // PLANTAS COSECHADAS (tambien revisar)
+
   case ItemTypeDto::CROP_STRAWBERRY:
     dibujar_icono(
         renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_FRUTILLA),
+        icono_cultivo(columna_de_cosecha(casillero.quality), ICONO_CULTIVO_FILA_FRUTILLA),
         lugar);
     break;
   case ItemTypeDto::CROP_GREEN_ONION:
     dibujar_icono(
         renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CEBOLLA),
+        icono_cultivo(columna_de_cosecha(casillero.quality), ICONO_CULTIVO_FILA_CEBOLLA),
         lugar);
     break;
   case ItemTypeDto::CROP_POTATO:
     dibujar_icono(renderer, cultivos,
-                  icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_PAPA),
+                  icono_cultivo(columna_de_cosecha(casillero.quality), ICONO_CULTIVO_FILA_PAPA),
                   lugar);
     break;
   case ItemTypeDto::CROP_PUMPKIN:
     dibujar_icono(
         renderer, cultivos,
-        icono_cultivo(ICONO_COSECHA_COLUMNA, ICONO_CULTIVO_FILA_CALABAZA),
+        icono_cultivo(columna_de_cosecha(casillero.quality), ICONO_CULTIVO_FILA_CALABAZA),
         lugar);
     break;
   case ItemTypeDto::CHEST:
@@ -263,7 +237,6 @@ void Inventario::dibujar_item(Renderer &renderer,
   default:
     break;
   }
-  dibujar_calidad(renderer, casillero.quality, lugar);
   dibujar_numero(renderer, casillero.count, lugar);
 }
 
