@@ -169,6 +169,12 @@
 #define PERSONAJE_VUELTAS_POR_CUADRO_PICAR 5
 #define PERSONAJE_DURACION_PICAR                                               \
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
+#define PERSONAJE_FACTOR_LENTO 2
+#define PERSONAJE_VIDA_LENTO (BARRA_VALOR_MAXIMO / 2)
+#define PERSONAJE_DURACION_MORIR 40
+#define PERSONAJE_ANGULO_CAIDA 90.0
+#define PERSONAJE_DURACION_ROJO 20
+#define PERSONAJE_ROJO_VERDE_AZUL 70
 
 // Ropa elegida en el lobby -> índice en las hojas de SDL -> main.cpp
 #define ROPA_SOMBREROS_SDL                                                     \

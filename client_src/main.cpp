@@ -497,7 +497,7 @@ int main(int argc, char *argv[]) try {
     }
 
     vueltas_hasta_paso -= vueltas;
-    bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto();
+    bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto() && !personaje.esta_muerto();
     if (vueltas_hasta_paso <= 0 && puede_caminar) {
       const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
       bool camino = true;
@@ -517,7 +517,7 @@ int main(int argc, char *argv[]) try {
         camino = false;
       }
       if (camino) {
-        vueltas_hasta_paso = PERSONAJE_VUELTAS_POR_PASO;
+        vueltas_hasta_paso = personaje.vueltas_por_paso();
       }
     }
 

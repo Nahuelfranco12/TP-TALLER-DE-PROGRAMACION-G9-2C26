@@ -42,15 +42,22 @@ private:
   double vida;
   double energia;
 
+  bool muerto;
+  long vueltas_muriendo;
+  long vueltas_rojo;
+
   void dibujar_capas(SDL2pp::Renderer &renderer, int x, int y, int lado,
                      int columna, int fila_cuerpo, Direccion direccion,
-                     int rebote);
+                     int rebote, double angulo);
+
+  double angulo_caida() const;
 
   void dibujar_herramienta(SDL2pp::Renderer &renderer, int x, int y, int lado);
 
   void dibujar_barra(SDL2pp::Renderer &renderer, int x, int y, double valor,
                      const SDL2pp::Color &color) const;
 
+  void pintar(SDL2pp::Texture &textura, const Uint8 color[3]) const;
 public:
   // Cargo las texturas
   explicit Personaje(SDL2pp::Renderer &renderer);
@@ -82,11 +89,7 @@ public:
   void dibujar_quieto(SDL2pp::Renderer &renderer, int otro_tile_x,
                       int otro_tile_y, int camara_x, int camara_y, int lado);
 
-  // Cambiar ropa y colores
-  // void cambiar_pantalon();
-  // void cambiar_remera();
-  // void cambiar_pelo();
-  // void cambiar_sombrero();
+  // Cambiar colores de ropa
   void cambiar_color_pantalon();
   void cambiar_color_pelo();
   void vestir(int nuevo_sombrero, int nuevo_pelo, int nuevo_pantalon,
@@ -94,6 +97,10 @@ public:
 
   void dibujar_icono(SDL2pp::Renderer &renderer, int centro_x, int pie_y,
                      int lado);
+
+  bool esta_muerto() const {return muerto;}
+
+  long vueltas_por_paso() const;
 };
 
 #endif
