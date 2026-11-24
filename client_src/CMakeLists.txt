@@ -30,6 +30,8 @@ target_sources(taller_client
     Pantallas/implementaciones/controlador_retomar_partida.cpp
     Pantallas/implementaciones/controlador_customizar_personaje.cpp
     Pantallas/implementaciones/dibujar_personaje.cpp
+    Pantallas/PantallaFinDeJuego/pantallafinjuego.cpp
+    Pantallas/PantallaFinDeJuego/pantallafinjuego.ui
     actions/move_action.cpp
     actions/select_tool_action.cpp
     actions/mine_action.cpp
@@ -93,6 +95,7 @@ target_sources(taller_client
     Pantallas/headers/dibujar_personaje.h
     Pantallas/headers/servicio_lobby.h
     Pantallas/headers/vista_responsive.h
+    Pantallas/PantallaFinDeJuego/pantallafinjuego.h
     actions/client_action.h
     actions/move_action.h
     actions/select_tool_action.h

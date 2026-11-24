@@ -14,6 +14,9 @@
 #define RENDERER_DRIVER_POR_DEFECTO (-1)
 #define LOOP_PERIODO_MS 16
 
+// Fin de juego: es algo de prueba, despues lo borro -> main.cpp
+#define MONEDAS_FIN_DE_JUEGO_PRUEBA 1000
+
 // Escalas y tamaños -> alrededores.cpp, animacion.cpp, caverna.h, caverna.cpp,
 // granja.h, granja.cpp, main.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
 // pueblo.h, pueblo.cpp

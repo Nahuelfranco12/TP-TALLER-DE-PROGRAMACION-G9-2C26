@@ -20,8 +20,11 @@
 #include "servicio_lobby_red.h"
 #include "tasa_constante.h"
 #include <algorithm>
+#include "Pantallas/PantallaFinDeJuego/pantallafinjuego.h"
+#include "constantes_pantallas.h"
 
 #include <QApplication>
+#include <QFontDatabase>
 
 #include <cmath>
 #include <cstdlib>
@@ -48,9 +51,15 @@ const int PELOS_SDL[] = ROPA_PELOS_SDL;
 const int PANTALONES_SDL[] = ROPA_PANTALONES_SDL;
 const int REMERAS_SDL[] = ROPA_REMERAS_SDL;
 
-void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
-  QApplication app(argc, argv);
+void mostrarLobby(ServicioLobby &servicio) {
   Pantalla pantalla(servicio);
+  pantalla.show();
+  QApplication::exec();
+}
+
+void mostrarFinDeJuego() {
+  QFontDatabase::addApplicationFont(RUTA_FUENTE);
+  PantallaFinJuego pantalla;
   pantalla.show();
   QApplication::exec();
 }
@@ -83,10 +92,11 @@ int main(int argc, char *argv[]) try {
     return EXIT_FAILURE;
   }
 
+  QApplication app(argc, argv);
   Client client(argv[ARGUMENTO_HOST], argv[ARGUMENTO_PUERTO]);
   ServicioLobbyRed servicio(client);
 
-  mostrarLobby(argc, argv, servicio);
+  mostrarLobby(servicio);
   if (!servicio.estaEnPartida())
     return EXIT_SUCCESS; // cerró el lobby sin entrar a ninguna partida
 
@@ -177,6 +187,7 @@ int main(int argc, char *argv[]) try {
   SectorStateDto ultimo_estado;
   // Se repite hasta  que el usuario cierre la ventana
   bool corriendo = true;
+  bool fin_de_juego = false; // prueba para la pantalla de fin de juego!!
   while (corriendo) {
     // Proceso eventos
     SDL_Event evento;
@@ -204,12 +215,12 @@ int main(int argc, char *argv[]) try {
         int casillero_cofre = 0;
         if (ventana_cofre.click(mouse_x, mouse_y, window.GetWidth(),
                                 window.GetHeight(), casillero_cofre)) {
-          client.send_chest_move(casillero_cofre, false); 
+          client.send_chest_move(casillero_cofre, false);
         } else if (ventana_cofre.esta_abierta() &&
                    inventario.click(mouse_x, mouse_y, window.GetWidth(),
                                     window.GetHeight()) &&
                    inventario.indice_item_seleccionado(casillero_cofre)) {
-          client.send_chest_move(casillero_cofre, true); 
+          client.send_chest_move(casillero_cofre, true);
         } else if (interfaz.click_regalo(mouse_x, mouse_y, acepto)) {
           client.send_gift_response(acepto);
         } else if (pueblo.hay_tienda_abierta()) {
@@ -462,6 +473,11 @@ int main(int argc, char *argv[]) try {
           personaje.poner_vida(jugador.life);
           personaje.poner_energia(jugador.energy);
           interfaz.actualizar_monedas(renderer, jugador.coins);
+          // prueba para la pantalla de fin de juego!! es el if
+          if(jugador.coins >= MONEDAS_FIN_DE_JUEGO_PRUEBA){
+          	fin_de_juego = true;
+            corriendo = false;
+          }
           interfaz.actualizar_regalo(jugador.pendingGift);
           continue;
         }
@@ -617,6 +633,12 @@ int main(int argc, char *argv[]) try {
 
     // esperar al próximo casillero de 16 ms. si me pasé, se saltean vueltas
     vueltas = tasa.esperar();
+  }
+
+  // prueba para la pantalla de fin de juego!! todo este if
+  if(fin_de_juego){
+  	window.Hide();
+    mostrarFinDeJuego();
   }
 
   // Here all resources are automatically released and library deinitialized
