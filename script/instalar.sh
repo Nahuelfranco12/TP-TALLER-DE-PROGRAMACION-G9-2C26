@@ -20,6 +20,11 @@ BIN_TESTS="taller_tests"
 DIR_BIN="$HOME/.local/bin"
 DIR_DATOS="$HOME/.local/share/$NOMBRE"
 DIR_CONFIG="$HOME/.config/$NOMBRE"
+DIR_INICIAL="$(pwd)"
+
+LANZADOR_SERVIDOR="$NOMBRE-servidor"
+LANZADOR_CLIENTE="$NOMBRE-cliente"
+LANZADOR_EDITOR="$NOMBRE-editor"
 
 # estas son las dependencias que instalo en el sistema
 # son las de ubuntu (en teoria) no funcionaria en fedora o algo basado en arch
@@ -140,10 +145,30 @@ avisar_path() {
   esac
 }
 
+crear_lanzador() {
+  local destino="$DIR_INICIAL/$1"
+  cat >"$destino" <<EOF
+#!/usr/bin/env bash
+cd "$DIR_DATOS"
+$2
+EOF
+  chmod +x "$destino"
+}
+
+crear_lanzadores() {
+  informar "Creando los ejecutables en $DIR_INICIAL"
+  crear_lanzador "$LANZADOR_SERVIDOR" \
+    "exec \"$DIR_BIN/$BIN_SERVIDOR\" \"\${1:-$PUERTO}\""
+  crear_lanzador "$LANZADOR_CLIENTE" \
+    "exec \"$DIR_BIN/$BIN_CLIENTE\" \"\${1:-$HOST}\" \"\${2:-$PUERTO}\""
+  crear_lanzador "$LANZADOR_EDITOR" "exec \"$DIR_BIN/$BIN_EDITOR\""
+}
+
 install_proyecto() {
   build "$@"
   correr_tests
   copiar_archivos
+  crear_lanzadores
   avisar_path
 }
 
