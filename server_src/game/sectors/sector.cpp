@@ -203,11 +203,10 @@ SectorState Sector::state() const {
   SectorState state{id, width, height, {}, {}};
 
   state.entities.reserve(entities.size() + traps.size());
-  for (const auto &[pos, entity] : entities)
-    state.entities.push_back(entity->entityState());
   for (const auto &[pos, trap] : traps)
     state.entities.push_back(trap->entityState());
-
+  for (const auto &[pos, entity] : entities)
+    state.entities.push_back(entity->entityState());
   state.tiles.assign(width, std::vector<TerrainState>(height));
   for (size_t x = 0; x < width; ++x)
     for (size_t y = 0; y < height; ++y) {
