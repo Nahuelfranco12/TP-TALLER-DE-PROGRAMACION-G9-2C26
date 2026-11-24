@@ -13,13 +13,16 @@ template <typename TipoElemento> struct InfoElemento {
   Recorte recorte;
 };
 
-const InfoElemento<Terreno> *infoTerreno(Terreno terreno);
-const InfoElemento<ElementosGranja> *infoDe(ElementosGranja tipo);
-const InfoElemento<ElementosCaverna> *infoDe(ElementosCaverna tipo);
-const InfoElemento<ElementosPueblo> *infoDe(ElementosPueblo tipo);
+const InfoElemento<Terreno> *buscarInfoTerreno(Terreno terreno);
+const InfoElemento<ElementosGranja> *buscarInfoElemento(ElementosGranja tipo);
+const InfoElemento<ElementosCaverna> *buscarInfoElemento(ElementosCaverna tipo);
+const InfoElemento<ElementosPueblo> *buscarInfoElemento(ElementosPueblo tipo);
 
-const std::vector<InfoElemento<ElementosGranja>> &catalogoGranja();
-const std::vector<InfoElemento<ElementosCaverna>> &catalogoCaverna();
-const std::vector<InfoElemento<ElementosPueblo>> &catalogoPueblo();
+const std::vector<InfoElemento<ElementosGranja>> &
+elementosParaColocarEnGranja();
+const std::vector<InfoElemento<ElementosCaverna>> &
+elementosParaColocarEnCaverna();
+const std::vector<InfoElemento<ElementosPueblo>> &
+elementosParaColocarEnPueblo();
 
 #endif // CATALOGO_ELEMENTOS_H_

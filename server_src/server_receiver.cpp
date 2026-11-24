@@ -17,9 +17,12 @@ void ServerReceiver::run() {
       LobbyRequestDto request = protocol.receive_lobby_request();
 
       if (request.action == LobbyActionDto::Create) {
-        protocol.send_match_created(lobby.create_match(request.match_name));
+        protocol.send_match_created(
+            lobby.create_match(request.match_name, request.map_path));
       } else if (request.action == LobbyActionDto::List) {
         protocol.send_match_list(lobby.list_matches());
+      } else if (request.action == LobbyActionDto::ListMaps) {
+        protocol.send_map_list(lobby.list_maps());
       } else if (request.action == LobbyActionDto::Join) {
         Match *found = lobby.find_match(request.code);
         bool was_found = found != nullptr;
@@ -86,11 +89,17 @@ void ServerReceiver::run() {
         match->push_command(factory.create(client_id, protocol.receive_chat()));
         break;
       }
+      case OP_INTERACT:
+        match->push_command(factory.create(client_id, protocol.receive_interact()));
+        break;
+      case OP_PLACE:
+        match->push_command(factory.create(client_id, protocol.receive_place()));
+        break;
+      case OP_CHEST_MOVE:
+        match->push_command(factory.create(client_id, protocol.receive_chest_move()));
+        break;
       case OP_CHEAT_GROWTH:
         match->push_command(factory.create_cheat_growth(client_id));
-        break;
-      case OP_SLEEP:
-        match->push_command(factory.create_sleep(client_id));
         break;
       case OP_CHEAT_END_DAY:
         match->push_command(factory.create_cheat_end_day(client_id));

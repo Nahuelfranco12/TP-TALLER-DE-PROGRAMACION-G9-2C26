@@ -46,6 +46,12 @@ public:
     }
     return result;
   }
+
+  size_t distanceTo(const Position &other) const {
+    size_t dx = x > other.x ? x - other.x : other.x - x;
+    size_t dy = y > other.y ? y - other.y : other.y - y;
+    return dx + dy;
+  }
 };
 
 #endif // POSITION_H_

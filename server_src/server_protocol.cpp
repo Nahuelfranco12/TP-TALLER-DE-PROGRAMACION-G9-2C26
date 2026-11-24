@@ -35,13 +35,19 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(static_cast<uint8_t>(entity.type));
     protocol.send_u8(entity.ready ? 1 : 0);
 
-    // TODO: revisar
     protocol.send_u8(static_cast<uint8_t>(entity.crop.type));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.growth));
     protocol.send_u8(static_cast<uint8_t>(entity.crop.needsWater));
     protocol.send_u8(static_cast<uint8_t>(entity.mineral.remainingHits));
     protocol.send_u8(entity.enemy.alive ? 1 : 0);
     protocol.send_u8(entity.bed.sleeping ? 1 : 0);
+    protocol.send_u8(static_cast<uint8_t>(entity.door.type));
+    protocol.send_u8(entity.chest.openedByMe ? 1 : 0);
+    if (entity.chest.openedByMe) {
+      protocol.send_u8(static_cast<uint8_t>(entity.chest.slots.size()));
+      for (const InventorySlotDto &slot : entity.chest.slots)
+        send_slot(slot);
+    }
   }
 
   protocol.send_u8(static_cast<uint8_t>(state.time.hours));
@@ -81,9 +87,11 @@ void ServerProtocol::send_tiles(
     for (int y = 0; y < rows; y++) {
       const TileDto &tile = tiles[x][y];
       protocol.send_u8(static_cast<uint8_t>(tile.type));
+      protocol.send_u8(static_cast<uint8_t>(tile.decoration));
       protocol.send_u8(tile.transitable ? 1 : 0);
       protocol.send_u8(tile.arable ? 1 : 0);
       protocol.send_u8(tile.isDoor ? 1 : 0);
+      protocol.send_u8(static_cast<uint8_t>(tile.doorType));
       protocol.send_u8(tile.tilled ? 1 : 0);
     }
   }
@@ -213,6 +221,27 @@ AttackDto ServerProtocol::receive_attack() {
   return AttackDto{byte_to_direction(protocol.receive_u8())};
 }
 
+InteractDto ServerProtocol::receive_interact() {
+  InteractDto dto;
+  dto.target.x = protocol.receive_u16();
+  dto.target.y = protocol.receive_u16();
+  return dto;
+}
+
+PlaceDto ServerProtocol::receive_place() {
+  PlaceDto dto;
+  dto.slotIndex = protocol.receive_u8();
+  dto.direction = byte_to_direction(protocol.receive_u8());
+  return dto;
+}
+
+ChestMoveDto ServerProtocol::receive_chest_move() {
+  ChestMoveDto dto;
+  dto.slotIndex = protocol.receive_u8();
+  dto.toChest = protocol.receive_u8() == 1;
+  return dto;
+}
+
 WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }
@@ -247,9 +276,13 @@ LobbyRequestDto ServerProtocol::receive_lobby_request() {
   case OP_CREATE_MATCH:
     request.action = LobbyActionDto::Create;
     request.match_name = protocol.receive_string();
+    request.map_path = protocol.receive_string();
     break;
   case OP_LIST_MATCHES:
     request.action = LobbyActionDto::List;
+    break;
+  case OP_LIST_MAPS:
+    request.action = LobbyActionDto::ListMaps;
     break;
   case OP_JOIN_MATCH:
     request.action = LobbyActionDto::Join;
@@ -275,6 +308,15 @@ void ServerProtocol::send_match_list(const std::vector<MatchInfoDto> &matches) {
     protocol.send_string(m.code);
     protocol.send_string(m.name);
     protocol.send_u8(static_cast<uint8_t>(m.players));
+  }
+}
+
+void ServerProtocol::send_map_list(const std::vector<MapInfoDto> &maps) {
+  protocol.send_u8(OP_LIST_MAPS);
+  protocol.send_u16(static_cast<uint16_t>(maps.size()));
+  for (const MapInfoDto &map : maps) {
+    protocol.send_string(map.name);
+    protocol.send_string(map.path);
   }
 }
 

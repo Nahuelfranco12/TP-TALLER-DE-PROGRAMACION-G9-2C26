@@ -10,19 +10,19 @@
 class ControladorNuevaPartida : public ControladorPagina {
 public:
   ControladorNuevaPartida(QWidget &ventana, Ui::Pantalla &ui,
-                          Navegador &navegador, DatosPartida &datosPartida,
-                          ServicioLobby &servicio, QObject *parent = nullptr);
-  void limpiarPagina() override;
-  void actualizarBotonAvanzar() override;
+                          NavegadorPaginas &navegador,
+                          DatosPartida &datosPartida, ServicioLobby &servicio,
+                          QObject *parent = nullptr);
+  void reiniciarPagina() override;
+  void actualizarEstadoBotonAvanzar() override;
 
 private:
-  ListaSeleccionable *mundos;
-  QList<MundoMock> datosMundos;
+  ListaSeleccionable *listaMundos;
+  QList<MundoMock> mundosDisponibles;
   DatosPartida &datosPartida;
   ServicioLobby &servicio;
-  void cargarMundos();
-  void mostrarMapaSeleccionado();
-  void ocultarMapa();
+  void pedirYMostrarMundos();
+  bool mundosCargados = false;
 };
 
 #endif // CONTROLADOR_NUEVA_PARTIDA_H_

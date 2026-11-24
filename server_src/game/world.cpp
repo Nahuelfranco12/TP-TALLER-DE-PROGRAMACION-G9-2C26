@@ -6,6 +6,7 @@
 #include "entities/cow.h"
 #include "entities/enemies/enemies_factory.h"
 #include "entities/mineral.h"
+#include "entities/merchants_factory.h"
 
 bool World::addSector(std::unique_ptr<Sector> sector) {
   IdSector id = sector->getId();
@@ -14,7 +15,8 @@ bool World::addSector(std::unique_ptr<Sector> sector) {
 }
 
 bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
-                    Position posOrigin, Position posDestine) {
+                    Position posOrigin, Position posDestine,
+                    DoorType typeOrigin, DoorType typeDestine) {
   auto sectorOriginIt = this->sectors.find(idSectorOrigin);
   auto sectorDestineIt = this->sectors.find(idSectorDestine);
 
@@ -25,14 +27,14 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
   Sector &sectorOrigin = *sectorOriginIt->second;
   Sector &sectorDestine = *sectorDestineIt->second;
 
-  bool doorOrigin =
-      sectorOrigin.addDoor(std::make_unique<Door>(posOrigin, idSectorDestine,
-                                                  sectorDestine, posDestine),
-                           posOrigin);
-  bool doorDestine =
-      sectorDestine.addDoor(std::make_unique<Door>(posDestine, idSectorOrigin,
-                                                   sectorOrigin, posOrigin),
-                            posDestine);
+    bool doorOrigin = sectorOrigin.addDoor(
+      std::make_unique<Door>(typeOrigin, posOrigin, idSectorDestine,
+                 sectorDestine, posDestine),
+      posOrigin);
+    bool doorDestine = sectorDestine.addDoor(
+      std::make_unique<Door>(typeDestine, posDestine, idSectorOrigin,
+                 sectorOrigin, posOrigin),
+      posDestine);
 
   return doorOrigin && doorDestine;
 }
@@ -40,7 +42,6 @@ bool World::addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
 bool World::createCabin(int playerId, Position top) {
   if (playerId < 0 || playerId >= MAX_PLAYERS)
     return false;
-
   IdSector cabinId = cabinSectorId(playerId);
   if (this->sectors.count(cabinId))
     return true;
@@ -49,16 +50,22 @@ bool World::createCabin(int playerId, Position top) {
   if (!farm)
     return false;
 
-  auto b = farm->placeCabin(playerId, top);
-  if (!b)
+  BuildingType buildingType = cabinBuildingType(playerId);
+  auto building = farm->findBuilding(cabinBuildingType(playerId));
+  if (!building) {
+      building = farm->placeCabin(playerId, top);
+      if (!building)
+        return false;
+  }
+
+  if (!farm->assignBuildingOwner(buildingType, playerId))
     return false;
 
-  if (!this->addSector(std::make_unique<CabinSector>(
-          playerId, cabinId, Position(CABIN_ENTRY_X - 1, CABIN_ENTRY_Y))))
+  if (!this->addSector(std::make_unique<CabinSector>(playerId, cabinId)))
     return false;
 
-  return this->addDoor(IdSector::FARM, cabinId, b->door,
-                       Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
+  return this->addDoor(IdSector::FARM, cabinId, building->door,
+                      Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
 }
 
 void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
@@ -66,8 +73,7 @@ void World::addPlayer(int id, const std::string &name, PlayerOutfit outfit,
   auto sectorIt = this->sectors.find(idSector);
   if (sectorIt == this->sectors.end())
     return;
-  
-  // TODO: revisar porque se deben leer del archivo las posiciones de las cabañas
+
   if (!this->createCabin(id, Position(2 + 10 * id, 1)))
     return;
 
@@ -91,19 +97,10 @@ void World::removePlayer(int id) {
   if (player) {
     Sector *sector = player->getActualSector();
     if (sector)
+      sector->closeChestsOf(id);
       sector->removeEntity(player->position);
   }
   this->players.erase(id);
-}
-
-bool World::spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                         double freq, size_t pickaxeHits) {
-  auto it = this->sectors.find(sectorId);
-  if (it == this->sectors.end())
-    return false;
-  std::unique_ptr<Entity> mineral =
-      std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
-  return it->second->tryAddEntity(mineral, pos);
 }
 
 bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
@@ -123,6 +120,18 @@ bool World::spawnAnimal(IdSector sectorId, Position pos, AnimalType type) {
     return false;
   }
   return it->second->tryAddEntity(animal, pos);
+}
+
+bool World::spawnMerchant(IdSector sectorId, Position pos, MerchantType type) {
+  auto it = this->sectors.find(sectorId);
+  if (it == this->sectors.end())
+    return false;
+
+  MerchantsFactory factory;
+  std::unique_ptr<Entity> merchant = factory.create(type, pos);
+  if (!merchant)
+    return false;
+  return it->second->tryAddEntity(merchant, pos);
 }
 
 bool World::spawnEnemy(IdSector sectorId, Position pos, EnemyType type) {
@@ -188,19 +197,12 @@ void World::growthCheatAll() {
     sector->growthCheatAll();
 }
 
-bool World::allPlayersSleeping() const {
+bool World::allPlayersDoneForTheDay() const {
   if (players.empty())
     return false;
 
   for (const auto &[playerId, player] : players) {
-    IdSector cabinId = cabinSectorId(playerId);
-    auto cabinIt = sectors.find(cabinId);
-    if (cabinIt == sectors.end())
-      return false;
-
-    const CabinSector *cabin =
-        dynamic_cast<const CabinSector *>(cabinIt->second.get());
-    if (!cabin || !cabin->isPlayerSleeping())
+    if(!player->isDoneForTheDay())
       return false;
   }
   return true;
@@ -228,6 +230,9 @@ GameTime World::currentTime() const {
 
 WorldState World::state() const {
   WorldState state;
+  state.name = this->name;
+  state.code = this->code;
+
   state.sectors.reserve(sectors.size());
 
   for (const auto &[id, sector] : sectors)
@@ -248,7 +253,7 @@ void World::tick() {
   }
 
   dayTick++;
-  if (allPlayersSleeping() || dayTick >= TICKS_PER_DAY) {
+  if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
     dayTick = 0;
     dayNumber++;
     // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
@@ -303,33 +308,56 @@ void World::sendPlayersToFarm() {
 
 void World::endDay() {
   for (auto &[playerId, player] : players) {
-    CabinSector *cabin = dynamic_cast<CabinSector *>(
-        getSector(cabinSectorId(playerId)));
+    bool slept = player->isSleeping();
+
+    CabinSector *cabin = dynamic_cast<CabinSector *>(getSector(cabinSectorId(playerId)));
     if (!cabin)
       continue;
 
-    if (cabin->isPlayerSleeping()) {
-      player->setLife(PLAYER_MAX_LIFE);
-      player->setEnergy(PLAYER_MAX_ENERGY);
+    Sector *bedSector = nullptr;
+    Bed *ownBed = findBedOf(playerId, bedSector);
+    if (ownBed) {
+      respawnNextTo(*player, *bedSector, ownBed->position);
     } else {
-      Position spawn(0, 0);
-      if (!cabin->findBedSpawnPosition(spawn))
-        continue;
-      Sector *origin = player->getActualSector();
-      std::unique_ptr<Entity> entity = origin->removeEntity(player->position);
-      if (entity) {
-        if (!cabin->tryAddEntity(entity, spawn))
-          origin->tryAddEntity(entity, player->position);
-        else
-          player->setActualSector(cabin);
-      }
-      player->setLife(PLAYER_MAX_LIFE / 2);
-      player->setEnergy(PLAYER_MAX_ENERGY / 2);
+      Sector *cabin = getSector(cabinSectorId(playerId));
+      if (cabin)
+        respawnNextTo(*player, *cabin, Position(CABIN_ENTRY_X, CABIN_ENTRY_Y));
+    }
+
+    player->startNewDay(slept);
+  }
+  for (auto &[id, sector] : sectors){
+    sector->releaseBeds();
+    sector->endDay();
+  }
+}
+
+Bed *World::findBedOf(int playerId, Sector *&bedSector) {
+  for (auto &[id, sector] : this->sectors) {
+    Bed *bed = sector->findBedOf(playerId);
+    if (bed) {
+      bedSector = sector.get();
+      return bed;
     }
   }
+  return nullptr;
+}
 
-  for (auto &[id, sector] : sectors)
-    sector->endDay();
+void World::respawnNextTo(Player &player, Sector &sector, Position spot) {
+  Position spawn(0, 0);
+  if (!sector.findFreeNextTo(spot, spawn))
+    return;
+
+  Sector *origin = player.getActualSector();
+  origin->closeChestsOf(player.getId());
+  std::unique_ptr<Entity> entity = origin->removeEntity(player.position);
+  if (!entity)
+    return;
+
+  if (sector.tryAddEntity(entity, spawn))
+    player.setActualSector(&sector);
+  else
+    origin->tryAddEntity(entity, player.position);
 }
 
 void World::addChat(const ChatMessageState &message) {

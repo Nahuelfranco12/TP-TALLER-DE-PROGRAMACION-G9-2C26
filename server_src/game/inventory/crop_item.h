@@ -11,6 +11,7 @@ public:
   CropItem(double price, CropTypes cropType, CropQuality quality);
   CropQuality getQuality() const;
   bool stacksWith(const Item &other) const override;
+  double priceMultiplier() const override;
 };
 
 #endif // CROP_ITEM_H_

@@ -56,6 +56,10 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
   return std::make_unique<AttackCommand>(player_id, dto.direction);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const PlaceDto &dto) {
+  return std::make_unique<PlaceCommand>(player_id, dto.slotIndex, dto.direction);
+}
+
 std::unique_ptr<Command>
 CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
   return std::make_unique<CheatWaterCropCommand>(player_id, dto.direction);
@@ -63,11 +67,42 @@ CommandFactory::create_cheat_water(int player_id, const WaterDto &dto) {
 
 std::unique_ptr<Command> CommandFactory::create(int player_id,
                                                 const ChatDto &dto) {
-  return std::make_unique<ChatCommand>(player_id, dto.text);
+  const std::string &text = dto.text;
+  if (text.empty() || text[0] != '/')
+    return std::make_unique<ChatCommand>(player_id, text);
+
+  size_t space = text.find(' ');
+  bool hasArgs = space != std::string::npos;
+  std::string word = hasArgs ? text.substr(0, space) : text;
+  std::string args = hasArgs ? text.substr(space + 1) : "";
+
+  if (word == "/consultar_catalogo")
+    return std::make_unique<CatalogCommand>(player_id);
+  if (word == "/comprar")
+    return std::make_unique<BuyCommand>(player_id, args);
+  if (word == "/vender")
+    return std::make_unique<SellCommand>(player_id, args);
+  if (word == "/vida")
+    return std::make_unique<LifeCheatCommand>(player_id, args);
+  if (word == "/energia")
+    return std::make_unique<EnergyCheatCommand>(player_id, args);
+  if (word == "/oro")
+    return std::make_unique<GoldCheatCommand>(player_id, args);
+  if (word == "/crecer")
+    return create_cheat_growth(player_id);
+  if (word == "/terminar_dia")
+    return create_cheat_end_day(player_id);
+  if (word == "/danio_enemigos")
+    return create_cheat_enemies_damage(player_id);
+  return std::make_unique<UnknownCommand>(player_id, word);
 }
 
-std::unique_ptr<Command> CommandFactory::create_sleep(int player_id) {
-  return std::make_unique<SleepCommand>(player_id);
+std::unique_ptr<Command> CommandFactory::create(int player_id, const InteractDto &dto) {
+  return std::make_unique<InteractCommand>(player_id, Position(dto.target.x, dto.target.y));
+}
+
+std::unique_ptr<Command> CommandFactory::create(int player_id, const ChestMoveDto &dto) {
+  return std::make_unique<ChestMoveCommand>(player_id, dto.slotIndex, dto.toChest);
 }
 
 std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {

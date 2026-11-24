@@ -37,7 +37,9 @@ public:
   void send_water(DirectionDto direction);
   void send_attack(DirectionDto direction);
   void send_chat(const std::string &text);
-  void send_sleep();
+  void send_interact(GamePositionDto position);
+  void send_place(int slotIndex, DirectionDto direction);
+  void send_chest_move(int slotIndex, bool toChest);
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
   void send_end_day_cheat();
@@ -49,7 +51,9 @@ public:
   const WorldMapDto &get_world_map() const;
 
   // Comandos para QT
-  std::string create_match(const std::string &name);
+  std::string create_match(const std::string &name,
+                           const std::string &map_path);
+  std::vector<MapInfoDto> list_maps();
   std::vector<MatchInfoDto> list_matches();
   bool join_match(const std::string &code, const std::string &player_name,
                   const PlayerOutfitDto &outfit);

@@ -7,18 +7,26 @@
 
 ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 
-QList<MundoMock> ServicioLobbyRed::mundos() { return obtenerMundosDePrueba(); }
+QList<MundoMock> ServicioLobbyRed::pedirMundosDisponibles() {
+  QList<MundoMock> mundos;
+  for (const MapInfoDto &mapa : client.list_maps()) {
+    mundos.append({QString::fromStdString(mapa.name), QString(),
+                   QString::fromStdString(mapa.path)});
+  }
+  return mundos;
+}
 
-QList<PartidaGuardada> ServicioLobbyRed::partidasGuardadas() {
+QList<PartidaGuardada> ServicioLobbyRed::pedirPartidasGuardadas() {
   return obtenerPartidasDePrueba();
 }
 
-ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
+ResultadoLobby ServicioLobbyRed::entrarAJugar(const DatosPartida &datos) {
   try {
     std::string codigoAUnirse;
     switch (datos.modo) {
     case ModoPartida::Nueva:
-      codigoAUnirse = client.create_match(datos.nombrePartida.toStdString());
+      codigoAUnirse = client.create_match(datos.nombrePartida.toStdString(),
+                                          datos.rutaMapa.toStdString());
       if (codigoAUnirse.empty())
         return ResultadoLobby{false, ERROR_LOBBY_CREAR};
       break;
@@ -46,15 +54,17 @@ ResultadoLobby ServicioLobbyRed::jugar(const DatosPartida &datos) {
     codigoPartida = codigoAUnirse;
     personaje = datos.personaje;
     return ResultadoLobby{true, QString()};
-  } catch (const std::exception &e) {
-    return ResultadoLobby{false, QString(ERROR_LOBBY_CONEXION) + e.what()};
+  } catch (const std::exception &error) {
+    return ResultadoLobby{false, QString(ERROR_LOBBY_CONEXION) + error.what()};
   }
 }
 
 bool ServicioLobbyRed::estaEnPartida() const { return enPartida; }
 
-const std::string &ServicioLobbyRed::codigo() const { return codigoPartida; }
+const std::string &ServicioLobbyRed::codigoPartidaActual() const {
+  return codigoPartida;
+}
 
-const DatosPersonaje &ServicioLobbyRed::personajeElegido() const {
+const DatosPersonaje &ServicioLobbyRed::personajeEnPartida() const {
   return personaje;
 }

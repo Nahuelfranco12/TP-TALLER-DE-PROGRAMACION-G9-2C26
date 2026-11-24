@@ -153,6 +153,10 @@ void Interfaz::actualizar_monedas(Renderer &renderer, size_t nuevas_monedas) {
       SDL2pp::Texture(renderer, fuente.RenderUTF8_Blended(texto, BLANCO));
 }
 
+size_t Interfaz::obtener_monedas() const {
+  return monedas;
+}
+
 void Interfaz::dibujar_noche(Renderer &renderer) const {
   int minutos_del_dia =
       static_cast<int>(hora) * MINUTOS_POR_HORA + static_cast<int>(minutos);

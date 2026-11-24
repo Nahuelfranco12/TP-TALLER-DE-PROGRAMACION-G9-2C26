@@ -44,13 +44,17 @@ public:
   TillDto receive_till();
   WaterDto receive_water();
   AttackDto receive_attack();
+  InteractDto receive_interact();
   ChatDto receive_chat();
   WaterDto receive_cheat_water();
+  PlaceDto receive_place();
+  ChestMoveDto receive_chest_move();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();
   void send_match_created(const std::string &code);
   void send_match_list(const std::vector<MatchInfoDto> &matches);
+  void send_map_list(const std::vector<MapInfoDto> &maps);
   void send_join_result(bool result);
 
   void send_sector_state(const SectorStateDto &state);

@@ -13,14 +13,38 @@ class Inventory {
 private:
   std::list<InventorySlot> items;
   std::list<std::unique_ptr<Tool>> tools;
+  size_t maxSlots;
+  size_t maxStack;
+
+  bool receive(InventorySlot &slot);
 
 public:
-  Inventory() : items(), tools() {}
+  Inventory(size_t maxSlots, size_t maxStack) : items(), tools(), maxSlots(maxSlots), maxStack(maxStack) {}
 
   bool addItem(std::unique_ptr<Item> item);
   bool addTool(std::unique_ptr<Tool> tool);
   Tool *getTool(AvailableTools type);
   bool giveSlotTo(int index, Inventory &other);
+
+  /*
+  * Devuelve cuanta cantidad del item "sample" hay en el inventario
+  */
+  int countOf(const Item &sample) const;
+
+  /*
+  * Saca "amount" items iguales a sample del inventario.
+  * Devuelve false si no tiene suficientes items del tipo.
+  */
+  bool remove(const Item &sample, int amount);
+
+  /*
+  * Variante de la función remove que guarda la suma de todos los multiplicadores de precio lo que removió en "multipliers".
+  */
+  bool remove(const Item &sample, int amount,  double &multipliers);
+
+  const Item *itemAt(int index) const;
+
+  bool removeFromSlot(int index);
 
   InventoryState state() const;
 };

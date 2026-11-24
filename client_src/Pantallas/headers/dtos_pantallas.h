@@ -6,7 +6,7 @@
 
 enum class ModoPartida { Ninguno, Nueva, Unirse, Retomar };
 
-struct Apariencia {
+struct AparienciaPersonaje {
   int gorro = 0;
   int pelo = 0;
   int pantalon = 0;
@@ -15,13 +15,14 @@ struct Apariencia {
 
 struct DatosPersonaje {
   QString nombre;
-  Apariencia ropa;
+  AparienciaPersonaje ropa;
 };
 
 struct DatosPartida {
   ModoPartida modo = ModoPartida::Ninguno;
   QString nombrePartida;
   QString idMundo;
+  QString rutaMapa;
   QString codigoUnirsePartida;
   QString idRetomarPartida;
   DatosPersonaje personaje;
@@ -44,6 +45,7 @@ struct ResultadoLobby {
 struct MundoMock {
   QString nombreMundo;
   QString rutaImagen;
+  QString rutaMapa;
 };
 
 struct PartidaGuardada {

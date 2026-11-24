@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 
 #include "../world_state.h"
 #include "./entities/animal.h"
@@ -12,9 +13,12 @@
 #include "position.h"
 #include "sectors/farm_sector.h"
 #include "sectors/cabin_sector.h"
+#include "entities/bed.h"
 
 class World {
 private:
+  std::string name;
+  std::string code;
   DaySpeed speed;
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
@@ -26,13 +30,18 @@ private:
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
+  void respawnNextTo(Player &player, Sector &sector, Position spot);
 
 public:
-  explicit World(DaySpeed speed) : speed(speed), dayTick(0), dayNumber(1) {}
+  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
+
+  void setDayNumber(size_t dayNumber) { this->dayNumber = dayNumber; }
 
   bool addSector(std::unique_ptr<Sector> sector);
   bool addDoor(IdSector idSectorOrigin, IdSector idSectorDestine,
-               Position posOrigin, Position posDestine);
+               Position posOrigin, Position posDestine,
+               DoorType typeOrigin = DoorType::VillageEntry,
+               DoorType typeDestine = DoorType::VillageEntry);
 
   bool createCabin(int playerId, Position top);
 
@@ -42,11 +51,9 @@ public:
   void addPlayer(int id, const std::string &name, PlayerOutfit outfit,
                  IdSector idSector);
   void removePlayer(int id);
-
-  bool spawnMineral(IdSector sectorId, Position pos, MineralTypes type,
-                    double freq, size_t pickaxeHits);
   bool spawnAnimal(IdSector sectorId, Position pos, AnimalType type);
   bool spawnEnemy(IdSector sectorId, Position pos, EnemyType type);
+  bool spawnMerchant(IdSector sectorId, Position pos, MerchantType type);
 
   /*
   * getters
@@ -64,7 +71,7 @@ public:
   void cavernCheat();
 
 
-  bool allPlayersSleeping() const;
+  bool allPlayersDoneForTheDay() const;
 
   /*
   * Chat
@@ -72,9 +79,10 @@ public:
   void addChat(const ChatMessageState &message);
   void clearChat();
   Player *getPlayerByName(const std::string &name);
-  
+
   void tick();
   void endDay();
+  Bed *findBedOf(int playerId, Sector *&bedSector);
 
   /*
   * State

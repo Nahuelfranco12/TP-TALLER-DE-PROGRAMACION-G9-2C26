@@ -19,10 +19,12 @@
 #include "actions/mine_action.h"
 #include "actions/move_action.h"
 #include "actions/plant_action.h"
-#include "actions/sleep_action.h"
 #include "actions/select_tool_action.h"
 #include "actions/till_action.h"
 #include "actions/water_action.h"
+#include "actions/interact_action.h"
+#include "actions/place_action.h"
+#include "actions/chest_move_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -75,8 +77,16 @@ void Client::send_chat(const std::string &text) {
   to_send_queue.try_push(std::make_unique<ChatAction>(text));
 }
 
-void Client::send_sleep() {
-  to_send_queue.try_push(std::make_unique<SleepAction>());
+void Client::send_interact(GamePositionDto position) {
+  to_send_queue.try_push(std::make_unique<InteractAction>(position));
+}
+
+void Client::send_place(int slotIndex, DirectionDto direction) {
+  to_send_queue.try_push(std::make_unique<PlaceAction>(slotIndex, direction));
+}
+
+void Client::send_chest_move(int slotIndex, bool toChest) {
+  to_send_queue.try_push(std::make_unique<ChestMoveAction>(slotIndex, toChest));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {
@@ -133,9 +143,15 @@ Client::~Client() {
 
 // Métodos de menú (QT)
 
-std::string Client::create_match(const std::string &name) {
-  protocol.send_create_match(name);
+std::string Client::create_match(const std::string &name,
+                                 const std::string &map_path) {
+  protocol.send_create_match(name, map_path);
   return protocol.receive_created_match();
+}
+
+std::vector<MapInfoDto> Client::list_maps() {
+  protocol.send_list_maps();
+  return protocol.receive_map_list();
 }
 
 std::vector<MatchInfoDto> Client::list_matches() {

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PantallaFinJuego</class>
+ <widget class="QMainWindow" name="PantallaFinJuego">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1360</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Game Over</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#PantallaFinJuego {
+    border-image: url(:/pantallas/assets/Pantallas/pantalla_fin_juego.jpeg);
+}</string>
+  </property>
+  <widget class="QWidget" name="fondoTerminoPartida">
+   <property name="styleSheet">
+    <string notr="true">#fondoTerminoPartida {
+    border-image: url(:/pantallas/assets/Pantallas/pantalla_fin_juego.jpeg);
+}</string>
+   </property>
+   <widget class="QLabel" name="FondoPartidaTerminada">
+    <property name="geometry">
+     <rect>
+      <x>-20</x>
+      <y>-10</y>
+      <width>1461</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#FondoPartidaTerminada {
+    border-image: url(:/cartel/assets/cartel/cartel-datos.png);
+    color: #f1b356;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 78px;
+    qproperty-alignment: AlignCenter;
+}</string>
+    </property>
+    <property name="text">
+     <string>FIN DEL JUEGO</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="botonSalir">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>680</y>
+      <width>271</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    border-image: url(:/botones/assets/Botones/Boton_normal.png);
+    color: #f1b356;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 40px;
+    font-weight: bold;
+}
+QPushButton:pressed {
+    border-image: url(:/botones/assets/Botones/botton_apretado.png);
+    padding-top: 3px;
+}</string>
+    </property>
+    <property name="text">
+     <string>Salir</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>410</y>
+      <width>981</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label {
+    color: #f1b356;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 78px;
+    qproperty-alignment: AlignCenter;
+}</string>
+    </property>
+    <property name="text">
+     <string>¡Felicidades por ser el ganador!</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

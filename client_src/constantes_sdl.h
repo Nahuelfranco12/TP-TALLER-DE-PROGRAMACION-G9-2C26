@@ -21,6 +21,9 @@
 #define ESCALA_SPRITES 4
 #define TAMANIO_TILE (PIXELES_POR_TILE * ESCALA_SPRITES)
 
+#define CABANA_ANCHO 30
+#define CABANA_ALTO 15
+
 // Mapa: márgenes y decoración -> mapa.cpp
 #define MAPA_MARGEN 30
 #define MAPA_DADO_DECORACION_MAXIMO 9
@@ -44,6 +47,9 @@
 #define LETRA_CAVERNA_DECORACION_2 'r'
 #define LETRA_PISO_PUEBLO 'c'
 #define LETRA_FLORES 'f'
+#define LETRA_VACIO ' '
+#define LETRA_PISO_MADERA 'm'
+
 
 // Bosque alrededor de la granja (en tiles) -> alrededores.cpp
 #define BOSQUE_ZONA 30
@@ -73,9 +79,6 @@
 #define MUNDO_FIGURA_MINIMA 12
 
 // Granja: casa, animales, productos y cultivos -> granja.cpp
-#define GRANJA_CASA_TILE_X 2
-#define GRANJA_CASA_TILE_Y 1
-#define GRANJA_CASA_MODELO 0
 #define ANIMAL_CUADROS_ANIMACION 4
 #define ANIMAL_VUELTAS_POR_CUADRO 20 // 20 x 16 ms = 0,3 s
 #define PRODUCTO_VUELTAS_POR_SALTO 20
@@ -99,22 +102,19 @@
 #define TIENDA_ROBIN 2
 #define TIENDA_MARNIE 3
 #define TIENDA_CERRADA (-1)
-#define PUEBLO_PUESTOS                                                         \
-  {                                                                            \
-    {10, 20, TIENDA_PIERRE}, {30, 36, TIENDA_CLINT}, {29, 3, TIENDA_ROBIN}, {  \
-      52, 18, TIENDA_MARNIE                                                    \
-    }                                                                          \
-  }
+
+#define PUEBLO_MODELO_CENTRO 4
+
 #define PUEBLO_NPCS                                                            \
   {                                                                            \
-    {15, 29, TIENDA_PIERRE}, {34, 44, TIENDA_CLINT}, {37, 13, TIENDA_ROBIN}, { \
-      57, 29, TIENDA_MARNIE                                                    \
+    {7, 28, TIENDA_PIERRE}, {22, 27, TIENDA_CLINT}, {10, 11, TIENDA_ROBIN}, { \
+      21, 12, TIENDA_MARNIE                                                    \
     }                                                                          \
   }
 #define NPC_CUADROS_ANIMACION 4
 #define NPC_VUELTAS_POR_CUADRO 12
 #define TIENDA_TAMANIO_LETRA 20
-#define TIENDA_CANTIDAD_BOTONES 4
+#define TIENDA_CANTIDAD_BOTONES 1
 #define TIENDA_ALTO_BOTON 36
 #define TIENDA_SEPARACION_BOTONES 12
 #define TIENDA_RELLENO_BOTON 12
@@ -123,6 +123,36 @@
 #define TIENDA_MARGEN_ALTO 140
 #define TIENDA_MARGEN_TITULO 10
 #define TIENDA_MARGEN_BOTONES 10
+
+// Centro comunitario
+#define SET_CULTIVOS 0
+#define SET_METALES 1
+#define SET_ANIMALES 2
+#define SET_PELEA 3
+#define SET_DINERO 4
+#define SET_CANTIDAD 5
+#define SET_CERRADO (-1)
+
+// Figurines dentro del centro
+#define CENTRO_SETS                                                           \
+{                                                                             \
+  {4, 3, SET_CULTIVOS}, {7, 3, SET_METALES}, {10, 3, SET_ANIMALES},           \
+  {13, 3, SET_PELEA}, {16, 3, SET_DINERO}                                     \
+}
+
+// Titulo de un set
+#define CENTRO_TITULO_DIVISOR 16
+#define CENTRO_CONTENIDO_DIVISOR 8
+
+// Caja de un set
+#define CENTRO_TAMANIO_LETRA 40
+#define CENTRO_TAMANIO_LETRA_CHICA 30
+#define CENTRO_LADO_FIGURIN_CAJA 64
+#define CENTRO_MARGEN_ANCHO 40
+#define CENTRO_MARGEN_ALTO 100
+#define CENTRO_SEPARACION_LINEAS 40
+#define CENTRO_MARGEN_BOTONES 10
+#define CENTRO_MONEDAS_SET 10000
 
 // Personaje: ropa inicial, caminar y picar -> personaje.cpp
 #define PERSONAJE_PANTALON_INICIAL 0
@@ -197,6 +227,8 @@
 #define TECLA_IZQUIERDA SDLK_LEFT
 #define TECLA_DERECHA SDLK_RIGHT
 
+#define BOTONES_DESDE_ABAJO 120;
+
 // Regalos -> interfaz.cpp, main.cpp
 #define REGALO_ANCHO 280
 #define REGALO_ALTO 140
@@ -218,8 +250,23 @@
 #define INVENTARIO_TAMANIO_LETRA 11
 #define INVENTARIO_NUMERO_MARGEN_X 3
 #define INVENTARIO_NUMERO_MARGEN_Y 1
-#define INVENTARIO_ESTRELLA_MARGEN 3
 #define DIGITOS_DECIMALES 10
+
+// Muebles: cofre y cama -> granja.cpp, inventario.cpp, ventana_cofre.cpp
+#define SPRITE_COFRE_X 8
+#define SPRITE_COFRE_CERRADO_Y 0
+#define SPRITE_COFRE_ABIERTO_Y 16
+#define SPRITE_COFRE_LADO 16
+#define COFRE_SEPARACION 8
+
+#define COFRE_COLUMNAS 10
+#define COFRE_FILAS 3
+#define COFRE_CASILLEROS (COFRE_COLUMNAS * COFRE_FILAS)
+
+#define SPRITE_CAMA_X 87
+#define SPRITE_CAMA_Y 8
+#define SPRITE_CAMA_ANCHO 18
+#define SPRITE_CAMA_ALTO 34
 
 // Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
 // interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
@@ -230,7 +277,12 @@
 #define RUTA_TILESET_GRANJA "assets/mapas/ground_01_16x16.png"
 #define RUTA_TILESET_CAVERNA "assets/mapas/Dungeon_Tileset.png"
 #define RUTA_TILESET_PUEBLO "assets/mapas/PelicanTown_Buildings.png"
+#define RUTA_TILESET_CABANA "assets/mapas/Tilesets_Farmhouse.png"
 #define RUTA_MUEBLES "assets/mapas/Tilesets_Furniture.png"
+#define RUTA_OFRENDAS_CENTRO_COMUNITARIO "assets/mapas/ComunityCenter_Offerings.png"
+#define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
+#define RUTA_COFRE "assets/muebles/chest.png"
+#define RUTA_INTERIOR "assets/muebles/Interior.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
   "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"
@@ -262,9 +314,9 @@
 #define RUTA_NPC_ROBIN "assets/npcs/robin.png"
 #define RUTA_NPC_MARNIE "assets/npcs/marnie.png"
 #define RUTA_TIENDA_PIERRE "assets/tiendas/pierre.png"
-#define RUTA_TIENDA_CLINT "assets/tiendas/clint.jpeg"
-#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.jpg"
-#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.jpg"
+#define RUTA_TIENDA_CLINT "assets/tiendas/clint.png"
+#define RUTA_TIENDA_ROBIN "assets/tiendas/robin.png"
+#define RUTA_TIENDA_MARNIE "assets/tiendas/marnie.png"
 #define RUTAS_FONDOS_TIENDAS                                                   \
   {                                                                            \
     RUTA_TIENDA_PIERRE, RUTA_TIENDA_CLINT, RUTA_TIENDA_ROBIN,                  \
@@ -322,6 +374,8 @@
 #define SUELO_CAVERNA_DECORACION_2_FILA 2
 #define SUELO_PARED_COLUMNA 2
 #define SUELO_PARED_FILA 0
+#define SPRITE_PISO_MADERA_X 32
+#define SPRITE_PISO_MADERA_Y 128
 
 // Sprites (px) -> caverna.cpp, granja.cpp, inventario.cpp, mapa.cpp,
 // mapa_mundo.cpp, personaje.cpp, pueblo.cpp
@@ -355,10 +409,13 @@
 #define SPRITE_CALAVERA_PIE 16
 #define SPRITE_TRAMPA_LADO 16
 #define SPRITE_TRAMPA_PIE 16
-#define SPRITE_MODELOS_CASAS                                                   \
-  {                                                                            \
-    {144, 0, 80, 104}, { 0, 0, 80, 96 }                                        \
-  }
+#define RUTA_TILESET_CABANAS "assets/mapas/Tilesets_Cabins.png"
+#define SPRITE_CABANA_1 {160, 0, 80, 112}
+#define SPRITE_CABANA_2 {160, 112, 80, 112}
+#define SPRITE_CABANA_3 {160, 224, 80, 112}
+#define SPRITE_CABANA_4 {160, 336, 80, 112}
+#define SPRITE_CABANA_5 {160, 448, 80, 112}
+#define SPRITE_MODELOS_CASAS {SPRITE_CABANA_1, SPRITE_CABANA_2, SPRITE_CABANA_3, SPRITE_CABANA_4, SPRITE_CABANA_5}
 #define SPRITE_VACA_LADO 32
 #define SPRITE_GALLINA_LADO 16
 #define SPRITE_CULTIVO_LADO 16
@@ -387,6 +444,22 @@
   { RUTA_NPC_MARNIE, 64, 48 }
 #define SPRITE_MODELOS_NPCS                                                    \
   { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
+
+// Sprites: centro comunitario (px)
+#define SPRITE_EDIFICIO_CENTRO {17, 181, 190, 123}
+#define SPRITE_FONDO_CENTRO {0, 0, 320, 176}
+#define SPRITE_FIGURIN_LADO 32
+#define SPRITE_SET_CULTIVOS {64, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_METALES {0, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_ANIMALES {160, 180, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_PELEA {64, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_SET_DINERO {128, 212, SPRITE_FIGURIN_LADO, SPRITE_FIGURIN_LADO}
+#define SPRITE_MODELOS_SETS                                                    \
+  {SPRITE_SET_CULTIVOS, SPRITE_SET_METALES, SPRITE_SET_ANIMALES,               \
+    SPRITE_SET_PELEA, SPRITE_SET_DINERO                                        \
+  }
+
+// Sprites: personaje (px)
 #define SPRITE_PERSONAJE_ANCHO 16
 #define SPRITE_PERSONAJE_ALTO 32
 #define SPRITE_PERSONAJE_PASOS                                                 \
@@ -420,14 +493,6 @@
 #define SPRITE_MANO_DERECHA_X 9
 #define SPRITE_MANO_IZQUIERDA_X 7
 #define SPRITE_MANO_Y 16
-#define SPRITE_ESTRELLA_BORDE                                                  \
-  {                                                                            \
-    {-1, 2, 10, 4}, { 2, -1, 4, 10 }                                           \
-  }
-#define SPRITE_ESTRELLA_RELLENO                                                \
-  {                                                                            \
-    {0, 3, 8, 2}, {3, 0, 2, 8}, { 2, 2, 4, 4 }                                 \
-  }
 
 // Íconos del inventario (px) -> granja.cpp, inventario.cpp,
 //   personaje.cpp
@@ -443,6 +508,9 @@
 #define ICONO_CULTIVO_LADO 16
 #define ICONO_SEMILLA_COLUMNA 7
 #define ICONO_COSECHA_COLUMNA 8
+#define ICONO_COSECHA_PLATA_COLUMNA 9
+#define ICONO_COSECHA_ORO_COLUMNA 10
+#define ICONO_COSECHA_IRIDIO_COLUMNA 11
 #define ICONO_CULTIVO_FILA_FRUTILLA 1
 #define ICONO_CULTIVO_FILA_CEBOLLA 3
 #define ICONO_CULTIVO_FILA_PAPA 5
@@ -500,22 +568,12 @@
   { 255, 200, 40, COLOR_ALFA_OPACO }
 #define COLOR_CASILLERO_BORDE                                                  \
   { 140, 100, 60, COLOR_ALFA_OPACO }
-#define COLOR_ESTRELLA_BORDE                                                   \
-  { 0, 0, 0, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_BUENA                                                    \
-  { 205, 127, 50, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_EXCELENTE                                                \
-  { 200, 200, 215, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_INCREIBLE                                                \
-  { 240, 200, 40, COLOR_ALFA_OPACO }
-#define COLOR_CALIDAD_PERFECTA                                                 \
-  { 170, 90, 220, COLOR_ALFA_OPACO }
 #define COLOR_MUNDO_FONDO                                                      \
   { 18, 22, 18, COLOR_ALFA_OPACO }
 #define COLOR_MUNDO_DIFUMINADO                                                 \
   { 54, 124, 66, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_VIDA                                                       \
-  { 240, 200, 40, COLOR_ALFA_OPACO }
+  { 200, 40, 40, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_ENERGIA                                                    \
   { 70, 190, 70, COLOR_ALFA_OPACO }
 #define COLOR_BARRA_BORDE                                                      \
@@ -524,6 +582,10 @@
   { 70, 70, 70, COLOR_ALFA_OPACO }
 #define COLOR_FONDO_JUEGO                                                      \
   { 0, 0, 0, COLOR_ALFA_OPACO }
+#define COLOR_TEXTO_CENTRO                                                     \
+ { 70, 40, 20, COLOR_ALFA_OPACO }
+ #define COLOR_CABANA_OSCURECER                                                     \
+ { 0, 0, 0, 170 }
 
 // Textos visibles -> interfaz.cpp, main.cpp, pueblo.cpp
 #define TEXTO_JUEGO_MUSICA "Música"
@@ -555,15 +617,19 @@
 #define TEXTO_JUEGO_VENDER "Vender"
 #define TEXTO_JUEGO_HABLAR "Hablar"
 #define TEXTO_JUEGO_SALIR "Salir"
-#define TEXTOS_BOTONES_TIENDA                                                  \
-  {                                                                            \
-    TEXTO_JUEGO_COMPRAR, TEXTO_JUEGO_VENDER, TEXTO_JUEGO_HABLAR,               \
-        TEXTO_JUEGO_SALIR                                                      \
-  }
+#define TEXTOS_BOTONES_TIENDA {TEXTO_JUEGO_SALIR}
 #define TEXTO_JUEGO_USO "Uso: "
 #define TEXTO_JUEGO_ARGUMENTOS " <host> <puerto>"
 #define TEXTO_JUEGO_TITULO_VENTANA "Stardew Valley - Partida "
 #define TEXTO_JUEGO_CONEXION_PERDIDA "Se perdió la conexión con el servidor."
+
+#define TEXTO_JUEGO_SET_CULTIVOS "Set de cultivos"
+#define TEXTO_JUEGO_SET_METALES "Set de metales"
+#define TEXTO_JUEGO_SET_ANIMALES "Set de productos animales"
+#define TEXTO_JUEGO_SET_PELEA "Set de pelea"
+#define TEXTO_JUEGO_SET_DINERO "Set de dinero"
+#define TITULOS_SETS { TEXTO_JUEGO_SET_CULTIVOS, TEXTO_JUEGO_SET_METALES, TEXTO_JUEGO_SET_ANIMALES, TEXTO_JUEGO_SET_PELEA, TEXTO_JUEGO_SET_DINERO}
+#define TEXTO_JUEGO_CANJEAR "Canjear"
 
 // Audio -> audio.cpp, interfaz.cpp
 #define AUDIO_TAMANIO_BUFFER 1024
@@ -576,5 +642,55 @@
 #define AUDIO_MUSICA_CAVERNA 1
 #define AUDIO_MUSICA_PUEBLO 2
 #define AUDIO_CANTIDAD_MUSICAS 3
+
+// Decoraciones del editor (mismos archivos, recortes y tamaños que el editor de Qt)
+#define RUTA_NATURALEZA "assets/mapas/water asset.png"
+#define RUTA_PIEDRAS_CAMINO "assets/mapas/Road copiar.png"
+#define RUTA_OBJETOS_MAPA "assets/mapas/objects_01_16x16.png"
+#define RUTA_POZO "assets/caverna/pozo-sig-nivel.png"
+
+// Índice de cada archivo en RUTAS_DECORACIONES
+#define DECO_ARCHIVO_ARBOL1 0
+#define DECO_ARCHIVO_ARBOL2 1
+#define DECO_ARCHIVO_NATURALEZA 2
+#define DECO_ARCHIVO_PIEDRAS 3
+#define DECO_ARCHIVO_OBJETOS 4
+#define DECO_ARCHIVO_CAVERNA 5
+#define DECO_ARCHIVO_POZO 6
+#define RUTAS_DECORACIONES { RUTA_ARBOL, RUTA_PINO, RUTA_NATURALEZA, RUTA_PIEDRAS_CAMINO, RUTA_OBJETOS_MAPA, RUTA_TILESET_CAVERNA, RUTA_POZO }
+
+// Cuántos tiles ocupa cada una
+#define DECO_TILES_NORMAL 1
+#define DECO_TILES_ARBOL_ALTO 2
+#define DECO_TILES_AGUA 4
+#define DECO_TILES_FAROL_ALTO 2
+#define DECO_TILES_BANCO_ANCHO 2
+#define DECO_TILES_POZO 2
+
+// Recortes (px)
+#define SPRITE_DECO_ENTERA { 0, 0, 0, 0 }
+#define SPRITE_DECO_ARBUSTO_REDONDO { 112, 160, 16, 16 }
+#define SPRITE_DECO_ARBUSTO_GRANDE { 128, 176, 16, 16 }
+#define SPRITE_DECO_TRONCO_CAIDO { 144, 96, 16, 16 }
+#define SPRITE_DECO_TOCON { 128, 112, 16, 16 }
+#define SPRITE_DECO_PIEDRA { 32, 0, 16, 16 }
+#define SPRITE_DECO_PIEDRA_GRIS { 160, 144, 16, 16 }
+#define SPRITE_DECO_PIEDRA_GRIS_GRANDE { 128, 144, 16, 16 }
+#define SPRITE_DECO_AGUA { 0, 80, 64, 64 }
+#define SPRITE_DECO_BUZON_ROJO { 19, 91, 11, 20 }
+#define SPRITE_DECO_BUZON_AZUL { 35, 91, 11, 20 }
+#define SPRITE_DECO_BUZON_GRIS { 3, 91, 11, 20 }
+#define SPRITE_DECO_CARTEL_VACIO { 0, 112, 16, 16 }
+#define SPRITE_DECO_BARRIL { 128, 48, 16, 16 }
+#define SPRITE_DECO_CALAVERA { 112, 112, 16, 16 }
+#define SPRITE_DECO_HUESO { 128, 96, 16, 16 }
+#define SPRITE_DECO_ESCOMBROS { 144, 64, 16, 16 }
+#define SPRITE_DECO_ANTORCHA { 0, 144, 16, 16 }
+#define SPRITE_DECO_CANDELABRO { 48, 144, 16, 16 }
+#define SPRITE_DECO_ESCUDO { 64, 112, 16, 16 }
+#define SPRITE_DECO_POZO { 0, 0, 32, 32 }
+#define SPRITE_DECO_FAROL_NARANJA { 51, 82, 11, 28 }
+#define SPRITE_DECO_FAROL_AZUL { 64, 82, 16, 28 }
+#define SPRITE_DECO_BANCO { 36, 59, 25, 19 }
 
 #endif // CONSTANTES_SDL_H_

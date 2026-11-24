@@ -12,32 +12,32 @@
 
 ControladorInicioEditor::ControladorInicioEditor(QWidget &ventana,
                                                  Ui::VentanaEditor &ui,
-                                                 Navegador &navegador,
+                                                 NavegadorPaginas &navegador,
                                                  DatosEditor &datos,
                                                  QObject *parent)
     : ControladorPaginaEditor(ventana, ui, navegador, parent), datos(datos) {
   connect(ui.botonCrearMapaInicioEditor, &QPushButton::clicked, this,
           [this]() { crearMapa(); });
   connect(ui.botonEditarMapaInicioEditor, &QPushButton::clicked, this,
-          [this]() { editarMapa(); });
+          [this]() { cargarMapaExistente(); });
   connect(ui.botonSalirInicioEditor, &QPushButton::clicked, this,
           [this]() { this->ventana.close(); });
 }
 
 void ControladorInicioEditor::crearMapa() {
   datos = DatosEditor{};
-  navegador.irA(ui.pageMapas);
+  navegador.irAPagina(ui.pageMapas);
 }
 
-void ControladorInicioEditor::editarMapa() {
-  QString ruta = QFileDialog::getOpenFileName(&ventana, TITULO_ABRIR,
-                                              carpetaMapas(), FILTRO_MAPAS);
+void ControladorInicioEditor::cargarMapaExistente() {
+  QString ruta = QFileDialog::getOpenFileName(
+      &ventana, TITULO_ABRIR, crearYObtenerCarpetaMapas(), FILTRO_MAPAS);
   if (ruta.isEmpty())
     return;
   try {
-    MapaEditor mapa = cargarMapa(ruta.toStdString());
+    MapaEditor mapa = cargarMapaDeArchivo(ruta.toStdString());
     datos = DatosEditor{ruta, std::move(mapa)};
-    navegador.irA(ui.pageMapas);
+    navegador.irAPagina(ui.pageMapas);
   } catch (const std::exception &error) {
     QMessageBox::warning(&ventana, TITULO_ERROR_CARGAR,
                          QString::fromUtf8(error.what()));

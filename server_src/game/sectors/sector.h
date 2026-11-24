@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <optional>
 
 #include "../../world_state.h"
 #include "../decision.h"
@@ -13,6 +14,8 @@
 #include "../entities/entity.h"
 #include "../entities/enemies/trap.h"
 #include "../entities/player.h"
+#include "../entities/bed.h"
+#include "../entities/chest.h"
 #include "../game_constants.h"
 #include "../move_result.h"
 #include "../position.h"
@@ -31,9 +34,21 @@ protected:
   std::map<Position, std::unique_ptr<Door>> doors;
 
 public:
-  Sector(size_t width, size_t height, IdSector id, Terrain terrainType)
+  Sector(size_t width, size_t height, IdSector id, const Terrain &baseTerrain,
+         std::map<Position, TerrainDecoration> decorations = {},
+         std::vector<Building> buildings = {})
       : width(width), height(height), id(id),
-        tiles(width, std::vector<Terrain>(height, terrainType)) {}
+        tiles(width, std::vector<Terrain>(height, baseTerrain)) {
+    for (const auto &[position, decoration] : decorations) {
+      if (position.x < width && position.y < height) {
+        Terrain &terrain = tiles[position.x][position.y];
+        terrain = Terrain(terrain.isTransitable(), terrain.isArable(),
+                          terrain.getTerrainType(), decoration);
+      }
+    for (const Building &building : buildings)
+      placeBuilding(building);
+    }
+  }
   virtual ~Sector() = default;
 
   MoveResult move(Position origin, Position destine);
@@ -44,9 +59,11 @@ public:
   void blockTile(Position pos, TerrainType type) {
     if (pos.x >= width || pos.y >= height)
       return;
-    tiles[pos.x][pos.y] = Terrain(false, false, type);
+    tiles[pos.x][pos.y] = Terrain(false, false, type, TerrainDecoration::NONE);
   }
     
+  bool assignBuildingOwner(BuildingType type, int ownerId);
+  std::optional<Building> findBuilding(BuildingType type) const;
   bool placeBuilding(const Building &building);
 
   virtual bool tryAddEntity(std::unique_ptr<Entity> &entity, Position pos);
@@ -94,6 +111,19 @@ public:
     }
     return false;
   }
+
+  /*
+  * Beds
+  */
+  Bed *findBedOf(int ownerId);
+  bool findFreeNextTo(Position center, Position &result) const;
+  void releaseBeds();
+
+  /*
+  * Chests
+  */
+  Chest *findChestOpenedBy(int playerId);
+  void closeChestsOf(int playerId);
 
   /*
    * State para obtener el estado del sector completo y poder serializarlo.

@@ -15,6 +15,10 @@ private:
   SDL2pp::Texture cultivos;
   SDL2pp::Texture huevo;
   SDL2pp::Texture leche;
+  SDL2pp::Texture cofre;
+  SDL2pp::Texture interior;
+  SDL2pp::Texture vaca;
+  SDL2pp::Texture gallina;
   std::vector<SDL2pp::Texture> iconos_herramienta;
   SDL2pp::Font fuente;
   std::vector<SDL2pp::Texture> digitos;
@@ -38,10 +42,6 @@ private:
   void dibujar_numero(SDL2pp::Renderer &renderer, int numero,
                       const SDL2pp::Rect &lugar);
 
-  static void dibujar_calidad(SDL2pp::Renderer &renderer,
-                              CropQualityDto calidad,
-                              const SDL2pp::Rect &lugar);
-
 public:
   explicit Inventario(SDL2pp::Renderer &renderer);
 
@@ -62,6 +62,8 @@ public:
   void dibujar_regalo(SDL2pp::Renderer &renderer,
                       const InventorySlotDto &regalo,
                       const SDL2pp::Rect &lugar);
+
+  int contar(ItemTypeDto item, bool solo_calidad_alta) const;
 };
 
 #endif

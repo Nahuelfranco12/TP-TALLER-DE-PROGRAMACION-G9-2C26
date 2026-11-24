@@ -10,6 +10,10 @@ void PlantCommand::execute(World &world) {
   if (!player)
     return;
 
+  Seed seed(PRICE_SEED, this->crop);
+  if(player->getInventory().countOf(seed) == 0)
+    return;
+
   if (!player->position.isAdjacentTo(this->target))
     return;
 
@@ -23,12 +27,12 @@ void PlantCommand::execute(World &world) {
   if (sector->getEntity(this->target))
     return;
 
-  // todo: chequear q la casilla sea arable y tenga la semilla (y gastarla)
-
   if (!player->spendEnergy(ENERGY_COST_PLANT))
     return;
 
   std::unique_ptr<Entity> crop =
       std::make_unique<Crop>(this->target, this->crop);
-  sector->tryAddEntity(crop, this->target);
+
+  if (sector->tryAddEntity(crop, this->target))
+    player->getInventory().remove(seed, 1);
 }

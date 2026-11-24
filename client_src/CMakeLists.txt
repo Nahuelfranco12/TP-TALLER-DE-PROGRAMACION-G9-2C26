@@ -21,8 +21,8 @@ target_sources(taller_client
     Pantallas/Images.qrc
     Pantallas/implementaciones/pantalla.cpp
     Pantallas/implementaciones/partidas_estaticas.cpp
-    Pantallas/implementaciones/tarjeta_item.cpp
-    Pantallas/implementaciones/navegador.cpp
+    Pantallas/implementaciones/tarjeta_seleccionable.cpp
+    Pantallas/implementaciones/navegador_paginas.cpp
     Pantallas/implementaciones/lista_seleccionable.cpp
     Pantallas/implementaciones/controlador_menu_principal.cpp
     Pantallas/implementaciones/controlador_nueva_partida.cpp
@@ -39,24 +39,29 @@ target_sources(taller_client
     actions/water_action.cpp
     actions/attack_action.cpp
     actions/chat_action.cpp
-    actions/sleep_action.cpp
+    actions/place_action.cpp
+    actions/chest_move_action.cpp
     actions/gift_offer_action.cpp
     actions/gift_response_action.cpp
     actions/cheat_growth_action.cpp
     actions/cheat_end_day_action.cpp
+    actions/interact_action.cpp
     actions/cheat_enemies_damage_action.cpp
     Pantallas/implementaciones/vista_responsive.cpp
     Pantallas/implementaciones/controlador_pagina.cpp
     pueblo.cpp
     mapa_mundo.cpp
+    centro_comunitario.cpp
+    ventana_cofre.cpp
     animacion.cpp
     animacion_enemigos.cpp
-
+    decoraciones.cpp
     PUBLIC
     # .h files
     animacion.h
     animacion_enemigos.h
     client.h
+    ventana_cofre.h
     audio.h
     personaje.h
     direccion.h
@@ -74,8 +79,8 @@ target_sources(taller_client
     servicio_lobby_red.h
     Pantallas/headers/pantalla.h
     Pantallas/headers/partidas_estaticas.h
-    Pantallas/headers/tarjeta_item.h
-    Pantallas/headers/navegador.h
+    Pantallas/headers/tarjeta_seleccionable.h
+    Pantallas/headers/navegador_paginas.h
     Pantallas/headers/lista_seleccionable.h
     Pantallas/headers/controlador_pagina.h
     Pantallas/headers/controlador_menu_principal.h
@@ -103,6 +108,10 @@ target_sources(taller_client
     actions/cheat_growth_action.h
     actions/cheat_end_day_action.h
     actions/cheat_enemies_damage_action.h
+    actions/interact_action.h
+    actions/chest_move_action.h
     pueblo.h
     mapa_mundo.h
+    centro_comunitario.h
+    decoraciones.h
     )

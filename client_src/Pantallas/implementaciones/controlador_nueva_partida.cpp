@@ -6,77 +6,67 @@
 #include <QPixmap>
 
 ControladorNuevaPartida::ControladorNuevaPartida(
-    QWidget &ventana, Ui::Pantalla &ui, Navegador &navegador,
+    QWidget &ventana, Ui::Pantalla &ui, NavegadorPaginas &navegador,
     DatosPartida &datosPartida, ServicioLobby &servicio, QObject *parent)
     : ControladorPagina(ventana, ui, navegador, parent),
       datosPartida(datosPartida), servicio(servicio) {
 
-  mundos = new ListaSeleccionable(ui.contenedorMundos, this);
+  listaMundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
-  cargarMundos();
-  ocultarMapa();
+  connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
+          [this](QWidget *pagina) {
+            if (pagina == this->ui.pageNuevaPartida && !mundosCargados)
+              pedirYMostrarMundos();
+          });
 
   ui.botonSiguienteNuevaPartida->setEnabled(false);
 
-  conectarVolver(ui.botonVolverNuevaPartida);
+  conectarBotonVolver(ui.botonVolverNuevaPartida);
 
   connect(ui.campoNombrePartida, &QLineEdit::textChanged, this,
-          [this]() { actualizarBotonAvanzar(); });
+          [this]() { actualizarEstadoBotonAvanzar(); });
 
-  mundos->setAlSeleccionar([this]() {
-    actualizarBotonAvanzar();
-    mostrarMapaSeleccionado();
-  });
+  listaMundos->setAccionAlSeleccionarTarjeta(
+      [this]() { actualizarEstadoBotonAvanzar(); });
 
   connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this, [this]() {
     this->datosPartida.modo = ModoPartida::Nueva;
     this->datosPartida.nombrePartida =
         this->ui.campoNombrePartida->text().trimmed();
-    this->datosPartida.idMundo = mundos->seleccionado();
-    this->navegador.irA(this->ui.pageCustomizarPersonaje);
+    this->datosPartida.idMundo = listaMundos->idTarjetaSeleccionada();
+    for (const MundoMock &mundo : mundosDisponibles) {
+      if (mundo.nombreMundo == this->datosPartida.idMundo) {
+        this->datosPartida.rutaMapa = mundo.rutaMapa;
+        break;
+      }
+    }
+    this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
   });
 }
 
-void ControladorNuevaPartida::actualizarBotonAvanzar() {
+void ControladorNuevaPartida::actualizarEstadoBotonAvanzar() {
   bool tieneNombre = !ui.campoNombrePartida->text().trimmed().isEmpty();
-  bool tieneMundo = mundos->haySeleccion();
+  bool tieneMundo = listaMundos->hayTarjetaSeleccionada();
   ui.botonSiguienteNuevaPartida->setEnabled(tieneNombre && tieneMundo);
 }
 
-void ControladorNuevaPartida::cargarMundos() {
-  datosMundos = servicio.mundos();
+void ControladorNuevaPartida::pedirYMostrarMundos() {
+  mundosDisponibles = servicio.pedirMundosDisponibles();
+
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : datosMundos)
+  for (const MundoMock &mundo : mundosDisponibles) {
     tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
                                  mundo.nombreMundo, QString(), QString(),
                                  TEXTO_ELEGIR_MUNDO});
-  mundos->cargar(tarjetas);
-}
-
-void ControladorNuevaPartida::mostrarMapaSeleccionado() {
-  QString id = mundos->seleccionado();
-  for (const MundoMock &mundo : datosMundos) {
-    if (mundo.nombreMundo == id) {
-      QPixmap mapa(mundo.rutaImagen);
-      ui.infoMundo->setPixmap(
-          mapa.scaled(ui.infoMundo->contentsRect().size(),
-                      Qt::KeepAspectRatio, Qt::SmoothTransformation));
-      ui.infoMundo->setVisible(true);
-      return;
-    }
   }
-  ocultarMapa();
+
+  listaMundos->cargarTarjetas(tarjetas);
+  mundosCargados = true;
 }
 
-void ControladorNuevaPartida::ocultarMapa() {
-  ui.infoMundo->clear();
-  ui.infoMundo->setVisible(false);
-}
-
-void ControladorNuevaPartida::limpiarPagina() {
-  mundos->deseleccionar();
-  ocultarMapa();
+void ControladorNuevaPartida::reiniciarPagina() {
+  listaMundos->deseleccionarTarjeta();
   ui.campoNombrePartida->clear();
-  actualizarBotonAvanzar();
+  actualizarEstadoBotonAvanzar();
   datosPartida = DatosPartida{};
 }

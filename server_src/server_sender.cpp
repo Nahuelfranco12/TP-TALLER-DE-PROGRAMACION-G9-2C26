@@ -26,7 +26,7 @@ void ServerSender::run() {
       if (!map_sent) {
         WorldMapDto map;
         for (SectorTypeDto type : {SectorTypeDto::FARM, SectorTypeDto::VILLAGE,
-                                   SectorTypeDto::CAVERN}) {
+                                   SectorTypeDto::CAVERN, SectorTypeDto::COMMUNITY_CENTER}) {
           std::optional<SectorStateDto> sector =
               builder.buildSectorMap(state, type);
           if (sector) {

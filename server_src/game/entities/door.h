@@ -11,17 +11,19 @@ class Sector;
 
 class Door {
 private:
+  DoorType type;
   Position position;
   IdSector idDestineSector;
   Sector &destineSector;
   Position destinePosition;
 
 public:
-  Door(Position position, IdSector idDestineSector, Sector &destineSector,
+  Door(DoorType type, Position position, IdSector idDestineSector, Sector &destineSector,
        Position destinePosition)
-      : position(position), idDestineSector(idDestineSector),
+      : type(type), position(position), idDestineSector(idDestineSector),
         destineSector(destineSector), destinePosition(destinePosition) {}
 
+  DoorType getDoorType() const { return type; }
   IdSector getIdDestineSector() const { return idDestineSector; }
   Sector &getDestineSector() const { return destineSector; }
   Position getDestinePosition() const { return destinePosition; }

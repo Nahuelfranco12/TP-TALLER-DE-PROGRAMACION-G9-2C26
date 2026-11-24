@@ -6,10 +6,13 @@
 #include "../sectors/sector.h"
 #include "enemies/enemy.h"
 #include "mineral.h"
+#include "../inventory/item_factory.h"
+#include "server_src/game/game_constants.h"
 
 MoveResult Player::move(Position destination) {
-  if (isUnconscious())
+  if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
+  this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, destination);
 }
 
@@ -36,6 +39,7 @@ void Player::mine(Mineral &mineral) {
   // TODO: Falta el chequeo de efecto secundario de algunos minerales
 
   if (mineral.hit()) {
+    this->spendEnergy(ENERGY_COST_MINE);
     auto item = mineral.toItem();
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)
@@ -61,6 +65,7 @@ void Player::attack(Enemy &enemy) {
     damage /= 2;
 
   if (enemy.hit(damage)) {
+    this->spendEnergy(ENERGY_COST_ATTACK);
     this->coins += enemy.getGoldDrop();
     if (enemy.removeOnDeath()) {
       this->actualSector->removeEntity(enemy.position);
@@ -109,6 +114,27 @@ void Player::startNewDay(bool sleptInBed) {
   double factor = sleptInBed ? 1.0 : 0.5;
   this->life = PLAYER_MAX_LIFE * factor;
   this->energy = PLAYER_MAX_ENERGY * factor;
+  this->sleeping = false;
+}
+
+int Player::buy(const Item &sample, int price, int amount) {
+  ItemFactory factory;
+  int bought = 0;
+  while (bought < amount && coins >= price && inventory.addItem(factory.create(sample.getType(),
+                                          sample.subtypeToInt(), price))) {
+    coins -= price;
+    bought++;
+  }
+  return bought;
+}
+
+bool Player::sell(const Item &sample, int price, int amount, int &earned) {
+  double multipliers = 0;
+  if (!inventory.remove(sample, amount, multipliers))
+    return false;
+  earned = static_cast<int>(price * multipliers);
+  coins += earned;
+  return true;
 }
 
 PlayerState Player::state() const {

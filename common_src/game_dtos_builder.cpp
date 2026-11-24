@@ -47,6 +47,14 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
     if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
       return ItemTypeDto::COW_MILK;
     return ItemTypeDto::CHICKEN_EGG;
+  case ItemType::ANIMAL:
+    if (static_cast<AnimalType>(item.subtype) == AnimalType::COW)
+      return ItemTypeDto::ANIMAL_COW;
+    return ItemTypeDto::ANIMAL_CHICKEN;
+  case ItemType::FURNITURE:
+    if (static_cast<FurnitureType>(item.subtype) == FurnitureType::CHEST)
+      return ItemTypeDto::CHEST;
+    return ItemTypeDto::BED;
   default:
     break;
   }
@@ -105,8 +113,26 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     case EnemyType::SKULL_GREEN:
       return EntityTypeDto::SKULL_GREEN;    }
     break;
-  case EntityTypes::BED:
+  case EntityTypes::FURNITURE:
+    switch (e.furniture.type) {
+    case FurnitureType::BED:
       return EntityTypeDto::BED;
+    case FurnitureType::CHEST:
+      return EntityTypeDto::CHEST;
+    }
+    break;
+  case EntityTypes::NPC:
+    switch (e.merchant.type) {
+    case MerchantType::PIERRE:
+      return EntityTypeDto::NPC_PIERRE;
+    case MerchantType::CLINT:
+      return EntityTypeDto::NPC_CLINT;
+    case MerchantType::ROBIN:
+      return EntityTypeDto::NPC_ROBIN;
+    case MerchantType::MARNIE:
+      return EntityTypeDto::NPC_MARNIE;
+    }
+    break;
   default:
     break;
   }
@@ -119,10 +145,14 @@ SectorTypeDto GameDtosBuilder::toDto(IdSector id) {
     return SectorTypeDto::FARM;
   case VILLAGE:
     return SectorTypeDto::VILLAGE;
+
+  case COMMUNITY_CENTER:
+    return SectorTypeDto::COMMUNITY_CENTER;
   case CABIN_PLAYER_1:
   case CABIN_PLAYER_2:
   case CABIN_PLAYER_3:
   case CABIN_PLAYER_4:
+  case CABIN_PLAYER_5:
     return SectorTypeDto::CABIN;
   case IdSector::CAVERN_LEVEL_1:
   case IdSector::CAVERN_LEVEL_2:
@@ -149,10 +179,18 @@ BuildingTypeDto GameDtosBuilder::toDto(BuildingType type) {
     return BuildingTypeDto::CABIN_PLAYER_3;
   case BuildingType::CABIN_PLAYER_4:
     return BuildingTypeDto::CABIN_PLAYER_4;
+  case BuildingType::CABIN_PLAYER_5:
+    return BuildingTypeDto::CABIN_PLAYER_5;
   case BuildingType::SHOP_MARNIE:
     return BuildingTypeDto::SHOP_MARNIE;
   case BuildingType::SHOP_CLINT:
     return BuildingTypeDto::SHOP_CLINT;
+  case BuildingType::SHOP_PIERRE:
+    return BuildingTypeDto::SHOP_PIERRE;
+  case BuildingType::SHOP_ROBIN:
+    return BuildingTypeDto::SHOP_ROBIN;
+  case BuildingType::COMUNITARY_CENTRE:
+    return BuildingTypeDto::COMUNITARY_CENTRE;
   }
   throw std::logic_error("BuildingType sin DTO");
 }
@@ -191,6 +229,10 @@ SectorIdDto GameDtosBuilder::toDtoSectorId(IdSector id) {
     return SectorIdDto::CABIN_PLAYER_3;
   case IdSector::CABIN_PLAYER_4:
     return SectorIdDto::CABIN_PLAYER_4;
+  case IdSector::CABIN_PLAYER_5:
+    return SectorIdDto::CABIN_PLAYER_5;
+  case COMMUNITY_CENTER:
+    return SectorIdDto::COMMUNITY_CENTER;
   }
   throw std::logic_error("Sector id sin DTO");
 }
@@ -209,6 +251,39 @@ TerrainTypeDto GameDtosBuilder::toDto(TerrainType terrain) {
     return TerrainTypeDto::HOUSE;
   }
   throw std::logic_error("TerrainType sin DTO");
+}
+
+TerrainDecorationDto GameDtosBuilder::toDto(TerrainDecoration decoration) {
+  switch (decoration) {
+  case NONE: return NoneDto;
+  case Tree1: return Tree1Dto;
+  case Tree2: return Tree2Dto;
+  case Tree3: return Tree3Dto;
+  case TreeRounded: return TreeRoundedDto;
+  case TreeBig: return TreeBigDto;
+  case Log: return LogDto;
+  case Stump: return StumpDto;
+  case Stone: return StoneDto;
+  case StoneGray: return StoneGrayDto;
+  case StoneGrayBig: return StoneGrayBigDto;
+  case WaterDeco: return WaterDecoDto;
+  case MailboxRed: return MailboxRedDto;
+  case MailboxBlue: return MailboxBlueDto;
+  case MailBoxGray: return MailBoxGrayDto;
+  case BlankSign: return BlankSignDto;
+  case Barrel: return BarrelDto;
+  case SkullDeco: return SkullDecoDto;
+  case Bone: return BoneDto;
+  case Ruins: return RuinsDto;
+  case Torch: return TorchDto;
+  case Candle: return CandleDto;
+  case Shield: return ShieldDto;
+  case Pit: return PitDto;
+  case LanternOrange: return LanternOrangeDto;
+  case LanternBlue: return LanternBlueDto;
+  case Bench: return BenchDto;
+  }
+  throw std::logic_error("TerrainDecoration sin DTO");
 }
 
 std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
@@ -235,8 +310,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor, t.tilled};
+          sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
+                                    t.transitable, t.arable, t.isDoor,
+                                    static_cast<DoorTypeDto>(t.doorType),
+                                    t.tilled};
         }
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
@@ -310,6 +387,12 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
           entityDto.mineral.remainingHits = e.mineral.remainingHits;
           entityDto.enemy.alive = e.enemy.is_alive;
           entityDto.enemy.direction = e.enemy.direction;
+          entityDto.bed.sleeping = e.bed.sleeping;
+          if (e.chest.openedBy == clientId) {
+            entityDto.chest.openedByMe = true;
+            for (const ItemState &i : e.chest.inventory.items)
+              entityDto.chest.slots.push_back({i.count, toDto(i), static_cast<CropQualityDto>(i.quality)});
+          }
           sectorDto.entities[pos] = entityDto;
         }
       }
@@ -338,7 +421,7 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
   sectorDto.type = sectorType;
 
   for (const SectorState &sectorState : state.sectors) {
-    if (sectorState.id == static_cast<IdSector>(sectorType)) {
+    if (toDto(sectorState.id) == sectorType) {
       sectorDto.width = sectorState.width;
       sectorDto.height = sectorState.height;
 
@@ -347,9 +430,12 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
       for (size_t x = 0; x < sectorDto.width; ++x)
         for (size_t y = 0; y < sectorDto.height; ++y) {
           const TerrainState &t = sectorState.tiles[x][y];
-          sectorDto.sector[x][y] = {toDto(t.type), t.transitable, t.arable,
-                                    t.isDoor, t.tilled};
+          sectorDto.sector[x][y] = {toDto(t.type), toDto(t.decoration),
+                                    t.transitable, t.arable, t.isDoor,
+                                    static_cast<DoorTypeDto>(t.doorType),
+                                    t.tilled};
         }
+      break;
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
       for (const BuildingState &building : sectorState.buildings) {
@@ -362,8 +448,8 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
              toDtoSectorId(building.interior),
              building.ownerId});
       }
+      break;
     }
   }
-
   return sectorDto;
 }
