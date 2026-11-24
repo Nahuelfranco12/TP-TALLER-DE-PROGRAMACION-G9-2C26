@@ -22,6 +22,8 @@ public:
     return EntityState{.type = entityType, .position = position};
   }
 
+  virtual bool canUseDoors() const { return false; }
+
   virtual void tick() {}
 };
 

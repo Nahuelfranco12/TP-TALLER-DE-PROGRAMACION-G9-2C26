@@ -14,7 +14,7 @@ bool Door::moveEntity(std::unique_ptr<Entity>& entity,
   }
 
   Position freePosition(0, 0);
-  if (!this->destineSector.findFreePosition(freePosition))
+  if (!this->destineSector.findFreeNextTo(this->destinePosition, freePosition))
     return false;
 
   if (!this->destineSector.tryAddEntity(entity, freePosition))

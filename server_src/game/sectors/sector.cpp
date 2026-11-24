@@ -19,10 +19,16 @@ MoveResult Sector::move(Position origin, Position destine) {
   auto it = this->entities.find(origin);
   if (it == this->entities.end())
     return MoveResult(false, origin, this->id);
+
+  auto doorIt = this->doors.find(destine);
+  bool isDoor = doorIt != this->doors.end();
+  if (isDoor && !it->second->canUseDoors())
+    return MoveResult(false, origin, this->id);
+
   std::unique_ptr<Entity> entity = std::move(it->second);
   this->entities.erase(it);
 
-  if (this->doors.find(destine) == this->doors.end()) {
+  if (!isDoor) {
     // Si no hay puerta mueve directo
     entity->setPosition(destine);
     this->entities.emplace(destine, std::move(entity));

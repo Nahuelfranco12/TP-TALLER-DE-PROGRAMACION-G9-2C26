@@ -128,6 +128,8 @@ public:
   void wakeUp() { sleeping = false; }
   bool isDoneForTheDay() const { return sleeping || isUnconscious();}
 
+  bool canUseDoors() const override { return true; }
+
   /*
   * State
   */
