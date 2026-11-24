@@ -180,7 +180,8 @@ PartidaGuardada extraerPartida(const World &mundo,
 
   const WorldState estado = mundo.state();
   PartidaGuardada partida = anterior;
-  partida.nombre = estado.name;
+  if (partida.nombre.empty())
+    partida.nombre = estado.name;
   if (partida.codigo.empty())
     partida.codigo = estado.code;
   partida.dia = estado.dayNumber;
