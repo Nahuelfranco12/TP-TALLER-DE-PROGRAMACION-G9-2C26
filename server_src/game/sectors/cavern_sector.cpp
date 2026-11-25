@@ -67,6 +67,8 @@ void CavernSector::spawnMinerals() {
 
     double freq = 1.0;
     size_t pickaxeHits = PICKAXE_COUNT_COAL;
+    int breakChance = 0;
+    int hordeChance = 0;
     switch (type) {
     case MineralTypes::GOLD:
       freq = SPAWN_FREQ_GOLD;
@@ -75,10 +77,12 @@ void CavernSector::spawnMinerals() {
     case MineralTypes::IRON:
       freq = SPAWN_FREQ_IRON;
       pickaxeHits = PICKAXE_COUNT_IRON;
+      hordeChance = IRON_HORDE_CHANCE;
       break;
     case MineralTypes::LAPIZLAZULI:
       freq = SPAWN_FREQ_LAPIZLAZULI;
       pickaxeHits = PICKAXE_COUNT_LAPIZLAZULI;
+      breakChance = LAPIZLAZULI_BREAK_CHANCE;
       break;
     case MineralTypes::COAL:
       freq = SPAWN_FREQ_COAL;
@@ -87,7 +91,7 @@ void CavernSector::spawnMinerals() {
     }
 
     std::unique_ptr<Entity> mineral =
-        std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits);
+        std::make_unique<Mineral>(pos.x, pos.y, type, freq, pickaxeHits, breakChance, hordeChance);
     tryAddEntity(mineral, pos);
   }
 }
@@ -124,7 +128,7 @@ void CavernSector::spawnEnemies() {
       std::uniform_int_distribution<size_t> sizeDist(selected->minGroup, maxGroup);
       size_t count = sizeDist(rng);
 
-      spawnEnemyGroup(selected->type, count);
+      spawnEnemyGroup(selected->type, count, randomFreePosition());
       selected->currentCount += count;
 
       bool isSkull = selected->type == EnemyType::SKULL_BLUE ||
@@ -167,9 +171,7 @@ void CavernSector::spawnTraps() {
   }
 }
 
-void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
-  Position center = randomFreePosition();
-
+void CavernSector::spawnEnemyGroup(EnemyType type, size_t count, Position center) {
   if (type == EnemyType::VAMPIRE_MALE || type == EnemyType::VAMPIRE_FEMALE) {
     std::pair<std::unique_ptr<Enemy>, std::unique_ptr<Enemy>> vampires =
         enemiesFactory.createVampires(center);
@@ -225,4 +227,10 @@ Position CavernSector::randomFreePosition() {
       return pos;
   }
   return findFreePosition();
+}
+
+void CavernSector::spawnHordeNear(Position playerPosition) {
+  std::uniform_int_distribution<size_t> sizeDist(ORC_MIN_GROUP, ORC_MAX_GROUP);
+  Position center = randomNearPosition(playerPosition, ORC_HORDE_RADIUS);
+  spawnEnemyGroup(EnemyType::ORC, sizeDist(rng), center);
 }

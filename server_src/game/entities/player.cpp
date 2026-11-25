@@ -36,16 +36,15 @@ void Player::mine(Mineral &mineral) {
       this->actualTool->toolType != AvailableTools::PICKAXE)
     return;
 
-  // TODO: Falta el chequeo de efecto secundario de algunos minerales
-
   if (mineral.hit()) {
     this->spendEnergy(ENERGY_COST_MINE);
-    auto item = mineral.toItem();
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)
       return;
 
-    this->inventory.addItem(std::move(item));
+    mineral.pickaxeEffect(*actualSector, position);
+    if (!mineral.breaks())
+      inventory.addItem(mineral.toItem());
   }
 }
 
