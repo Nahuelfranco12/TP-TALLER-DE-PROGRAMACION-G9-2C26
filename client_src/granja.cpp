@@ -41,7 +41,7 @@ Granja::Granja(Renderer &renderer)
       gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
       suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
-      interior(renderer, RUTA_INTERIOR), vueltas(0) {}
+      interior(renderer, RUTA_INTERIOR), exclamacion(renderer, RUTA_EXCLAMACION), vueltas(0) {}
 
 void Granja::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
@@ -72,6 +72,10 @@ void Granja::dibujar_cultivo(Renderer &renderer, const Cultivo &cultivo,
                      fila * SPRITE_CULTIVO_LADO, SPRITE_CULTIVO_LADO,
                      SPRITE_CULTIVO_LADO);
   renderer.Copy(cultivos, origen_planta, destino);
+
+  if (cultivo.necesita_riego) {
+    dibujar_producto(renderer, exclamacion, x + lado / 2, y, lado);
+  }
 }
 
 void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
@@ -95,7 +99,7 @@ void Granja::dibujar_animal(Renderer &renderer, const Animal &animal,
     Rect destino(x, y, lado_vaca, lado_vaca);
     renderer.Copy(vaca, origen, destino, 0.0, NullOpt, flip);
     if (animal.listo) {
-      dibujar_producto(renderer, leche, x + destino.w / 2, y, lado);
+      dibujar_producto(renderer, leche, x + destino.w / 2, y + lado / 2, lado);
     }
   } else {
     Rect origen(cuadro * SPRITE_GALLINA_LADO, 0, SPRITE_GALLINA_LADO,
@@ -161,7 +165,7 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
       TipoCultivo tipo = static_cast<TipoCultivo>(entidad.crop.type);
       int etapa = static_cast<int>(entidad.crop.growth) * ULTIMA_ETAPA[tipo] /
                   CULTIVO_CRECIMIENTO_MAXIMO;
-      lista_cultivos.push_back({tipo, x, y, etapa});
+      lista_cultivos.push_back({tipo, x, y, etapa, entidad.crop.needsWater});
     } else if (entidad.type == EntityTypeDto::CHEST) {
       lista_muebles.push_back({COFRE, x, y, entidad.chest.openedByMe});
     } else if (entidad.type == EntityTypeDto::BED) {

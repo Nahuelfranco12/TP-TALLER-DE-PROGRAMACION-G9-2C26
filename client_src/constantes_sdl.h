@@ -301,6 +301,7 @@
 #define RUTA_VACA "assets/animales/Female Cow Brown.png"
 #define RUTA_GALLINA "assets/animales/Chicken Blonde  Green.png"
 #define RUTA_CULTIVOS "assets/cultivos/Spring Crops.png"
+#define RUTA_EXCLAMACION "assets/simbolos/expression_alerted.png"
 #define RUTA_ICONOS_MINERALES "assets/inventario/ore.png"
 #define RUTA_ICONOS_CULTIVOS "assets/inventario/Spring Crops.png"
 #define RUTA_HUEVO "assets/inventario/egg.png"

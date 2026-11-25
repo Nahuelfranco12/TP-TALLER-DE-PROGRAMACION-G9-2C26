@@ -38,6 +38,7 @@ private:
     int tile_x;
     int tile_y;
     int etapa;
+    bool necesita_riego;
   };
 
   struct Mueble {
@@ -56,6 +57,7 @@ private:
   SDL2pp::Texture leche;
   SDL2pp::Texture cofre;
   SDL2pp::Texture interior;
+  SDL2pp::Texture exclamacion;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
