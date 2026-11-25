@@ -6,7 +6,6 @@
 
 class Vampire : public Enemy {
 private:
-  EnemyType vampireType;
   Vampire *partner;
   int reviveCountdown;
 
