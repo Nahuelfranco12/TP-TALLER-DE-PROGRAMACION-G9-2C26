@@ -44,7 +44,7 @@ void VistaZona::dibujarZona(const MapaZona<TipoObjeto> &zona) {
   std::map<Terreno, QPixmap> tiles;
   for (int y = 0; y < zona.alto(); ++y) {
     for (int x = 0; x < zona.ancho(); ++x) {
-      Terreno terreno = zona.pintarTerrenoEnCelda(x, y);
+      Terreno terreno = zona.terrenoEnCelda(x, y);
       auto tile = tiles.find(terreno);
       if (tile == tiles.end())
         tile = tiles.emplace(terreno, cargarImagenDeTerreno(terreno)).first;

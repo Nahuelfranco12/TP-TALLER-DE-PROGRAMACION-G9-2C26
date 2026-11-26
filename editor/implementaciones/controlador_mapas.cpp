@@ -33,27 +33,16 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
   ui.campoNombreMundo->setMaxLength(MAX_LARGO_NOMBRE_MUNDO);
   ui.campoNombreMundo->setPlaceholderText(TEXTO_AYUDA_NOMBRE_MUNDO);
 
-  connect(ui.botonVolverMapas, &QPushButton::clicked, this, [this]() {
-    reiniciarPaginaMapas();
-    this->navegador.volverPaginaAnterior();
-  });
+  connect(ui.botonVolverMapas, &QPushButton::clicked, this,
+          &ControladorMapas::volverAlInicio);
   connect(ui.botonAplicarMapas, &QPushButton::clicked, this,
           [this]() { redimensionarZonaActual(); });
-  connect(ui.pestaniaMapas, &QTabWidget::currentChanged, this, [this](int i) {
-    cambiarZonaActual(zonaDePestania(this->ui.pestaniaMapas->widget(i)));
-  });
+  connect(ui.pestaniaMapas, &QTabWidget::currentChanged, this,
+          &ControladorMapas::alCambiarPestania);
   connect(ui.valorNivelCaverna, &QSpinBox::valueChanged, this,
           [this](int nivel) { cambiarNivelCaverna(nivel); });
   connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
-          [this](QWidget *pagina) {
-            if (pagina == this->ui.pageMapas) {
-              this->ui.campoNombreMundo->setText(
-                  QString::fromStdString(this->datos.mapa.nombre));
-              dibujarTodasLasZonas();
-              cambiarZonaActual(
-                  zonaDePestania(this->ui.pestaniaMapas->currentWidget()));
-            }
-          });
+          &ControladorMapas::alAbrirPagina);
   connect(ui.botonExportarMapas, &QPushButton::clicked, this,
           [this]() { validarYExportarMapa(); });
 
@@ -74,11 +63,30 @@ ControladorMapas::ControladorMapas(QWidget &ventana, Ui::VentanaEditor &ui,
       });
 
   connect(ui.campoNombreMundo, &QLineEdit::textChanged, this,
-          [this](const QString &texto) {
-            this->datos.mapa.nombre = texto.trimmed().toStdString();
-          });
+          &ControladorMapas::actualizarNombreMundo);
 
   cambiarZonaActual(zonaDePestania(ui.pestaniaMapas->currentWidget()));
+}
+
+void ControladorMapas::volverAlInicio() {
+  reiniciarPaginaMapas();
+  navegador.volverPaginaAnterior();
+}
+
+void ControladorMapas::alCambiarPestania(int indice) {
+  cambiarZonaActual(zonaDePestania(ui.pestaniaMapas->widget(indice)));
+}
+
+void ControladorMapas::alAbrirPagina(QWidget *pagina) {
+  if (pagina != ui.pageMapas)
+    return;
+  ui.campoNombreMundo->setText(QString::fromStdString(datos.mapa.nombre));
+  dibujarTodasLasZonas();
+  cambiarZonaActual(zonaDePestania(ui.pestaniaMapas->currentWidget()));
+}
+
+void ControladorMapas::actualizarNombreMundo(const QString &texto) {
+  datos.mapa.nombre = texto.trimmed().toStdString();
 }
 
 void ControladorMapas::reiniciarPaginaMapas() {

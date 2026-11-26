@@ -44,6 +44,11 @@ private:
                                          int x, int y);
 
   void validarYExportarMapa();
+
+  void volverAlInicio();
+  void alCambiarPestania(int indice);
+  void alAbrirPagina(QWidget *pagina);
+  void actualizarNombreMundo(const QString &texto);
 };
 
 #endif // CONTROLADOR_MAPAS_H_

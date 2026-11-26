@@ -25,11 +25,18 @@ private:
   DatosPersonaje armarPersonajeElegido() const;
 
   void conectarFlechasDeTodasLasPrendas();
-  void conectarFlechasPrenda(QPushButton *anterior, QPushButton *siguiente,
-                             int &indice,
-                             const QList<CoordenadaSprite> &opciones);
+  void gorroAnterior();
+  void gorroSiguiente();
+  void peloAnterior();
+  void peloSiguiente();
+  void remeraAnterior();
+  void remeraSiguiente();
+  void pantalonAnterior();
+  void pantalonSiguiente();
+  void jugarConPersonajeElegido();
   void redibujarPrevisualizacionPersonaje();
-  void cambiarOpcionPrenda(int &indiceActual, int cantidadOpciones,
+  void cambiarOpcionPrenda(int &indiceActual,
+                           const QList<CoordenadaSprite> &opciones,
                            int direccion);
   const DibujarPersonaje &dibujar;
   DatosPartida &datosPartida;

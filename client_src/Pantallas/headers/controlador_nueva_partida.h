@@ -22,6 +22,8 @@ private:
   DatosPartida &datosPartida;
   ServicioLobby &servicio;
   void pedirYMostrarMundos();
+  void alAbrirPagina(QWidget *pagina);
+  void avanzarACustomizarPersonaje();
   bool mundosCargados = false;
 };
 

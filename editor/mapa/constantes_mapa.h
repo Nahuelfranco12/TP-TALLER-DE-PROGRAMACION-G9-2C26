@@ -50,6 +50,7 @@
 
 // Errores del modelo -> mapa_editor.h, mapa_editor.cpp
 #define TEXTO_ERROR_DIMENSIONES_ZONA "Dimensiones de zona fuera de rango"
+#define TEXTO_ERROR_CELDA_FUERA_DE_ZONA "Celda fuera de la zona"
 
 // Validación para poder exportar -> validacion_mapas.cpp
 #define VALIDACION_CABANIAS_MINIMAS 3

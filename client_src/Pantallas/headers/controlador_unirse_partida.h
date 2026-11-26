@@ -15,6 +15,7 @@ public:
 
 private:
   DatosPartida &datosPartida;
+  void avanzarACustomizarPersonaje();
 };
 
 #endif // CONTROLADOR_UNIRSE_PARTIDA_H_

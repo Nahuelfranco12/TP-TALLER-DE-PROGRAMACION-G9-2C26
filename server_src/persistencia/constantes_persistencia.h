@@ -45,6 +45,7 @@
 #define ERROR_PARTIDA_COPIAR_MAPA "No se pudo copiar el mapa: "
 #define ERROR_PARTIDA_LEER "No se pudo leer la partida: "
 #define ERROR_PARTIDA_VERSION "Versión de partida no soportada."
+#define ERROR_PARTIDA_IGNORADA "Se ignora la partida guardada en "
 #define SEPARADOR_DETALLE_PARTIDA ": "
 
 // Archivo TOML: errores de campos -> lectura_toml.h, lectura_toml.cpp

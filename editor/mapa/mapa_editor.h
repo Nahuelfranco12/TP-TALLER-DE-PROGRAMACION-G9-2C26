@@ -1,7 +1,6 @@
 #ifndef EDITOR_MAPA_EDITOR_H_
 #define EDITOR_MAPA_EDITOR_H_
 
-#include <algorithm>
 #include <cstddef>
 #include <stdexcept>
 #include <string>
@@ -74,11 +73,11 @@ public:
     return x >= 0 && y >= 0 && x < dimensiones.ancho && y < dimensiones.alto;
   }
 
-  Terreno pintarTerrenoEnCelda(int x, int y) const {
+  Terreno terrenoEnCelda(int x, int y) const {
     return terrenos[indiceDeCelda(x, y)];
   }
 
-  void pintarTerrenoConCelda(int x, int y, Terreno terreno) {
+  void pintarCelda(int x, int y, Terreno terreno) {
     terrenos[indiceDeCelda(x, y)] = terreno;
   }
 
@@ -90,13 +89,7 @@ public:
     if (!entraEnLaZona(tipo, x, y))
       return false;
     bool unico = esUnicoEnZona(tipo);
-    bool pisaAOtro = std::any_of(objetosColocados.begin(),
-                                 objetosColocados.end(), [&](const auto &otro) {
-                                   bool seVaAMover = unico && otro.tipo == tipo;
-                                   return !seVaAMover &&
-                                          seSuperponeConOtro(tipo, x, y, otro);
-                                 });
-    if (pisaAOtro)
+    if (pisaAOtroObjeto(tipo, x, y, unico))
       return false;
     if (unico)
       std::erase_if(objetosColocados,
@@ -138,7 +131,7 @@ private:
 
   std::size_t indiceDeCelda(int x, int y) const {
     if (!existeCelda(x, y))
-      throw std::out_of_range("Celda fuera de la zona");
+      throw std::out_of_range(TEXTO_ERROR_CELDA_FUERA_DE_ZONA);
     return static_cast<std::size_t>(y * dimensiones.ancho + x);
   }
 
@@ -147,17 +140,26 @@ private:
     return existeCelda(x, y) &&
            existeCelda(x + celdaOcupada.ancho - 1, y + celdaOcupada.alto - 1);
   }
+
+bool pisaAOtroObjeto(TipoObjeto tipo, int x, int y, bool unico) const {
+	for (const ObjetoColocado<TipoObjeto> &otro : objetosColocados) {
+      bool seVaAMover = unico && otro.tipo == tipo;
+      if (!seVaAMover && seSuperponeConOtro(tipo, x, y, otro))
+        return true;
+    }
+    return false;
+}
 };
 
 template <typename TipoObjeto>
 void pintarBordeDeZona(MapaZona<TipoObjeto> &zona, Terreno terreno) {
   for (int x = 0; x < zona.ancho(); ++x) {
-    zona.pintarTerrenoConCelda(x, 0, terreno);
-    zona.pintarTerrenoConCelda(x, zona.alto() - 1, terreno);
+    zona.pintarCelda(x, 0, terreno);
+    zona.pintarCelda(x, zona.alto() - 1, terreno);
   }
   for (int y = 0; y < zona.alto(); ++y) {
-    zona.pintarTerrenoConCelda(0, y, terreno);
-    zona.pintarTerrenoConCelda(zona.ancho() - 1, y, terreno);
+    zona.pintarCelda(0, y, terreno);
+    zona.pintarCelda(zona.ancho() - 1, y, terreno);
   }
 }
 

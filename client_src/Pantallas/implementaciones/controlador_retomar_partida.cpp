@@ -20,13 +20,14 @@ ControladorRetomarPartida::ControladorRetomarPartida(
   listaPartidas->setAccionAlSeleccionarTarjeta(
       [this]() { actualizarEstadoBotonAvanzar(); });
 
-  connect(ui.botonJugarRetomarPartida, &QPushButton::clicked, this, [this]() {
-    this->datosPartida.modo = ModoPartida::Retomar;
-    this->datosPartida.idRetomarPartida =
-        listaPartidas->idTarjetaSeleccionada();
-    intentarEntrarAJugar(this->servicio, this->datosPartida,
-                         this->ui.botonJugarRetomarPartida);
-  });
+  connect(ui.botonJugarRetomarPartida, &QPushButton::clicked, this,
+          &ControladorRetomarPartida::jugarPartidaElegida);
+}
+
+void ControladorRetomarPartida::jugarPartidaElegida() {
+  datosPartida.modo = ModoPartida::Retomar;
+  datosPartida.idRetomarPartida = listaPartidas->idTarjetaSeleccionada();
+  intentarEntrarAJugar(servicio, datosPartida, ui.botonJugarRetomarPartida);
 }
 
 void ControladorRetomarPartida::actualizarEstadoBotonAvanzar() {

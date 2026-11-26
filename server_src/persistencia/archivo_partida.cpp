@@ -153,6 +153,12 @@ GranjaGuardada granjaDe(const toml::table &raiz) {
       leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,
                 cultivoDe)};
 }
+
+bool comparadorPartidas(const PartidaGuardada &una,
+                      const PartidaGuardada &otra) {
+  return una.nombre < otra.nombre;
+}
+
 } // namespace
 
 std::string carpetaDePartida(const std::string &codigo) {
@@ -244,6 +250,6 @@ std::vector<PartidaGuardada> listarPartidas() {
     } catch (const std::runtime_error &) {
     }
   }
-  std::ranges::sort(partidas, {}, &PartidaGuardada::nombre);
+  std::sort(partidas.begin(), partidas.end(), comparadorPartidas);
   return partidas;
 }

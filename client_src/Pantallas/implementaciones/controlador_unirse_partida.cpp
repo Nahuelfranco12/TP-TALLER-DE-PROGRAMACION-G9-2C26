@@ -14,12 +14,13 @@ ControladorUnirsePartida::ControladorUnirsePartida(QWidget &ventana,
   connect(ui.campoCodigoPartida, &QLineEdit::textChanged, this,
           [this]() { actualizarEstadoBotonAvanzar(); });
   connect(ui.botonSiguienteUnirsePartida, &QPushButton::clicked, this,
-          [this]() {
-            this->datosPartida.modo = ModoPartida::Unirse;
-            this->datosPartida.codigoUnirsePartida =
-                this->ui.campoCodigoPartida->text().trimmed();
-            this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
-          });
+          &ControladorUnirsePartida::avanzarACustomizarPersonaje);
+}
+
+void ControladorUnirsePartida::avanzarACustomizarPersonaje() {
+  datosPartida.modo = ModoPartida::Unirse;
+  datosPartida.codigoUnirsePartida = ui.campoCodigoPartida->text().trimmed();
+  navegador.irAPagina(ui.pageCustomizarPersonaje);
 }
 
 void ControladorUnirsePartida::actualizarEstadoBotonAvanzar() {

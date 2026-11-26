@@ -12,10 +12,19 @@
 
 namespace {
 template <typename T> int contarObjetosDeTipo(const MapaZona<T> &zona, T tipo) {
-  return static_cast<int>(
-      std::ranges::count_if(zona.objetos(), [tipo](const auto &objeto) {
-        return objeto.tipo == tipo;
-      }));
+  int cantidad = 0;
+  for (const ObjetoColocado<T> &objeto : zona.objetos())
+    if (objeto.tipo == tipo)
+      ++cantidad;
+  return cantidad;
+}
+
+int contarCabanias(const MapaZona<ElementosGranja> &granja) {
+  int cantidad = 0;
+  for (const ObjetoColocado<ElementosGranja> &objeto : granja.objetos())
+    if (esCabania(objeto.tipo))
+      ++cantidad;
+  return cantidad;
 }
 
 std::string mensajeConLugar(const std::string &lugar,
@@ -33,10 +42,7 @@ std::string mensajeSobra(const std::string &zona, const std::string &elemento) {
 
 void validarGranja(const MapaZona<ElementosGranja> &granja,
                    std::vector<std::string> &errores) {
-  int cabanias = static_cast<int>(
-      std::ranges::count_if(granja.objetos(), [](const auto &objeto) {
-        return esCabania(objeto.tipo);
-      }));
+  int cabanias = contarCabanias(granja);
   if (cabanias < VALIDACION_CABANIAS_MINIMAS)
     errores.push_back(
         mensajeConLugar(VALIDACION_TEXTO_ZONA_GRANJA,

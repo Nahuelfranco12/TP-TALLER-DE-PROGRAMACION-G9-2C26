@@ -1,6 +1,5 @@
 #include "catalogo_elementos.h"
 
-#include <algorithm>
 #include <initializer_list>
 #include <vector>
 
@@ -31,10 +30,9 @@ const std::vector<InfoElemento<Terreno>> &terrenosDisponiblesEnZona(Zona zona) {
 template <typename T>
 const InfoElemento<T> *
 buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &catalogo, T tipo) {
-  auto encontrado = std::ranges::find_if(
-      catalogo, [tipo](const auto &info) { return info.elemento == tipo; });
-  if (encontrado != catalogo.end())
-    return &*encontrado;
+  for (const InfoElemento<T> &info : catalogo)
+    if (info.elemento == tipo)
+      return &info;
   return nullptr;
 }
 } // namespace

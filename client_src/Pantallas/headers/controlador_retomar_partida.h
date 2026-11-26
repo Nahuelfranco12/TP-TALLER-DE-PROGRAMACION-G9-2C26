@@ -22,6 +22,7 @@ private:
   const DibujarPersonaje &dibujante;
   ServicioLobby &servicio;
   void pedirYMostrarPartidas();
+  void jugarPartidaElegida();
 };
 
 #endif // CONTROLADOR_RETOMAR_PARTIDA_H_

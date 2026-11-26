@@ -64,14 +64,13 @@ JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
 
 void actualizarJugador(std::vector<JugadorGuardado> &jugadores,
                        JugadorGuardado jugador) {
-  auto existente = std::ranges::find_if(
-      jugadores, [&jugador](const JugadorGuardado &guardado) {
-        return guardado.nombre == jugador.nombre;
-      });
-  if (existente == jugadores.end())
-    jugadores.push_back(std::move(jugador));
-  else
-    *existente = std::move(jugador);
+  for (JugadorGuardado &guardado : jugadores) {
+    if (guardado.nombre == jugador.nombre) {
+      guardado = std::move(jugador);
+      return;
+    }
+  }
+  jugadores.push_back(std::move(jugador));
 }
 
 std::vector<CeldaGuardada> aradasDe(const Sector &granja) {
@@ -131,12 +130,10 @@ const TablaPrecios &tablaPrecios() {
 }
 
 int precioDe(const ClaveItem &clave) {
-  auto encontrado = std::ranges::find_if(
-      tablaPrecios(),
-      [&clave](const auto &entrada) { return entrada.first == clave; });
-  if (encontrado == tablaPrecios().end())
-    throw std::logic_error(ERROR_ADAPTADOR_ITEM_SIN_PRECIO);
-  return encontrado->second;
+  for (const auto &[claveTabla, precio] : tablaPrecios())
+    if (claveTabla == clave)
+      return precio;
+  throw std::logic_error(ERROR_ADAPTADOR_ITEM_SIN_PRECIO);
 }
 
 int subtipoEntero(const ItemSubtype &subtipo) {

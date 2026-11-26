@@ -14,10 +14,7 @@ ControladorNuevaPartida::ControladorNuevaPartida(
   listaMundos = new ListaSeleccionable(ui.contenedorMundos, this);
 
   connect(&navegador, &NavegadorPaginas::seAbrioPagina, this,
-          [this](QWidget *pagina) {
-            if (pagina == this->ui.pageNuevaPartida && !mundosCargados)
-              pedirYMostrarMundos();
-          });
+          &ControladorNuevaPartida::alAbrirPagina);
 
   ui.botonSiguienteNuevaPartida->setEnabled(false);
 
@@ -29,19 +26,26 @@ ControladorNuevaPartida::ControladorNuevaPartida(
   listaMundos->setAccionAlSeleccionarTarjeta(
       [this]() { actualizarEstadoBotonAvanzar(); });
 
-  connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this, [this]() {
-    this->datosPartida.modo = ModoPartida::Nueva;
-    this->datosPartida.nombrePartida =
-        this->ui.campoNombrePartida->text().trimmed();
-    this->datosPartida.idMundo = listaMundos->idTarjetaSeleccionada();
-    for (const MundoMock &mundo : mundosDisponibles) {
-      if (mundo.nombreMundo == this->datosPartida.idMundo) {
-        this->datosPartida.rutaMapa = mundo.rutaMapa;
-        break;
-      }
+  connect(ui.botonSiguienteNuevaPartida, &QPushButton::clicked, this,
+          &ControladorNuevaPartida::avanzarACustomizarPersonaje);
+}
+
+void ControladorNuevaPartida::alAbrirPagina(QWidget *pagina) {
+  if (pagina == ui.pageNuevaPartida && !mundosCargados)
+    pedirYMostrarMundos();
+}
+
+void ControladorNuevaPartida::avanzarACustomizarPersonaje() {
+  datosPartida.modo = ModoPartida::Nueva;
+  datosPartida.nombrePartida = ui.campoNombrePartida->text().trimmed();
+  datosPartida.idMundo = listaMundos->idTarjetaSeleccionada();
+  for (const MundoMock &mundo : mundosDisponibles) {
+    if (mundo.nombreMundo == datosPartida.idMundo) {
+      datosPartida.rutaMapa = mundo.rutaMapa;
+      break;
     }
-    this->navegador.irAPagina(this->ui.pageCustomizarPersonaje);
-  });
+  }
+  navegador.irAPagina(ui.pageCustomizarPersonaje);
 }
 
 void ControladorNuevaPartida::actualizarEstadoBotonAvanzar() {

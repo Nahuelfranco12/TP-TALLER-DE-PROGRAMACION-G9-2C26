@@ -15,11 +15,7 @@ ControladorCustomizarPersonaje::ControladorCustomizarPersonaje(
   connect(ui.campoNombrePersonaje, &QLineEdit::textChanged, this,
           [this]() { actualizarEstadoBotonAvanzar(); });
   connect(ui.botonJugarCustomizarPersonaje, &QPushButton::clicked, this,
-          [this]() {
-            this->datosPartida.personaje = armarPersonajeElegido();
-            intentarEntrarAJugar(this->servicio, this->datosPartida,
-                                 this->ui.botonJugarCustomizarPersonaje);
-          });
+          &ControladorCustomizarPersonaje::jugarConPersonajeElegido);
   conectarFlechasDeTodasLasPrendas();
   redibujarPrevisualizacionPersonaje();
 }
@@ -40,9 +36,10 @@ void ControladorCustomizarPersonaje::reiniciarPagina() {
   datosPartida.personaje = DatosPersonaje{};
 }
 
-void ControladorCustomizarPersonaje::cambiarOpcionPrenda(int &indiceActual,
-                                                         int cantidadOpciones,
-                                                         int direccion) {
+void ControladorCustomizarPersonaje::cambiarOpcionPrenda(
+    int &indiceActual, const QList<CoordenadaSprite> &opciones,
+    int direccion) {
+  int cantidadOpciones = static_cast<int>(opciones.size());
   if (cantidadOpciones <= 0)
     return;
   indiceActual =
@@ -56,34 +53,68 @@ DatosPersonaje ControladorCustomizarPersonaje::armarPersonajeElegido() const {
 }
 
 void ControladorCustomizarPersonaje::conectarFlechasDeTodasLasPrendas() {
-  conectarFlechasPrenda(ui.botonAnteriorGorroCustomizarPersonaje,
-                        ui.botonSiguienteGorroCustomizarPersonaje, indiceGorro,
-                        dibujar.opcionesGorro());
-  conectarFlechasPrenda(ui.botonAnteriorPeloCustomizarPersonaje,
-                        ui.botonSiguientePeloCustomizarPersonaje, indicePelo,
-                        dibujar.opcionesPelo());
-  conectarFlechasPrenda(ui.botonAnteriorRemeraCustomizarPersonaje,
-                        ui.botonSiguienteRemeraCustomizarPersonaje,
-                        indiceRemera, dibujar.opcionesRemera());
-  conectarFlechasPrenda(ui.botonAnteriorPantalonCustomizarPersonaje,
-                        ui.botonSiguientePantalonCustomizarPersonaje,
-                        indicePantalon, dibujar.opcionesPantalon());
+  connect(ui.botonAnteriorGorroCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::gorroAnterior);
+  connect(ui.botonSiguienteGorroCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::gorroSiguiente);
+  connect(ui.botonAnteriorPeloCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::peloAnterior);
+  connect(ui.botonSiguientePeloCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::peloSiguiente);
+  connect(ui.botonAnteriorRemeraCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::remeraAnterior);
+  connect(ui.botonSiguienteRemeraCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::remeraSiguiente);
+  connect(ui.botonAnteriorPantalonCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::pantalonAnterior);
+  connect(ui.botonSiguientePantalonCustomizarPersonaje, &QPushButton::clicked,
+          this, &ControladorCustomizarPersonaje::pantalonSiguiente);
+}
+
+void ControladorCustomizarPersonaje::gorroAnterior() {
+  cambiarOpcionPrenda(indiceGorro, dibujar.opcionesGorro(), DIRECCION_ANTERIOR);
+}
+
+void ControladorCustomizarPersonaje::gorroSiguiente() {
+  cambiarOpcionPrenda(indiceGorro, dibujar.opcionesGorro(),
+                      DIRECCION_SIGUIENTE);
+}
+
+void ControladorCustomizarPersonaje::peloAnterior() {
+  cambiarOpcionPrenda(indicePelo, dibujar.opcionesPelo(), DIRECCION_ANTERIOR);
+}
+
+void ControladorCustomizarPersonaje::peloSiguiente() {
+  cambiarOpcionPrenda(indicePelo, dibujar.opcionesPelo(), DIRECCION_SIGUIENTE);
+}
+
+void ControladorCustomizarPersonaje::remeraAnterior() {
+  cambiarOpcionPrenda(indiceRemera, dibujar.opcionesRemera(),
+                      DIRECCION_ANTERIOR);
+}
+
+void ControladorCustomizarPersonaje::remeraSiguiente() {
+  cambiarOpcionPrenda(indiceRemera, dibujar.opcionesRemera(),
+                      DIRECCION_SIGUIENTE);
+}
+
+void ControladorCustomizarPersonaje::pantalonAnterior() {
+  cambiarOpcionPrenda(indicePantalon, dibujar.opcionesPantalon(),
+                      DIRECCION_ANTERIOR);
+}
+
+void ControladorCustomizarPersonaje::pantalonSiguiente() {
+  cambiarOpcionPrenda(indicePantalon, dibujar.opcionesPantalon(),
+                      DIRECCION_SIGUIENTE);
+}
+
+void ControladorCustomizarPersonaje::jugarConPersonajeElegido() {
+  datosPartida.personaje = armarPersonajeElegido();
+  intentarEntrarAJugar(servicio, datosPartida,
+                       ui.botonJugarCustomizarPersonaje);
 }
 
 void ControladorCustomizarPersonaje::redibujarPrevisualizacionPersonaje() {
   ui.mostrarPersonaje->setPixmap(dibujar.dibujarPersonaje(
       armarPersonajeElegido(), ESCALA_PREVISUALIZACION));
-}
-
-void ControladorCustomizarPersonaje::conectarFlechasPrenda(
-    QPushButton *anterior, QPushButton *siguiente, int &indice,
-    const QList<CoordenadaSprite> &opciones) {
-  connect(anterior, &QPushButton::clicked, this, [this, &indice, &opciones]() {
-    cambiarOpcionPrenda(indice, static_cast<int>(opciones.size()),
-                        DIRECCION_ANTERIOR);
-  });
-  connect(siguiente, &QPushButton::clicked, this, [this, &indice, &opciones]() {
-    cambiarOpcionPrenda(indice, static_cast<int>(opciones.size()),
-                        DIRECCION_SIGUIENTE);
-  });
 }
