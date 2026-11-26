@@ -6,15 +6,16 @@
 
 class ControladorUnirsePartida : public ControladorPagina {
 public:
-  ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui,
+	ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui,
                            NavegadorPaginas &navegador,
-                           DatosPartida &datosPartida,
+                           DatosPartida &datosPartida, ServicioLobby &servicio,
                            QObject *parent = nullptr);
   void reiniciarPagina() override;
   void actualizarEstadoBotonAvanzar() override;
 
 private:
   DatosPartida &datosPartida;
+  ServicioLobby &servicio;
   void avanzarACustomizarPersonaje();
 };
 

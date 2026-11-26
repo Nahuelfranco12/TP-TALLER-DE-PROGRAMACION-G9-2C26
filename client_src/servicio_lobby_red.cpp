@@ -59,6 +59,19 @@ ResultadoLobby ServicioLobbyRed::entrarAJugar(const DatosPartida &datos) {
   }
 }
 
+ResultadoLobby
+ServicioLobbyRed::verificarCodigoPartida(const QString &codigo) {
+  try {
+    std::string buscado = codigo.toStdString();
+    for (const MatchInfoDto &partida : client.list_matches())
+      if (partida.code == buscado)
+        return ResultadoLobby{true, QString()};
+    return ResultadoLobby{false, ERROR_LOBBY_CODIGO};
+  } catch (const std::exception &error) {
+    return ResultadoLobby{false, QString(ERROR_LOBBY_CONEXION) + error.what()};
+  }
+}
+
 bool ServicioLobbyRed::estaEnPartida() const { return enPartida; }
 
 const std::string &ServicioLobbyRed::codigoPartidaActual() const {

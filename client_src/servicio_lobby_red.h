@@ -13,6 +13,7 @@ public:
   QList<MundoMock> pedirMundosDisponibles() override;
   QList<PartidaGuardada> pedirPartidasGuardadas() override;
   ResultadoLobby entrarAJugar(const DatosPartida &datos) override;
+  ResultadoLobby verificarCodigoPartida(const QString &codigo) override;
 
   bool estaEnPartida() const;
   const std::string &codigoPartidaActual() const;

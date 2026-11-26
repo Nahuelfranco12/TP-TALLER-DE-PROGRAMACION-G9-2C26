@@ -10,6 +10,7 @@ public:
   virtual QList<MundoMock> pedirMundosDisponibles() = 0;
   virtual QList<PartidaGuardada> pedirPartidasGuardadas() = 0;
   virtual ResultadoLobby entrarAJugar(const DatosPartida &datos) = 0;
+  virtual ResultadoLobby verificarCodigoPartida(const QString &codigo) = 0;
 };
 
 #endif // SERVICIO_LOBBY_H_

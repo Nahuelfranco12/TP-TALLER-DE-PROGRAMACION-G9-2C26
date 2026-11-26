@@ -30,7 +30,7 @@ Pantalla::Pantalla(ServicioLobby &servicio, QWidget *parent)
       new ControladorMenuPrincipal(*this, *ui, *navegador, this),
       new ControladorNuevaPartida(*this, *ui, *navegador, datosPartida,
                                   servicio, this),
-      new ControladorUnirsePartida(*this, *ui, *navegador, datosPartida, this),
+      new ControladorUnirsePartida(*this, *ui, *navegador, datosPartida,servicio, this),
       new ControladorRetomarPartida(*this, *ui, *navegador, datosPartida,
                                     dibujante, servicio, this),
       new ControladorCustomizarPersonaje(*this, *ui, *navegador, datosPartida,
