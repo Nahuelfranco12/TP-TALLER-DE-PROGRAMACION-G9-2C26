@@ -15,10 +15,14 @@ private:
   SDL2pp::Texture texto_musica;
   SDL2pp::Texture texto_menos;
   SDL2pp::Texture texto_mas;
+  SDL2pp::Texture texto_pasos;
 
   SDL2pp::Rect boton_musica;
   SDL2pp::Rect boton_menos;
   SDL2pp::Rect boton_mas;
+  SDL2pp::Rect boton_pasos;
+  SDL2pp::Rect boton_menos_pasos;
+  SDL2pp::Rect boton_mas_pasos;
   std::string codigo;
   SDL2pp::Texture texto_boton_codigo;
   SDL2pp::Texture texto_codigo;

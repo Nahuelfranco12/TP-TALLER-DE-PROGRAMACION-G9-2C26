@@ -24,6 +24,26 @@ const char *archivo_tileset(SectorTypeDto tipo) {
   }
   return RUTA_TILESET_PUEBLO;
 }
+
+const SDL_Rect CARTEL = SPRITE_PUERTA_CARTEL;
+const SDL_Rect ESCALERA = SPRITE_PUERTA_ESCALERA;
+
+char letra_de_puerta(const TileDto &tile, SectorTypeDto sector) {
+  switch (tile.doorType) {
+    case FarmExitDto:
+      return LETRA_PUERTA_CARTEL;
+    case VillageEntryDto:
+      if (sector == SectorTypeDto::VILLAGE) {
+        return LETRA_PUERTA_CARTEL;
+      }
+      return LETRA_PUERTA;
+    case CavernEntryDto:
+    case StairsDto:
+      return LETRA_PUERTA_ESCALERA;
+    default:
+      return LETRA_PUERTA;
+  }
+}
 } // namespace
 
 Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
@@ -31,7 +51,7 @@ Mapa::Mapa(Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
     : suelo(renderer, archivo_tileset(tipo)), muebles(renderer, RUTA_MUEBLES),
       piso_pueblo(renderer, RUTA_TILESET_PUEBLO),
       flores(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
-      casa(renderer, RUTA_TILESET_CABANA), borde(LETRA_BORDE),
+      casa(renderer, RUTA_TILESET_CABANA), objetos(renderer, RUTA_OBJETOS_MAPA), mazmorra(renderer, RUTA_TILESET_CAVERNA), borde(LETRA_BORDE),
       tipo(tipo), margen(0) {
   if (tipo == SectorTypeDto::FARM) {
     generar_granja(ancho, alto, semilla);
@@ -149,7 +169,7 @@ void Mapa::actualizar(const std::vector<std::vector<TileDto>> &tiles) {
         letra = LETRA_ARADO;
       }
       if (tile.isDoor) {
-        letra = LETRA_PUERTA;
+        letra = letra_de_puerta(tile, tipo);
       }
       if (!tile.transitable && tipo == SectorTypeDto::CAVERN) {
         letra = LETRA_PARED;
@@ -225,6 +245,16 @@ void Mapa::dibujar_tile(Renderer &renderer, char tipo_tile, int x, int y,
     columna = SUELO_PARED_COLUMNA;
     fila = SUELO_PARED_FILA;
   }
+  if (tipo_tile == LETRA_PUERTA_CARTEL) {
+    dibujar_piso_base(renderer, x, y, lado);
+    renderer.Copy(objetos, Rect(CARTEL.x, CARTEL.y, CARTEL.w, CARTEL.h), Rect(x, y, lado, lado));
+    return;
+  }
+  if (tipo_tile == LETRA_PUERTA_ESCALERA) {
+    dibujar_piso_base(renderer, x, y, lado);
+    renderer.Copy(mazmorra, Rect(ESCALERA.x, ESCALERA.y, ESCALERA.w, ESCALERA.h), Rect(x, y, lado, lado));
+    return;
+  }
   if (tipo_tile == LETRA_PUERTA && tipo != SectorTypeDto::CAVERN) {
     int alto = SPRITE_PUERTA_ALTO * lado / SPRITE_PUERTA_ANCHO;
     Rect origen(SPRITE_PUERTA_X, SPRITE_PUERTA_Y, SPRITE_PUERTA_ANCHO,
@@ -285,5 +315,17 @@ void Mapa::dibujar(Renderer &renderer, int camara_x, int camara_y,
         suelo.SetColorMod(COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE);
       }
     }
+  }
+}
+
+// Dibujo el piso de la zona debajo del cartel o la escalera
+void Mapa::dibujar_piso_base(Renderer &renderer, int x, int y, int lado) {
+  Rect destino(x, y, lado, lado);
+  if (tipo == SectorTypeDto::VILLAGE) {
+    renderer.Copy(piso_pueblo, Rect(SPRITE_PISO_PUEBLO_X, SPRITE_PISO_PUEBLO_Y, PIXELES_POR_TILE, PIXELES_POR_TILE), destino);
+  } else if (tipo == SectorTypeDto::CAVERN) {
+    renderer.Copy(suelo, Rect(SUELO_PISO_CAVERNA_COLUMNA * PIXELES_POR_TILE, SUELO_PISO_CAVERNA_FILA * PIXELES_POR_TILE, PIXELES_POR_TILE, PIXELES_POR_TILE), destino);
+  } else {
+    renderer.Copy(suelo, Rect(SUELO_DEFECTO_COLUMNA * PIXELES_POR_TILE, SUELO_DEFECTO_FILA * PIXELES_POR_TILE, PIXELES_POR_TILE, PIXELES_POR_TILE), destino);
   }
 }

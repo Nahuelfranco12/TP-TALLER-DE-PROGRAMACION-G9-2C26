@@ -36,6 +36,7 @@ public:
   void reproducir_paso();
 
   int obtener_volumen_musica() const;
+  int obtener_volumen_pasos() const;
 };
 
 #endif

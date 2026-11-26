@@ -57,6 +57,8 @@ void Audio::reproducir_paso() {
 
 int Audio::obtener_volumen_musica() const { return volumen_musica; }
 
+int Audio::obtener_volumen_pasos() const { return volumen_pasos; }
+
 void Audio::poner_musica_granja() {
   musica_actual = AUDIO_MUSICA_GRANJA;
   mixer.PlayMusic(musica_granja, AUDIO_REPETIR_SIEMPRE);

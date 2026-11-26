@@ -16,6 +16,8 @@ private:
   SDL2pp::Texture piso_pueblo;
   SDL2pp::Texture flores;
   SDL2pp::Texture casa;
+  SDL2pp::Texture objetos;
+  SDL2pp::Texture mazmorra;
   std::vector<std::string> filas;
   char borde;
 
@@ -35,6 +37,8 @@ private:
 
   void dibujar_tile(SDL2pp::Renderer &renderer, char tipo, int x, int y,
                     int lado);
+
+  void dibujar_piso_base(SDL2pp::Renderer &renderer, int x, int y, int lado);
 
 public:
   Mapa(SDL2pp::Renderer &renderer, SectorTypeDto tipo, int ancho, int alto,
