@@ -19,6 +19,7 @@ struct ClaveItem {
 template <typename T> using TablaIds = std::vector<std::pair<T, const char *>>;
 
 const TablaIds<CropTypes> &tablaIds(CropTypes);
+const TablaIds<AnimalType> &tablaIds(AnimalType);
 const TablaIds<CropQuality> &tablaIds(CropQuality);
 const TablaIds<ClaveItem> &tablaIds(ClaveItem);
 

@@ -12,6 +12,8 @@
 #include "../game/inventory/item_factory.h"
 #include "ids_partida.h"
 #include "../game/entities/chest.h"
+#include "../game/cheatable/growth_cheat.h"
+#include "server_src/persistencia/partida_guardada.h"
 
 namespace {
 ItemSubtype subtipoDe(const ItemState &item) {
@@ -124,6 +126,21 @@ std::vector<CofreGuardado> cofresDe(const WorldState &estado) {
   return cofres;
 }
 
+AnimalGuardado animalGuardadoDe(const EntityState &entidad) {
+  return AnimalGuardado{entidad.animal.type, entidad.position.x,
+                        entidad.position.y, entidad.animal.is_ready};
+}
+
+std::vector<AnimalGuardado> animalesDe(const WorldState &estado) {
+  std::vector<AnimalGuardado> animales;
+  for (const SectorState &sector : estado.sectors)
+    if (sector.id == IdSector::FARM)
+      for (const EntityState &entidad : sector.entities)
+        if (entidad.type == EntityTypes::ANIMAL)
+          animales.push_back(animalGuardadoDe(entidad));
+  return animales;
+}
+
 std::vector<CultivoGuardado> cultivosDe(const WorldState &estado) {
   std::vector<CultivoGuardado> cultivos;
   for (const SectorState &sector : estado.sectors)
@@ -204,6 +221,19 @@ void restaurarCofre(Sector &granja, const CofreGuardado &guardado) {
     throw std::runtime_error(ERROR_ADAPTADOR_COFRE_OCUPADO);
 }
 
+void restaurarAnimal(World &mundo, Sector &granja,
+                     const AnimalGuardado &guardado) {
+  Position posicion(guardado.x, guardado.y);
+  if (!mundo.spawnAnimal(IdSector::FARM, posicion, guardado.tipo))
+    throw std::runtime_error(ERROR_ADAPTADOR_ANIMAL_OCUPADO);
+  if (!guardado.listo)
+    return;
+  Entity *entidad = granja.getEntity(posicion);
+  IGrowthCheat *animal = dynamic_cast<IGrowthCheat *>(entidad);
+  if (animal != nullptr)
+    animal->growthCheat();
+}
+
 } // namespace
 
 PartidaGuardada extraerPartida(const World &mundo,
@@ -226,6 +256,7 @@ PartidaGuardada extraerPartida(const World &mundo,
   partida.granja.aradas = aradasDe(*granja);
   partida.granja.cultivos = cultivosDe(estado);
   partida.granja.cofres = cofresDe(estado);
+  partida.granja.animales = animalesDe(estado);
   return partida;
 }
 
@@ -246,4 +277,7 @@ void restaurarPartida(World &mundo, const PartidaGuardada &partida) {
     granja->till(Position(celda.x, celda.y));
   for (const CofreGuardado &cofre : partida.granja.cofres)
   	restaurarCofre(*granja, cofre);
+  for (const AnimalGuardado &animal : partida.granja.animales)
+  	restaurarAnimal(mundo, *granja, animal);
+
 }

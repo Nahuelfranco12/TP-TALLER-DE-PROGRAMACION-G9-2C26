@@ -21,6 +21,12 @@ const TablaIds<CropQuality> &tablaIds(CropQuality) {
   return tabla;
 }
 
+const TablaIds<AnimalType> &tablaIds(AnimalType) {
+  static const TablaIds<AnimalType> tabla = {
+      {AnimalType::COW, ID_ITEM_VACA}, {AnimalType::CHICKEN, ID_ITEM_GALLINA}};
+  return tabla;
+}
+
 const TablaIds<ClaveItem> &tablaIds(ClaveItem) {
   static const TablaIds<ClaveItem> tabla = {
       {{ItemType::MINERAL, MineralTypes::GOLD}, ID_MINERAL_ORO},

@@ -40,6 +40,8 @@
 #define CLAVE_PARTIDA_COSECHAS_EXTRA "cosechas_extra"
 #define CLAVE_PARTIDA_SUERTE "suerte"
 #define CLAVE_PARTIDA_COFRES "cofres"
+#define CLAVE_PARTIDA_ANIMALES "animales"
+#define CLAVE_PARTIDA_LISTO "listo"
 
 // Archivo TOML: errores al escribir y leer -> archivo_partida.cpp
 #define ERROR_PARTIDA_ESCRIBIR "No se pudo escribir la partida: "
@@ -95,6 +97,7 @@
 #define ERROR_ADAPTADOR_SIN_GRANJA "La partida no tiene granja"
 #define ERROR_ADAPTADOR_ITEM_SIN_SUBTIPO "Hay un ítem sin subtipo para guardar"
 #define ERROR_ADAPTADOR_COFRE_OCUPADO "No se pudo restaurar un cofre: la celda está ocupada"
+#define ERROR_ADAPTADOR_ANIMAL_OCUPADO "No se pudo restaurar un animal: la celda está ocupada"
 #define ERROR_ADAPTADOR_ITEM_SIN_PRECIO "Item sin precio"
 
 #endif // CONSTANTES_PERSISTENCIA_H_

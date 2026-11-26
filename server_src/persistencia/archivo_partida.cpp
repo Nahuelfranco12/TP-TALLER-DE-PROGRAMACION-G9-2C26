@@ -75,6 +75,15 @@ toml::table tablaCofre(const CofreGuardado &cofre) {
       {CLAVE_PARTIDA_INVENTARIO, arrayDe(cofre.inventario, tablaItem)}};
 }
 
+toml::table tablaAnimal(const AnimalGuardado &animal) {
+  toml::table tabla{{CLAVE_PARTIDA_TIPO, idDe(animal.tipo)},
+                    {CLAVE_PARTIDA_X, entero(animal.x)},
+                    {CLAVE_PARTIDA_Y, entero(animal.y)},
+                    {CLAVE_PARTIDA_LISTO, animal.listo}};
+  tabla.is_inline(true);
+  return tabla;
+}
+
 toml::table tablaJugador(const JugadorGuardado &jugador) {
   return toml::table{
       {CLAVE_PARTIDA_NOMBRE, jugador.nombre},
@@ -90,7 +99,9 @@ toml::table tablaGranja(const GranjaGuardada &granja) {
   return toml::table{
       {CLAVE_PARTIDA_ARADAS, arrayDe(granja.aradas, tablaCelda)},
       {CLAVE_PARTIDA_CULTIVOS, arrayDe(granja.cultivos, tablaCultivo)},
-      {CLAVE_PARTIDA_COFRES, arrayDe(granja.cofres, tablaCofre)}};
+      {CLAVE_PARTIDA_COFRES, arrayDe(granja.cofres, tablaCofre)},
+      {CLAVE_PARTIDA_ANIMALES, arrayDe(granja.animales, tablaAnimal)}
+  };
 }
 
 void crearCarpeta(const std::filesystem::path &carpeta) {
@@ -150,6 +161,14 @@ CofreGuardado cofreDe(const toml::table &tabla, const std::string &donde) {
       leerLista(tabla, CLAVE_PARTIDA_INVENTARIO, donde, itemDe)};
 }
 
+AnimalGuardado animalDe(const toml::table &tabla, const std::string &donde) {
+  return AnimalGuardado{
+      leerId<AnimalType>(tabla, CLAVE_PARTIDA_TIPO, donde),
+      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
+      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde),
+      leerValor<bool>(tabla, CLAVE_PARTIDA_LISTO, donde)};
+}
+
 JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
   return JugadorGuardado{
       leerValor<std::string>(tabla, CLAVE_PARTIDA_NOMBRE, donde),
@@ -167,7 +186,9 @@ GranjaGuardada granjaDe(const toml::table &raiz) {
       leerLista(tabla, CLAVE_PARTIDA_ARADAS, CLAVE_PARTIDA_GRANJA, celdaDe),
       leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,
                 cultivoDe),
-      leerLista(tabla, CLAVE_PARTIDA_COFRES, CLAVE_PARTIDA_GRANJA, cofreDe)};
+      leerLista(tabla, CLAVE_PARTIDA_COFRES, CLAVE_PARTIDA_GRANJA, cofreDe),
+      leerLista(tabla, CLAVE_PARTIDA_ANIMALES, CLAVE_PARTIDA_GRANJA, animalDe)
+  };
 }
 
 bool comparadorPartidas(const PartidaGuardada &una,
