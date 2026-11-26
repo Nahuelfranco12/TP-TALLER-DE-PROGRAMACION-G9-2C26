@@ -31,9 +31,51 @@ bool modelo_de_cabana(BuildingTypeDto tipo, int &modelo) {
       return false;
   }
 }
-
 const int ULTIMA_ETAPA[] = CULTIVO_ULTIMA_ETAPA;
 } // namespace
+
+bool Granja::sprite_de(EntityTypeDto tipo, Sprite &sprite) {
+  switch (tipo) {
+  case EntityTypeDto::BED:
+    sprite = {&interior, SPRITE_CAMA};
+    return true;
+  case EntityTypeDto::CHAIR:
+    sprite = {&interior, SPRITE_SILLA};
+    return true;
+  case EntityTypeDto::TABLE:
+    sprite = {&interior, SPRITE_MESA};
+    return true;
+  case EntityTypeDto::NIGHTSTAND:
+    sprite = {&interior, SPRITE_MESITA};
+    return true;
+  case EntityTypeDto::FIREPLACE:
+    sprite = {&interior, SPRITE_CHIMENEA};
+    return true;
+  case EntityTypeDto::VASE:
+    sprite = {&objetos, SPRITE_JARRON};
+    return true;
+  case EntityTypeDto::SOFA:
+    sprite = {&objetos, SPRITE_DECO_BANCO};
+    return true;
+  case EntityTypeDto::CRATE:
+    sprite = {&caja, SPRITE_CAJA};
+    return true;
+  case EntityTypeDto::BARREL:
+    sprite = {&barril, SPRITE_BARRIL};
+    return true;
+  case EntityTypeDto::FLOWER_POT:
+    sprite = {&maceta, SPRITE_MACETA};
+    return true;
+  case EntityTypeDto::SUNFLOWER:
+    sprite = {&girasol, SPRITE_GIRASOL};
+    return true;
+  case EntityTypeDto::WELL:
+    sprite = {&aljibe, SPRITE_ALJIBE};
+    return true;
+  default:
+    return false;
+  }
+}
 
 Granja::Granja(Renderer &renderer)
     // Cargar texturas
@@ -41,7 +83,11 @@ Granja::Granja(Renderer &renderer)
       gallina(renderer, RUTA_GALLINA), cultivos(renderer, RUTA_CULTIVOS),
       suelo(renderer, RUTA_TILESET_GRANJA), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
-      interior(renderer, RUTA_INTERIOR), exclamacion(renderer, RUTA_EXCLAMACION), vueltas(0) {}
+      interior(renderer, RUTA_INTERIOR), exclamacion(renderer, RUTA_EXCLAMACION),
+      objetos(renderer, RUTA_OBJETOS_MAPA), caja(renderer, RUTA_CAJA),
+      barril(renderer, RUTA_BARRIL), maceta(renderer, RUTA_MACETA),
+      girasol(renderer, RUTA_GIRASOL), aljibe(renderer, RUTA_ALJIBE),
+      vueltas(0) {}
 
 void Granja::animar(long vueltas_pasadas) { vueltas += vueltas_pasadas; }
 
@@ -118,19 +164,21 @@ void Granja::dibujar_mueble(Renderer &renderer, const Mueble &mueble,
                             int camara_x, int camara_y, int lado) {
   int x = mueble.tile_x * lado - camara_x;
   int y = mueble.tile_y * lado - camara_y;
-  Rect destino(x, y, lado, lado);
 
-  if (mueble.tipo == COFRE) {
+  if (mueble.tipo == EntityTypeDto::CHEST) {
     int fila = mueble.abierto ? SPRITE_COFRE_ABIERTO_Y : SPRITE_COFRE_CERRADO_Y;
     Rect origen(SPRITE_COFRE_X, fila, SPRITE_COFRE_LADO, SPRITE_COFRE_LADO);
-    renderer.Copy(cofre, origen, destino);
-  } else if (mueble.tipo == CAMA) {
-    Rect origen(SPRITE_CAMA_X, SPRITE_CAMA_Y, SPRITE_CAMA_ANCHO, SPRITE_CAMA_ALTO);
-    int ancho = SPRITE_CAMA_ANCHO * lado / PIXELES_POR_TILE;
-    int alto = SPRITE_CAMA_ALTO * lado / PIXELES_POR_TILE;
-    Rect destino(x + (lado - ancho) / 2, y + lado - alto, ancho, alto);
-    renderer.Copy(interior, origen, destino);
+    renderer.Copy(cofre, origen, Rect(x, y, lado, lado));
+    return;
   }
+
+  Sprite sprite;
+  if (!sprite_de(mueble.tipo, sprite))
+    return;
+  int ancho = sprite.origen.w * lado / PIXELES_POR_TILE;
+  int alto = sprite.origen.h * lado / PIXELES_POR_TILE;
+  renderer.Copy(*sprite.textura, Rect(sprite.origen),
+                Rect(x + (lado - ancho) / 2, y + lado - alto, ancho, alto));
 }
 
 void Granja::dibujar(Renderer &renderer, int camara_x, int camara_y, int lado) {
@@ -167,9 +215,11 @@ void Granja::actualizar(const std::map<GamePositionDto, EntityDto> &entidades) {
                   CULTIVO_CRECIMIENTO_MAXIMO;
       lista_cultivos.push_back({tipo, x, y, etapa, entidad.crop.needsWater});
     } else if (entidad.type == EntityTypeDto::CHEST) {
-      lista_muebles.push_back({COFRE, x, y, entidad.chest.openedByMe});
-    } else if (entidad.type == EntityTypeDto::BED) {
-      lista_muebles.push_back({CAMA, x, y, false});
+      lista_muebles.push_back({entidad.type, x, y, entidad.chest.openedByMe});
+    } else {
+      Sprite sprite;
+      if(sprite_de(entidad.type, sprite))
+        lista_muebles.push_back({entidad.type, x, y, false});
     }
   }
 }
