@@ -28,11 +28,15 @@ Interfaz::Interfaz(SDL2pp::Renderer &renderer,
       texto_menos(renderer,
                   fuente.RenderUTF8_Blended(TEXTO_JUEGO_MENOS, BLANCO)),
       texto_mas(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_MAS, BLANCO)),
+      texto_pasos(renderer, fuente.RenderUTF8_Blended(TEXTO_JUEGO_PASOS, BLANCO)),
       boton_musica(HUD_MARGEN, HUD_MARGEN, HUD_ANCHO_BOTON_MUSICA,
                    HUD_ALTO_BOTON),
       boton_menos(HUD_BOTON_MENOS_X, HUD_MARGEN, HUD_ALTO_BOTON,
                   HUD_ALTO_BOTON),
       boton_mas(HUD_BOTON_MAS_X, HUD_MARGEN, HUD_ALTO_BOTON, HUD_ALTO_BOTON),
+      boton_pasos(HUD_MARGEN, HUD_FILA_PASOS_Y, HUD_ANCHO_BOTON_MUSICA, HUD_ALTO_BOTON),
+      boton_menos_pasos(HUD_BOTON_MENOS_X, HUD_FILA_PASOS_Y, HUD_ALTO_BOTON, HUD_ALTO_BOTON),
+      boton_mas_pasos(HUD_BOTON_MAS_X, HUD_FILA_PASOS_Y, HUD_ALTO_BOTON, HUD_ALTO_BOTON),
       codigo(codigo_partida),
       texto_boton_codigo(renderer, fuente.RenderUTF8_Blended(
                                        TEXTO_JUEGO_BOTON_CODIGO, BLANCO)),
@@ -67,6 +71,11 @@ bool Interfaz::click(int x, int y, Audio &audio) {
   } else if (boton_mas.Contains(x, y)) {
     audio.subir_volumen_musica();
     return true;
+  } else if (boton_menos_pasos.Contains(x, y)) {
+    audio.bajar_volumen_pasos();
+    return true;
+  } else if (boton_mas_pasos.Contains(x, y)) {
+    audio.subir_volumen_pasos();
   }
   return false;
 }
@@ -93,19 +102,36 @@ void Interfaz::dibujar(SDL2pp::Renderer &renderer, const Audio &audio) {
   dibujar_boton(renderer, boton_menos, texto_menos);
   dibujar_boton(renderer, boton_mas, texto_mas);
 
+  dibujar_boton(renderer, boton_pasos, texto_pasos);
+  dibujar_boton(renderer, boton_menos_pasos, texto_menos);
+  dibujar_boton(renderer, boton_mas_pasos, texto_mas);
+
   const SDL2pp::Color encendida = COLOR_RAYITA_ENCENDIDA;
   const SDL2pp::Color apagada = COLOR_RAYITA_APAGADA;
-  int endendidas = audio.obtener_volumen_musica() / AUDIO_INCREMENTO_VOLUMEN;
+  int encendidas = audio.obtener_volumen_musica() / AUDIO_INCREMENTO_VOLUMEN;
   for (int i = 0; i < HUD_RAYITAS_VOLUMEN; i++) {
     Rect rayita(HUD_RAYITA_X + i * HUD_RAYITA_PASO, HUD_RAYITA_Y,
                 HUD_RAYITA_ANCHO, HUD_RAYITA_ALTO);
-    if (i < endendidas) {
+    if (i < encendidas) {
       renderer.SetDrawColor(encendida);
     } else {
       renderer.SetDrawColor(apagada);
     }
     renderer.FillRect(rayita);
   }
+
+  int encendidas_pasos = audio.obtener_volumen_pasos() / AUDIO_INCREMENTO_VOLUMEN;
+  for (int i = 0; i < HUD_RAYITAS_VOLUMEN; i++) {
+    Rect rayita(HUD_RAYITA_X + i * HUD_RAYITA_PASO, HUD_RAYITA_PASOS_Y,
+                HUD_RAYITA_ANCHO, HUD_RAYITA_ALTO);
+    if (i < encendidas_pasos) {
+      renderer.SetDrawColor(encendida);
+    } else {
+      renderer.SetDrawColor(apagada);
+    }
+    renderer.FillRect(rayita);
+  }
+
   SDL2pp::Texture *texto = &texto_boton_codigo;
   if (mostrando_codigo) {
     texto = &texto_codigo;

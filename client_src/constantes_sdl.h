@@ -52,7 +52,8 @@
 #define LETRA_FLORES 'f'
 #define LETRA_VACIO ' '
 #define LETRA_PISO_MADERA 'm'
-
+#define LETRA_PUERTA_CARTEL 'g'
+#define LETRA_PUERTA_ESCALERA 'h'
 
 // Bosque alrededor de la granja (en tiles) -> alrededores.cpp
 #define BOSQUE_ZONA 30
@@ -219,6 +220,9 @@
 #define HUD_RAYITA_Y 22
 #define HUD_RAYITA_ANCHO 8
 #define HUD_RAYITA_ALTO 20
+#define HUD_FILA_PASOS_Y (HUD_MARGEN + HUD_ALTO_BOTON + HUD_SEPARACION_CAJAS)
+#define HUD_RAYITA_PASOS_Y (HUD_RAYITA_Y + HUD_ALTO_BOTON + HUD_SEPARACION_CAJAS)
+#define TEXTO_JUEGO_PASOS "Pasos"
 
 // Teclas -> main.cpp
 #define TECLA_SALIR SDLK_ESCAPE
@@ -453,6 +457,8 @@
   { RUTA_NPC_MARNIE, 64, 48 }
 #define SPRITE_MODELOS_NPCS                                                    \
   { SPRITE_NPC_PIERRE, SPRITE_NPC_CLINT, SPRITE_NPC_ROBIN, SPRITE_NPC_MARNIE }
+#define SPRITE_PUERTA_CARTEL {0, 128, 16, 16}
+#define SPRITE_PUERTA_ESCALERA {144, 48, 16, 16}
 
 // Sprites: centro comunitario (px)
 #define SPRITE_EDIFICIO_CENTRO {17, 181, 190, 123}
