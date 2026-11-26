@@ -38,13 +38,7 @@ void ControladorNuevaPartida::alAbrirPagina(QWidget *pagina) {
 void ControladorNuevaPartida::avanzarACustomizarPersonaje() {
   datosPartida.modo = ModoPartida::Nueva;
   datosPartida.nombrePartida = ui.campoNombrePartida->text().trimmed();
-  datosPartida.idMundo = listaMundos->idTarjetaSeleccionada();
-  for (const MundoMock &mundo : mundosDisponibles) {
-    if (mundo.nombreMundo == datosPartida.idMundo) {
-      datosPartida.rutaMapa = mundo.rutaMapa;
-      break;
-    }
-  }
+  datosPartida.rutaMapa = listaMundos->idTarjetaSeleccionada();
   navegador.irAPagina(ui.pageCustomizarPersonaje);
 }
 
@@ -55,15 +49,11 @@ void ControladorNuevaPartida::actualizarEstadoBotonAvanzar() {
 }
 
 void ControladorNuevaPartida::pedirYMostrarMundos() {
-  mundosDisponibles = servicio.pedirMundosDisponibles();
-
   QList<DatosTarjeta> tarjetas;
-  for (const MundoMock &mundo : mundosDisponibles) {
-    tarjetas.append(DatosTarjeta{mundo.nombreMundo, QPixmap(),
-                                 mundo.nombreMundo, QString(), QString(),
-                                 TEXTO_ELEGIR_MUNDO});
+  for (const MundoMock &mundo : servicio.pedirMundosDisponibles()) {
+    tarjetas.append(DatosTarjeta{mundo.rutaMapa, QPixmap(), mundo.nombreMundo,
+                                 QString(), QString(), TEXTO_ELEGIR_MUNDO});
   }
-
   listaMundos->cargarTarjetas(tarjetas);
   mundosCargados = true;
 }

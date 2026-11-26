@@ -18,7 +18,6 @@ public:
 
 private:
   ListaSeleccionable *listaMundos;
-  QList<MundoMock> mundosDisponibles;
   DatosPartida &datosPartida;
   ServicioLobby &servicio;
   void pedirYMostrarMundos();

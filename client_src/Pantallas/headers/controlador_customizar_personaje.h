@@ -4,6 +4,7 @@
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
+#include "constantes_pantallas.h"
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:
@@ -17,10 +18,10 @@ public:
   void actualizarEstadoBotonAvanzar() override;
 
 private:
-  int indicePelo = 0;
-  int indiceGorro = 0;
-  int indicePantalon = 0;
-  int indiceRemera = 0;
+  int indicePelo = OPCION_POR_DEFECTO;
+  int indiceGorro = OPCION_POR_DEFECTO;
+  int indicePantalon = OPCION_POR_DEFECTO;
+  int indiceRemera = OPCION_POR_DEFECTO;
 
   DatosPersonaje armarPersonajeElegido() const;
 
