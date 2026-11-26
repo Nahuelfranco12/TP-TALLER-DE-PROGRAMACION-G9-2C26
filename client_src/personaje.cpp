@@ -29,7 +29,8 @@ Personaje::Personaje(SDL2pp::Renderer &renderer)
       color_pelo(PERSONAJE_COLOR_PELO_INICIAL), tile_x(0), tile_y(0),
       mirando(ABAJO), vueltas_caminando(0), vueltas_restantes_paso(0),
       vueltas_picando(0), en_la_mano(ToolTypeDto::PICKAXE),
-      vida(BARRA_VALOR_MAXIMO), energia(BARRA_VALOR_MAXIMO) {
+      vida(BARRA_VALOR_MAXIMO), energia(BARRA_VALOR_MAXIMO), muerto(false),
+      vueltas_muriendo(0), vueltas_rojo(0) {
   // Colores iniciales
   pantalones.SetColorMod(COLORES[color_pantalon][0], COLORES[color_pantalon][1],
                          COLORES[color_pantalon][2]);
@@ -80,7 +81,7 @@ bool Personaje::aplicar(int nuevo_x, int nuevo_y) {
 
   tile_x = nuevo_x;
   tile_y = nuevo_y;
-  vueltas_restantes_paso = PERSONAJE_VUELTAS_POR_PASO;
+  vueltas_restantes_paso = vueltas_por_paso();
   return true;
 }
 
@@ -94,6 +95,12 @@ void Personaje::animar(long vueltas) {
   if (vueltas_picando > 0) {
     vueltas_picando -= vueltas;
   }
+  if (muerto && vueltas_muriendo < PERSONAJE_DURACION_MORIR) {
+    vueltas_muriendo += vueltas;
+  }
+  if (vueltas_rojo > 0) {
+    vueltas_rojo -= vueltas;
+  }
 }
 
 void Personaje::mirar(Direccion direccion) { mirando = direccion; }
@@ -106,11 +113,52 @@ void Personaje::picar() {
 
 void Personaje::agarrar(ToolTypeDto herramienta) { en_la_mano = herramienta; }
 
-void Personaje::poner_vida(double nueva_vida) { vida = nueva_vida; }
+void Personaje::poner_vida(double nueva_vida) {
+  if (nueva_vida < vida) {
+    vueltas_rojo = PERSONAJE_DURACION_ROJO;
+  }
+  if (nueva_vida <= 0 && !muerto) {
+    muerto = true;
+    vueltas_muriendo = 0;
+  } else if (nueva_vida > 0) {
+    muerto = false;
+  }
+  vida = nueva_vida;
+}
 
 void Personaje::poner_energia(double nueva_energia) { energia = nueva_energia; }
 
 double Personaje::obtener_vida() const { return vida; }
+
+long Personaje::vueltas_por_paso() const {
+  if (vida <= PERSONAJE_VIDA_LENTO) {
+    return PERSONAJE_VUELTAS_POR_PASO * PERSONAJE_FACTOR_LENTO;
+  }
+  return PERSONAJE_VUELTAS_POR_PASO;
+}
+
+double Personaje::angulo_caida() const {
+  if (!muerto) {
+    return 0.0;
+  }
+  long avance = std::min(vueltas_muriendo, static_cast<long>(PERSONAJE_DURACION_MORIR));
+  double angulo = PERSONAJE_ANGULO_CAIDA * avance / PERSONAJE_DURACION_MORIR;
+  if (mirando == IZQUIERDA) {
+    return -angulo;
+  }
+  return angulo;
+}
+
+void Personaje::pintar(Texture &textura, const Uint8 color[3]) const {
+  Uint8 rojo = color[0];
+  Uint8 verde = color[1];
+  Uint8 azul = color[2];
+  if (vueltas_rojo > 0) {
+    verde = static_cast<Uint8>(verde * PERSONAJE_ROJO_VERDE_AZUL / 255);
+    azul = static_cast<Uint8>(azul * PERSONAJE_ROJO_VERDE_AZUL / 255);
+  }
+  textura.SetColorMod(rojo, verde, azul);
+}
 
 int Personaje::obtener_tile_x() const { return tile_x; }
 
@@ -119,9 +167,10 @@ Direccion Personaje::obtener_direccion() const { return mirando; }
 int Personaje::obtener_tile_y() const { return tile_y; }
 
 void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
+  long vueltas_por_cuadro = PERSONAJE_VUELTAS_POR_CUADRO * vueltas_por_paso() / PERSONAJE_VUELTAS_POR_PASO;
   int columna = 0;
   if (vueltas_restantes_paso > 0) {
-    long paso = (vueltas_caminando / PERSONAJE_VUELTAS_POR_CUADRO) %
+    long paso = (vueltas_caminando / vueltas_por_cuadro) %
                 PERSONAJE_CUADROS_CAMINAR;
     columna = PASOS_ANIMACION[paso];
   }
@@ -145,11 +194,23 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
     fila_cuerpo = FILAS_PICAR[fila_cuerpo];
     rebote = 0;
   }
+
+  if (muerto) {
+    columna = 0;
+    fila_cuerpo = mirando;
+    if (mirando == IZQUIERDA) {
+      fila_cuerpo = DERECHA;
+    }
+    rebote = 0;
+  }
+
   int x = tile_x * TAMANIO_TILE - camara_x;
   int y = tile_y * TAMANIO_TILE - TAMANIO_TILE - camara_y;
   dibujar_capas(renderer, x, y, TAMANIO_TILE, columna, fila_cuerpo, mirando,
-                rebote);
-  dibujar_herramienta(renderer, x, y, TAMANIO_TILE);
+                rebote, angulo_caida());
+  if (!muerto) {
+    dibujar_herramienta(renderer, x, y, TAMANIO_TILE);
+  }
 
   int barra_x = x + TAMANIO_TILE / 2 - BARRA_ANCHO / 2;
   int barra_energia_y = y - BARRA_ALTO - BARRA_SEPARACION;
@@ -160,14 +221,6 @@ void Personaje::dibujar(Renderer &renderer, int camara_x, int camara_y) {
   dibujar_barra(renderer, barra_x, barra_energia_y, energia, color_energia);
 }
 
-// void Personaje::dibujar_quieto(Renderer &renderer, int otro_tile_x,
-//                                int otro_tile_y, int camara_x, int camara_y,
-//                                int lado) {
-//   int x = otro_tile_x * lado - camara_x;
-//   int y = otro_tile_y * lado - lado - camara_y;
-//   dibujar_capas(renderer, x, y, lado, 0, ABAJO, ABAJO, 0);
-// }
-
 void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
                               int lado) {
   int fila_cuerpo = mirando;
@@ -176,12 +229,12 @@ void Personaje::dibujar_icono(Renderer &renderer, int centro_x, int pie_y,
   }
   int arriba_y = pie_y - SPRITE_PERSONAJE_ALTO * lado / PIXELES_POR_TILE;
   dibujar_capas(renderer, centro_x - lado / 2, arriba_y, lado, 0, fila_cuerpo,
-                mirando, 0);
+                mirando, 0, 0.0);
 }
 
 void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                               int columna, int fila_cuerpo, Direccion direccion,
-                              int rebote) {
+                              int rebote, double angulo) {
   int fila = direccion;
   int flip = SDL_FLIP_NONE;
   if (direccion == IZQUIERDA) {
@@ -192,13 +245,22 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
   int ancho = SPRITE_PERSONAJE_ANCHO * lado / PIXELES_POR_TILE;
   int alto = SPRITE_PERSONAJE_ALTO * lado / PIXELES_POR_TILE;
   Rect destino(x, y, ancho, alto);
+  int pies_x = x + ancho / 2;
+  int pies_y = y + alto;
+  auto giro = [pies_x, pies_y](const Rect &lugar) {
+    return SDL2pp::Point(pies_x - lugar.x, pies_y - lugar.y);
+  };
+
+  const Uint8 sin_tinte[3] = {COLOR_SIN_TINTE, COLOR_SIN_TINTE, COLOR_SIN_TINTE};
+
   int desplazamiento = rebote * lado / PIXELES_POR_TILE;
 
   // Cuerpo
   Rect origen_cuerpo(columna * SPRITE_PERSONAJE_ANCHO,
                      fila_cuerpo * SPRITE_PERSONAJE_ALTO,
                      SPRITE_PERSONAJE_ANCHO, SPRITE_PERSONAJE_ALTO);
-  renderer.Copy(cuerpo, origen_cuerpo, destino, 0.0, NullOpt, flip);
+  pintar(cuerpo, sin_tinte);
+  renderer.Copy(cuerpo, origen_cuerpo, destino, angulo, giro(destino), flip);
 
   // Pantalones
   int pantalon_x =
@@ -209,7 +271,8 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
       fila_cuerpo * SPRITE_PERSONAJE_ALTO;
   Rect origen_pantalon(pantalon_x, pantalon_y, SPRITE_PERSONAJE_ANCHO,
                        SPRITE_PERSONAJE_ALTO);
-  renderer.Copy(pantalones, origen_pantalon, destino, 0.0, NullOpt, flip);
+  pintar(pantalones, COLORES[color_pantalon]);
+  renderer.Copy(pantalones, origen_pantalon, destino, angulo, giro(destino), flip);
 
   // Remera
   int fila_remera = SPRITE_REMERA_FILA_ABAJO;
@@ -231,13 +294,14 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                       y + SPRITE_REMERA_Y * lado / PIXELES_POR_TILE +
                           desplazamiento,
                       lado_remera, lado_remera);
-  renderer.Copy(remeras, origen_remera, destino_remera);
+  pintar(remeras, sin_tinte);
+  renderer.Copy(remeras, origen_remera, destino_remera, angulo, giro(destino_remera));
 
   // Brazos
   Rect origen_brazos(SPRITE_BRAZOS_X + columna * SPRITE_PERSONAJE_ANCHO,
                      fila_cuerpo * SPRITE_PERSONAJE_ALTO,
                      SPRITE_PERSONAJE_ANCHO, SPRITE_PERSONAJE_ALTO);
-  renderer.Copy(cuerpo, origen_brazos, destino, 0.0, NullOpt, flip);
+  renderer.Copy(cuerpo, origen_brazos, destino, angulo, giro(destino), flip);
 
   // Pelo
   int pelo_x = (pelo % SPRITE_PELOS_POR_FILA) * SPRITE_PERSONAJE_ANCHO;
@@ -246,7 +310,8 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
   Rect origen_pelo(pelo_x, pelo_y, SPRITE_PERSONAJE_ANCHO,
                    SPRITE_PERSONAJE_ALTO);
   Rect destino_pelo(x, y + desplazamiento, ancho, alto);
-  renderer.Copy(pelos, origen_pelo, destino_pelo, 0.0, NullOpt, flip);
+  pintar(pelos, COLORES[color_pelo]);
+  renderer.Copy(pelos, origen_pelo, destino_pelo, angulo, giro(destino_pelo), flip);
 
   // Sombrero
   if (sombrero >= 0) {
@@ -270,7 +335,8 @@ void Personaje::dibujar_capas(Renderer &renderer, int x, int y, int lado,
                           y + SPRITE_SOMBRERO_Y * lado / PIXELES_POR_TILE +
                               desplazamiento,
                           lado_sombrero, lado_sombrero);
-    renderer.Copy(sombreros, origen_sombrero, destino_sombrero);
+    pintar(sombreros, sin_tinte);
+    renderer.Copy(sombreros, origen_sombrero, destino_sombrero, angulo, giro(destino_sombrero));
   }
 }
 
