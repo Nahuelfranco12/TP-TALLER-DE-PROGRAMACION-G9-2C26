@@ -11,6 +11,7 @@
 #include "constantes_persistencia.h"
 #include "../game/inventory/item_factory.h"
 #include "ids_partida.h"
+#include "../game/entities/chest.h"
 
 namespace {
 ItemSubtype subtipoDe(const ItemState &item) {
@@ -40,6 +41,14 @@ ItemGuardado itemGuardadoDe(const ItemState &item) {
   return ItemGuardado{item.type, subtipoDe(item), item.quality, item.count};
 }
 
+std::vector<ItemGuardado> itemsGuardablesDe(const InventoryState &inventario) {
+  std::vector<ItemGuardado> items;
+  for (const ItemState &item : inventario.items)
+    if (esGuardable(item))
+      items.push_back(itemGuardadoDe(item));
+  return items;
+}
+
 OutfitGuardado outfitGuardadoDe(const PlayerOutfitState &outfit) {
   return OutfitGuardado{
       static_cast<int>(outfit.hat), static_cast<int>(outfit.hairs),
@@ -59,7 +68,7 @@ JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
                          estado.life,
                          estado.energy,
                          estado.coins,
-                         std::move(inventario)};
+                         itemsGuardablesDe(estado.inventory)};
 }
 
 void actualizarJugador(std::vector<JugadorGuardado> &jugadores,
@@ -93,6 +102,26 @@ CultivoGuardado cultivoGuardadoDe(const EntityState &entidad) {
                          cultivo.readyTicks,
                          cultivo.extraHarvestsLeft,
                          cultivo.luck};
+}
+
+bool esCofre(const EntityState &entidad) {
+  return entidad.type == EntityTypes::FURNITURE &&
+         entidad.furniture.type == FurnitureType::CHEST;
+}
+
+CofreGuardado cofreGuardadoDe(const EntityState &entidad) {
+  return CofreGuardado{entidad.position.x, entidad.position.y,
+                       itemsGuardablesDe(entidad.chest.inventory)};
+}
+
+std::vector<CofreGuardado> cofresDe(const WorldState &estado) {
+  std::vector<CofreGuardado> cofres;
+  for (const SectorState &sector : estado.sectors)
+    if (sector.id == IdSector::FARM)
+      for (const EntityState &entidad : sector.entities)
+        if (esCofre(entidad))
+          cofres.push_back(cofreGuardadoDe(entidad));
+  return cofres;
 }
 
 std::vector<CultivoGuardado> cultivosDe(const WorldState &estado) {
@@ -159,12 +188,20 @@ void vaciarInventario(Player &jugador) {
   }
 }
 
-void cargarInventario(Player &jugador,
-                      const std::vector<ItemGuardado> &items) {
-  Inventory &inventario = jugador.getInventory();
+void cargarItems(Inventory &inventario,
+                 const std::vector<ItemGuardado> &items) {
   for (const ItemGuardado &item : items)
     for (int i = 0; i < item.cantidad; ++i)
       inventario.addItem(crearItem(item));
+}
+
+void restaurarCofre(Sector &granja, const CofreGuardado &guardado) {
+  Position posicion(guardado.x, guardado.y);
+  std::unique_ptr<Chest> cofre = std::make_unique<Chest>(posicion);
+  cargarItems(cofre->getInventory(), guardado.inventario);
+  std::unique_ptr<Entity> entidad = std::move(cofre);
+  if (!granja.tryAddEntity(entidad, posicion))
+    throw std::runtime_error(ERROR_ADAPTADOR_COFRE_OCUPADO);
 }
 
 } // namespace
@@ -188,6 +225,7 @@ PartidaGuardada extraerPartida(const World &mundo,
       partida.jugadores.size() >= MINIMO_JUGADORES_MULTIPLAYER;
   partida.granja.aradas = aradasDe(*granja);
   partida.granja.cultivos = cultivosDe(estado);
+  partida.granja.cofres = cofresDe(estado);
   return partida;
 }
 
@@ -196,7 +234,7 @@ void restaurarJugador(Player &jugador, const JugadorGuardado &guardado) {
   jugador.setEnergy(guardado.energia);
   jugador.setCoins(guardado.oro);
   vaciarInventario(jugador);
-  cargarInventario(jugador, guardado.inventario);
+  cargarItems(jugador.getInventory(), guardado.inventario);
 }
 
 void restaurarPartida(World &mundo, const PartidaGuardada &partida) {
@@ -206,4 +244,6 @@ void restaurarPartida(World &mundo, const PartidaGuardada &partida) {
   mundo.setDayNumber(partida.dia);
   for (const CeldaGuardada &celda : partida.granja.aradas)
     granja->till(Position(celda.x, celda.y));
+  for (const CofreGuardado &cofre : partida.granja.cofres)
+  	restaurarCofre(*granja, cofre);
 }

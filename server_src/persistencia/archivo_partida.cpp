@@ -68,6 +68,13 @@ toml::table tablaCultivo(const CultivoGuardado &cultivo) {
       {CLAVE_PARTIDA_SUERTE, cultivo.suerte}};
 }
 
+toml::table tablaCofre(const CofreGuardado &cofre) {
+  return toml::table{
+      {CLAVE_PARTIDA_X, entero(cofre.x)},
+      {CLAVE_PARTIDA_Y, entero(cofre.y)},
+      {CLAVE_PARTIDA_INVENTARIO, arrayDe(cofre.inventario, tablaItem)}};
+}
+
 toml::table tablaJugador(const JugadorGuardado &jugador) {
   return toml::table{
       {CLAVE_PARTIDA_NOMBRE, jugador.nombre},
@@ -82,7 +89,8 @@ toml::table tablaJugador(const JugadorGuardado &jugador) {
 toml::table tablaGranja(const GranjaGuardada &granja) {
   return toml::table{
       {CLAVE_PARTIDA_ARADAS, arrayDe(granja.aradas, tablaCelda)},
-      {CLAVE_PARTIDA_CULTIVOS, arrayDe(granja.cultivos, tablaCultivo)}};
+      {CLAVE_PARTIDA_CULTIVOS, arrayDe(granja.cultivos, tablaCultivo)},
+      {CLAVE_PARTIDA_COFRES, arrayDe(granja.cofres, tablaCofre)}};
 }
 
 void crearCarpeta(const std::filesystem::path &carpeta) {
@@ -135,6 +143,13 @@ CultivoGuardado cultivoDe(const toml::table &tabla, const std::string &donde) {
       leerValor<double>(tabla, CLAVE_PARTIDA_SUERTE, donde)};
 }
 
+CofreGuardado cofreDe(const toml::table &tabla, const std::string &donde) {
+  return CofreGuardado{
+      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
+      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde),
+      leerLista(tabla, CLAVE_PARTIDA_INVENTARIO, donde, itemDe)};
+}
+
 JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
   return JugadorGuardado{
       leerValor<std::string>(tabla, CLAVE_PARTIDA_NOMBRE, donde),
@@ -151,7 +166,8 @@ GranjaGuardada granjaDe(const toml::table &raiz) {
   return GranjaGuardada{
       leerLista(tabla, CLAVE_PARTIDA_ARADAS, CLAVE_PARTIDA_GRANJA, celdaDe),
       leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,
-                cultivoDe)};
+                cultivoDe),
+      leerLista(tabla, CLAVE_PARTIDA_COFRES, CLAVE_PARTIDA_GRANJA, cofreDe)};
 }
 
 bool comparadorPartidas(const PartidaGuardada &una,

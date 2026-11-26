@@ -59,9 +59,18 @@ struct CultivoGuardado {
   bool operator==(const CultivoGuardado &) const = default;
 };
 
+struct CofreGuardado {
+  std::size_t x{};
+  std::size_t y{};
+  std::vector<ItemGuardado> inventario;
+
+  bool operator==(const CofreGuardado &) const = default;
+};
+
 struct GranjaGuardada {
   std::vector<CeldaGuardada> aradas;
   std::vector<CultivoGuardado> cultivos;
+  std::vector<CofreGuardado> cofres;
 
   bool operator==(const GranjaGuardada &) const = default;
 };
