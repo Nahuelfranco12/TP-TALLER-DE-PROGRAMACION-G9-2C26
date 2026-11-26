@@ -85,6 +85,17 @@ enum class ItemTypeDto {
   ANIMAL_CHICKEN,
   BED,
   CHEST,
+  CHAIR,
+  TABLE,
+  NIGHTSTAND,
+  FIREPLACE,
+  VASE,
+  SOFA,
+  CRATE,
+  BARREL,
+  FLOWER_POT,
+  SUNFLOWER,
+  WELL,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -146,9 +157,17 @@ enum class EntityTypeDto {
   NPC_CLINT,
   NPC_ROBIN,
   NPC_MARNIE,
-
-  // TODO: resto de enemigos
-  // TODO: NPCs del pueblo
+  CHAIR,
+  TABLE,
+  NIGHTSTAND,
+  FIREPLACE,
+  VASE,
+  SOFA,
+  CRATE,
+  BARREL,
+  FLOWER_POT,
+  SUNFLOWER,
+  WELL,
 };
 
 enum class CropTypeDto { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };

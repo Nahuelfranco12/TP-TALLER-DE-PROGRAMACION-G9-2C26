@@ -75,6 +75,18 @@
 #define PRICE_CHICKEN 50
 #define PRICE_CHEST 100
 
+#define PRICE_CHAIR 40
+#define PRICE_TABLE 60
+#define PRICE_NIGHTSTAND 50
+#define PRICE_FIREPLACE 200
+#define PRICE_VASE 30
+#define PRICE_SOFA 150
+#define PRICE_CRATE 20
+#define PRICE_BARREL 25
+#define PRICE_FLOWER_POT 35
+#define PRICE_SUNFLOWER 35
+#define PRICE_WELL 250
+
 #define TICKS_FOR_MILK 1000
 #define TICKS_FOR_EGG 1000
 
@@ -149,6 +161,8 @@
 
 #define INTERACT_DISTANCE 2
 
+#define ROBIN_DAILY_PRODUCTS 7
+
 enum IdSector {
   FARM,
   VILLAGE,
@@ -195,7 +209,7 @@ enum class DaySpeed { SLOW, MEDIUM, FAST };
 
 enum class ItemType { MINERAL, SEED, DECORATION_PRODUCT, CROP, ANIMAL_PRODUCT, ANIMAL, FURNITURE };
 
-enum class FurnitureType { BED, CHEST };
+enum class FurnitureType { BED, CHEST, CHAIR, TABLE, NIGHTSTAND, FIREPLACE, VASE, SOFA, CRATE, BARREL, FLOWER_POT, SUNFLOWER, WELL };
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 

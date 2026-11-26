@@ -60,6 +60,7 @@ InventoryState Inventory::state() const {
       itemState.quality = crop->getQuality();
     }
 
+
     state.items.push_back(itemState);
   }
   for (const auto &tool : tools)

@@ -52,9 +52,22 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
       return ItemTypeDto::ANIMAL_COW;
     return ItemTypeDto::ANIMAL_CHICKEN;
   case ItemType::FURNITURE:
-    if (static_cast<FurnitureType>(item.subtype) == FurnitureType::CHEST)
-      return ItemTypeDto::CHEST;
-    return ItemTypeDto::BED;
+    switch (static_cast<FurnitureType>(item.subtype)) {
+    case FurnitureType::BED: return ItemTypeDto::BED;
+    case FurnitureType::CHEST: return ItemTypeDto::CHEST;
+    case FurnitureType::CHAIR: return ItemTypeDto::CHAIR;
+    case FurnitureType::TABLE: return ItemTypeDto::TABLE;
+    case FurnitureType::NIGHTSTAND: return ItemTypeDto::NIGHTSTAND;
+    case FurnitureType::FIREPLACE: return ItemTypeDto::FIREPLACE;
+    case FurnitureType::VASE: return ItemTypeDto::VASE;
+    case FurnitureType::SOFA: return ItemTypeDto::SOFA;
+    case FurnitureType::CRATE: return ItemTypeDto::CRATE;
+    case FurnitureType::BARREL: return ItemTypeDto::BARREL;
+    case FurnitureType::FLOWER_POT: return ItemTypeDto::FLOWER_POT;
+    case FurnitureType::SUNFLOWER: return ItemTypeDto::SUNFLOWER;
+    case FurnitureType::WELL: return ItemTypeDto::WELL;
+    }
+    break;
   default:
     break;
   }
@@ -115,10 +128,19 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     break;
   case EntityTypes::FURNITURE:
     switch (e.furniture.type) {
-    case FurnitureType::BED:
-      return EntityTypeDto::BED;
-    case FurnitureType::CHEST:
-      return EntityTypeDto::CHEST;
+    case FurnitureType::BED: return EntityTypeDto::BED;
+    case FurnitureType::CHEST: return EntityTypeDto::CHEST;
+    case FurnitureType::CHAIR: return EntityTypeDto::CHAIR;
+    case FurnitureType::TABLE: return EntityTypeDto::TABLE;
+    case FurnitureType::NIGHTSTAND: return EntityTypeDto::NIGHTSTAND;
+    case FurnitureType::FIREPLACE: return EntityTypeDto::FIREPLACE;
+    case FurnitureType::VASE: return EntityTypeDto::VASE;
+    case FurnitureType::SOFA: return EntityTypeDto::SOFA;
+    case FurnitureType::CRATE: return EntityTypeDto::CRATE;
+    case FurnitureType::BARREL: return EntityTypeDto::BARREL;
+    case FurnitureType::FLOWER_POT: return EntityTypeDto::FLOWER_POT;
+    case FurnitureType::SUNFLOWER: return EntityTypeDto::SUNFLOWER;
+    case FurnitureType::WELL: return EntityTypeDto::WELL;
     }
     break;
   case EntityTypes::NPC:
