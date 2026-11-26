@@ -28,7 +28,7 @@ struct ItemGuardado {
 
 struct JugadorGuardado {
   std::string nombre;
-  std::size_t indiceCabania{};
+  //std::size_t indiceCabania{};
   OutfitGuardado outfit;
   double vida{};
   double energia{};

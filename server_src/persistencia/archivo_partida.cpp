@@ -87,7 +87,7 @@ toml::table tablaAnimal(const AnimalGuardado &animal) {
 toml::table tablaJugador(const JugadorGuardado &jugador) {
   return toml::table{
       {CLAVE_PARTIDA_NOMBRE, jugador.nombre},
-      {CLAVE_PARTIDA_INDICE, entero(jugador.indiceCabania)},
+      //{CLAVE_PARTIDA_INDICE, entero(jugador.indiceCabania)},
       {CLAVE_PARTIDA_OUTFIT, tablaOutfit(jugador.outfit)},
       {CLAVE_PARTIDA_VIDA, jugador.vida},
       {CLAVE_PARTIDA_ENERGIA, jugador.energia},
@@ -172,7 +172,7 @@ AnimalGuardado animalDe(const toml::table &tabla, const std::string &donde) {
 JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
   return JugadorGuardado{
       leerValor<std::string>(tabla, CLAVE_PARTIDA_NOMBRE, donde),
-      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_INDICE, donde),
+      //leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_INDICE, donde),
       outfitDe(tabla, donde),
       leerValor<double>(tabla, CLAVE_PARTIDA_VIDA, donde),
       leerValor<double>(tabla, CLAVE_PARTIDA_ENERGIA, donde),

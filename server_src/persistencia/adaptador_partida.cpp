@@ -65,7 +65,7 @@ JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
    		inventario.push_back(itemGuardadoDe(item));
   }
   return JugadorGuardado{jugador.getName(),
-                         static_cast<std::size_t>(estado.id),
+                         //static_cast<std::size_t>(estado.id),
                          outfitGuardadoDe(estado.outfit),
                          estado.life,
                          estado.energy,
