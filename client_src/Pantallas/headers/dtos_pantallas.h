@@ -43,7 +43,6 @@ struct ResultadoLobby {
 
 struct MundoMock {
   QString nombreMundo;
-  QString rutaImagen;
   QString rutaMapa;
 };
 

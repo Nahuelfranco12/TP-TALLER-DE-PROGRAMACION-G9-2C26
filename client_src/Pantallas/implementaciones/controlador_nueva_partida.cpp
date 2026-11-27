@@ -1,7 +1,6 @@
 #include "controlador_nueva_partida.h"
 #include "constantes_pantallas.h"
 #include "ui_pantalla.h"
-#include <QLabel>
 #include <QLineEdit>
 #include <QPixmap>
 

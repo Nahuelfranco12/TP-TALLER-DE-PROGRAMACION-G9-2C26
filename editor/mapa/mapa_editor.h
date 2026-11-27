@@ -122,7 +122,7 @@ public:
 private:
   Dimensiones dimensiones;
   Terreno pisoBase;
-  std::vector<Terreno> terrenos; // tengo un vector de terrenos
+  std::vector<Terreno> terrenos;
   std::vector<ObjetoColocado<TipoObjeto>> objetosColocados;
 
   static std::size_t cantidadCeldas(const Dimensiones &d) {

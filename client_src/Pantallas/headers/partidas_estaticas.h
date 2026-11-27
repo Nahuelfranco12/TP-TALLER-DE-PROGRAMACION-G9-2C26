@@ -3,7 +3,6 @@
 
 #include "dtos_pantallas.h"
 #include <QList>
-#include <QString>
 
 QList<PartidaGuardada> obtenerPartidasDePrueba();
 // QList<MundoMock> obtenerMundosDePrueba();

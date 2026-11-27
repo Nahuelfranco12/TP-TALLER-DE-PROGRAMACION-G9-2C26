@@ -188,7 +188,6 @@
 #define TEXTO_ANTORCHA "Antorcha"
 #define TEXTO_CANDELABRO "Candelabro"
 #define TEXTO_ESCUDO "Escudo"
-#define TEXTO_POZO "Pozo"
 
 // Catálogo: textos del pueblo -> catalogo_elementos.cpp
 #define TEXTO_FAROL_NARANJA "Farol naranja"

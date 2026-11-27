@@ -14,7 +14,6 @@ protected:
   void resizeEvent(QResizeEvent *evento) override;
 
 private:
-  QGraphicsProxyWidget *proxy;
 };
 
 #endif // VISTA_RESPONSIVE_H_

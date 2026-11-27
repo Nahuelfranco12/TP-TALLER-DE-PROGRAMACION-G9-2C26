@@ -10,7 +10,7 @@ ServicioLobbyRed::ServicioLobbyRed(Client &client) : client(client) {}
 QList<MundoMock> ServicioLobbyRed::pedirMundosDisponibles() {
   QList<MundoMock> mundos;
   for (const MapInfoDto &mapa : client.list_maps()) {
-    mundos.append({QString::fromStdString(mapa.name), QString(),
+    mundos.append({QString::fromStdString(mapa.name),
                    QString::fromStdString(mapa.path)});
   }
   return mundos;

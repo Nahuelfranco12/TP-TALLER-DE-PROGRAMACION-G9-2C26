@@ -1,6 +1,5 @@
 #include "vista_responsive.h"
 
-#include <QGraphicsProxyWidget>
 #include <QGraphicsScene>
 #include <QtGlobal>
 
@@ -9,7 +8,7 @@ VistaEscalada::VistaEscalada(QWidget *contenido, const QSize &tamanioDisenio,
     : QGraphicsView(parent) {
   QGraphicsScene *escena = new QGraphicsScene(this);
   contenido->setFixedSize(tamanioDisenio);
-  proxy = escena->addWidget(contenido);
+  escena->addWidget(contenido);
   escena->setSceneRect(QRectF(QPointF(0, 0), tamanioDisenio));
   setScene(escena);
 

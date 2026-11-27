@@ -1,4 +1,3 @@
-#include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>

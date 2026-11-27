@@ -1,6 +1,5 @@
 #include "validacion_mapas.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <string>
 #include <utility>
@@ -75,14 +74,6 @@ void validarPueblo(const MapaZona<ElementosPueblo> &pueblo,
     if (contarObjetosDeTipo(pueblo, tipo) == 0)
       errores.push_back(mensajeFalta(VALIDACION_TEXTO_ZONA_PUEBLO, nombre));
 }
-
-struct ReglaCaverna {
-  ElementosCaverna tipo;
-  const char *nombre;
-  bool vaEnPrimerNivel;
-  bool vaEnUltimoNivel;
-  bool vaEnPared;
-};
 
 bool estaEnLaParedDeArriba(const MapaZona<ElementosCaverna> &nivel,
                            const ObjetoColocado<ElementosCaverna> &objeto) {
