@@ -21,6 +21,7 @@
 #include "./game/commands/interact_command.h"
 #include "./game/commands/place_command.h"
 #include "./game/commands/chest_move_command.h"
+#include "./game/commands/confirm_day_command.h"
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
@@ -57,7 +58,8 @@ public:
                                               const WaterDto &dto);
   std::unique_ptr<Command> create_cheat_growth(int player_id);
   std::unique_ptr<Command> create_cheat_end_day(int player_id);
-std::unique_ptr<Command> create_cheat_enemies_damage(int player_id);
+  std::unique_ptr<Command> create_cheat_enemies_damage(int player_id);
+  std::unique_ptr<Command> create_confirm_day();
 };
 
 #endif // COMMAND_FACTORY_H_

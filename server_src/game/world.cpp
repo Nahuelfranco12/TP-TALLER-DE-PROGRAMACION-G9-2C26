@@ -249,17 +249,20 @@ WorldState World::state() const {
 }
 
 void World::tick() {
+  if (dayIsOver()) {
+    if(newDayConfirmations >= players.size())
+    dayTick = 0;
+    dayNumber++;
+    endDay();
+    newDayConfirmations = 0;
+  }
+
+  newDayConfirmations = 0;
   for (auto &[id, sector] : sectors) {
     sector->tick();
   }
 
   dayTick++;
-  if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
-    dayTick = 0;
-    dayNumber++;
-    // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
-    endDay();
-  }
 }
 
 Sector *World::findSectorOf(const Player *player) {
@@ -372,4 +375,13 @@ Player *World::getPlayerByName(const std::string &name) {
     if (player->getName() == name)
       return player;
   return nullptr;
+}
+
+bool World::dayIsOver() {
+  return allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY;
+}
+
+void World::addADayConfirmation() {
+  if(dayIsOver())
+    newDayConfirmations++;
 }

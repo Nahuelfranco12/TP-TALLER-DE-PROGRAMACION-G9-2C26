@@ -366,6 +366,7 @@ struct SectorStateDto {
   GameTimeDto time{};
   size_t dayNumber = 1;
   std::vector<ChatMessageDto> chat;
+  bool waitingNewDayConfirmation = false;
 };
 
 struct WorldMapDto {

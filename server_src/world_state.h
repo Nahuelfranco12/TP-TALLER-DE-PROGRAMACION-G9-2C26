@@ -169,6 +169,7 @@ struct WorldState {
   size_t dayNumber = 1;
   GameTime time{6, 0};
   std::vector<ChatMessageState> chat;
+  bool waitingNewDayConfirmation = false;
 };
 
 #endif // WORLD_STATE_H_

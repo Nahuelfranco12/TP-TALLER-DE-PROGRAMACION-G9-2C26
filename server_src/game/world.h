@@ -26,11 +26,13 @@ private:
 
   size_t dayTick;
   size_t dayNumber;
-
+  size_t newDayConfirmations = 0;
+  
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
   void respawnNextTo(Player &player, Sector &sector, Position spot);
+  bool dayIsOver();
 
 public:
   explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
@@ -84,6 +86,7 @@ public:
   void endDay();
   Bed *findBedOf(int playerId, Sector *&bedSector);
 
+  void addADayConfirmation();
   /*
   * State
   */

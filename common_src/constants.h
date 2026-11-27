@@ -41,6 +41,7 @@ constexpr unsigned int QUEUE_MAX_SIZE = 1000;
 #define OP_INTERACT 23
 #define OP_PLACE 24
 #define OP_CHEST_MOVE 25
+#define OP_CONFIRM_DAY 26
 
 #define JOIN_SUCCESS 0
 #define JOIN_FAILURE 1

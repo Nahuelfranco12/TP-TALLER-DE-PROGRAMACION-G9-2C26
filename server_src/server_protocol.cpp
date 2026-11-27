@@ -59,6 +59,7 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_string(message.text);
     protocol.send_u8(message.isPrivate ? 1 : 0);
   }
+  protocol.send_u8(state.waitingNewDayConfirmation ? 1 : 0);
 }
 
 void ServerProtocol::send_world_map(const WorldMapDto &map) {

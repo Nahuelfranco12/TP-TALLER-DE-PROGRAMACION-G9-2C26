@@ -126,3 +126,7 @@ CommandFactory::create_join(int player_id, const std::string &name,
                            static_cast<PlayerPants>(outfit.pants));
   return std::make_unique<JoinCommand>(player_id, name, game_outfit);
 }
+
+std::unique_ptr<Command> CommandFactory::create_confirm_day() {
+  return std::make_unique<ConfirmDayCommand>();
+}

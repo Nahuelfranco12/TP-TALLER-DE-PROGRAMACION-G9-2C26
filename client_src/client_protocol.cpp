@@ -107,6 +107,10 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
   protocol.send_u8(dto.toChest ? 1 : 0);
 }
 
+void ClientProtocol::send_confirm_day() { 
+  protocol.send_u8(OP_CONFIRM_DAY); 
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
@@ -278,7 +282,7 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     message.isPrivate = protocol.receive_u8() == 1;
     state.chat.push_back(message);
   }
-
+  state.waitingNewDayConfirmation = protocol.receive_u8() == 1;
   return state;
 }
 

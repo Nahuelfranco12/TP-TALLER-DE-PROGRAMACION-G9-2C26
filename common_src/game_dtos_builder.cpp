@@ -432,6 +432,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       sectorDto.chat.push_back({message.fromName, message.text, !forEveryone});
     }
   }
+  sectorDto.waitingNewDayConfirmation = state.waitingNewDayConfirmation;
 
   return sectorDto;
 }
