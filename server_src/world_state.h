@@ -147,18 +147,6 @@ struct PlayerState {
   ItemState pendingGift{};
 };
 
-struct SetGoalState {
-  int goal;
-  size_t current;
-  size_t target;
-};
-
-struct SetState {
-  int type;
-  bool completed;
-  std::vector<SetGoalState> goals;
-};
-
 struct SectorState {
   IdSector id{};
   size_t width = 0;

@@ -279,6 +279,22 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     state.chat.push_back(message);
   }
 
+  int set_count = protocol.receive_u8();
+  for (int i = 0; i < set_count; i++) {
+    SetStateDto setDto;
+    setDto.type = protocol.receive_u8();
+    setDto.completed = protocol.receive_u8() == 1;
+    int goal_count = protocol.receive_u8();
+    for (int j = 0; j < goal_count; j++) {
+      SetGoalDto goal;
+      goal.goalId = protocol.receive_u8();
+      goal.current = protocol.receive_u16();
+      goal.target = protocol.receive_u16();
+      setDto.goals.push_back(goal);
+    }
+    state.sets.push_back(setDto);
+  }
+
   return state;
 }
 

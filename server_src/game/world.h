@@ -14,6 +14,12 @@
 #include "sectors/farm_sector.h"
 #include "sectors/cabin_sector.h"
 #include "entities/bed.h"
+#include "sets/set.h"
+#include "sets/set_animal.h"
+#include "sets/set_crop.h"
+#include "sets/set_fight.h"
+#include "sets/set_gold.h"
+#include "sets/set_metal.h"
 
 class World {
 private:
@@ -97,6 +103,8 @@ public:
   */
   GameTime currentTime() const;
   WorldState state() const;
+  const std::vector<std::unique_ptr<Set>> &getSets() const { return sets; }
+  void recordProgress(GoalTypes goal, size_t count);
 };
 
 #endif // WORLD_H_
