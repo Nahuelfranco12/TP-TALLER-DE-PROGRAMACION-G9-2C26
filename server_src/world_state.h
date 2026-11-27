@@ -4,7 +4,6 @@
 #include "game/game_constants.h"
 #include "game/position.h"
 #include "game/terrain.h"
-#include "game/sets/set.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -145,6 +144,18 @@ struct PlayerState {
   InventoryState inventory;
   int pendingGiftGiverId = 0;
   ItemState pendingGift{};
+};
+
+struct SetGoalState {
+  int goal;
+  size_t current;
+  size_t target;
+};
+
+struct SetState {
+  int type;
+  bool completed;
+  std::vector<SetGoalState> goals;
 };
 
 struct SectorState {
