@@ -244,6 +244,10 @@ WorldState World::state() const {
   state.dayNumber = dayNumber;
   state.time = currentTime();
   state.chat = chat;
+
+  for (const auto &set : sets)
+    state.sets.push_back(set->state());
+
   return state;
 }
 

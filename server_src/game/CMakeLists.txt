@@ -63,4 +63,10 @@ target_sources(taller_game
     sectors/sector.cpp
     sectors/cavern_sector.cpp
     sectors/farm_sector.cpp
+
+    sets/set_animal.cpp
+    sets/set_crop.cpp
+    sets/set_fight.cpp
+    sets/set_gold.cpp
+    sets/set_metal.cpp
 )

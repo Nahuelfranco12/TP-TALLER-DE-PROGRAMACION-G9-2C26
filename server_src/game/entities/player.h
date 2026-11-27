@@ -70,8 +70,8 @@ public:
   }
 
   MoveResult move(Position destination);
-  void mine(Mineral &mineral);
-  void attack(Enemy &enemy);
+  bool mine(Mineral &mineral);
+  bool attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
 
   // getters

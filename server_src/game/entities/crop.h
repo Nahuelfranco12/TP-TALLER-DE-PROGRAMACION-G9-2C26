@@ -35,6 +35,7 @@ private:
 
 public:
   Crop(Position position, CropTypes type);
+  CropTypes getCropType() const { return type; }
 
   CropGrowth growth() const;
   CropQuality quality() const;

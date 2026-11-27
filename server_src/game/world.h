@@ -23,6 +23,7 @@ private:
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
   std::vector<ChatMessageState> chat;
+  std::vector<std::unique_ptr<Set>> sets;
 
   size_t dayTick;
   size_t dayNumber;
@@ -33,7 +34,14 @@ private:
   void respawnNextTo(Player &player, Sector &sector, Position spot);
 
 public:
-  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
+  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1)
+      : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {
+    sets.push_back(std::make_unique<SetCrop>());
+    sets.push_back(std::make_unique<SetMetal>());
+    sets.push_back(std::make_unique<SetAnimal>());
+    sets.push_back(std::make_unique<SetFight>());
+    sets.push_back(std::make_unique<SetGold>());
+  }
 
   void setDayNumber(size_t dayNumber) { this->dayNumber = dayNumber; }
 
