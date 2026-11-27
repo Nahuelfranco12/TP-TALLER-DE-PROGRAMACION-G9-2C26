@@ -89,6 +89,7 @@ struct GranjaGuardada {
   std::vector<CultivoGuardado> cultivos;
   std::vector<CofreGuardado> cofres;
   std::vector<AnimalGuardado> animales;
+  std::vector<DecoracionGuardada> decoraciones;
 
   bool operator==(const GranjaGuardada &) const = default;
 };
