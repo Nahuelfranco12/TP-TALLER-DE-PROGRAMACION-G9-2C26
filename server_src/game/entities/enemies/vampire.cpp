@@ -3,8 +3,7 @@
 #include "../../sectors/sector.h"
 
 Vampire::Vampire(size_t pos_x, size_t pos_y, EnemyType kind, EnemyStats vampireStats)
-    : Enemy(kind, pos_x, pos_y, vampireStats),
-      vampireType(vampireType), partner(nullptr), reviveCountdown(-1) {}
+    : Enemy(kind, pos_x, pos_y, vampireStats), partner(nullptr), reviveCountdown(-1) {}
 
 void Vampire::setPartner(Vampire *otherVampire) { partner = otherVampire; }
 
@@ -15,13 +14,13 @@ bool Vampire::inFrenzy() const {
 bool Vampire::removeOnDeath() const { return false; }
 
 int Vampire::getDamage() const {
-  if (vampireType == EnemyType::VAMPIRE_MALE && inFrenzy())
+  if (type == EnemyType::VAMPIRE_MALE && inFrenzy())
     return stats.damage * 2;
   return stats.damage;
 }
 
 int Vampire::getTicksPerMove() const {
-  if (vampireType == EnemyType::VAMPIRE_FEMALE && inFrenzy())
+  if (type == EnemyType::VAMPIRE_FEMALE && inFrenzy())
     return stats.ticksPerMove / 2;
   return stats.ticksPerMove;
 }

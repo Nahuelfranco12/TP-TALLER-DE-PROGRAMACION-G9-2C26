@@ -32,7 +32,7 @@ public:
    * Move the entity standing on the door to the target sector.
    * Returns:
    *  - Door destine position when the destine position is empty.
-   *  - Any free position finded where the entity now is placed.
+   *  - Any free position next to destine finded if destine is blocked.
    */
   bool moveEntity(std::unique_ptr<Entity>& entity, Position& destinePosition);
 };

@@ -2,7 +2,9 @@
 #define ENEMY_H_
 
 #include <cstddef>
+#include <memory>
 
+#include "../../inventory/item.h"
 #include "../../decision.h"
 #include "../../game_constants.h"
 #include "../entity.h"
@@ -46,7 +48,6 @@ public:
 
   bool isDead() const;
 
-  // TODO : revisar si esto es importante (lo puse para esqueletos sobretodo)
   virtual bool removeOnDeath() const;
 
   void tick() override;
@@ -54,6 +55,8 @@ public:
   virtual Decision decide(const Sector &sector);
   virtual void apply(Sector &sector, Position origin,
                      const Decision &decision);
+
+  virtual std::unique_ptr<Item> dropItem() const { return nullptr; }
 
   EntityState entityState() const override {
     EntityState state = Entity::entityState();

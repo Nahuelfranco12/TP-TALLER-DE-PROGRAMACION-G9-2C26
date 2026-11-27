@@ -32,7 +32,7 @@ private:
   std::mt19937 rng;
   EnemiesFactory enemiesFactory;
 
-  void spawnEnemyGroup(EnemyType type, size_t count);
+  void spawnEnemyGroup(EnemyType type, size_t count, Position center);
 
   void spawnMinerals();
   void spawnEnemies();
@@ -57,6 +57,8 @@ public:
 
   void reset() override;
   void endDay() override;
+
+  void spawnHordeNear(Position playerPosition) override;
 };
 
 #endif // CAVERN_SECTOR_H_

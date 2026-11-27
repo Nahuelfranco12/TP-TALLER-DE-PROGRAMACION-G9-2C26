@@ -96,9 +96,10 @@ void World::removePlayer(int id) {
   Player *player = getPlayer(id);
   if (player) {
     Sector *sector = player->getActualSector();
-    if (sector)
+    if (sector) {
       sector->closeChestsOf(id);
       sector->removeEntity(player->position);
+    }
   }
   this->players.erase(id);
 }

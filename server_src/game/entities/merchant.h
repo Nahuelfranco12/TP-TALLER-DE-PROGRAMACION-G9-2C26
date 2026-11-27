@@ -15,10 +15,13 @@ private:
     MerchantType merchantType;
     std::string name;
     std::string greeting;
-    std::vector<Offer> sales;
     std::vector<Offer> purchases;
 
     const Offer *find(const std::vector<Offer> &offers, const std::string &productName) const;
+
+protected:
+    std::vector<Offer> sales;
+    virtual size_t salesToday() const { return sales.size(); }
 
 public:
     Merchant(Position position, MerchantType merchantType, const std::string &name, const std::string &greeting);
@@ -32,6 +35,8 @@ public:
     const std::string &getName() const;
     const std::vector<Offer> &getSales() const;
     const std::vector<Offer> &getPurchases() const ;
+
+    virtual void refreshCatalog() {}
 
     EntityState entityState() const override;
 
