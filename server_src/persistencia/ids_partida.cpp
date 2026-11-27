@@ -46,6 +46,17 @@ const TablaIds<ClaveItem> &tablaIds(ClaveItem) {
       {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, ID_ITEM_HUEVO},
       {{ItemType::ANIMAL, AnimalType::COW}, ID_ITEM_VACA},
       {{ItemType::ANIMAL, AnimalType::CHICKEN}, ID_ITEM_GALLINA},
-      {{ItemType::FURNITURE, FurnitureType::CHEST}, ID_ITEM_COFRE}};
+      {{ItemType::FURNITURE, FurnitureType::CHEST}, ID_ITEM_COFRE},
+      {{ItemType::FURNITURE, FurnitureType::CHAIR}, ID_ITEM_SILLA},
+      {{ItemType::FURNITURE, FurnitureType::TABLE}, ID_ITEM_MESA},
+      {{ItemType::FURNITURE, FurnitureType::NIGHTSTAND}, ID_ITEM_MESA_DE_LUZ},
+      {{ItemType::FURNITURE, FurnitureType::FIREPLACE}, ID_ITEM_CHIMENEA},
+      {{ItemType::FURNITURE, FurnitureType::VASE}, ID_ITEM_JARRON},
+      {{ItemType::FURNITURE, FurnitureType::SOFA}, ID_ITEM_SILLON},
+      {{ItemType::FURNITURE, FurnitureType::CRATE}, ID_ITEM_CAJON},
+      {{ItemType::FURNITURE, FurnitureType::BARREL}, ID_ITEM_BARRIL},
+      {{ItemType::FURNITURE, FurnitureType::FLOWER_POT}, ID_ITEM_MACETA},
+      {{ItemType::FURNITURE, FurnitureType::SUNFLOWER}, ID_ITEM_GIRASOL},
+      {{ItemType::FURNITURE, FurnitureType::WELL}, ID_ITEM_ALJIBE}};
   return tabla;
 }

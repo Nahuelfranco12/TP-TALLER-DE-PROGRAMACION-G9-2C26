@@ -59,11 +59,6 @@ OutfitGuardado outfitGuardadoDe(const PlayerOutfitState &outfit) {
 
 JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
   PlayerState estado = jugador.state();
-  std::vector<ItemGuardado> inventario;
-  for (const ItemState &item : estado.inventory.items){
-  	if(esGuardable(item))
-   		inventario.push_back(itemGuardadoDe(item));
-  }
   return JugadorGuardado{jugador.getName(),
                          //static_cast<std::size_t>(estado.id),
                          outfitGuardadoDe(estado.outfit),
@@ -171,7 +166,18 @@ const TablaPrecios &tablaPrecios() {
       {{ItemType::ANIMAL_PRODUCT, AnimalType::CHICKEN}, PRICE_EGG},
       {{ItemType::ANIMAL, AnimalType::COW}, PRICE_COW},
       {{ItemType::ANIMAL, AnimalType::CHICKEN}, PRICE_CHICKEN},
-      {{ItemType::FURNITURE, FurnitureType::CHEST}, PRICE_CHEST}};
+      {{ItemType::FURNITURE, FurnitureType::CHEST}, PRICE_CHEST},
+      {{ItemType::FURNITURE, FurnitureType::CHAIR}, PRICE_CHAIR},
+      {{ItemType::FURNITURE, FurnitureType::TABLE}, PRICE_TABLE},
+      {{ItemType::FURNITURE, FurnitureType::NIGHTSTAND}, PRICE_NIGHTSTAND},
+      {{ItemType::FURNITURE, FurnitureType::FIREPLACE}, PRICE_FIREPLACE},
+      {{ItemType::FURNITURE, FurnitureType::VASE}, PRICE_VASE},
+      {{ItemType::FURNITURE, FurnitureType::SOFA}, PRICE_SOFA},
+      {{ItemType::FURNITURE, FurnitureType::CRATE}, PRICE_CRATE},
+      {{ItemType::FURNITURE, FurnitureType::BARREL}, PRICE_BARREL},
+      {{ItemType::FURNITURE, FurnitureType::FLOWER_POT}, PRICE_FLOWER_POT},
+      {{ItemType::FURNITURE, FurnitureType::SUNFLOWER}, PRICE_SUNFLOWER},
+      {{ItemType::FURNITURE, FurnitureType::WELL}, PRICE_WELL}};
   return tabla;
 }
 

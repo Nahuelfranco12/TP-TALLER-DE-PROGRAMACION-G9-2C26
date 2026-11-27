@@ -91,6 +91,17 @@
 #define ID_ITEM_VACA "vaca"
 #define ID_ITEM_GALLINA "gallina"
 #define ID_ITEM_COFRE "cofre"
+#define ID_ITEM_SILLA "silla"
+#define ID_ITEM_MESA "mesa"
+#define ID_ITEM_MESA_DE_LUZ "mesaDeLuz"
+#define ID_ITEM_CHIMENEA "chimenea"
+#define ID_ITEM_JARRON "jarron"
+#define ID_ITEM_SILLON "sillon"
+#define ID_ITEM_CAJON "cajon"
+#define ID_ITEM_BARRIL "barril"
+#define ID_ITEM_MACETA "maceta"
+#define ID_ITEM_GIRASOL "girasol"
+#define ID_ITEM_ALJIBE "aljibe"
 
 // Adaptador del mundo -> adaptador_partida.cpp
 #define MINIMO_JUGADORES_MULTIPLAYER 2
