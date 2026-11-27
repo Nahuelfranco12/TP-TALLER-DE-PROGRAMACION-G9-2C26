@@ -37,8 +37,7 @@ void ControladorCustomizarPersonaje::reiniciarPagina() {
 }
 
 void ControladorCustomizarPersonaje::cambiarOpcionPrenda(
-    int &indiceActual, const QList<CoordenadaSprite> &opciones,
-    int direccion) {
+    int &indiceActual, const QList<CoordenadaSprite> &opciones, int direccion) {
   int cantidadOpciones = static_cast<int>(opciones.size());
   if (cantidadOpciones <= 0)
     return;
@@ -53,14 +52,14 @@ DatosPersonaje ControladorCustomizarPersonaje::armarPersonajeElegido() const {
 }
 
 void ControladorCustomizarPersonaje::conectarFlechasDeTodasLasPrendas() {
-  connect(ui.botonAnteriorGorroCustomizarPersonaje, &QPushButton::clicked,
-          this, &ControladorCustomizarPersonaje::gorroAnterior);
+  connect(ui.botonAnteriorGorroCustomizarPersonaje, &QPushButton::clicked, this,
+          &ControladorCustomizarPersonaje::gorroAnterior);
   connect(ui.botonSiguienteGorroCustomizarPersonaje, &QPushButton::clicked,
           this, &ControladorCustomizarPersonaje::gorroSiguiente);
-  connect(ui.botonAnteriorPeloCustomizarPersonaje, &QPushButton::clicked,
-          this, &ControladorCustomizarPersonaje::peloAnterior);
-  connect(ui.botonSiguientePeloCustomizarPersonaje, &QPushButton::clicked,
-          this, &ControladorCustomizarPersonaje::peloSiguiente);
+  connect(ui.botonAnteriorPeloCustomizarPersonaje, &QPushButton::clicked, this,
+          &ControladorCustomizarPersonaje::peloAnterior);
+  connect(ui.botonSiguientePeloCustomizarPersonaje, &QPushButton::clicked, this,
+          &ControladorCustomizarPersonaje::peloSiguiente);
   connect(ui.botonAnteriorRemeraCustomizarPersonaje, &QPushButton::clicked,
           this, &ControladorCustomizarPersonaje::remeraAnterior);
   connect(ui.botonSiguienteRemeraCustomizarPersonaje, &QPushButton::clicked,

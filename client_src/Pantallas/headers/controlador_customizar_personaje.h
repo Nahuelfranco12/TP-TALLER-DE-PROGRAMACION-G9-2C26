@@ -1,10 +1,10 @@
 #ifndef CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
 #define CONTROLADOR_CUSTOMIZAR_PERSONAJE_H_
 
+#include "constantes_pantallas.h"
 #include "controlador_pagina.h"
 #include "dibujar_personaje.h"
 #include "dtos_pantallas.h"
-#include "constantes_pantallas.h"
 
 class ControladorCustomizarPersonaje : public ControladorPagina {
 public:

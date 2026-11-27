@@ -15,6 +15,7 @@ template <typename T> int contarObjetosDeTipo(const MapaZona<T> &zona, T tipo) {
   int cantidad = 0;
   for (const ObjetoColocado<T> &objeto : zona.objetos())
     if (objeto.tipo == tipo)
+      // cppcheck-suppress useStlAlgorithm
       ++cantidad;
   return cantidad;
 }
@@ -23,6 +24,7 @@ int contarCabanias(const MapaZona<ElementosGranja> &granja) {
   int cantidad = 0;
   for (const ObjetoColocado<ElementosGranja> &objeto : granja.objetos())
     if (esCabania(objeto.tipo))
+      // cppcheck-suppress useStlAlgorithm
       ++cantidad;
   return cantidad;
 }
@@ -120,9 +122,6 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
           !estaEnLaParedDeArriba(niveles[i], objeto))
         errores.push_back(
             mensajeConLugar(nivel, VALIDACION_TEXTO_ESCALERA_PARED));
-
-
-
   }
 }
 } // namespace

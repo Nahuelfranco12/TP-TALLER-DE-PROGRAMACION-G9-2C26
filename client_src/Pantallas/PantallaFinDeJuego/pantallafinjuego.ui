@@ -43,7 +43,7 @@
 }</string>
     </property>
     <property name="text">
-     <string>FIN DEL JUEGO</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="botonSalir">
@@ -72,17 +72,17 @@ QPushButton:pressed {
      <string>Salir</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="textoFelicitaciones">
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>410</y>
+      <y>400</y>
       <width>981</width>
-      <height>61</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#label {
+     <string notr="true">#textoFelicitaciones {
     color: #f1b356;
     font-family: &quot;Stardew Valley&quot;;
     font-size: 78px;
@@ -91,6 +91,27 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string>¡Felicidades por ser el ganador!</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>190</y>
+      <width>981</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label {
+    color: #f1b356;
+    font-family: &quot;Stardew Valley&quot;;
+    font-size: 90px;
+    qproperty-alignment: AlignCenter;
+}</string>
+    </property>
+    <property name="text">
+     <string>¡FIN DEL JUEGO!</string>
     </property>
    </widget>
   </widget>

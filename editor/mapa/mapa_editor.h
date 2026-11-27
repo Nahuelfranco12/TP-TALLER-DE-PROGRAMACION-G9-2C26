@@ -141,14 +141,15 @@ private:
            existeCelda(x + celdaOcupada.ancho - 1, y + celdaOcupada.alto - 1);
   }
 
-bool pisaAOtroObjeto(TipoObjeto tipo, int x, int y, bool unico) const {
-	for (const ObjetoColocado<TipoObjeto> &otro : objetosColocados) {
+  bool pisaAOtroObjeto(TipoObjeto tipo, int x, int y, bool unico) const {
+    // cppcheck-suppress useStlAlgorithm
+    for (const ObjetoColocado<TipoObjeto> &otro : objetosColocados) {
       bool seVaAMover = unico && otro.tipo == tipo;
       if (!seVaAMover && seSuperponeConOtro(tipo, x, y, otro))
         return true;
     }
     return false;
-}
+  }
 };
 
 template <typename TipoObjeto>

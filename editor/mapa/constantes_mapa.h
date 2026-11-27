@@ -64,7 +64,8 @@
 #define VALIDACION_TEXTO_CABANIAS_INICIO "tenes que colocar al menos "
 #define VALIDACION_TEXTO_CABANIAS_FIN " cabañas"
 #define VALIDACION_TEXTO_ERROR_NOMBRE "No le pusiste nombre al mundo!"
-#define VALIDACION_TEXTO_ESCALERA_PARED "la escalera tiene que estar en la pared de arriba, sin tocar las esquinas"
+#define VALIDACION_TEXTO_ESCALERA_PARED                                        \
+  "la escalera tiene que estar en la pared de arriba, sin tocar las esquinas"
 #define VALIDACION_TEXTO_SOBRA "no puede haber "
 
 // Archivo TOML: versión y claves -> archivo_mapa.cpp

@@ -1,6 +1,6 @@
 #include "controlador_unirse_partida.h"
-#include "ui_pantalla.h"
 #include "constantes_pantallas.h"
+#include "ui_pantalla.h"
 #include <QLineEdit>
 #include <QMessageBox>
 

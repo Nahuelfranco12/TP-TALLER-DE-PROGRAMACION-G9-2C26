@@ -6,7 +6,7 @@
 
 class ControladorUnirsePartida : public ControladorPagina {
 public:
-	ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui,
+  ControladorUnirsePartida(QWidget &ventana, Ui::Pantalla &ui,
                            NavegadorPaginas &navegador,
                            DatosPartida &datosPartida, ServicioLobby &servicio,
                            QObject *parent = nullptr);

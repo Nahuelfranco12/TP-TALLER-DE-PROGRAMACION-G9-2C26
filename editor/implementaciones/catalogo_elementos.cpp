@@ -31,6 +31,7 @@ template <typename T>
 const InfoElemento<T> *
 buscarInfoEnCatalogo(const std::vector<InfoElemento<T>> &catalogo, T tipo) {
   for (const InfoElemento<T> &info : catalogo)
+    // cppcheck-suppress useStlAlgorithm
     if (info.elemento == tipo)
       return &info;
   return nullptr;
