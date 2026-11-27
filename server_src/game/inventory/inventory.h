@@ -43,6 +43,7 @@ public:
   bool remove(const Item &sample, int amount,  double &multipliers);
 
   const Item *itemAt(int index) const;
+  size_t countAt(int index) const;
 
   bool removeFromSlot(int index);
 

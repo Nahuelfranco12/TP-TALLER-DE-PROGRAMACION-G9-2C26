@@ -49,6 +49,7 @@ public:
   WaterDto receive_cheat_water();
   PlaceDto receive_place();
   ChestMoveDto receive_chest_move();
+  RedeemSetDto receive_redeem_set();
 
   // Protocolo de menú
   LobbyRequestDto receive_lobby_request();

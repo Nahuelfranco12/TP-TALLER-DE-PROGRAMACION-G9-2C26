@@ -305,6 +305,12 @@ struct ChestMoveDto {
   bool toChest;
 };
 
+struct RedeemSetDto {
+  int setIndex = 0;
+  int slotIndex = 0;
+  int amount = 1;
+};
+
 struct ChestDto {
   bool openedByMe = false;
   std::list<InventorySlotDto> slots;

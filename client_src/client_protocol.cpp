@@ -107,6 +107,13 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
   protocol.send_u8(dto.toChest ? 1 : 0);
 }
 
+void ClientProtocol::send_redeem_set_dto(const RedeemSetDto &dto) {
+  protocol.send_u8(OP_REDEEM_SET);
+  protocol.send_u8(static_cast<uint8_t>(dto.setIndex));
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u16(static_cast<uint16_t>(dto.amount));
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));

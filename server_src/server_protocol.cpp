@@ -254,6 +254,14 @@ ChestMoveDto ServerProtocol::receive_chest_move() {
   return dto;
 }
 
+RedeemSetDto ServerProtocol::receive_redeem_set() {
+  RedeemSetDto dto;
+  dto.setIndex = protocol.receive_u8();
+  dto.slotIndex = protocol.receive_u8();
+  dto.amount = protocol.receive_u16();
+  return dto;
+}
+
 WaterDto ServerProtocol::receive_cheat_water() {
   return WaterDto{byte_to_direction(protocol.receive_u8())};
 }
