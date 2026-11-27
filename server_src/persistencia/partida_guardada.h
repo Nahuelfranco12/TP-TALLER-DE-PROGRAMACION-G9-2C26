@@ -28,7 +28,7 @@ struct ItemGuardado {
 
 struct JugadorGuardado {
   std::string nombre;
-  //std::size_t indiceCabania{};
+  // std::size_t indiceCabania{};
   OutfitGuardado outfit;
   double vida{};
   double energia{};
@@ -74,6 +74,14 @@ struct AnimalGuardado {
   bool listo{};
 
   bool operator==(const AnimalGuardado &) const = default;
+};
+
+struct DecoracionGuardada {
+  FurnitureType tipo{};
+  std::size_t x{};
+  std::size_t y{};
+
+  bool operator==(const DecoracionGuardada &) const = default;
 };
 
 struct GranjaGuardada {

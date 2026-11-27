@@ -6,18 +6,17 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <toml++/toml.hpp>
 #include <utility>
 #include <vector>
-#include <string_view>
-
 
 #include "constantes_persistencia.h"
 
 std::string rutaDelCampo(const std::string &donde, const char *clave);
 
 const toml::table &leerSubtabla(const toml::table &tabla, const char *clave,
-                             std::string_view donde);
+                                std::string_view donde);
 
 template <typename T>
 T leerValor(const toml::table &tabla, const char *clave,

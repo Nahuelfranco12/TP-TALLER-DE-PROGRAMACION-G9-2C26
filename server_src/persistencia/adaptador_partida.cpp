@@ -2,17 +2,18 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <memory>
 #include <stdexcept>
 #include <utility>
-#include <vector>
-#include <memory>
 #include <variant>
+#include <vector>
 
-#include "constantes_persistencia.h"
-#include "../game/inventory/item_factory.h"
-#include "ids_partida.h"
-#include "../game/entities/chest.h"
 #include "../game/cheatable/growth_cheat.h"
+#include "../game/entities/chest.h"
+#include "../game/entities/decoration.h"
+#include "../game/inventory/item_factory.h"
+#include "constantes_persistencia.h"
+#include "ids_partida.h"
 #include "server_src/persistencia/partida_guardada.h"
 
 namespace {
@@ -35,8 +36,9 @@ ItemSubtype subtipoDe(const ItemState &item) {
 }
 
 bool esGuardable(const ItemState &item) {
-  bool esCama = item.type == ItemType::FURNITURE && static_cast<FurnitureType>(item.subtype) == FurnitureType::BED;
-  return item.type != ItemType::DECORATION_PRODUCT&& !esCama;
+  bool esCama = item.type == ItemType::FURNITURE &&
+                static_cast<FurnitureType>(item.subtype) == FurnitureType::BED;
+  return item.type != ItemType::DECORATION_PRODUCT && !esCama;
 }
 
 ItemGuardado itemGuardadoDe(const ItemState &item) {
@@ -60,17 +62,16 @@ OutfitGuardado outfitGuardadoDe(const PlayerOutfitState &outfit) {
 JugadorGuardado jugadorGuardadoDe(const Player &jugador) {
   PlayerState estado = jugador.state();
   return JugadorGuardado{jugador.getName(),
-                         //static_cast<std::size_t>(estado.id),
-                         outfitGuardadoDe(estado.outfit),
-                         estado.life,
-                         estado.energy,
-                         estado.coins,
+                         // static_cast<std::size_t>(estado.id),
+                         outfitGuardadoDe(estado.outfit), estado.life,
+                         estado.energy, estado.coins,
                          itemsGuardablesDe(estado.inventory)};
 }
 
 void actualizarJugador(std::vector<JugadorGuardado> &jugadores,
                        JugadorGuardado jugador) {
   for (JugadorGuardado &guardado : jugadores) {
+    // cppcheck-suppress useStlAlgorithm
     if (guardado.nombre == jugador.nombre) {
       guardado = std::move(jugador);
       return;
@@ -90,15 +91,10 @@ std::vector<CeldaGuardada> aradasDe(const Sector &granja) {
 
 CultivoGuardado cultivoGuardadoDe(const EntityState &entidad) {
   const CropState &cultivo = entidad.crop;
-  return CultivoGuardado{cultivo.type,
-                         entidad.position.x,
-                         entidad.position.y,
-                         cultivo.growthTicks,
-                         cultivo.sinceWatered,
-                         cultivo.thirstyTicks,
-                         cultivo.readyTicks,
-                         cultivo.extraHarvestsLeft,
-                         cultivo.luck};
+  return CultivoGuardado{
+      cultivo.type,        entidad.position.x,        entidad.position.y,
+      cultivo.growthTicks, cultivo.sinceWatered,      cultivo.thirstyTicks,
+      cultivo.readyTicks,  cultivo.extraHarvestsLeft, cultivo.luck};
 }
 
 bool esCofre(const EntityState &entidad) {
@@ -119,6 +115,27 @@ std::vector<CofreGuardado> cofresDe(const WorldState &estado) {
         if (esCofre(entidad))
           cofres.push_back(cofreGuardadoDe(entidad));
   return cofres;
+}
+
+bool esDecoracion(const EntityState &entidad) {
+  return entidad.type == EntityTypes::FURNITURE &&
+         entidad.furniture.type != FurnitureType::CHEST &&
+         entidad.furniture.type != FurnitureType::BED;
+}
+
+DecoracionGuardada decoracionGuardadaDe(const EntityState &entidad) {
+  return DecoracionGuardada{entidad.furniture.type, entidad.position.x,
+                            entidad.position.y};
+}
+
+std::vector<DecoracionGuardada> decoracionesDe(const WorldState &estado) {
+  std::vector<DecoracionGuardada> decoraciones;
+  for (const SectorState &sector : estado.sectors)
+    if (sector.id == IdSector::FARM)
+      for (const EntityState &entidad : sector.entities)
+        if (esDecoracion(entidad))
+          decoraciones.push_back(decoracionGuardadaDe(entidad));
+  return decoraciones;
 }
 
 AnimalGuardado animalGuardadoDe(const EntityState &entidad) {
@@ -227,6 +244,14 @@ void restaurarCofre(Sector &granja, const CofreGuardado &guardado) {
     throw std::runtime_error(ERROR_ADAPTADOR_COFRE_OCUPADO);
 }
 
+void restaurarDecoracion(Sector &granja, const DecoracionGuardada &guardada) {
+  Position posicion(guardada.x, guardada.y);
+  std::unique_ptr<Entity> decoracion =
+      std::make_unique<Decoration>(posicion, guardada.tipo);
+  if (!granja.tryAddEntity(decoracion, posicion))
+    throw std::runtime_error(ERROR_ADAPTADOR_DECORACION_OCUPADA);
+}
+
 void restaurarAnimal(World &mundo, Sector &granja,
                      const AnimalGuardado &guardado) {
   Position posicion(guardado.x, guardado.y);
@@ -263,6 +288,7 @@ PartidaGuardada extraerPartida(const World &mundo,
   partida.granja.cultivos = cultivosDe(estado);
   partida.granja.cofres = cofresDe(estado);
   partida.granja.animales = animalesDe(estado);
+  partida.granja.decoraciones = decoracionesDe(estado);
   return partida;
 }
 
@@ -282,8 +308,9 @@ void restaurarPartida(World &mundo, const PartidaGuardada &partida) {
   for (const CeldaGuardada &celda : partida.granja.aradas)
     granja->till(Position(celda.x, celda.y));
   for (const CofreGuardado &cofre : partida.granja.cofres)
-  	restaurarCofre(*granja, cofre);
+    restaurarCofre(*granja, cofre);
   for (const AnimalGuardado &animal : partida.granja.animales)
-  	restaurarAnimal(mundo, *granja, animal);
-
+    restaurarAnimal(mundo, *granja, animal);
+  for (const DecoracionGuardada &decoracion : partida.granja.decoraciones)
+    restaurarDecoracion(*granja, decoracion);
 }

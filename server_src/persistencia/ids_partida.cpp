@@ -27,6 +27,22 @@ const TablaIds<AnimalType> &tablaIds(AnimalType) {
   return tabla;
 }
 
+const TablaIds<FurnitureType> &tablaIds(FurnitureType) {
+  static const TablaIds<FurnitureType> tabla = {
+      {FurnitureType::CHAIR, ID_ITEM_SILLA},
+      {FurnitureType::TABLE, ID_ITEM_MESA},
+      {FurnitureType::NIGHTSTAND, ID_ITEM_MESA_DE_LUZ},
+      {FurnitureType::FIREPLACE, ID_ITEM_CHIMENEA},
+      {FurnitureType::VASE, ID_ITEM_JARRON},
+      {FurnitureType::SOFA, ID_ITEM_SILLON},
+      {FurnitureType::CRATE, ID_ITEM_CAJON},
+      {FurnitureType::BARREL, ID_ITEM_BARRIL},
+      {FurnitureType::FLOWER_POT, ID_ITEM_MACETA},
+      {FurnitureType::SUNFLOWER, ID_ITEM_GIRASOL},
+      {FurnitureType::WELL, ID_ITEM_ALJIBE}};
+  return tabla;
+}
+
 const TablaIds<ClaveItem> &tablaIds(ClaveItem) {
   static const TablaIds<ClaveItem> tabla = {
       {{ItemType::MINERAL, MineralTypes::GOLD}, ID_MINERAL_ORO},

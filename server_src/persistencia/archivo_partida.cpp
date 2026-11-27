@@ -1,5 +1,6 @@
 #include "archivo_partida.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
@@ -10,7 +11,6 @@
 #include <system_error>
 #include <toml++/toml.hpp>
 #include <vector>
-#include <algorithm>
 
 #include "constantes_persistencia.h"
 #include "ids_partida.h"
@@ -84,6 +84,14 @@ toml::table tablaAnimal(const AnimalGuardado &animal) {
   return tabla;
 }
 
+toml::table tablaDecoracion(const DecoracionGuardada &decoracion) {
+  toml::table tabla{{CLAVE_PARTIDA_TIPO, idDe(decoracion.tipo)},
+                    {CLAVE_PARTIDA_X, entero(decoracion.x)},
+                    {CLAVE_PARTIDA_Y, entero(decoracion.y)}};
+  tabla.is_inline(true);
+  return tabla;
+}
+
 toml::table tablaJugador(const JugadorGuardado &jugador) {
   return toml::table{
       {CLAVE_PARTIDA_NOMBRE, jugador.nombre},
@@ -100,8 +108,9 @@ toml::table tablaGranja(const GranjaGuardada &granja) {
       {CLAVE_PARTIDA_ARADAS, arrayDe(granja.aradas, tablaCelda)},
       {CLAVE_PARTIDA_CULTIVOS, arrayDe(granja.cultivos, tablaCultivo)},
       {CLAVE_PARTIDA_COFRES, arrayDe(granja.cofres, tablaCofre)},
-      {CLAVE_PARTIDA_ANIMALES, arrayDe(granja.animales, tablaAnimal)}
-  };
+      {CLAVE_PARTIDA_ANIMALES, arrayDe(granja.animales, tablaAnimal)},
+      {CLAVE_PARTIDA_DECORACIONES,
+       arrayDe(granja.decoraciones, tablaDecoracion)}};
 }
 
 void crearCarpeta(const std::filesystem::path &carpeta) {
@@ -120,25 +129,22 @@ T leerId(const toml::table &tabla, const char *clave,
 OutfitGuardado outfitDe(const toml::table &jugador, const std::string &donde) {
   const toml::table &tabla = leerSubtabla(jugador, CLAVE_PARTIDA_OUTFIT, donde);
   std::string lugar = rutaDelCampo(donde, CLAVE_PARTIDA_OUTFIT);
-  return OutfitGuardado{
-      leerEntero<int>(tabla, CLAVE_PARTIDA_GORRO, lugar),
-      leerEntero<int>(tabla, CLAVE_PARTIDA_PELO, lugar),
-      leerEntero<int>(tabla, CLAVE_PARTIDA_REMERA, lugar),
-      leerEntero<int>(tabla, CLAVE_PARTIDA_PANTALON, lugar)};
+  return OutfitGuardado{leerEntero<int>(tabla, CLAVE_PARTIDA_GORRO, lugar),
+                        leerEntero<int>(tabla, CLAVE_PARTIDA_PELO, lugar),
+                        leerEntero<int>(tabla, CLAVE_PARTIDA_REMERA, lugar),
+                        leerEntero<int>(tabla, CLAVE_PARTIDA_PANTALON, lugar)};
 }
 
 ItemGuardado itemDe(const toml::table &tabla, const std::string &donde) {
   ClaveItem clave = leerId<ClaveItem>(tabla, CLAVE_PARTIDA_TIPO, donde);
-  return ItemGuardado{
-      clave.tipo, clave.subtipo,
-      leerId<CropQuality>(tabla, CLAVE_PARTIDA_CALIDAD, donde),
-      leerEntero<int>(tabla, CLAVE_PARTIDA_CANTIDAD, donde)};
+  return ItemGuardado{clave.tipo, clave.subtipo,
+                      leerId<CropQuality>(tabla, CLAVE_PARTIDA_CALIDAD, donde),
+                      leerEntero<int>(tabla, CLAVE_PARTIDA_CANTIDAD, donde)};
 }
 
 CeldaGuardada celdaDe(const toml::table &tabla, const std::string &donde) {
-  return CeldaGuardada{
-      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
-      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde)};
+  return CeldaGuardada{leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
+                       leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde)};
 }
 
 CultivoGuardado cultivoDe(const toml::table &tabla, const std::string &donde) {
@@ -162,17 +168,24 @@ CofreGuardado cofreDe(const toml::table &tabla, const std::string &donde) {
 }
 
 AnimalGuardado animalDe(const toml::table &tabla, const std::string &donde) {
-  return AnimalGuardado{
-      leerId<AnimalType>(tabla, CLAVE_PARTIDA_TIPO, donde),
+  return AnimalGuardado{leerId<AnimalType>(tabla, CLAVE_PARTIDA_TIPO, donde),
+                        leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
+                        leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde),
+                        leerValor<bool>(tabla, CLAVE_PARTIDA_LISTO, donde)};
+}
+
+DecoracionGuardada decoracionDe(const toml::table &tabla,
+                                const std::string &donde) {
+  return DecoracionGuardada{
+      leerId<FurnitureType>(tabla, CLAVE_PARTIDA_TIPO, donde),
       leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_X, donde),
-      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde),
-      leerValor<bool>(tabla, CLAVE_PARTIDA_LISTO, donde)};
+      leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_Y, donde)};
 }
 
 JugadorGuardado jugadorDe(const toml::table &tabla, const std::string &donde) {
   return JugadorGuardado{
       leerValor<std::string>(tabla, CLAVE_PARTIDA_NOMBRE, donde),
-      //leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_INDICE, donde),
+      // leerEntero<std::size_t>(tabla, CLAVE_PARTIDA_INDICE, donde),
       outfitDe(tabla, donde),
       leerValor<double>(tabla, CLAVE_PARTIDA_VIDA, donde),
       leerValor<double>(tabla, CLAVE_PARTIDA_ENERGIA, donde),
@@ -184,15 +197,15 @@ GranjaGuardada granjaDe(const toml::table &raiz) {
   const toml::table &tabla = leerSubtabla(raiz, CLAVE_PARTIDA_GRANJA, {});
   return GranjaGuardada{
       leerLista(tabla, CLAVE_PARTIDA_ARADAS, CLAVE_PARTIDA_GRANJA, celdaDe),
-      leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA,
-                cultivoDe),
+      leerLista(tabla, CLAVE_PARTIDA_CULTIVOS, CLAVE_PARTIDA_GRANJA, cultivoDe),
       leerLista(tabla, CLAVE_PARTIDA_COFRES, CLAVE_PARTIDA_GRANJA, cofreDe),
-      leerLista(tabla, CLAVE_PARTIDA_ANIMALES, CLAVE_PARTIDA_GRANJA, animalDe)
-  };
+      leerLista(tabla, CLAVE_PARTIDA_ANIMALES, CLAVE_PARTIDA_GRANJA, animalDe),
+      leerLista(tabla, CLAVE_PARTIDA_DECORACIONES, CLAVE_PARTIDA_GRANJA,
+                decoracionDe)};
 }
 
 bool comparadorPartidas(const PartidaGuardada &una,
-                      const PartidaGuardada &otra) {
+                        const PartidaGuardada &otra) {
   return una.nombre < otra.nombre;
 }
 
