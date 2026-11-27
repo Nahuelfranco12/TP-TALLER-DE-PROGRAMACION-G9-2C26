@@ -102,7 +102,7 @@ bool esUnicoEnZona(ElementosGranja tipo) {
 TamanioEnCeldas tamanioEnCeldasDe(ElementosCaverna tipo) {
   switch (tipo) {
   case ElementosCaverna::Pozo:
-    return {TAMANIO_OCUPADO_POZO_ANCHO_ALTO, TAMANIO_OCUPADO_POZO_ANCHO_ALTO};
+    return {TAMANIO_OCUPADO_POZO_ANCHO, TAMANIO_OCUPADO_POZO_ALTO};
   case ElementosCaverna::SalidaCaverna:
     return {TAMANIO_OCUPADO_PUERTA_CAVERNA_ANCHO, TAMANIO_OCUPADO_ASSET_NORMAL};
   default:

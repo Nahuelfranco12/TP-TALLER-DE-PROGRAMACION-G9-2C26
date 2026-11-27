@@ -44,7 +44,6 @@ ancho = 30
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 26, y = 0 },
-        { tipo = 'Escalera', x = 4, y = 18 },
         { tipo = 'Candelabro', x = 3, y = 18 },
         { tipo = 'Candelabro', x = 5, y = 18 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -80,13 +79,13 @@ ancho = 30
         { tipo = 'Calavera', x = 23, y = 13 },
         { tipo = 'Candelabro', x = 8, y = 18 },
         { tipo = 'Candelabro', x = 8, y = 3 },
-        { tipo = 'Pozo', x = 7, y = 9 }
+        { tipo = 'Pozo', x = 7, y = 9 },
+        { tipo = 'Escalera', x = 13, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 6, y = 0 },
-        { tipo = 'Escalera', x = 25, y = 6 },
         { tipo = 'Candelabro', x = 24, y = 6 },
         { tipo = 'Candelabro', x = 26, y = 6 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -127,13 +126,13 @@ ancho = 30
         { tipo = 'Calavera', x = 7, y = 6 },
         { tipo = 'Candelabro', x = 20, y = 10 },
         { tipo = 'Candelabro', x = 5, y = 10 },
-        { tipo = 'Pozo', x = 16, y = 7 }
+        { tipo = 'Pozo', x = 16, y = 7 },
+        { tipo = 'Escalera', x = 13, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 22, y = 0 },
-        { tipo = 'Escalera', x = 5, y = 9 },
         { tipo = 'Candelabro', x = 4, y = 9 },
         { tipo = 'Candelabro', x = 6, y = 9 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -176,13 +175,13 @@ ancho = 30
         { tipo = 'Candelabro', x = 11, y = 10 },
         { tipo = 'Candelabro', x = 17, y = 12 },
         { tipo = 'Candelabro', x = 8, y = 8 },
-        { tipo = 'Pozo', x = 19, y = 10 }
+        { tipo = 'Pozo', x = 19, y = 10 },
+        { tipo = 'Escalera', x = 7, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 13, y = 0 },
-        { tipo = 'Escalera', x = 26, y = 18 },
         { tipo = 'Candelabro', x = 25, y = 18 },
         { tipo = 'Candelabro', x = 27, y = 18 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -231,13 +230,13 @@ ancho = 30
         { tipo = 'Candelabro', x = 9, y = 10 },
         { tipo = 'Candelabro', x = 22, y = 12 },
         { tipo = 'Candelabro', x = 21, y = 8 },
-        { tipo = 'Pozo', x = 13, y = 10 }
+        { tipo = 'Pozo', x = 13, y = 10 },
+        { tipo = 'Escalera', x = 9, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 3, y = 0 },
-        { tipo = 'Escalera', x = 14, y = 19 },
         { tipo = 'Candelabro', x = 13, y = 19 },
         { tipo = 'Candelabro', x = 15, y = 19 },
         { tipo = 'Antorcha', x = 10, y = 0 },
@@ -290,13 +289,13 @@ ancho = 30
         { tipo = 'Candelabro', x = 24, y = 14 },
         { tipo = 'Candelabro', x = 14, y = 3 },
         { tipo = 'Candelabro', x = 13, y = 15 },
-        { tipo = 'Pozo', x = 15, y = 10 }
+        { tipo = 'Pozo', x = 15, y = 10 },
+        { tipo = 'Escalera', x = 19, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 25, y = 0 },
-        { tipo = 'Escalera', x = 3, y = 15 },
         { tipo = 'Candelabro', x = 2, y = 15 },
         { tipo = 'Candelabro', x = 4, y = 15 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -353,13 +352,13 @@ ancho = 30
         { tipo = 'Candelabro', x = 9, y = 17 },
         { tipo = 'Candelabro', x = 22, y = 13 },
         { tipo = 'Candelabro', x = 15, y = 3 },
-        { tipo = 'Pozo', x = 17, y = 10 }
+        { tipo = 'Pozo', x = 17, y = 10 },
+        { tipo = 'Escalera', x = 20, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 9, y = 0 },
-        { tipo = 'Escalera', x = 23, y = 12 },
         { tipo = 'Candelabro', x = 22, y = 12 },
         { tipo = 'Candelabro', x = 24, y = 12 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -420,13 +419,13 @@ ancho = 30
         { tipo = 'Candelabro', x = 22, y = 4 },
         { tipo = 'Candelabro', x = 14, y = 14 },
         { tipo = 'Candelabro', x = 9, y = 9 },
-        { tipo = 'Pozo', x = 3, y = 12 }
+        { tipo = 'Pozo', x = 3, y = 12 },
+        { tipo = 'Escalera', x = 20, y = 0 }
     ]
 
     [[caverna.niveles]]
     objetos = [
         { tipo = 'SalidaCaverna', x = 18, y = 0 },
-        { tipo = 'Escalera', x = 6, y = 4 },
         { tipo = 'Candelabro', x = 5, y = 4 },
         { tipo = 'Candelabro', x = 7, y = 4 },
         { tipo = 'Antorcha', x = 4, y = 0 },
@@ -493,7 +492,8 @@ ancho = 30
         { tipo = 'Candelabro', x = 11, y = 3 },
         { tipo = 'Candelabro', x = 21, y = 12 },
         { tipo = 'Candelabro', x = 4, y = 10 },
-        { tipo = 'Pozo', x = 10, y = 10 }
+        { tipo = 'Pozo', x = 10, y = 10 },
+        { tipo = 'Escalera', x = 8, y = 0 }
     ]
 
     [[caverna.niveles]]
@@ -543,7 +543,7 @@ ancho = 30
         { tipo = 'Escombros', x = 25, y = 11 },
         { tipo = 'Barril', x = 23, y = 9 },
         { tipo = 'Escombros', x = 23, y = 6 },
-        { tipo = 'Escalera', x = 12, y = 3 }
+        { tipo = 'Escalera', x = 26, y = 0 }
     ]
 
 [granja]

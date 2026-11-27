@@ -79,7 +79,17 @@ struct ReglaCaverna {
   const char *nombre;
   bool vaEnPrimerNivel;
   bool vaEnUltimoNivel;
+  bool vaEnPared;
 };
+
+bool estaEnLaParedDeArriba(const MapaZona<ElementosCaverna> &nivel,
+                           const ObjetoColocado<ElementosCaverna> &objeto) {
+  TamanioEnCeldas tamanio = tamanioEnCeldasDe(objeto.tipo);
+  bool enLaFilaDeArriba = objeto.y == 0;
+  bool lejosDelExtremoIzquierdo = objeto.x > 0;
+  bool lejosDelExtremoDerecho = objeto.x + tamanio.ancho < nivel.ancho();
+  return enLaFilaDeArriba && lejosDelExtremoIzquierdo && lejosDelExtremoDerecho;
+}
 
 void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
                     std::vector<std::string> &errores) {
@@ -104,6 +114,15 @@ void validarCaverna(const std::vector<MapaZona<ElementosCaverna>> &niveles,
       errores.push_back(mensajeFalta(nivel, TEXTO_ESCALERA));
     if (esPrimero && hayEscalera)
       errores.push_back(mensajeSobra(nivel, TEXTO_ESCALERA));
+
+    for (const ObjetoColocado<ElementosCaverna> &objeto : niveles[i].objetos())
+      if (objeto.tipo == ElementosCaverna::Escalera &&
+          !estaEnLaParedDeArriba(niveles[i], objeto))
+        errores.push_back(
+            mensajeConLugar(nivel, VALIDACION_TEXTO_ESCALERA_PARED));
+
+
+
   }
 }
 } // namespace
