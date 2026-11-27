@@ -182,12 +182,12 @@ void ControladorMapas::manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista,
   if (boton == Qt::RightButton)
     zona.quitarObjetoEnCelda(x, y);
   else if (boton == Qt::LeftButton)
-    colocarElementoSeleccionadEnCelda(zona, vista, x, y);
+    colocarElementoSeleccionadoEnCelda(zona, vista, x, y);
   vista->dibujarZona(zona);
 }
 
 template <typename T>
-void ControladorMapas::colocarElementoSeleccionadEnCelda(MapaZona<T> &zona,
+void ControladorMapas::colocarElementoSeleccionadoEnCelda(MapaZona<T> &zona,
                                                          VistaZona *vista,
                                                          int x, int y) {
   QListWidgetItem *item = ui.paletaAssets->currentItem();

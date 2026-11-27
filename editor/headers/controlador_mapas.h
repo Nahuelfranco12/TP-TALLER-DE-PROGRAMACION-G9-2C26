@@ -40,7 +40,7 @@ private:
   void manejarClickEnCelda(MapaZona<T> &zona, VistaZona *vista, int x, int y,
                            Qt::MouseButton boton);
   template <typename T>
-  void colocarElementoSeleccionadEnCelda(MapaZona<T> &zona, VistaZona *vista,
+  void colocarElementoSeleccionadoEnCelda(MapaZona<T> &zona, VistaZona *vista,
                                          int x, int y);
 
   void validarYExportarMapa();

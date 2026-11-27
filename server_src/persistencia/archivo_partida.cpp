@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -297,7 +298,9 @@ std::vector<PartidaGuardada> listarPartidas() {
       continue;
     try {
       partidas.push_back(cargarPartida(carpeta.path().string()));
-    } catch (const std::runtime_error &) {
+    } catch (const std::runtime_error &error) {
+      std::cerr << ERROR_PARTIDA_IGNORADA << carpeta.path().string()
+                << SEPARADOR_DETALLE_PARTIDA << error.what() << std::endl;
     }
   }
   std::sort(partidas.begin(), partidas.end(), comparadorPartidas);

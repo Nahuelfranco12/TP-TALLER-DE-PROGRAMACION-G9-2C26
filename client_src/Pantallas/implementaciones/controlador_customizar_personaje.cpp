@@ -27,10 +27,10 @@ void ControladorCustomizarPersonaje::actualizarEstadoBotonAvanzar() {
 
 void ControladorCustomizarPersonaje::reiniciarPagina() {
   ui.campoNombrePersonaje->clear();
-  indicePelo = 0;
-  indiceGorro = 0;
-  indicePantalon = 0;
-  indiceRemera = 0;
+  indicePelo = OPCION_POR_DEFECTO;
+  indiceGorro = OPCION_POR_DEFECTO;
+  indicePantalon = OPCION_POR_DEFECTO;
+  indiceRemera = OPCION_POR_DEFECTO;
   redibujarPrevisualizacionPersonaje();
   actualizarEstadoBotonAvanzar();
   datosPartida.personaje = DatosPersonaje{};
