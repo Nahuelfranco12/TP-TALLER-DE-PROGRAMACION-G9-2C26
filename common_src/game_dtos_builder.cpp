@@ -369,10 +369,10 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
                 static_cast<PlayerTShirtsDto>(playerState.outfit.tshirt);
             playerDto.outfit.pants =
                 static_cast<PlayerPantsDto>(playerState.outfit.pants);
-
+                
+            playerDto.life = playerState.life;
+            playerDto.energy = playerState.energy;
             if (playerState.id == clientId) {
-              playerDto.life = static_cast<uint8_t>(playerState.life);
-              playerDto.energy = static_cast<uint8_t>(playerState.energy);
               playerDto.coins = static_cast<uint32_t>(playerState.coins);
 
               InventoryDto inv;
