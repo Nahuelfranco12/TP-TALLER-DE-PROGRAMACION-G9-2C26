@@ -40,6 +40,7 @@ public:
   void send_interact(GamePositionDto position);
   void send_place(int slotIndex, DirectionDto direction);
   void send_chest_move(int slotIndex, bool toChest);
+  void send_redeem_set(int setIndex, int slotIndex, int amount);
   void send_cheat_water(DirectionDto direction);
   void send_cheat_growth();
   void send_end_day_cheat();

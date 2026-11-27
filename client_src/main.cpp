@@ -244,9 +244,17 @@ int main(int argc, char *argv[]) try {
                    pueblo.click_npc(mouse_x, mouse_y, camara_x, camara_y,
                                     posicion_npc)) {
           client.send_interact(posicion_npc);
-        } else if (zona == SectorTypeDto::COMMUNITY_CENTER &&
-                   centro.click_set(mouse_x, mouse_y, camara_x, camara_y) !=
-                       CentroComunitario::NINGUNA) {
+        } else if (zona == SectorTypeDto::COMMUNITY_CENTER) {
+          CentroComunitario::AccionCentro accion =
+              centro.click_set(mouse_x, mouse_y, camara_x, camara_y);
+          if (accion == CentroComunitario::CANJEAR) {
+            int slot = 0;
+            InventorySlotDto casillero;
+            if (inventario.indice_item_seleccionado(slot) &&
+                inventario.item_seleccionado(casillero)) {
+              client.send_redeem_set(centro.get_set_abierto(), slot, casillero.count);
+            }
+          }
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
           if (inventario.click(mouse_x, mouse_y, window.GetWidth(),
                                window.GetHeight())) {
@@ -407,6 +415,7 @@ int main(int argc, char *argv[]) try {
     SectorStateDto state;
     if (client.try_get_latest_state(state)) {
       ultimo_estado = state;
+      centro.actualizar_sets(state.sets);
       chat.agregar(state.chat);
       ventana_cofre.actualizar(state.entities);
       interfaz.actualizar_tiempo(renderer, state.time, state.dayNumber);
@@ -607,7 +616,7 @@ int main(int argc, char *argv[]) try {
 
     pueblo.dibujar_tienda(renderer, personaje);
 
-    centro.dibujar_set(renderer, inventario, interfaz.obtener_monedas());
+    centro.dibujar_set(renderer);
 
     // Mapa del mundo (M)
     if (viendo_mapa) {

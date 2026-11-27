@@ -36,5 +36,8 @@ void AttackCommand::execute(World &world) {
   if (!enemy)
     return;
 
-  player->attack(*enemy);
+  EnemyType enemyType = enemy->getEnemyType();
+  if (player->attack(*enemy)) {
+    world.recordProgress(GoalTypes(enemyType), 1);
+  }
 }

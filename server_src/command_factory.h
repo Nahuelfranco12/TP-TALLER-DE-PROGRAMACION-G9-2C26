@@ -21,6 +21,7 @@
 #include "./game/commands/interact_command.h"
 #include "./game/commands/place_command.h"
 #include "./game/commands/chest_move_command.h"
+#include "./game/commands/redeem_set_command.h"
 
 #include "./game/commands/cheats/cheat_growth_command.h"
 #include "./game/commands/cheats/cheat_water_crop_command.h"
@@ -51,6 +52,7 @@ public:
   std::unique_ptr<Command> create(int player_id, const InteractDto &dto);
   std::unique_ptr<Command> create(int player_id, const PlaceDto &dto);
   std::unique_ptr<Command> create(int player_id, const ChestMoveDto &dto);
+  std::unique_ptr<Command> create(int player_id, const RedeemSetDto &dto);
   std::unique_ptr<Command> create_join(int player_id, const std::string &name,
                                        const PlayerOutfitDto &outfit);
   std::unique_ptr<Command> create_cheat_water(int player_id,

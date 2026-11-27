@@ -52,6 +52,7 @@ target_sources(taller_game
     commands/chat/unknown_command.cpp
     commands/place_command.cpp
     commands/chest_move_command.cpp
+    commands/redeem_set_command.cpp
     commands/cheats/amount_cheat_command.cpp
     commands/cheats/life_cheat_command.cpp
     commands/cheats/energy_cheat_command.cpp
@@ -66,4 +67,10 @@ target_sources(taller_game
     sectors/cavern_sector.cpp
     sectors/farm_sector.cpp
     sectors/village_sector.cpp
+
+    sets/set_animal.cpp
+    sets/set_crop.cpp
+    sets/set_fight.cpp
+    sets/set_gold.cpp
+    sets/set_metal.cpp
 )
