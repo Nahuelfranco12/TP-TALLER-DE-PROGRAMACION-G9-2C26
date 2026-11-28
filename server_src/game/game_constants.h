@@ -247,7 +247,7 @@ enum class FurnitureType { BED, CHEST, CHAIR, TABLE, NIGHTSTAND, FIREPLACE, VASE
 
 enum class AvailableTools { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
 
-enum class MineralTypes { GOLD, IRON, LAPIZLAZULI, COAL };
+enum class MineralTypes { COAL, LAPIZLAZULI, IRON, GOLD };
 
 enum class EntityTypes { PLAYER, ANIMAL, MINERAL, ENEMY, NPC, CROP, BED, FURNITURE };
 
