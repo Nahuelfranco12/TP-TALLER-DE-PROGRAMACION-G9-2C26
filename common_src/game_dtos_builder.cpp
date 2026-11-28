@@ -434,6 +434,17 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
   }
   sectorDto.waitingNewDayConfirmation = state.waitingNewDayConfirmation;
 
+  for (const PlayerState &player : state.players) {
+    PlayerLocationDto location;
+    location.id = player.id;
+    location.sector = toDtoSectorId(player.sector);
+    location.position = {player.position.x, player.position.y};
+    location.outfit = {static_cast<PlayerHatsDto>(player.outfit.hat),
+                       static_cast<PlayerHairsDto>(player.outfit.hairs),
+                       static_cast<PlayerTShirtsDto>(player.outfit.tshirt),
+                       static_cast<PlayerPantsDto>(player.outfit.pants)};
+    sectorDto.playerLocations.push_back(location);
+  }
   return sectorDto;
 }
 

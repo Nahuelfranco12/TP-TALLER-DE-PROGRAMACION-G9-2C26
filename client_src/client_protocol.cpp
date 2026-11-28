@@ -283,6 +283,16 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     state.chat.push_back(message);
   }
   state.waitingNewDayConfirmation = protocol.receive_u8() == 1;
+
+  int location_count = protocol.receive_u8();
+  for (int i = 0; i < location_count; i++) {
+    PlayerLocationDto location;
+    location.id = protocol.receive_u16();
+    location.sector = static_cast<SectorIdDto>(protocol.receive_u8());
+    location.position = receive_position();
+    location.outfit = receive_outfit();
+    state.playerLocations.push_back(location);
+  }
   return state;
 }
 

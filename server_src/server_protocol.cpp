@@ -60,6 +60,14 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_u8(message.isPrivate ? 1 : 0);
   }
   protocol.send_u8(state.waitingNewDayConfirmation ? 1 : 0);
+  
+  protocol.send_u8(static_cast<uint8_t>(state.playerLocations.size()));
+  for (const PlayerLocationDto &location : state.playerLocations) {
+    protocol.send_u16(static_cast<uint16_t>(location.id));
+    protocol.send_u8(static_cast<uint8_t>(location.sector));
+    send_position(location.position);
+    send_outfit(location.outfit);
+  }
 }
 
 void ServerProtocol::send_world_map(const WorldMapDto &map) {

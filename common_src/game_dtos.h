@@ -209,13 +209,11 @@ struct PlaceDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
-struct SleepDto {};
-
-// TODO: ver de eliminarlo
-struct PlayerPositionDto {
+struct PlayerLocationDto {
   int id = 0;
-  int x = 0;
-  int y = 0;
+  SectorIdDto sector{};
+  GamePositionDto position;
+  PlayerOutfitDto outfit{};
 };
 
 struct GamePositionDto {
@@ -367,6 +365,7 @@ struct SectorStateDto {
   size_t dayNumber = 1;
   std::vector<ChatMessageDto> chat;
   bool waitingNewDayConfirmation = false;
+  std::vector<PlayerLocationDto> playerLocations;
 };
 
 struct WorldMapDto {
