@@ -3,6 +3,7 @@
 #include <chrono>
 #include <memory>
 #include <thread>
+#include <iostream>
 
 #include "editor_parser/editor_parser.h"
 
@@ -14,7 +15,11 @@ Gameloop::Gameloop(Queue<std::unique_ptr<Command>> &received_queue,
 void Gameloop::process_commands() {
   std::unique_ptr<Command> cmd;
   while (received_queue.try_pop(cmd)) {
-    cmd->execute(this->world);
+    try {
+      cmd->execute(this->world);
+    } catch (const std::exception &e) {
+      std::cerr << "Error ejecutando un comando " << e.what() << std::endl;
+    }
   }
 }
 

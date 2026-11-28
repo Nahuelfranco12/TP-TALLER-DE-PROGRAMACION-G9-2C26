@@ -56,8 +56,11 @@ std::string Protocol::receive_string() {
 
 void Protocol::send_string(const std::string &str) {
   send_u16(static_cast<uint16_t>(str.size()));
-  int recvd = skt.sendall(str.data(), str.size());
+  if (str.empty())
+    return;
 
-  if (recvd == 0)
+  int sent = skt.sendall(str.data(), str.size());
+
+  if (sent == 0)
     throw std::runtime_error(SOCKET_CLOSE_SEND_ERROR);
 }
