@@ -245,16 +245,18 @@ WorldState World::state() const {
   state.dayNumber = dayNumber;
   state.time = currentTime();
   state.chat = chat;
+  state.waitingNewDayConfirmation = dayIsOver();
   return state;
 }
 
 void World::tick() {
   if (dayIsOver()) {
-    if(newDayConfirmations >= players.size())
-    dayTick = 0;
-    dayNumber++;
-    endDay();
-    newDayConfirmations = 0;
+    if(newDayConfirmations >= players.size()) {
+      dayTick = 0;
+      dayNumber++;
+      endDay();
+      newDayConfirmations = 0;
+    }
   }
 
   newDayConfirmations = 0;
@@ -377,7 +379,7 @@ Player *World::getPlayerByName(const std::string &name) {
   return nullptr;
 }
 
-bool World::dayIsOver() {
+bool World::dayIsOver() const {
   return allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY;
 }
 

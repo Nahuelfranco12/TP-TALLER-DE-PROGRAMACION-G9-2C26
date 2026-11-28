@@ -32,7 +32,7 @@ private:
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
   void respawnNextTo(Player &player, Sector &sector, Position spot);
-  bool dayIsOver();
+  bool dayIsOver() const;
 
 public:
   explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}

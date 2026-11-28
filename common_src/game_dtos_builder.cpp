@@ -470,7 +470,6 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
                                     static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
-      break;
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
       for (const BuildingState &building : sectorState.buildings) {
