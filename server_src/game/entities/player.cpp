@@ -17,7 +17,7 @@ MoveResult Player::move(DirectionDto direction) {
   if (moveCooldown > 0)
     return MoveResult(false, this->position, this->actualSector->getId());
 
-  moveCooldown = isBadlyHurt() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
+  moveCooldown = energyUnderUmbral() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
   this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, this->position.next(direction));
 }
@@ -90,6 +90,10 @@ bool Player::hasEnergy(size_t cost) {
 
 bool Player::isBadlyHurt() const {
   return life <= PLAYER_MAX_LIFE * PLAYER_LOW_LIFE_PERCENT / 100;
+}
+
+bool Player::energyUnderUmbral() const {
+    return energy <= PLAYER_MAX_ENERGY * PLAYER_ENERGY_UMBRAL / 100;
 }
 
 bool Player::spendEnergy(size_t cost) {

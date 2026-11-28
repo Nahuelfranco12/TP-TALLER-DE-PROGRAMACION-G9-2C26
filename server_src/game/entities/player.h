@@ -108,6 +108,7 @@ public:
   void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
+  bool energyUnderUmbral() const;
 
   bool tookDamageInCavern() const { return tookDamageInCavernFlag; }
   void resetCavernDamageFlag() { tookDamageInCavernFlag = false; }
