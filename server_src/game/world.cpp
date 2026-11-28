@@ -292,6 +292,22 @@ void World::applySetReward(SetType type) {
       player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
     }
     break;
+  case SetType::CROP:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      ItemFactory factory;
+      for (int crop = static_cast<int>(CropTypes::STRAWBERRY);
+           crop <= static_cast<int>(CropTypes::PUMPKIN); ++crop) {
+        for (int i = 0; i < SET_CROP_RECOMPENSE_SEEDS; ++i)
+          player->getInventory().addItem(
+              factory.create(ItemType::SEED, crop, PRICE_SEED));
+      }
+    }
+    break;
+  case SetType::MONEY:
+    moneySetRewardPending = true;
+    break;
   default:
     break;
   }
@@ -314,6 +330,17 @@ void World::tick() {
   }
 
   dayTick++;
+  if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
+    moneySetRewardActive = false;
+    dayTick = 0;
+    dayNumber++;
+    // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
+    endDay();
+    if (moneySetRewardPending) {
+      moneySetRewardActive = true;
+      moneySetRewardPending = false;
+    }
+  }
 }
 
 Sector *World::findSectorOf(const Player *player) {
