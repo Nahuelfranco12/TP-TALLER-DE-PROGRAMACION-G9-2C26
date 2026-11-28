@@ -167,7 +167,6 @@ int main(int argc, char *argv[]) try {
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
-  long vueltas_hasta_paso = 0;
   int camara_granja_x = 0;
   int camara_granja_y = 0;
   bool viendo_mapa = false;
@@ -510,11 +509,9 @@ int main(int argc, char *argv[]) try {
       corriendo = false;
     }
 
-    vueltas_hasta_paso -= vueltas;
     bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto() && !personaje.esta_muerto();
-    if (vueltas_hasta_paso <= 0 && puede_caminar) {
+    if (puede_caminar) {
       const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
-      bool camino = true;
       if (teclado[SDL_GetScancodeFromKey(TECLA_ARRIBA)]) {
         personaje.mirar(ARRIBA);
         client.send_move(DirectionDto::Up);
@@ -527,11 +524,6 @@ int main(int argc, char *argv[]) try {
       } else if (teclado[SDL_GetScancodeFromKey(TECLA_DERECHA)]) {
         personaje.mirar(DERECHA);
         client.send_move(DirectionDto::Right);
-      } else {
-        camino = false;
-      }
-      if (camino) {
-        vueltas_hasta_paso = personaje.vueltas_por_paso();
       }
     }
 

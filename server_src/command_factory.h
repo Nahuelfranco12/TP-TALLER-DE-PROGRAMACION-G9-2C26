@@ -29,6 +29,7 @@
 #include "./game/commands/cheats/life_cheat_command.h"
 #include "./game/commands/cheats/gold_cheat_command.h"
 #include "./game/commands/cheats/energy_cheat_command.h"
+#include "./game/commands/cheats/run_cheat_command.h"
 #include "./game/commands/cheats/cheat_enemies_damage_command.h"
 
 #include "./game/commands/chat/buy_command.h"

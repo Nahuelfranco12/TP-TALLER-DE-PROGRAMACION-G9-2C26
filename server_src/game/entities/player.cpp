@@ -13,6 +13,11 @@ MoveResult Player::move(DirectionDto direction) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
   facing = direction;
+
+  if (moveCooldown > 0)
+    return MoveResult(false, this->position, this->actualSector->getId());
+    
+  moveCooldown = isBadlyHurt() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
   this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, this->position.next(direction));
 }
@@ -136,6 +141,19 @@ bool Player::sell(const Item &sample, int price, int amount, int &earned) {
   earned = static_cast<int>(price * multipliers);
   coins += earned;
   return true;
+}
+
+void Player::tick() {
+  if (moveCooldown > 0)
+    moveCooldown--;
+}
+
+void Player::toggleRunCheat() {
+  if(ticksPerMove == PLAYER_TICKS_PER_STEP) {
+    ticksPerMove = PLAYER_TICKS_PER_STEP_RUNNING;
+  } else {
+    ticksPerMove = PLAYER_TICKS_PER_STEP;
+  }
 }
 
 PlayerState Player::state() const {

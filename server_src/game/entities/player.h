@@ -43,6 +43,9 @@ private:
 
   bool sleeping = false;
 
+  int ticksPerMove = PLAYER_TICKS_PER_STEP;
+  int moveCooldown = 0;
+
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
          Sector *actualSector, PlayerOutfit outfit, int coins = (rand() % 100 + 1))
@@ -71,6 +74,7 @@ public:
   }
 
   MoveResult move(DirectionDto direction);
+  void toggleRunCheat();
   void mine(Mineral &mineral);
   void attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
@@ -135,6 +139,7 @@ public:
   * State
   */
   PlayerState state() const;
+  void tick() override;
   EntityState entityState() const override {
     EntityState entity_state = Entity::entityState();
     entity_state.playerId = id;

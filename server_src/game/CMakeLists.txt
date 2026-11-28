@@ -56,6 +56,7 @@ target_sources(taller_game
     commands/cheats/life_cheat_command.cpp
     commands/cheats/energy_cheat_command.cpp
     commands/cheats/gold_cheat_command.cpp
+    commands/cheats/run_cheat_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp
