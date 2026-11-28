@@ -34,6 +34,7 @@ private:
   int coins;
   PlayerOutfit outfit;
 
+  DirectionDto facing = DirectionDto::Down;
   Tool *actualTool = nullptr;
   Merchant *talkingTo = nullptr;
   PendingGift pendingGift{};

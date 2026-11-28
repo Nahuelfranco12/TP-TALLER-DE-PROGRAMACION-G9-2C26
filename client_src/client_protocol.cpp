@@ -341,6 +341,7 @@ PlayerDto ClientProtocol::receive_player() {
   player.id = protocol.receive_u16();
 
   player.outfit = receive_outfit();
+  player.facing = static_cast<DirectionDto>(protocol.receive_u8()); 
 
   player.life = protocol.receive_u16();
   player.energy = protocol.receive_u16();

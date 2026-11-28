@@ -12,6 +12,7 @@
 MoveResult Player::move(DirectionDto direction) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
+  facing = direction;
   this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, this->position.next(direction));
 }
@@ -150,5 +151,6 @@ PlayerState Player::state() const {
                                                  : AvailableTools{},
                      this->inventory.state(),
                      this->pendingGift.giverId,
-                     this->pendingGift.item};
+                     this->pendingGift.item,
+                     this->facing};
 }

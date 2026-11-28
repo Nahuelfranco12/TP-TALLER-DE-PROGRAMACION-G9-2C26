@@ -144,6 +144,7 @@ struct PlayerState {
   InventoryState inventory;
   int pendingGiftGiverId = 0;
   ItemState pendingGift{};
+  DirectionDto facing{};
 };
 
 struct SectorState {

@@ -372,6 +372,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
                 
             playerDto.life = playerState.life;
             playerDto.energy = playerState.energy;
+            playerDto.facing = playerState.facing;
             if (playerState.id == clientId) {
               playerDto.coins = static_cast<uint32_t>(playerState.coins);
 

@@ -110,6 +110,7 @@ void ServerProtocol::send_player(const PlayerDto &player) {
   protocol.send_u16(static_cast<uint16_t>(player.id));
 
   send_outfit(player.outfit);
+  protocol.send_u8(static_cast<uint8_t>(player.facing));
 
   protocol.send_u16(static_cast<uint16_t>(player.life));
   protocol.send_u16(static_cast<uint16_t>(player.energy));
