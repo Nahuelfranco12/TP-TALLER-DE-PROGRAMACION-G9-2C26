@@ -2,6 +2,7 @@
 
 #include "../../entities/merchant.h"
 #include "../../entities/player.h"
+#include "../../game_constants.h"
 
 void SellCommand::trade(World &world, Player &player, const Merchant &merchant) {
   std::string productName;
@@ -17,8 +18,12 @@ void SellCommand::trade(World &world, Player &player, const Merchant &merchant) 
     return;
   }
 
+  int unitPrice = offer->price;
+  if (world.isMoneySetRewardActive())
+    unitPrice = offer->price * SET_MONEY_RECOMPENSE_PRICE_INCREASE;
+
   int earned = 0;
-  if (!player.sell(*offer->sample, offer->price, amount, earned)) {
+  if (!player.sell(*offer->sample, unitPrice, amount, earned)) {
     reply(world, merchant, "No tenes " + std::to_string(amount) + " " + productName);
     return;
   }

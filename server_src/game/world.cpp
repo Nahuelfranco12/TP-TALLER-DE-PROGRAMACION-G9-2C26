@@ -303,6 +303,9 @@ void World::applySetReward(SetType type) {
       }
     }
     break;
+  case SetType::MONEY:
+    moneySetRewardPending = true;
+    break;
   default:
     break;
   }
@@ -315,10 +318,15 @@ void World::tick() {
 
   dayTick++;
   if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
+    moneySetRewardActive = false;
     dayTick = 0;
     dayNumber++;
     // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
     endDay();
+    if (moneySetRewardPending) {
+      moneySetRewardActive = true;
+      moneySetRewardPending = false;
+    }
   }
 }
 

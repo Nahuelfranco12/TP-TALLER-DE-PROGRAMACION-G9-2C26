@@ -35,6 +35,9 @@ private:
   size_t dayTick;
   size_t dayNumber;
 
+  bool moneySetRewardPending = false;
+  bool moneySetRewardActive = false;
+
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
@@ -108,6 +111,18 @@ public:
   void recordProgress(GoalTypes goal, size_t count);
   void applySetReward(SetType type);
   std::set<SetType> rewardedSets;
+
+  bool isMoneySetRewardActive() const { return moneySetRewardActive; }
+  bool isMarketDiscountActive() const { return moneySetRewardActive; }
+  double buyPriceMultiplier() const {
+    return moneySetRewardActive ? (100.0 - SET_MONEY_RECOMPENSE_DISCOUNT) / 100.0
+                                : 1.0;
+  }
+  double sellPriceMultiplier() const {
+    return moneySetRewardActive
+               ? static_cast<double>(SET_MONEY_RECOMPENSE_PRICE_INCREASE)
+               : 1.0;
+  }
 };
 
 #endif // WORLD_H_
