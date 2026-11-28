@@ -29,10 +29,15 @@ void RedeemSetCommand::execute(World &world) {
   Inventory &inventory = player->getInventory();
 
   if (setType == SetType::MONEY) {
-    if (static_cast<int>(player->getCoins()) < this->amount)
+    int amount = this->amount;
+    if (amount <= 0)
+      amount = static_cast<int>(player->getCoins());
+    if (amount > static_cast<int>(player->getCoins()))
+      amount = static_cast<int>(player->getCoins());
+    if (amount <= 0)
       return;
-    player->setCoins(static_cast<int>(player->getCoins()) - this->amount);
-    world.recordProgress(GoalTypes(MoneyType::GOLD), this->amount);
+    player->setCoins(static_cast<int>(player->getCoins()) - amount);
+    world.recordProgress(GoalTypes(MoneyType::GOLD), amount);
     return;
   }
 

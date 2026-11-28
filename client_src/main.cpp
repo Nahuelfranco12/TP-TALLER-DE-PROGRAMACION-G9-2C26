@@ -249,11 +249,15 @@ int main(int argc, char *argv[]) try {
           CentroComunitario::AccionCentro accion =
               centro.click_set(mouse_x, mouse_y, camara_x, camara_y);
           if (accion == CentroComunitario::CANJEAR) {
-            int slot = 0;
-            InventorySlotDto casillero;
-            if (inventario.indice_item_seleccionado(slot) &&
-                inventario.item_seleccionado(casillero)) {
-              client.send_redeem_set(centro.get_set_abierto(), slot, casillero.count);
+            if (centro.get_set_abierto() == SET_DINERO) {
+              client.send_redeem_set(SET_DINERO, 0, 0);
+            } else {
+              int slot = 0;
+              InventorySlotDto casillero;
+              if (inventario.indice_item_seleccionado(slot) &&
+                  inventario.item_seleccionado(casillero)) {
+                client.send_redeem_set(centro.get_set_abierto(), slot, casillero.count);
+              }
             }
           }
         } else if (!interfaz.click(mouse_x, mouse_y, audio)) {
