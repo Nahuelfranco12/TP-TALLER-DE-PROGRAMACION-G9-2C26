@@ -257,6 +257,7 @@ void World::tick() {
       endDay();
       newDayConfirmations = 0;
     }
+    return;
   }
 
   newDayConfirmations = 0;
