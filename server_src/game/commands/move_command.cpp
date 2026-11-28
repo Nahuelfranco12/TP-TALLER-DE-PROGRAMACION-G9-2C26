@@ -4,10 +4,8 @@ void MoveCommand::execute(World &world) {
   Player *player = world.getPlayer(this->playerId);
   if (!player)
     return;
-
-  Position destination = player->position.next(this->direction);
   
-  MoveResult moveRes = player->move(destination);
+  MoveResult moveRes = player->move(this->direction);
   if (moveRes.success && moveRes.idSector != player->getActualSector()->getId())
     player->setActualSector(world.getSector(moveRes.idSector));
 }

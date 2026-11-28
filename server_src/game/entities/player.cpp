@@ -9,11 +9,11 @@
 #include "../inventory/item_factory.h"
 #include "server_src/game/game_constants.h"
 
-MoveResult Player::move(Position destination) {
+MoveResult Player::move(DirectionDto direction) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
   this->actualSector->closeChestsOf(this->id);
-  return this->actualSector->move(this->position, destination);
+  return this->actualSector->move(this->position, this->position.next(direction));
 }
 
 void Player::selectTool(AvailableTools tool) {

@@ -69,7 +69,7 @@ public:
       this->coins = coins;
   }
 
-  MoveResult move(Position destination);
+  MoveResult move(DirectionDto direction);
   void mine(Mineral &mineral);
   void attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
