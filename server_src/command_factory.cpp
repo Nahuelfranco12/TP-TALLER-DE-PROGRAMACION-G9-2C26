@@ -107,6 +107,11 @@ std::unique_ptr<Command> CommandFactory::create(int player_id, const ChestMoveDt
   return std::make_unique<ChestMoveCommand>(player_id, dto.slotIndex, dto.toChest);
 }
 
+std::unique_ptr<Command> CommandFactory::create(int player_id, const RedeemSetDto &dto) {
+  return std::make_unique<RedeemSetCommand>(player_id, dto.setIndex, dto.slotIndex,
+                                            dto.amount);
+}
+
 std::unique_ptr<Command> CommandFactory::create_cheat_growth(int player_id) {
   return std::make_unique<CheatGrowthCommand>(player_id);
 }

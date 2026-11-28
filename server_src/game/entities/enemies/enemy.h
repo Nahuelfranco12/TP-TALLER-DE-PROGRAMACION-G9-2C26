@@ -34,6 +34,7 @@ public:
   Enemy(EnemyType type, size_t pos_x, size_t pos_y, const EnemyStats &stats);
 
   int getGoldDrop() const;
+  EnemyType getEnemyType() const { return type; }
   virtual int getDamage() const;
   virtual int getTicksPerMove() const;
   virtual size_t getAttackRange() const;

@@ -42,6 +42,7 @@ private:
   Sector *actualSector;
 
   bool sleeping = false;
+  bool tookDamageInCavernFlag = false;
 
   int ticksPerMove = PLAYER_TICKS_PER_STEP;
   int moveCooldown = 0;
@@ -107,6 +108,9 @@ public:
   void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
+
+  bool tookDamageInCavern() const { return tookDamageInCavernFlag; }
+  void resetCavernDamageFlag() { tookDamageInCavernFlag = false; }
 
   /*
   * Daño

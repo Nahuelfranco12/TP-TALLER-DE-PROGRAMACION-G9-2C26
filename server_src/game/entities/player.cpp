@@ -32,38 +32,39 @@ void Player::selectTool(AvailableTools tool) {
 Tool *Player::getSelectedTool() { return this->actualTool; }
 
 // cppcheck-suppress constParameterReference
-void Player::mine(Mineral &mineral) {
+bool Player::mine(Mineral &mineral) {
   if (isUnconscious())
-    return;
+    return false;
   if (!this->position.isAdjacentTo(mineral.position))
-    return;
+    return false;
   // cppcheck-suppress constVariablePointer
   if (this->actualTool == nullptr ||
       this->actualTool->toolType != AvailableTools::PICKAXE)
-    return;
+    return false;
 
   if (mineral.hit()) {
     this->spendEnergy(ENERGY_COST_MINE);
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)
-      return;
+      return false;
 
     mineral.pickaxeEffect(*actualSector, position);
     if (!mineral.breaks())
       inventory.addItem(mineral.toItem());
   }
+  return false;
 }
 
-void Player::attack(Enemy &enemy) {
+bool Player::attack(Enemy &enemy) {
   if (isUnconscious())
-    return;
+    return false;
   if (!this->position.isAdjacentTo(enemy.position))
-    return;
+    return false;
   if (this->actualTool == nullptr ||
       this->actualTool->toolType != AvailableTools::SWORD)
-    return;
+    return false;
   if (enemy.isDead())
-    return;
+    return false;
 
   size_t damage = SWORD_DAMAGE;
   if (isBadlyHurt())
@@ -76,7 +77,9 @@ void Player::attack(Enemy &enemy) {
     if (enemy.removeOnDeath()) {
       this->actualSector->removeEntity(enemy.position);
     }
+    return killed;
   }
+  return false;
 }
 
 bool Player::hasEnergy(size_t cost) {
@@ -114,6 +117,11 @@ void Player::takeDamage(double amount) {
   life -= amount;
   if (life < 0)
     life = 0;
+
+  if (actualSector && actualSector->getId() >= IdSector::CAVERN_LEVEL_1 &&
+      actualSector->getId() <= IdSector::CAVERN_LEVEL_10) {
+    tookDamageInCavernFlag = true;
+  }
 }
 
 void Player::startNewDay(bool sleptInBed) {

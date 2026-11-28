@@ -109,6 +109,11 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
 
 void ClientProtocol::send_confirm_day() { 
   protocol.send_u8(OP_CONFIRM_DAY); 
+void ClientProtocol::send_redeem_set_dto(const RedeemSetDto &dto) {
+  protocol.send_u8(OP_REDEEM_SET);
+  protocol.send_u8(static_cast<uint8_t>(dto.setIndex));
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u16(static_cast<uint16_t>(dto.amount));
 }
 
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
@@ -293,6 +298,23 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     location.outfit = receive_outfit();
     state.playerLocations.push_back(location);
   }
+
+  int set_count = protocol.receive_u8();
+  for (int i = 0; i < set_count; i++) {
+    SetStateDto setDto;
+    setDto.type = protocol.receive_u8();
+    setDto.completed = protocol.receive_u8() == 1;
+    int goal_count = protocol.receive_u8();
+    for (int j = 0; j < goal_count; j++) {
+      SetGoalDto goal;
+      goal.goalId = protocol.receive_u8();
+      goal.current = protocol.receive_u16();
+      goal.target = protocol.receive_u16();
+      setDto.goals.push_back(goal);
+    }
+    state.sets.push_back(setDto);
+  }
+
   return state;
 }
 

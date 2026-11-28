@@ -7,6 +7,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "constantes_sdl.h"
+#include "../common_src/game_dtos.h"
 
 class Inventario;
 
@@ -29,6 +30,8 @@ private:
     SDL2pp::Texture texto_salir;
     std::vector<Set> lista_sets;
 
+    std::vector<SetStateDto> sets;
+
     int set_abierto;
     SDL2pp::Rect boton_canjear;
     SDL2pp::Rect boton_salir;
@@ -38,9 +41,9 @@ private:
 
     void dibujar_figurin(SDL2pp::Renderer &renderer, const Set &set, int camara_x, int camara_y, int lado);
 
-    std::vector<std::string> armar_lineas(const Inventario &inventario, size_t monedas) const;
+    std::vector<std::string> armar_lineas() const;
 
-    void actualizar_lineas(SDL2pp::Renderer &renderer, const Inventario &inventario, size_t monedas);
+    void actualizar_lineas(SDL2pp::Renderer &renderer);
 
     void dibujar_boton(SDL2pp::Renderer &renderer, const SDL2pp::Rect &boton, SDL2pp::Texture &texto);
 public:
@@ -51,9 +54,12 @@ public:
     AccionCentro click_set(int x, int y, int camara_x, int camara_y);
 
     bool hay_set_abierto() const;
+    int get_set_abierto() const;
     void cerrar_set();
 
-    void dibujar_set(SDL2pp::Renderer &renderer, const Inventario &inventario, size_t monedas);
+    void actualizar_sets(const std::vector<SetStateDto> &s);
+
+    void dibujar_set(SDL2pp::Renderer &renderer);
 };
 
 #endif

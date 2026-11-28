@@ -49,6 +49,7 @@ public:
   void send_place_dto(const PlaceDto &dto);
   void send_chest_move_dto(const ChestMoveDto &dto);
   void send_confirm_day();
+  void send_redeem_set_dto(const RedeemSetDto &dto);
   void send_water_cheat(const WaterDto &dto);
   void send_growth_cheat();
   void send_end_day_cheat();

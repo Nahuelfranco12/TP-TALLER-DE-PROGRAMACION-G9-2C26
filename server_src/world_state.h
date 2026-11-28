@@ -147,6 +147,18 @@ struct PlayerState {
   DirectionDto facing{};
 };
 
+struct SetGoalState {
+  int goal;
+  size_t current;
+  size_t target;
+};
+
+struct SetState {
+  int type;
+  bool completed;
+  std::vector<SetGoalState> goals;
+};
+
 struct SectorState {
   IdSector id{};
   size_t width = 0;
@@ -171,6 +183,7 @@ struct WorldState {
   GameTime time{6, 0};
   std::vector<ChatMessageState> chat;
   bool waitingNewDayConfirmation = false;
+  std::vector<SetState> sets;
 };
 
 #endif // WORLD_STATE_H_
