@@ -107,8 +107,10 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
   protocol.send_u8(dto.toChest ? 1 : 0);
 }
 
-void ClientProtocol::send_confirm_day() { 
-  protocol.send_u8(OP_CONFIRM_DAY); 
+void ClientProtocol::send_confirm_day() {
+  protocol.send_u8(OP_CONFIRM_DAY);
+}
+
 void ClientProtocol::send_redeem_set_dto(const RedeemSetDto &dto) {
   protocol.send_u8(OP_REDEEM_SET);
   protocol.send_u8(static_cast<uint8_t>(dto.setIndex));
@@ -363,7 +365,7 @@ PlayerDto ClientProtocol::receive_player() {
   player.id = protocol.receive_u16();
 
   player.outfit = receive_outfit();
-  player.facing = static_cast<DirectionDto>(protocol.receive_u8()); 
+  player.facing = static_cast<DirectionDto>(protocol.receive_u8());
 
   player.life = protocol.receive_u16();
   player.energy = protocol.receive_u16();

@@ -6,7 +6,6 @@
 #include "../../game_constants.h"
 #include "../../position.h"
 #include "enemy.h"
-#include "trap.h"
 
 class EnemiesFactory {
 private:

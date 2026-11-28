@@ -16,7 +16,7 @@ MoveResult Player::move(DirectionDto direction) {
 
   if (moveCooldown > 0)
     return MoveResult(false, this->position, this->actualSector->getId());
-    
+
   moveCooldown = isBadlyHurt() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
   this->actualSector->closeChestsOf(this->id);
   return this->actualSector->move(this->position, this->position.next(direction));
@@ -74,9 +74,9 @@ bool Player::attack(Enemy &enemy) {
     this->spendEnergy(ENERGY_COST_ATTACK);
     this->coins += enemy.getGoldDrop();
     inventory.addItem(enemy.dropItem());
-    if (enemy.removeOnDeath()) {
+    bool killed = enemy.isDead();
+    if (killed && enemy.removeOnDeath())
       this->actualSector->removeEntity(enemy.position);
-    }
     return killed;
   }
   return false;

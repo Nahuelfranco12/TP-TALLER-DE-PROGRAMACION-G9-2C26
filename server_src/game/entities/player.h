@@ -76,8 +76,8 @@ public:
 
   MoveResult move(DirectionDto direction);
   void toggleRunCheat();
-  void mine(Mineral &mineral);
-  void attack(Enemy &enemy);
+  bool mine(Mineral &mineral);
+  bool attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
 
   // getters
