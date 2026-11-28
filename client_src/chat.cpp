@@ -10,6 +10,7 @@ const int MARGEN = 10;
 const int ALTO_LINEA = 18;
 const int ESPACIO_INVENTARIO = 70;
 const int ANCHO_CHAT = 420;
+const int ANCHO_TEXTO = ANCHO_CHAT - 2 * MARGEN;
 
 const SDL_Color BLANCO = {255, 255, 255, 255};
 const SDL_Color AMARILLO = {255, 220, 90, 255};
@@ -23,11 +24,34 @@ Chat::Chat(SDL2pp::Renderer &renderer)
 }
 
 void Chat::agregar_linea(const std::string &texto, SDL_Color color) {
-  if (texto.empty())
-    return;
-  lineas.emplace_back(renderer, fuente.RenderUTF8_Blended(texto, color));
-  if (lineas.size() > MAX_LINEAS)
+  for (const std::string &renglon : partir_en_renglones(texto))
+    lineas.emplace_back(renderer, fuente.RenderUTF8_Blended(renglon, color));
+  while (lineas.size() > MAX_LINEAS)
     lineas.erase(lineas.begin());
+}
+std::vector<std::string> Chat::partir_en_renglones(const std::string &texto) const {
+  std::vector<std::string> renglones;
+  std::string renglon;
+  size_t inicio = 0;
+
+  while (inicio < texto.size()) {
+    size_t espacio = texto.find(' ', inicio);
+    if (espacio == std::string::npos)
+      espacio = texto.size();
+    std::string palabra = texto.substr(inicio, espacio - inicio);
+    inicio = espacio + 1;
+
+    std::string con_palabra = renglon.empty() ? palabra : renglon + " " + palabra;
+    if (fuente.GetSizeUTF8(con_palabra).GetX() > ANCHO_TEXTO && !renglon.empty()) {
+      renglones.push_back(renglon);
+      renglon = palabra;
+    } else {
+      renglon = con_palabra;
+    }
+  }
+  if (!renglon.empty())
+    renglones.push_back(renglon);
+  return renglones;
 }
 
 void Chat::agregar(const std::vector<ChatMessageDto> &mensajes) {
