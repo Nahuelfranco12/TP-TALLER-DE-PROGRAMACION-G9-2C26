@@ -9,10 +9,13 @@
 
 void RedeemSetCommand::execute(World &world) {
   Player *player = world.getPlayer(this->playerId);
-  if (!player || this->amount <= 0)
+  if (!player)
     return;
 
   SetType setType = static_cast<SetType>(this->setIndex);
+  if (setType != SetType::MONEY && this->amount <= 0)
+    return;
+
   if (setType == SetType::FIGHT)
     return; // se completa a medida que matas enemigos
 
