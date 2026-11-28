@@ -52,9 +52,22 @@ ItemTypeDto GameDtosBuilder::toDto(const ItemState &item) {
       return ItemTypeDto::ANIMAL_COW;
     return ItemTypeDto::ANIMAL_CHICKEN;
   case ItemType::FURNITURE:
-    if (static_cast<FurnitureType>(item.subtype) == FurnitureType::CHEST)
-      return ItemTypeDto::CHEST;
-    return ItemTypeDto::BED;
+    switch (static_cast<FurnitureType>(item.subtype)) {
+    case FurnitureType::BED: return ItemTypeDto::BED;
+    case FurnitureType::CHEST: return ItemTypeDto::CHEST;
+    case FurnitureType::CHAIR: return ItemTypeDto::CHAIR;
+    case FurnitureType::TABLE: return ItemTypeDto::TABLE;
+    case FurnitureType::NIGHTSTAND: return ItemTypeDto::NIGHTSTAND;
+    case FurnitureType::FIREPLACE: return ItemTypeDto::FIREPLACE;
+    case FurnitureType::VASE: return ItemTypeDto::VASE;
+    case FurnitureType::SOFA: return ItemTypeDto::SOFA;
+    case FurnitureType::CRATE: return ItemTypeDto::CRATE;
+    case FurnitureType::BARREL: return ItemTypeDto::BARREL;
+    case FurnitureType::FLOWER_POT: return ItemTypeDto::FLOWER_POT;
+    case FurnitureType::SUNFLOWER: return ItemTypeDto::SUNFLOWER;
+    case FurnitureType::WELL: return ItemTypeDto::WELL;
+    }
+    break;
   default:
     break;
   }
@@ -115,10 +128,19 @@ std::optional<EntityTypeDto> GameDtosBuilder::toDto(const EntityState &e) {
     break;
   case EntityTypes::FURNITURE:
     switch (e.furniture.type) {
-    case FurnitureType::BED:
-      return EntityTypeDto::BED;
-    case FurnitureType::CHEST:
-      return EntityTypeDto::CHEST;
+    case FurnitureType::BED: return EntityTypeDto::BED;
+    case FurnitureType::CHEST: return EntityTypeDto::CHEST;
+    case FurnitureType::CHAIR: return EntityTypeDto::CHAIR;
+    case FurnitureType::TABLE: return EntityTypeDto::TABLE;
+    case FurnitureType::NIGHTSTAND: return EntityTypeDto::NIGHTSTAND;
+    case FurnitureType::FIREPLACE: return EntityTypeDto::FIREPLACE;
+    case FurnitureType::VASE: return EntityTypeDto::VASE;
+    case FurnitureType::SOFA: return EntityTypeDto::SOFA;
+    case FurnitureType::CRATE: return EntityTypeDto::CRATE;
+    case FurnitureType::BARREL: return EntityTypeDto::BARREL;
+    case FurnitureType::FLOWER_POT: return EntityTypeDto::FLOWER_POT;
+    case FurnitureType::SUNFLOWER: return EntityTypeDto::SUNFLOWER;
+    case FurnitureType::WELL: return EntityTypeDto::WELL;
     }
     break;
   case EntityTypes::NPC:
@@ -347,10 +369,11 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
                 static_cast<PlayerTShirtsDto>(playerState.outfit.tshirt);
             playerDto.outfit.pants =
                 static_cast<PlayerPantsDto>(playerState.outfit.pants);
-
+                
+            playerDto.life = playerState.life;
+            playerDto.energy = playerState.energy;
+            playerDto.facing = playerState.facing;
             if (playerState.id == clientId) {
-              playerDto.life = static_cast<uint8_t>(playerState.life);
-              playerDto.energy = static_cast<uint8_t>(playerState.energy);
               playerDto.coins = static_cast<uint32_t>(playerState.coins);
 
               InventoryDto inv;
@@ -410,7 +433,19 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       sectorDto.chat.push_back({message.fromName, message.text, !forEveryone});
     }
   }
+  sectorDto.waitingNewDayConfirmation = state.waitingNewDayConfirmation;
 
+  for (const PlayerState &player : state.players) {
+    PlayerLocationDto location;
+    location.id = player.id;
+    location.sector = toDtoSectorId(player.sector);
+    location.position = {player.position.x, player.position.y};
+    location.outfit = {static_cast<PlayerHatsDto>(player.outfit.hat),
+                       static_cast<PlayerHairsDto>(player.outfit.hairs),
+                       static_cast<PlayerTShirtsDto>(player.outfit.tshirt),
+                       static_cast<PlayerPantsDto>(player.outfit.pants)};
+    sectorDto.playerLocations.push_back(location);
+  }
   for (const SetState &setState : state.sets) {
     SetStateDto setDto;
     setDto.type = setState.type;
@@ -446,7 +481,6 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
                                     static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
-      break;
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
       for (const BuildingState &building : sectorState.buildings) {

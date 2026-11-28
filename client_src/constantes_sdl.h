@@ -171,7 +171,7 @@
 #define PERSONAJE_DURACION_PICAR                                               \
   (PERSONAJE_CUADROS_PICAR * PERSONAJE_VUELTAS_POR_CUADRO_PICAR)
 #define PERSONAJE_FACTOR_LENTO 2
-#define PERSONAJE_VIDA_LENTO (BARRA_VALOR_MAXIMO / 2)
+#define PERSONAJE_VIDA_LENTO (BARRA_VALOR_MAXIMO * 20 / 100)
 #define PERSONAJE_DURACION_MORIR 40
 #define PERSONAJE_ANGULO_CAIDA 90.0
 #define PERSONAJE_DURACION_ROJO 20
@@ -273,10 +273,20 @@
 #define COFRE_FILAS 3
 #define COFRE_CASILLEROS (COFRE_COLUMNAS * COFRE_FILAS)
 
-#define SPRITE_CAMA_X 87
-#define SPRITE_CAMA_Y 8
-#define SPRITE_CAMA_ANCHO 18
-#define SPRITE_CAMA_ALTO 34
+#define SPRITE_CAMA {87, 8, 18, 34}
+
+// Decoraciones {x, y, ancho, alto}
+
+#define SPRITE_SILLA {2, 125, 11, 18}
+#define SPRITE_MESA {68, 120, 24, 23}
+#define SPRITE_MESITA {96, 120, 16, 18}
+#define SPRITE_CHIMENEA {115, 8, 26, 40}
+#define SPRITE_JARRON {17, 17, 15, 15}
+#define SPRITE_CAJA {0, 0, 16, 21}
+#define SPRITE_BARRIL {0, 0, 13, 16}
+#define SPRITE_MACETA {0, 0, 8, 18}
+#define SPRITE_GIRASOL {0, 0, 12, 19}
+#define SPRITE_ALJIBE {0, 0, 20, 25}
 
 // Rutas de assets -> alrededores.cpp, audio.cpp, caverna.cpp, granja.cpp,
 // interfaz.cpp, inventario.cpp, mapa.cpp, mapa_mundo.cpp, personaje.cpp,
@@ -293,6 +303,11 @@
 #define RUTA_EDIFICIO_CENTRO_COMUNITARIO "assets/mapas/centro_com.png"
 #define RUTA_COFRE "assets/muebles/chest.png"
 #define RUTA_INTERIOR "assets/muebles/Interior.png"
+#define RUTA_CAJA "assets/muebles/spr_deco_crate_01.png"
+#define RUTA_BARRIL "assets/muebles/spr_deco_barrel_closed.png"
+#define RUTA_MACETA "assets/muebles/spr_deco_flowers_house_01.png"
+#define RUTA_GIRASOL "assets/muebles/spr_deco_flowers_house_02.png"
+#define RUTA_ALJIBE "assets/muebles/spr_deco_well.png"
 #define RUTA_OFRENDAS_CENTRO_COMUNITARIO                                       \
   "assets/mapas/ComunityCenter_Offerings.png"
 #define RUTA_MINERALES "assets/caverna/ore.png"
@@ -301,6 +316,7 @@
 #define RUTA_VACA "assets/animales/Female Cow Brown.png"
 #define RUTA_GALLINA "assets/animales/Chicken Blonde  Green.png"
 #define RUTA_CULTIVOS "assets/cultivos/Spring Crops.png"
+#define RUTA_EXCLAMACION "assets/simbolos/expression_alerted.png"
 #define RUTA_ICONOS_MINERALES "assets/inventario/ore.png"
 #define RUTA_ICONOS_CULTIVOS "assets/inventario/Spring Crops.png"
 #define RUTA_HUEVO "assets/inventario/egg.png"

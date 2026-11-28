@@ -12,6 +12,9 @@ public:
       : Sector(width, height, IdSector::VILLAGE,
                Terrain(true, false, TerrainType::GRASS), std::move(decorations),
                std::move(buildings)) {}
+  
+  
+  void endDay() override;
 };
 
 #endif // VILLAGE_SECTOR_H_

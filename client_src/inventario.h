@@ -19,6 +19,12 @@ private:
   SDL2pp::Texture interior;
   SDL2pp::Texture vaca;
   SDL2pp::Texture gallina;
+  SDL2pp::Texture objetos;
+  SDL2pp::Texture caja;
+  SDL2pp::Texture barril;
+  SDL2pp::Texture maceta;
+  SDL2pp::Texture girasol;
+  SDL2pp::Texture aljibe;
   std::vector<SDL2pp::Texture> iconos_herramienta;
   SDL2pp::Font fuente;
   std::vector<SDL2pp::Texture> digitos;
@@ -34,6 +40,10 @@ private:
                             SDL2pp::Texture &textura,
                             const SDL2pp::Rect &origen,
                             const SDL2pp::Rect &casillero);
+  void dibujar_icono_proporcional(SDL2pp::Renderer &renderer,
+                                SDL2pp::Texture &textura,
+                                const SDL_Rect &origen,
+                                const SDL2pp::Rect &lugar);
   void dibujar_item(SDL2pp::Renderer &renderer,
                     const InventorySlotDto &casillero,
                     const SDL2pp::Rect &lugar);

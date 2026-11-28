@@ -1,6 +1,7 @@
 #include "inventario.h"
 
 #include <string>
+#include <algorithm>
 
 #include "constantes_sdl.h"
 
@@ -41,7 +42,11 @@ Inventario::Inventario(Renderer &renderer)
       cultivos(renderer, RUTA_ICONOS_CULTIVOS), huevo(renderer, RUTA_HUEVO),
       leche(renderer, RUTA_LECHE), cofre(renderer, RUTA_COFRE),
       interior(renderer, RUTA_INTERIOR), vaca(renderer, RUTA_VACA),
-      gallina(renderer, RUTA_GALLINA), fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
+      gallina(renderer, RUTA_GALLINA),
+      objetos(renderer, RUTA_OBJETOS_MAPA), caja(renderer, RUTA_CAJA),
+      barril(renderer, RUTA_BARRIL), maceta(renderer, RUTA_MACETA),
+      girasol(renderer, RUTA_GIRASOL), aljibe(renderer, RUTA_ALJIBE),
+      fuente(RUTA_FUENTE_JUEGO, INVENTARIO_TAMANIO_LETRA), seleccionado(0) {
   for (int i = 0; i < DIGITOS_DECIMALES; i++) {
     digitos.emplace_back(renderer,
                          fuente.RenderUTF8_Blended(std::to_string(i), BLANCO));
@@ -119,10 +124,12 @@ Rect Inventario::rect_casillero(int i, int ancho_ventana, int alto_ventana) {
 
 void Inventario::dibujar_icono(Renderer &renderer, Texture &textura,
                                const Rect &origen, const Rect &casillero) {
-  int margen = (INVENTARIO_LADO_CASILLERO - INVENTARIO_LADO_ICONO) / 2;
-  Rect destino(casillero.x + margen, casillero.y + margen,
-               INVENTARIO_LADO_ICONO, INVENTARIO_LADO_ICONO);
-  renderer.Copy(textura, origen, destino);
+  int lado_mayor = std::max(origen.w, origen.h);
+  int ancho = origen.w * INVENTARIO_LADO_ICONO / lado_mayor;
+  int alto = origen.h * INVENTARIO_LADO_ICONO / lado_mayor;
+  Rect destino(casillero.x + (INVENTARIO_LADO_CASILLERO - ancho) / 2,
+               casillero.y + (INVENTARIO_LADO_CASILLERO - alto) / 2, ancho, alto);
+  renderer.Copy(textura, Rect(origen), destino);
 }
 
 void Inventario::dibujar_numero(Renderer &renderer, int numero,
@@ -227,13 +234,42 @@ void Inventario::dibujar_item(Renderer &renderer,
     dibujar_icono(renderer, gallina,
                   Rect(0, 0, SPRITE_GALLINA_LADO, SPRITE_GALLINA_LADO), lugar);
     break;
-  case ItemTypeDto::BED: {
-    int alto = INVENTARIO_LADO_ICONO;
-    int ancho = SPRITE_CAMA_ANCHO * alto / SPRITE_CAMA_ALTO;
-    Rect destino(lugar.x + (INVENTARIO_LADO_CASILLERO - ancho) / 2, lugar.y + (INVENTARIO_LADO_CASILLERO - alto) / 2, ancho, alto);
-    renderer.Copy(interior,Rect(SPRITE_CAMA_X, SPRITE_CAMA_Y, SPRITE_CAMA_ANCHO, SPRITE_CAMA_ALTO), destino);
+  case ItemTypeDto::BED:
+    dibujar_icono(renderer, interior, SPRITE_CAMA, lugar);
     break;
-  }
+  case ItemTypeDto::CHAIR:
+    dibujar_icono(renderer, interior, SPRITE_SILLA, lugar);
+    break;
+  case ItemTypeDto::TABLE:
+    dibujar_icono(renderer, interior, SPRITE_MESA, lugar);
+    break;
+  case ItemTypeDto::NIGHTSTAND:
+    dibujar_icono(renderer, interior, SPRITE_MESITA, lugar);
+    break;
+  case ItemTypeDto::FIREPLACE:
+    dibujar_icono(renderer, interior, SPRITE_CHIMENEA, lugar);
+    break;
+  case ItemTypeDto::VASE:
+    dibujar_icono(renderer, objetos, SPRITE_JARRON, lugar);
+    break;
+  case ItemTypeDto::SOFA:
+    dibujar_icono(renderer, objetos, SPRITE_DECO_BANCO, lugar);
+    break;
+  case ItemTypeDto::CRATE:
+    dibujar_icono(renderer, caja, SPRITE_CAJA, lugar);
+    break;
+  case ItemTypeDto::BARREL:
+    dibujar_icono(renderer, barril, SPRITE_BARRIL, lugar);
+    break;
+  case ItemTypeDto::FLOWER_POT:
+    dibujar_icono(renderer, maceta, SPRITE_MACETA, lugar);
+    break;
+  case ItemTypeDto::SUNFLOWER:
+    dibujar_icono(renderer, girasol, SPRITE_GIRASOL, lugar);
+    break;
+  case ItemTypeDto::WELL:
+    dibujar_icono(renderer, aljibe, SPRITE_ALJIBE, lugar);
+    break;
   default:
     break;
   }

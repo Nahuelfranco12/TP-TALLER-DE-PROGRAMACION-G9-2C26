@@ -85,6 +85,17 @@ enum class ItemTypeDto {
   ANIMAL_CHICKEN,
   BED,
   CHEST,
+  CHAIR,
+  TABLE,
+  NIGHTSTAND,
+  FIREPLACE,
+  VASE,
+  SOFA,
+  CRATE,
+  BARREL,
+  FLOWER_POT,
+  SUNFLOWER,
+  WELL,
 };
 
 enum class ToolTypeDto { SWORD, PICKAXE, SHOVEL, WATERING_CAN };
@@ -146,9 +157,17 @@ enum class EntityTypeDto {
   NPC_CLINT,
   NPC_ROBIN,
   NPC_MARNIE,
-
-  // TODO: resto de enemigos
-  // TODO: NPCs del pueblo
+  CHAIR,
+  TABLE,
+  NIGHTSTAND,
+  FIREPLACE,
+  VASE,
+  SOFA,
+  CRATE,
+  BARREL,
+  FLOWER_POT,
+  SUNFLOWER,
+  WELL,
 };
 
 enum class CropTypeDto { STRAWBERRY, GREEN_ONION, POTATO, PUMPKIN };
@@ -190,15 +209,6 @@ struct PlaceDto {
   DirectionDto direction = DirectionDto::Up;
 };
 
-struct SleepDto {};
-
-// TODO: ver de eliminarlo
-struct PlayerPositionDto {
-  int id = 0;
-  int x = 0;
-  int y = 0;
-};
-
 struct GamePositionDto {
   size_t x = 0;
   size_t y = 0;
@@ -206,6 +216,13 @@ struct GamePositionDto {
   bool operator<(const GamePositionDto &o) const {
     return x != o.x ? x < o.x : y < o.y;
   }
+};
+
+struct PlayerLocationDto {
+  int id = 0;
+  SectorIdDto sector{};
+  GamePositionDto position;
+  PlayerOutfitDto outfit{};
 };
 
 struct PlantDto {
@@ -268,6 +285,7 @@ struct PlayerDto {
   size_t id = 0;
 
   PlayerOutfitDto outfit{};
+  DirectionDto facing{};
 
   double life = 0.0;
   double energy = 0.0;
@@ -365,6 +383,8 @@ struct SectorStateDto {
   GameTimeDto time{};
   size_t dayNumber = 1;
   std::vector<ChatMessageDto> chat;
+  bool waitingNewDayConfirmation = false;
+  std::vector<PlayerLocationDto> playerLocations;
   std::vector<SetStateDto> sets;
 };
 

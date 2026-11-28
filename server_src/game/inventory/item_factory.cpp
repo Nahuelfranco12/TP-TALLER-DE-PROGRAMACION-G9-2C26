@@ -7,6 +7,7 @@
 #include "mineral_item.h"
 #include "animal_item.h"
 #include "chest_item.h"
+#include "decoration_item.h"
 
 std::unique_ptr<Item> ItemFactory::create(ItemType type, int subtype, int price, CropQuality quality) const {
   switch (type) {
@@ -23,9 +24,12 @@ std::unique_ptr<Item> ItemFactory::create(ItemType type, int subtype, int price,
   case ItemType::ANIMAL:
     return std::make_unique<AnimalItem>(price, static_cast<AnimalType>(subtype));
   case ItemType::FURNITURE:
-    if (static_cast<FurnitureType>(subtype) == FurnitureType::CHEST)
+    FurnitureType furniture = static_cast<FurnitureType>(subtype);
+    if (furniture == FurnitureType::CHEST)
       return std::make_unique<ChestItem>(price);
-    return nullptr; // TODO: PONER DECOS
+    if (furniture == FurnitureType::BED)
+      return nullptr;
+    return std::make_unique<DecorationItem>(price, furniture);
   }
   return nullptr;
 }

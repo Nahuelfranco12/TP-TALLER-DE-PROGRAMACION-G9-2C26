@@ -6,6 +6,7 @@ target_sources(taller_game
 
     entities/mineral.cpp
     entities/merchant.cpp
+    entities/rotating_merchant.cpp
     entities/merchants_factory.cpp
     entities/door.cpp
     entities/bed.cpp
@@ -26,6 +27,7 @@ target_sources(taller_game
     inventory/chest_item.cpp
     inventory/chicken_egg.cpp
     inventory/cow_milk.cpp
+    inventory/decoration_item.cpp
     inventory/item_factory.cpp
 
     commands/move_command.cpp
@@ -55,6 +57,7 @@ target_sources(taller_game
     commands/cheats/life_cheat_command.cpp
     commands/cheats/energy_cheat_command.cpp
     commands/cheats/gold_cheat_command.cpp
+    commands/cheats/run_cheat_command.cpp
 
     commands/cheats/cheat_water_crop_command.cpp
     commands/cheats/cheat_growth_command.cpp
@@ -64,6 +67,7 @@ target_sources(taller_game
     sectors/sector.cpp
     sectors/cavern_sector.cpp
     sectors/farm_sector.cpp
+    sectors/village_sector.cpp
 
     sets/set_animal.cpp
     sets/set_crop.cpp

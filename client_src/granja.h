@@ -23,8 +23,6 @@ private:
 
   enum TipoCultivo { FRUTILLA, CEBOLLA_DE_VERDEO, PAPA, CALABAZA };
 
-  enum TipoMueble { COFRE, CAMA };
-
   struct Animal {
     TipoAnimal tipo;
     int tile_x;
@@ -38,13 +36,19 @@ private:
     int tile_x;
     int tile_y;
     int etapa;
+    bool necesita_riego;
   };
 
   struct Mueble {
-    TipoMueble tipo;
+    EntityTypeDto tipo;
     int tile_x;
     int tile_y;
     bool abierto;
+  };
+
+  struct Sprite {
+    SDL2pp::Texture *textura;
+    SDL_Rect origen;
   };
 
   SDL2pp::Texture casas;
@@ -56,6 +60,13 @@ private:
   SDL2pp::Texture leche;
   SDL2pp::Texture cofre;
   SDL2pp::Texture interior;
+  SDL2pp::Texture exclamacion;
+  SDL2pp::Texture objetos;
+  SDL2pp::Texture caja;
+  SDL2pp::Texture barril;
+  SDL2pp::Texture maceta;
+  SDL2pp::Texture girasol;
+  SDL2pp::Texture aljibe;
 
   std::vector<Casa> lista_casas;
   std::vector<Animal> lista_animales;
@@ -63,6 +74,8 @@ private:
   std::vector<Mueble> lista_muebles;
 
   long vueltas;
+
+  bool sprite_de(EntityTypeDto tipo, Sprite &sprite);
 
   void dibujar_casa(SDL2pp::Renderer &renderer, const Casa &casa, int camara_x,
                     int camara_y, int lado);

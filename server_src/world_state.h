@@ -144,6 +144,7 @@ struct PlayerState {
   InventoryState inventory;
   int pendingGiftGiverId = 0;
   ItemState pendingGift{};
+  DirectionDto facing{};
 };
 
 struct SetGoalState {
@@ -181,6 +182,7 @@ struct WorldState {
   size_t dayNumber = 1;
   GameTime time{6, 0};
   std::vector<ChatMessageState> chat;
+  bool waitingNewDayConfirmation = false;
   std::vector<SetState> sets;
 };
 

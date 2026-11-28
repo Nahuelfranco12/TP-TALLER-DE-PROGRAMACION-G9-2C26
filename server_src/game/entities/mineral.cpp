@@ -3,6 +3,8 @@
 #include "../game_constants.h"
 #include "../inventory/item.h"
 #include "../inventory/mineral_item.h"
+#include "../sectors/sector.h"
+#include "./enemies/enemies_factory.h"
 
 std::unique_ptr<Item> Mineral::toItem() const {
   double price = 0;
@@ -23,7 +25,11 @@ std::unique_ptr<Item> Mineral::toItem() const {
   return std::make_unique<MineralItem>(price, this->mineralType);
 }
 
-// cppcheck-suppress functionStatic
-void Mineral::pickaxeEffect() {
-  // TODO: implementar (spawn de enemigos, perder el material)
+void Mineral::pickaxeEffect(Sector &sector, Position minerPosition) {
+  if (std::rand() % 100 < hordeChance)
+    sector.spawnHordeNear(minerPosition);
+}
+
+bool Mineral::breaks() const { 
+  return std::rand() % 100 < breakChance; 
 }

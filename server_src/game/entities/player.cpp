@@ -9,11 +9,17 @@
 #include "../inventory/item_factory.h"
 #include "server_src/game/game_constants.h"
 
-MoveResult Player::move(Position destination) {
+MoveResult Player::move(DirectionDto direction) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
+  facing = direction;
+
+  if (moveCooldown > 0)
+    return MoveResult(false, this->position, this->actualSector->getId());
+    
+  moveCooldown = isBadlyHurt() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
   this->actualSector->closeChestsOf(this->id);
-  return this->actualSector->move(this->position, destination);
+  return this->actualSector->move(this->position, this->position.next(direction));
 }
 
 void Player::selectTool(AvailableTools tool) {
@@ -36,17 +42,15 @@ bool Player::mine(Mineral &mineral) {
       this->actualTool->toolType != AvailableTools::PICKAXE)
     return false;
 
-  // TODO: Falta el chequeo de efecto secundario de algunos minerales
-
   if (mineral.hit()) {
     this->spendEnergy(ENERGY_COST_MINE);
-    auto item = mineral.toItem();
     auto removed = this->actualSector->removeEntity(mineral.position);
     if (!removed)
       return false;
 
-    this->inventory.addItem(std::move(item));
-    return true;
+    mineral.pickaxeEffect(*actualSector, position);
+    if (!mineral.breaks())
+      inventory.addItem(mineral.toItem());
   }
   return false;
 }
@@ -69,8 +73,8 @@ bool Player::attack(Enemy &enemy) {
   if (enemy.hit(damage)) {
     this->spendEnergy(ENERGY_COST_ATTACK);
     this->coins += enemy.getGoldDrop();
-    bool killed = enemy.isDead();
-    if (killed && enemy.removeOnDeath()) {
+    inventory.addItem(enemy.dropItem());
+    if (enemy.removeOnDeath()) {
       this->actualSector->removeEntity(enemy.position);
     }
     return killed;
@@ -147,6 +151,19 @@ bool Player::sell(const Item &sample, int price, int amount, int &earned) {
   return true;
 }
 
+void Player::tick() {
+  if (moveCooldown > 0)
+    moveCooldown--;
+}
+
+void Player::toggleRunCheat() {
+  if(ticksPerMove == PLAYER_TICKS_PER_STEP) {
+    ticksPerMove = PLAYER_TICKS_PER_STEP_RUNNING;
+  } else {
+    ticksPerMove = PLAYER_TICKS_PER_STEP;
+  }
+}
+
 PlayerState Player::state() const {
   return PlayerState{this->id,
                      this->position,
@@ -160,5 +177,6 @@ PlayerState Player::state() const {
                                                  : AvailableTools{},
                      this->inventory.state(),
                      this->pendingGift.giverId,
-                     this->pendingGift.item};
+                     this->pendingGift.item,
+                     this->facing};
 }

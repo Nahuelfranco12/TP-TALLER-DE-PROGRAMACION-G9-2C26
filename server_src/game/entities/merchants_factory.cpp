@@ -1,5 +1,6 @@
 #include "merchants_factory.h"
 
+#include "rotating_merchant.h"
 #include "../inventory/chicken_egg.h"
 #include "../inventory/cow_milk.h"
 #include "../inventory/crop_item.h"
@@ -7,6 +8,7 @@
 #include "../inventory/mineral_item.h"
 #include "../inventory/animal_item.h"
 #include "../inventory/chest_item.h"
+#include "../inventory/decoration_item.h"
 
 std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
                                                    Position position) const {
@@ -37,8 +39,20 @@ std::unique_ptr<Merchant> MerchantsFactory::create(MerchantType type,
     return clint;
   }
   case MerchantType::ROBIN: {
-    auto robin = std::make_unique<Merchant>(position, type, "Robin", "Hola! Soy Robin. Hago decoraciones y cofres para tu granja.");
+    auto robin = std::make_unique<RotatingMerchant>(position, type, "Robin","Hola! Soy Robin. Hago decoraciones y cofres para tu granja.", ROBIN_DAILY_PRODUCTS);
     robin->addSale("cofre", PRICE_CHEST, std::make_unique<ChestItem>(PRICE_CHEST));
+    robin->addSale("silla", PRICE_CHAIR, std::make_unique<DecorationItem>(PRICE_CHAIR, FurnitureType::CHAIR));
+    robin->addSale("mesa", PRICE_TABLE, std::make_unique<DecorationItem>(PRICE_TABLE, FurnitureType::TABLE));
+    robin->addSale("mesita", PRICE_NIGHTSTAND, std::make_unique<DecorationItem>(PRICE_NIGHTSTAND, FurnitureType::NIGHTSTAND));
+    robin->addSale("chimenea", PRICE_FIREPLACE, std::make_unique<DecorationItem>(PRICE_FIREPLACE, FurnitureType::FIREPLACE));
+    robin->addSale("jarron", PRICE_VASE, std::make_unique<DecorationItem>(PRICE_VASE, FurnitureType::VASE));
+    robin->addSale("sillon", PRICE_SOFA, std::make_unique<DecorationItem>(PRICE_SOFA, FurnitureType::SOFA));
+    robin->addSale("caja", PRICE_CRATE, std::make_unique<DecorationItem>(PRICE_CRATE, FurnitureType::CRATE));
+    robin->addSale("barril", PRICE_BARREL, std::make_unique<DecorationItem>(PRICE_BARREL, FurnitureType::BARREL));
+    robin->addSale("maceta", PRICE_FLOWER_POT, std::make_unique<DecorationItem>(PRICE_FLOWER_POT, FurnitureType::FLOWER_POT));
+    robin->addSale("girasol", PRICE_SUNFLOWER, std::make_unique<DecorationItem>(PRICE_SUNFLOWER, FurnitureType::SUNFLOWER));
+    robin->addSale("aljibe", PRICE_WELL, std::make_unique<DecorationItem>(PRICE_WELL, FurnitureType::WELL));
+    robin->refreshCatalog();
     return robin;
   }
   case MerchantType::MARNIE: {

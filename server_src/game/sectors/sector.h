@@ -112,6 +112,8 @@ public:
     return false;
   }
 
+  virtual void spawnHordeNear(Position) {}
+
   /*
   * Beds
   */

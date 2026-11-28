@@ -55,6 +55,19 @@ void mostrarLobby(int &argc, char *argv[], ServicioLobby &servicio) {
   QApplication::exec();
 }
 
+Direccion direccion_de(DirectionDto direccion) {
+  switch (direccion) {
+  case DirectionDto::Up:
+    return ARRIBA;
+  case DirectionDto::Down:
+    return ABAJO;
+  case DirectionDto::Left:
+    return IZQUIERDA;
+  default:
+    return DERECHA;
+  }
+}
+
 // TODO : Revisar funcion, la pongo temporalmente para parsear de semilla a crop
 bool es_semilla(ItemTypeDto item, CropTypeDto &cultivo) {
   switch (item) {
@@ -154,7 +167,6 @@ int main(int argc, char *argv[]) try {
                        mapa_pueblo, mapa_caverna, granja, pueblo, caverna);
 
   SectorTypeDto zona = SectorTypeDto::FARM;
-  long vueltas_hasta_paso = 0;
   int camara_granja_x = 0;
   int camara_granja_y = 0;
   bool viendo_mapa = false;
@@ -385,10 +397,6 @@ int main(int argc, char *argv[]) try {
           client.send_till(dir);
         } else if (inventario.tengo_en_la_mano(REGADERA)) {
           client.send_water(dir);
-        } else if (inventario.item_seleccionado(en_la_mano) && (en_la_mano.item == ItemTypeDto::ANIMAL_COW || en_la_mano.item == ItemTypeDto::ANIMAL_CHICKEN || en_la_mano.item == ItemTypeDto::BED || en_la_mano.item == ItemTypeDto::CHEST)) {
-          int casillero = 0;
-          if (inventario.indice_item_seleccionado(casillero))
-            client.send_place(casillero, dir);
         } else if (inventario.item_seleccionado(en_la_mano) &&
                    es_semilla(en_la_mano.item, cultivo)) {
           client.send_plant(frente_x, frente_y, cultivo);
@@ -396,6 +404,10 @@ int main(int argc, char *argv[]) try {
           client.send_collect(dir);
           client.send_interact({static_cast<size_t>(frente_x),
                                 static_cast<size_t>(frente_y)});
+
+          int casillero = 0;
+          if (inventario.indice_item_seleccionado(casillero))
+            client.send_place(casillero, dir);
         }
       }
     }
@@ -485,6 +497,7 @@ int main(int argc, char *argv[]) try {
                        REMERAS_SDL[static_cast<int>(jugador.outfit.tshirt)]);
         }
         otro->aplicar(x, y);
+        otro->mirar(direccion_de(jugador.facing));
         if (zona == SectorTypeDto::CAVERN && !recien_llegado &&
             jugador.life < otro->obtener_vida()) {
           caverna.golpearon_a(x, y);
@@ -505,11 +518,9 @@ int main(int argc, char *argv[]) try {
       corriendo = false;
     }
 
-    vueltas_hasta_paso -= vueltas;
     bool puede_caminar = !pueblo.hay_tienda_abierta() && !centro.hay_set_abierto() && !personaje.esta_muerto();
-    if (vueltas_hasta_paso <= 0 && puede_caminar) {
+    if (puede_caminar) {
       const Uint8 *teclado = SDL_GetKeyboardState(nullptr);
-      bool camino = true;
       if (teclado[SDL_GetScancodeFromKey(TECLA_ARRIBA)]) {
         personaje.mirar(ARRIBA);
         client.send_move(DirectionDto::Up);
@@ -522,11 +533,6 @@ int main(int argc, char *argv[]) try {
       } else if (teclado[SDL_GetScancodeFromKey(TECLA_DERECHA)]) {
         personaje.mirar(DERECHA);
         client.send_move(DirectionDto::Right);
-      } else {
-        camino = false;
-      }
-      if (camino) {
-        vueltas_hasta_paso = personaje.vueltas_por_paso();
       }
     }
 
