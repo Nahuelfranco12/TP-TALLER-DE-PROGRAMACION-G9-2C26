@@ -34,6 +34,7 @@ private:
   int coins;
   PlayerOutfit outfit;
 
+  DirectionDto facing = DirectionDto::Down;
   Tool *actualTool = nullptr;
   Merchant *talkingTo = nullptr;
   PendingGift pendingGift{};
@@ -41,6 +42,10 @@ private:
   Sector *actualSector;
 
   bool sleeping = false;
+  bool tookDamageInCavernFlag = false;
+
+  int ticksPerMove = PLAYER_TICKS_PER_STEP;
+  int moveCooldown = 0;
 
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
@@ -69,7 +74,8 @@ public:
       this->coins = coins;
   }
 
-  MoveResult move(Position destination);
+  MoveResult move(DirectionDto direction);
+  void toggleRunCheat();
   bool mine(Mineral &mineral);
   bool attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
@@ -103,6 +109,9 @@ public:
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
 
+  bool tookDamageInCavern() const { return tookDamageInCavernFlag; }
+  void resetCavernDamageFlag() { tookDamageInCavernFlag = false; }
+
   /*
   * Daño
   */
@@ -134,6 +143,7 @@ public:
   * State
   */
   PlayerState state() const;
+  void tick() override;
   EntityState entityState() const override {
     EntityState entity_state = Entity::entityState();
     entity_state.playerId = id;

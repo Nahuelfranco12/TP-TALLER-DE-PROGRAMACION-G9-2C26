@@ -14,7 +14,7 @@ void RedeemSetCommand::execute(World &world) {
 
   SetType setType = static_cast<SetType>(this->setIndex);
   if (setType == SetType::FIGHT)
-    return; // solo se completa con acciones
+    return; // se completa a medida que matas enemigos
 
   Set *targetSet = nullptr;
   for (const auto &set : world.getSets()) {

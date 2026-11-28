@@ -107,6 +107,10 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
   protocol.send_u8(dto.toChest ? 1 : 0);
 }
 
+void ClientProtocol::send_confirm_day() {
+  protocol.send_u8(OP_CONFIRM_DAY);
+}
+
 void ClientProtocol::send_redeem_set_dto(const RedeemSetDto &dto) {
   protocol.send_u8(OP_REDEEM_SET);
   protocol.send_u8(static_cast<uint8_t>(dto.setIndex));
@@ -285,6 +289,17 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     message.isPrivate = protocol.receive_u8() == 1;
     state.chat.push_back(message);
   }
+  state.waitingNewDayConfirmation = protocol.receive_u8() == 1;
+
+  int location_count = protocol.receive_u8();
+  for (int i = 0; i < location_count; i++) {
+    PlayerLocationDto location;
+    location.id = protocol.receive_u16();
+    location.sector = static_cast<SectorIdDto>(protocol.receive_u8());
+    location.position = receive_position();
+    location.outfit = receive_outfit();
+    state.playerLocations.push_back(location);
+  }
 
   int set_count = protocol.receive_u8();
   for (int i = 0; i < set_count; i++) {
@@ -350,6 +365,7 @@ PlayerDto ClientProtocol::receive_player() {
   player.id = protocol.receive_u16();
 
   player.outfit = receive_outfit();
+  player.facing = static_cast<DirectionDto>(protocol.receive_u8());
 
   player.life = protocol.receive_u16();
   player.energy = protocol.receive_u16();

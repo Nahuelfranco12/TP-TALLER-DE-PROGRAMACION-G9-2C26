@@ -94,6 +94,8 @@ std::unique_ptr<Command> CommandFactory::create(int player_id,
     return create_cheat_end_day(player_id);
   if (word == "/danio_enemigos")
     return create_cheat_enemies_damage(player_id);
+  if (word == "/correr")
+    return std::make_unique<RunCheatCommand>(player_id);
   return std::make_unique<UnknownCommand>(player_id, word);
 }
 
@@ -130,4 +132,8 @@ CommandFactory::create_join(int player_id, const std::string &name,
                            static_cast<PlayerShirts>(outfit.tshirt),
                            static_cast<PlayerPants>(outfit.pants));
   return std::make_unique<JoinCommand>(player_id, name, game_outfit);
+}
+
+std::unique_ptr<Command> CommandFactory::create_confirm_day() {
+  return std::make_unique<ConfirmDayCommand>();
 }

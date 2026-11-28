@@ -246,6 +246,7 @@ WorldState World::state() const {
   state.dayNumber = dayNumber;
   state.time = currentTime();
   state.chat = chat;
+  state.waitingNewDayConfirmation = dayIsOver();
 
   for (const auto &set : sets)
     state.sets.push_back(set->state());
@@ -255,54 +256,64 @@ WorldState World::state() const {
 
 void World::recordProgress(GoalTypes goal, size_t count) {
   for (const auto &set : sets) {
-    bool justCompleted = set->complete(goal, count);
-    if (!justCompleted)
-      continue;
-
-    switch (set->type()) {
-    case SetType::METAL:
-      for (const auto &[id, player] : getPlayers()) {
-        if (player)
-          player->setCoins(static_cast<int>(player->getCoins()) + SET_METALS_RECOMPENSE_GOLD);
-      }
-      break;
-    case SetType::ANIMAL:
-      for (const auto &[id, player] : getPlayers()) {
-        if (!player)
-          continue;
-        ItemFactory factory;
-        for (int i = 0; i < SET_ANIMALS_RECOMPENSE_COW; ++i)
-          player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::COW), PRICE_COW));
-        for (int i = 0; i < SET_ANIMALS_RECOMPENSE_CHICKEN; ++i)
-          player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::CHICKEN), PRICE_CHICKEN));
-      }
-      break;
-    case SetType::FIGHT:
-      for (const auto &[id, player] : getPlayers()) {
-        if (!player)
-          continue;
-        player->setLife(player->state().life + PLAYER_MAX_LIFE * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
-        player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
-      }
-      break;
-    default:
-      break;
+    bool wasComplete = set->isComplete();
+    bool nowComplete = set->complete(goal, count);
+    if (!wasComplete && nowComplete && rewardedSets.count(set->type()) == 0) {
+      applySetReward(set->type());
+      rewardedSets.insert(set->type());
     }
   }
 }
 
+void World::applySetReward(SetType type) {
+  switch (type) {
+  case SetType::METAL:
+    for (const auto &[id, player] : getPlayers()) {
+      if (player)
+        player->setCoins(static_cast<int>(player->getCoins()) + SET_METALS_RECOMPENSE_GOLD);
+    }
+    break;
+  case SetType::ANIMAL:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      ItemFactory factory;
+      for (int i = 0; i < SET_ANIMALS_RECOMPENSE_COW; ++i)
+        player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::COW), PRICE_COW));
+      for (int i = 0; i < SET_ANIMALS_RECOMPENSE_CHICKEN; ++i)
+        player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::CHICKEN), PRICE_CHICKEN));
+    }
+    break;
+  case SetType::FIGHT:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      player->setLife(player->state().life + PLAYER_MAX_LIFE * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
+      player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
+    }
+    break;
+  default:
+    break;
+  }
+}
+
 void World::tick() {
+  if (dayIsOver()) {
+    if(newDayConfirmations >= players.size()) {
+      dayTick = 0;
+      dayNumber++;
+      endDay();
+      newDayConfirmations = 0;
+    }
+    return;
+  }
+
+  newDayConfirmations = 0;
   for (auto &[id, sector] : sectors) {
     sector->tick();
   }
 
   dayTick++;
-  if (allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY) {
-    dayTick = 0;
-    dayNumber++;
-    // TODO: se debe invocar recien cuando todos los jugadores dan el OK (posible comando).
-    endDay();
-  }
 }
 
 Sector *World::findSectorOf(const Player *player) {
@@ -415,4 +426,13 @@ Player *World::getPlayerByName(const std::string &name) {
     if (player->getName() == name)
       return player;
   return nullptr;
+}
+
+bool World::dayIsOver() const {
+  return allPlayersDoneForTheDay() || dayTick >= TICKS_PER_DAY;
+}
+
+void World::addADayConfirmation() {
+  if(dayIsOver())
+    newDayConfirmations++;
 }

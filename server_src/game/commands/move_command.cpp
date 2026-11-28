@@ -5,9 +5,12 @@ void MoveCommand::execute(World &world) {
   if (!player)
     return;
 
-  Position destination = player->position.next(this->direction);
-  
-  MoveResult moveRes = player->move(destination);
-  if (moveRes.success && moveRes.idSector != player->getActualSector()->getId())
+  MoveResult moveRes = player->move(this->direction);
+
+  if (moveRes.success && moveRes.idSector != player->getActualSector()->getId()) {
+    IdSector oldSector = player->getActualSector()->getId();
     player->setActualSector(world.getSector(moveRes.idSector));
+    if (oldSector != moveRes.idSector)
+      player->resetCavernDamageFlag();
+  }
 }

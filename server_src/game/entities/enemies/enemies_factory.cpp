@@ -4,6 +4,7 @@
 #include "skeleton.h"
 #include "vampire.h"
 #include "skull.h"
+#include "trap.h"
 
 std::unique_ptr<Enemy> EnemiesFactory::createSkeleton(Position position) {
   EnemyStats stats{SKELETON_LIFE, SKELETON_DAMAGE, SKELETON_DAMAGE, SKELETON_GOLD,

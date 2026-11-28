@@ -372,6 +372,7 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
                 
             playerDto.life = playerState.life;
             playerDto.energy = playerState.energy;
+            playerDto.facing = playerState.facing;
             if (playerState.id == clientId) {
               playerDto.coins = static_cast<uint32_t>(playerState.coins);
 
@@ -432,7 +433,19 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
       sectorDto.chat.push_back({message.fromName, message.text, !forEveryone});
     }
   }
+  sectorDto.waitingNewDayConfirmation = state.waitingNewDayConfirmation;
 
+  for (const PlayerState &player : state.players) {
+    PlayerLocationDto location;
+    location.id = player.id;
+    location.sector = toDtoSectorId(player.sector);
+    location.position = {player.position.x, player.position.y};
+    location.outfit = {static_cast<PlayerHatsDto>(player.outfit.hat),
+                       static_cast<PlayerHairsDto>(player.outfit.hairs),
+                       static_cast<PlayerTShirtsDto>(player.outfit.tshirt),
+                       static_cast<PlayerPantsDto>(player.outfit.pants)};
+    sectorDto.playerLocations.push_back(location);
+  }
   for (const SetState &setState : state.sets) {
     SetStateDto setDto;
     setDto.type = setState.type;
@@ -468,7 +481,6 @@ GameDtosBuilder::buildSectorMap(const WorldState &state,
                                     static_cast<DoorTypeDto>(t.doorType),
                                     t.tilled};
         }
-      break;
 
       sectorDto.buildings.reserve(sectorState.buildings.size());
       for (const BuildingState &building : sectorState.buildings) {

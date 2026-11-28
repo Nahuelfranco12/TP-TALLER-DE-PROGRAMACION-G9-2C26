@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "../world_state.h"
@@ -33,11 +34,13 @@ private:
 
   size_t dayTick;
   size_t dayNumber;
-
+  size_t newDayConfirmations = 0;
+  
   Sector *findSectorOf(const Player *player);
   bool sendPlayerToFarm(Player *player, Sector &farm);
   void sendPlayersToFarm();
   void respawnNextTo(Player &player, Sector &sector, Position spot);
+  bool dayIsOver() const;
 
 public:
   explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1)
@@ -98,6 +101,7 @@ public:
   void endDay();
   Bed *findBedOf(int playerId, Sector *&bedSector);
 
+  void addADayConfirmation();
   /*
   * State
   */
@@ -105,6 +109,8 @@ public:
   WorldState state() const;
   const std::vector<std::unique_ptr<Set>> &getSets() const { return sets; }
   void recordProgress(GoalTypes goal, size_t count);
+  void applySetReward(SetType type);
+  std::set<SetType> rewardedSets;
 };
 
 #endif // WORLD_H_

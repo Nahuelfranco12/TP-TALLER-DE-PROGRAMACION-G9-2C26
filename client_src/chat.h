@@ -17,7 +17,7 @@ private:
   bool abierto;
 
   void agregar_linea(const std::string &texto, SDL_Color color);
-
+  std::vector<std::string> partir_en_renglones(const std::string &texto) const;
 public:
   explicit Chat(SDL2pp::Renderer &renderer);
 

@@ -9,11 +9,17 @@
 #include "../inventory/item_factory.h"
 #include "server_src/game/game_constants.h"
 
-MoveResult Player::move(Position destination) {
+MoveResult Player::move(DirectionDto direction) {
   if (isUnconscious() || sleeping)
     return MoveResult(false, this->position, this->actualSector->getId());
+  facing = direction;
+
+  if (moveCooldown > 0)
+    return MoveResult(false, this->position, this->actualSector->getId());
+
+  moveCooldown = isBadlyHurt() ? ticksPerMove * PLAYER_SLOW_FACTOR : ticksPerMove;
   this->actualSector->closeChestsOf(this->id);
-  return this->actualSector->move(this->position, destination);
+  return this->actualSector->move(this->position, this->position.next(direction));
 }
 
 void Player::selectTool(AvailableTools tool) {
@@ -70,15 +76,12 @@ bool Player::attack(Enemy &enemy) {
     this->spendEnergy(ENERGY_COST_ATTACK);
     this->coins += enemy.getGoldDrop();
     inventory.addItem(enemy.dropItem());
-    if (enemy.removeOnDeath()) {
     bool killed = enemy.isDead();
-    if (killed && enemy.removeOnDeath()) {
+    if (killed && enemy.removeOnDeath())
       this->actualSector->removeEntity(enemy.position);
-    }
     return killed;
   }
   return false;
-}
 }
 
 bool Player::hasEnergy(size_t cost) {
@@ -116,6 +119,11 @@ void Player::takeDamage(double amount) {
   life -= amount;
   if (life < 0)
     life = 0;
+
+  if (actualSector && actualSector->getId() >= IdSector::CAVERN_LEVEL_1 &&
+      actualSector->getId() <= IdSector::CAVERN_LEVEL_10) {
+    tookDamageInCavernFlag = true;
+  }
 }
 
 void Player::startNewDay(bool sleptInBed) {
@@ -145,6 +153,19 @@ bool Player::sell(const Item &sample, int price, int amount, int &earned) {
   return true;
 }
 
+void Player::tick() {
+  if (moveCooldown > 0)
+    moveCooldown--;
+}
+
+void Player::toggleRunCheat() {
+  if(ticksPerMove == PLAYER_TICKS_PER_STEP) {
+    ticksPerMove = PLAYER_TICKS_PER_STEP_RUNNING;
+  } else {
+    ticksPerMove = PLAYER_TICKS_PER_STEP;
+  }
+}
+
 PlayerState Player::state() const {
   return PlayerState{this->id,
                      this->position,
@@ -158,5 +179,6 @@ PlayerState Player::state() const {
                                                  : AvailableTools{},
                      this->inventory.state(),
                      this->pendingGift.giverId,
-                     this->pendingGift.item};
+                     this->pendingGift.item,
+                     this->facing};
 }
