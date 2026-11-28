@@ -254,39 +254,44 @@ WorldState World::state() const {
 
 void World::recordProgress(GoalTypes goal, size_t count) {
   for (const auto &set : sets) {
-    bool justCompleted = set->complete(goal, count);
-    if (!justCompleted)
-      continue;
-
-    switch (set->type()) {
-    case SetType::METAL:
-      for (const auto &[id, player] : getPlayers()) {
-        if (player)
-          player->setCoins(static_cast<int>(player->getCoins()) + SET_METALS_RECOMPENSE_GOLD);
-      }
-      break;
-    case SetType::ANIMAL:
-      for (const auto &[id, player] : getPlayers()) {
-        if (!player)
-          continue;
-        ItemFactory factory;
-        for (int i = 0; i < SET_ANIMALS_RECOMPENSE_COW; ++i)
-          player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::COW), PRICE_COW));
-        for (int i = 0; i < SET_ANIMALS_RECOMPENSE_CHICKEN; ++i)
-          player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::CHICKEN), PRICE_CHICKEN));
-      }
-      break;
-    case SetType::FIGHT:
-      for (const auto &[id, player] : getPlayers()) {
-        if (!player)
-          continue;
-        player->setLife(player->state().life + PLAYER_MAX_LIFE * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
-        player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
-      }
-      break;
-    default:
-      break;
+    bool wasComplete = set->isComplete();
+    bool nowComplete = set->complete(goal, count);
+    if (!wasComplete && nowComplete && rewardedSets.count(set->type()) == 0) {
+      applySetReward(set->type());
+      rewardedSets.insert(set->type());
     }
+  }
+}
+
+void World::applySetReward(SetType type) {
+  switch (type) {
+  case SetType::METAL:
+    for (const auto &[id, player] : getPlayers()) {
+      if (player)
+        player->setCoins(static_cast<int>(player->getCoins()) + SET_METALS_RECOMPENSE_GOLD);
+    }
+    break;
+  case SetType::ANIMAL:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      ItemFactory factory;
+      for (int i = 0; i < SET_ANIMALS_RECOMPENSE_COW; ++i)
+        player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::COW), PRICE_COW));
+      for (int i = 0; i < SET_ANIMALS_RECOMPENSE_CHICKEN; ++i)
+        player->getInventory().addItem(factory.create(ItemType::ANIMAL, static_cast<int>(AnimalType::CHICKEN), PRICE_CHICKEN));
+    }
+    break;
+  case SetType::FIGHT:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      player->setLife(player->state().life + PLAYER_MAX_LIFE * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
+      player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
+    }
+    break;
+  default:
+    break;
   }
 }
 

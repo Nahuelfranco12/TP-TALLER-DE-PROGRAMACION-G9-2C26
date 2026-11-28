@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "../world_state.h"
@@ -105,6 +106,8 @@ public:
   WorldState state() const;
   const std::vector<std::unique_ptr<Set>> &getSets() const { return sets; }
   void recordProgress(GoalTypes goal, size_t count);
+  void applySetReward(SetType type);
+  std::set<SetType> rewardedSets;
 };
 
 #endif // WORLD_H_

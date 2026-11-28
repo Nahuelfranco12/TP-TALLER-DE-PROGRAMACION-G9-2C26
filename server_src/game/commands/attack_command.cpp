@@ -1,6 +1,9 @@
 #include "attack_command.h"
 
 #include "../entities/enemies/enemy.h"
+#include "../entities/enemies/orc.h"
+#include "../sets/set_fight.h"
+#include "../world.h"
 
 void AttackCommand::execute(World &world) {
   Player *player = world.getPlayer(this->playerId);
@@ -37,7 +40,47 @@ void AttackCommand::execute(World &world) {
     return;
 
   EnemyType enemyType = enemy->getEnemyType();
+  IdSector sectorId = sector->getId();
+
+  SetFight *fightSet = nullptr;
+  for (const auto &set : world.getSets()) {
+    if (set->type() == SetType::FIGHT) {
+      fightSet = dynamic_cast<SetFight *>(set.get());
+      break;
+    }
+  }
+
+  bool wasComplete = fightSet ? fightSet->isComplete() : false;
+
   if (player->attack(*enemy)) {
-    world.recordProgress(GoalTypes(enemyType), 1);
+    if (fightSet) {
+      switch (enemyType) {
+      case EnemyType::SKELETON:
+        fightSet->recordSkeletonKill(sectorId);
+        break;
+      case EnemyType::VAMPIRE_MALE:
+      case EnemyType::VAMPIRE_FEMALE:
+        fightSet->recordVampireKill(enemy);
+        break;
+      case EnemyType::ORC: {
+        Orc *orc = dynamic_cast<Orc *>(enemy);
+        if (orc)
+          fightSet->recordOrcKill(orc->getGroupId());
+        break;
+      }
+      case EnemyType::SKULL_BLUE:
+      case EnemyType::SKULL_GREEN:
+        if (!player->tookDamageInCavern())
+          fightSet->recordSkullSurvival(sectorId);
+        break;
+      default:
+        break;
+      }
+
+      if (!wasComplete && fightSet->isComplete() && !fightSet->isRewardApplied()) {
+        world.applySetReward(SetType::FIGHT);
+        fightSet->markRewardApplied();
+      }
+    }
   }
 }

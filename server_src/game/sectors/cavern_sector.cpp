@@ -1,5 +1,4 @@
 #include "cavern_sector.h"
-#include "../sets/set_fight.h"
 #include "../entities/enemies/orc.h"
 
 #include "../entities/mineral.h"
@@ -34,7 +33,6 @@ void CavernSector::reset() {
   clearEntities();
   initEntities();
   pendingReset = false;
-  SetFight::resetDamagedRooms();
 }
 
 void CavernSector::endDay() {

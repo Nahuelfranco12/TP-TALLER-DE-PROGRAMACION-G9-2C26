@@ -113,6 +113,11 @@ void Player::takeDamage(double amount) {
   life -= amount;
   if (life < 0)
     life = 0;
+
+  if (actualSector && actualSector->getId() >= IdSector::CAVERN_LEVEL_1 &&
+      actualSector->getId() <= IdSector::CAVERN_LEVEL_10) {
+    tookDamageInCavernFlag = true;
+  }
 }
 
 void Player::startNewDay(bool sleptInBed) {

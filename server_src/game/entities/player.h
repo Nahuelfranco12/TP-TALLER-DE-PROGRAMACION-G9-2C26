@@ -41,6 +41,7 @@ private:
   Sector *actualSector;
 
   bool sleeping = false;
+  bool tookDamageInCavernFlag = false;
 
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
@@ -102,6 +103,9 @@ public:
   void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
+
+  bool tookDamageInCavern() const { return tookDamageInCavernFlag; }
+  void resetCavernDamageFlag() { tookDamageInCavernFlag = false; }
 
   /*
   * Daño
