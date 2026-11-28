@@ -290,6 +290,19 @@ void World::applySetReward(SetType type) {
       player->setEnergy(player->state().energy + PLAYER_MAX_ENERGY * SET_FIGHT_RECOMPENSE_LIFE_ENERGY_PERCENT / 100.0);
     }
     break;
+  case SetType::CROP:
+    for (const auto &[id, player] : getPlayers()) {
+      if (!player)
+        continue;
+      ItemFactory factory;
+      for (int crop = static_cast<int>(CropTypes::STRAWBERRY);
+           crop <= static_cast<int>(CropTypes::PUMPKIN); ++crop) {
+        for (int i = 0; i < SET_CROP_RECOMPENSE_SEEDS; ++i)
+          player->getInventory().addItem(
+              factory.create(ItemType::SEED, crop, PRICE_SEED));
+      }
+    }
+    break;
   default:
     break;
   }
