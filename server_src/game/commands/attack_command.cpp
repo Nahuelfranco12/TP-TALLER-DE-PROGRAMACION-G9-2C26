@@ -42,6 +42,13 @@ void AttackCommand::execute(World &world) {
   EnemyType enemyType = enemy->getEnemyType();
   IdSector sectorId = sector->getId();
 
+  int orcGroupId = -1;
+  if (enemyType == EnemyType::ORC) {
+    Orc *orc = dynamic_cast<Orc *>(enemy);
+    if (orc)
+      orcGroupId = orc->getGroupId();
+  }
+
   SetFight *fightSet = nullptr;
   for (const auto &set : world.getSets()) {
     if (set->type() == SetType::FIGHT) {
@@ -62,12 +69,10 @@ void AttackCommand::execute(World &world) {
       case EnemyType::VAMPIRE_FEMALE:
         fightSet->recordVampireKill(enemy);
         break;
-      case EnemyType::ORC: {
-        Orc *orc = dynamic_cast<Orc *>(enemy);
-        if (orc)
-          fightSet->recordOrcKill(orc->getGroupId());
+      case EnemyType::ORC:
+        if (orcGroupId >= 0)
+          fightSet->recordOrcKill(orcGroupId);
         break;
-      }
       case EnemyType::SKULL_BLUE:
       case EnemyType::SKULL_GREEN:
         if (!player->tookDamageInCavern())
