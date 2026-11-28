@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "../world_state.h"
@@ -14,6 +15,12 @@
 #include "sectors/farm_sector.h"
 #include "sectors/cabin_sector.h"
 #include "entities/bed.h"
+#include "sets/set.h"
+#include "sets/set_animal.h"
+#include "sets/set_crop.h"
+#include "sets/set_fight.h"
+#include "sets/set_gold.h"
+#include "sets/set_metal.h"
 
 class World {
 private:
@@ -23,6 +30,7 @@ private:
   std::map<IdSector, std::unique_ptr<Sector>> sectors;
   std::map<int, Player *> players;
   std::vector<ChatMessageState> chat;
+  std::vector<std::unique_ptr<Set>> sets;
 
   size_t dayTick;
   size_t dayNumber;
@@ -33,7 +41,14 @@ private:
   void respawnNextTo(Player &player, Sector &sector, Position spot);
 
 public:
-  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1) : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {}
+  explicit World(const std::string& name, const std::string& code, size_t dayNumber = 1)
+      : name(name), code(code), speed(DaySpeed::MEDIUM), dayTick(0), dayNumber(dayNumber) {
+    sets.push_back(std::make_unique<SetCrop>());
+    sets.push_back(std::make_unique<SetMetal>());
+    sets.push_back(std::make_unique<SetAnimal>());
+    sets.push_back(std::make_unique<SetFight>());
+    sets.push_back(std::make_unique<SetGold>());
+  }
 
   void setDayNumber(size_t dayNumber) { this->dayNumber = dayNumber; }
 
@@ -89,6 +104,10 @@ public:
   */
   GameTime currentTime() const;
   WorldState state() const;
+  const std::vector<std::unique_ptr<Set>> &getSets() const { return sets; }
+  void recordProgress(GoalTypes goal, size_t count);
+  void applySetReward(SetType type);
+  std::set<SetType> rewardedSets;
 };
 
 #endif // WORLD_H_

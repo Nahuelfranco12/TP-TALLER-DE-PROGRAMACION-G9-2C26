@@ -411,6 +411,17 @@ std::optional<SectorStateDto> GameDtosBuilder::build(const WorldState &state,
     }
   }
 
+  for (const SetState &setState : state.sets) {
+    SetStateDto setDto;
+    setDto.type = setState.type;
+    setDto.completed = setState.completed;
+    for (const SetGoalState &goal : setState.goals) {
+      setDto.goals.push_back({goal.goal, static_cast<int>(goal.current),
+                             static_cast<int>(goal.target)});
+    }
+    sectorDto.sets.push_back(std::move(setDto));
+  }
+
   return sectorDto;
 }
 

@@ -305,6 +305,12 @@ struct ChestMoveDto {
   bool toChest;
 };
 
+struct RedeemSetDto {
+  int setIndex = 0;
+  int slotIndex = 0;
+  int amount = 1;
+};
+
 struct ChestDto {
   bool openedByMe = false;
   std::list<InventorySlotDto> slots;
@@ -334,6 +340,18 @@ struct GameTimeDto {
   size_t minutes = 0;
 };
 
+struct SetGoalDto {
+  int goalId = 0;
+  int current = 0;
+  int target = 0;
+};
+
+struct SetStateDto {
+  int type = 0;
+  bool completed = false;
+  std::vector<SetGoalDto> goals;
+};
+
 struct SectorStateDto {
   SectorTypeDto type{};
   size_t width = 0;
@@ -347,6 +365,7 @@ struct SectorStateDto {
   GameTimeDto time{};
   size_t dayNumber = 1;
   std::vector<ChatMessageDto> chat;
+  std::vector<SetStateDto> sets;
 };
 
 struct WorldMapDto {

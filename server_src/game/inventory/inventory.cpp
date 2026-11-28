@@ -124,6 +124,14 @@ const Item *Inventory::itemAt(int index) const {
   return &it->getItem();
 }
 
+size_t Inventory::countAt(int index) const {
+  if (index < 0 || index >= static_cast<int>(items.size()))
+    return 0;
+  auto it = items.begin();
+  std::advance(it, index);
+  return it->getCount();
+}
+
 bool Inventory::removeFromSlot(int index) {
   if (index < 0 || index >= static_cast<int>(items.size()))
     return false;

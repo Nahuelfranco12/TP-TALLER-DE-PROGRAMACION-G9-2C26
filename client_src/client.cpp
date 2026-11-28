@@ -25,6 +25,7 @@
 #include "actions/interact_action.h"
 #include "actions/place_action.h"
 #include "actions/chest_move_action.h"
+#include "actions/redeem_set_action.h"
 
 Client::Client(const char *hostname, const char *servname)
     : protocol(hostname, servname), my_id(protocol.receive_player_id()),
@@ -87,6 +88,10 @@ void Client::send_place(int slotIndex, DirectionDto direction) {
 
 void Client::send_chest_move(int slotIndex, bool toChest) {
   to_send_queue.try_push(std::make_unique<ChestMoveAction>(slotIndex, toChest));
+}
+
+void Client::send_redeem_set(int setIndex, int slotIndex, int amount) {
+  to_send_queue.try_push(std::make_unique<RedeemSetAction>(setIndex, slotIndex, amount));
 }
 
 void Client::send_cheat_water(DirectionDto direction) {

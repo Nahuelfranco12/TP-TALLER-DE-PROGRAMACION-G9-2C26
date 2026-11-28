@@ -28,6 +28,7 @@ struct CavernLevelConfig {
 class CavernSector : public Sector {
 private:
   CavernLevelConfig config;
+  int nextOrcGroupId = 0;
   bool pendingReset = false;
   std::mt19937 rng;
   EnemiesFactory enemiesFactory;

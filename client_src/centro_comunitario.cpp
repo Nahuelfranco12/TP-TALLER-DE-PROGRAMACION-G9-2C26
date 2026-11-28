@@ -41,12 +41,12 @@ const Requisito REQUISITOS_METALES[] = {
 };
 
 const Requisito REQUISITOS_ANIMALES[] = {
-    {"Leche", ItemTypeDto::COW_MILK, 5, false}, 
+    {"Leche", ItemTypeDto::COW_MILK, 5, false},
     {"Huevos", ItemTypeDto::CHICKEN_EGG, 10, false},
 };
 
 const char *LINEAS_PELEA[] = {
-    "3 esqueletos de habitaciones seguidas", "2 vampiros de la misma pareja", 
+    "3 esqueletos de habitaciones seguidas", "2 vampiros de la misma pareja",
     "4 orcos del mismo grupo", "1 calavera sin recibir daño"
 };
 
@@ -58,14 +58,9 @@ int tile_de_pixel(int pixel) {
     return tile;
 }
 
-// Ejemplo: Carbón: 4 / 10
-std::string renglon(const Requisito &requisito, const Inventario &inventario) {
-    int tengo = inventario.contar(requisito.item, requisito.calidad_alta);
-    return std::string(requisito.nombre) + ": " + std::to_string(tengo) + " / " + std::to_string(requisito.cantidad);
-}
 }
 
-CentroComunitario::CentroComunitario(Renderer &renderer) 
+CentroComunitario::CentroComunitario(Renderer &renderer)
       : ofrendas(renderer, RUTA_OFRENDAS_CENTRO_COMUNITARIO),
       fuente(RUTA_FUENTE_JUEGO, CENTRO_TAMANIO_LETRA),
       fuente_chica(RUTA_FUENTE_JUEGO, CENTRO_TAMANIO_LETRA_CHICA),
@@ -86,7 +81,7 @@ CentroComunitario::CentroComunitario(Renderer &renderer)
 void CentroComunitario::dibujar_figurin(Renderer &renderer, const Set &set, int camara_x, int camara_y, int lado) {
     const SDL_Rect &modelo = MODELOS_SETS[set.modelo];
     Rect origen(modelo.x, modelo.y, modelo.w, modelo.h);
-    
+
     int tamanio = modelo.w * lado / PIXELES_POR_TILE;
     int x = set.tile_x * lado - camara_x;
     int y = (set.tile_y + 1) * lado - tamanio - camara_y;
@@ -131,54 +126,95 @@ bool CentroComunitario::hay_set_abierto() const {
     return set_abierto != SET_CERRADO;
 }
 
+int CentroComunitario::get_set_abierto() const {
+    return set_abierto;
+}
+
 void CentroComunitario::cerrar_set() {
     set_abierto = SET_CERRADO;
 }
 
+void CentroComunitario::actualizar_sets(const std::vector<SetStateDto> &s) {
+    sets = s;
+}
+
 // La caja de un set
-std::vector<std::string>
-CentroComunitario::armar_lineas(const Inventario &inventario,
-                                size_t monedas) const {
+std::vector<std::string> CentroComunitario::armar_lineas() const {
   std::vector<std::string> resultado;
   switch (set_abierto) {
-  case SET_CULTIVOS:
-    for (const Requisito &requisito : REQUISITOS_CULTIVOS) {
-      // cppcheck-suppress useStlAlgorithm
-      resultado.push_back(renglon(requisito, inventario));
+  case SET_CULTIVOS: {
+    const SetStateDto *set = (sets.size() > SET_CULTIVOS) ? &sets[SET_CULTIVOS] : nullptr;
+    for (size_t i = 0; i < 4; ++i) {
+      int current = 0;
+      int target = REQUISITOS_CULTIVOS[i].cantidad;
+      if (set && i < set->goals.size()) {
+        current = set->goals[i].current;
+        target = set->goals[i].target;
+      }
+      resultado.push_back(std::string(REQUISITOS_CULTIVOS[i].nombre) + ": " +
+                          std::to_string(current) + " / " + std::to_string(target));
     }
     break;
-  case SET_METALES:
-    for (const Requisito &requisito : REQUISITOS_METALES) {
-      // cppcheck-suppress useStlAlgorithm
-      resultado.push_back(renglon(requisito, inventario));
+  }
+  case SET_METALES: {
+    const SetStateDto *set = (sets.size() > SET_METALES) ? &sets[SET_METALES] : nullptr;
+    for (size_t i = 0; i < 4; ++i) {
+      int current = 0;
+      int target = REQUISITOS_METALES[i].cantidad;
+      if (set && i < set->goals.size()) {
+        current = set->goals[i].current;
+        target = set->goals[i].target;
+      }
+      resultado.push_back(std::string(REQUISITOS_METALES[i].nombre) + ": " +
+                          std::to_string(current) + " / " + std::to_string(target));
     }
     break;
-  case SET_ANIMALES:
-    for (const Requisito &requisito : REQUISITOS_ANIMALES) {
-      // cppcheck-suppress useStlAlgorithm
-      resultado.push_back(renglon(requisito, inventario));
+  }
+  case SET_ANIMALES: {
+    const SetStateDto *set = (sets.size() > SET_ANIMALES) ? &sets[SET_ANIMALES] : nullptr;
+    for (size_t i = 0; i < 2; ++i) {
+      int current = 0;
+      int target = REQUISITOS_ANIMALES[i].cantidad;
+      if (set && i < set->goals.size()) {
+        current = set->goals[i].current;
+        target = set->goals[i].target;
+      }
+      resultado.push_back(std::string(REQUISITOS_ANIMALES[i].nombre) + ": " +
+                          std::to_string(current) + " / " + std::to_string(target));
     }
     break;
-  case SET_PELEA:
-    for (const char *linea : LINEAS_PELEA) {
-      // cppcheck-suppress useStlAlgorithm
+  }
+  case SET_PELEA: {
+    const SetStateDto *set = (sets.size() > SET_PELEA) ? &sets[SET_PELEA] : nullptr;
+    for (size_t i = 0; i < 4; ++i) {
+      std::string linea = LINEAS_PELEA[i];
+      if (set && i < set->goals.size()) {
+        linea += ": " + std::to_string(set->goals[i].current) + " / " +
+                 std::to_string(set->goals[i].target);
+      }
       resultado.push_back(linea);
     }
     break;
-  case SET_DINERO:
-    resultado.push_back(TEXTO_JUEGO_MONEDAS + std::to_string(monedas) + " / " +
-                        std::to_string(CENTRO_MONEDAS_SET));
+  }
+  case SET_DINERO: {
+    int current = 0;
+    int target = CENTRO_MONEDAS_SET;
+    if (sets.size() > SET_DINERO && !sets[SET_DINERO].goals.empty()) {
+      current = sets[SET_DINERO].goals[0].current;
+      target = sets[SET_DINERO].goals[0].target;
+    }
+    resultado.push_back(TEXTO_JUEGO_MONEDAS + std::to_string(current) + " / " +
+                        std::to_string(target));
     break;
+  }
   default:
     break;
   }
   return resultado;
 }
 
-void CentroComunitario::actualizar_lineas(Renderer &renderer,
-                                          const Inventario &inventario,
-                                          size_t monedas) {
-  std::vector<std::string> nuevas = armar_lineas(inventario, monedas);
+void CentroComunitario::actualizar_lineas(Renderer &renderer) {
+  std::vector<std::string> nuevas = armar_lineas();
   if (nuevas == lineas) {
     return;
   }
@@ -205,9 +241,7 @@ void CentroComunitario::dibujar_boton(Renderer &renderer, const Rect &boton,
                      texto.GetWidth(), texto.GetHeight()));
 }
 
-void CentroComunitario::dibujar_set(Renderer &renderer,
-                                    const Inventario &inventario,
-                                    size_t monedas) {
+void CentroComunitario::dibujar_set(Renderer &renderer) {
   if (set_abierto == SET_CERRADO) {
     return;
   }
@@ -238,7 +272,7 @@ void CentroComunitario::dibujar_set(Renderer &renderer,
   int y = panel.y + panel.h / CENTRO_CONTENIDO_DIVISOR + titulo.GetHeight() + CENTRO_SEPARACION_LINEAS;
 
   // Lo que pide y cuánto tengo
-  actualizar_lineas(renderer, inventario, monedas);
+  actualizar_lineas(renderer);
   for (Texture &linea : textura_lineas) {
     renderer.Copy(linea, NullOpt,
                   Rect((ancho_ventana - linea.GetWidth()) / 2, y,

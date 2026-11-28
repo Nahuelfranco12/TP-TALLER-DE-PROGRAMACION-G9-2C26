@@ -41,6 +41,7 @@ private:
   Sector *actualSector;
 
   bool sleeping = false;
+  bool tookDamageInCavernFlag = false;
 
 public:
   Player(size_t pos_x, size_t pos_y, int id, const std::string &name,
@@ -70,8 +71,8 @@ public:
   }
 
   MoveResult move(Position destination);
-  void mine(Mineral &mineral);
-  void attack(Enemy &enemy);
+  bool mine(Mineral &mineral);
+  bool attack(Enemy &enemy);
   void selectTool(AvailableTools tool);
 
   // getters
@@ -102,6 +103,9 @@ public:
   void setEnergy(double value);
   void restoreEnergy(size_t amount);
   bool isBadlyHurt() const;
+
+  bool tookDamageInCavern() const { return tookDamageInCavernFlag; }
+  void resetCavernDamageFlag() { tookDamageInCavernFlag = false; }
 
   /*
   * Daño

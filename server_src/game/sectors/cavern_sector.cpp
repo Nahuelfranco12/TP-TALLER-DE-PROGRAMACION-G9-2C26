@@ -1,4 +1,5 @@
 #include "cavern_sector.h"
+#include "../entities/enemies/orc.h"
 
 #include "../entities/mineral.h"
 #include "../entities/enemies/skeleton.h"
@@ -186,11 +187,17 @@ void CavernSector::spawnEnemyGroup(EnemyType type, size_t count) {
     if (!resultVampire)
       Sector::removeEntity(center);
   } else {
+    int groupId = (type == EnemyType::ORC) ? nextOrcGroupId++ : -1;
     for (size_t i = 0; i < count; i++) {
       Position pos = (i == 0) ? center : randomNearPosition(center, 2);
       auto enemy = enemiesFactory.createEnemy(type, pos);
 
       if (enemy) {
+        if (type == EnemyType::ORC) {
+          Orc *orc = dynamic_cast<Orc *>(enemy.get());
+          if (orc)
+            orc->setGroupId(groupId);
+        }
         std::unique_ptr<Entity> entity = std::move(enemy);
         Sector::tryAddEntity(entity, pos);
       }

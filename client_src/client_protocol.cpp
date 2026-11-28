@@ -107,6 +107,13 @@ void ClientProtocol::send_chest_move_dto(const ChestMoveDto &dto) {
   protocol.send_u8(dto.toChest ? 1 : 0);
 }
 
+void ClientProtocol::send_redeem_set_dto(const RedeemSetDto &dto) {
+  protocol.send_u8(OP_REDEEM_SET);
+  protocol.send_u8(static_cast<uint8_t>(dto.setIndex));
+  protocol.send_u8(static_cast<uint8_t>(dto.slotIndex));
+  protocol.send_u16(static_cast<uint16_t>(dto.amount));
+}
+
 void ClientProtocol::send_water_cheat(const WaterDto &dto) {
   protocol.send_u8(OP_CHEAT_WATER);
   protocol.send_u8(static_cast<uint8_t>(dto.direction));
@@ -277,6 +284,22 @@ SectorStateDto ClientProtocol::receive_sector_state() {
     message.text = protocol.receive_string();
     message.isPrivate = protocol.receive_u8() == 1;
     state.chat.push_back(message);
+  }
+
+  int set_count = protocol.receive_u8();
+  for (int i = 0; i < set_count; i++) {
+    SetStateDto setDto;
+    setDto.type = protocol.receive_u8();
+    setDto.completed = protocol.receive_u8() == 1;
+    int goal_count = protocol.receive_u8();
+    for (int j = 0; j < goal_count; j++) {
+      SetGoalDto goal;
+      goal.goalId = protocol.receive_u8();
+      goal.current = protocol.receive_u16();
+      goal.target = protocol.receive_u16();
+      setDto.goals.push_back(goal);
+    }
+    state.sets.push_back(setDto);
   }
 
   return state;

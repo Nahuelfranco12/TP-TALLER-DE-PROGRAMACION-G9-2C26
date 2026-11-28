@@ -16,6 +16,7 @@ public:
   Vampire(size_t pos_x, size_t pos_y, EnemyType kind, EnemyStats vampireStats);
 
   void setPartner(Vampire *otherVampire);
+  Vampire *getPartner() const { return partner; }
 
   bool removeOnDeath() const override;
   int getDamage() const override;

@@ -59,6 +59,18 @@ void ServerProtocol::send_sector_state(const SectorStateDto &state) {
     protocol.send_string(message.text);
     protocol.send_u8(message.isPrivate ? 1 : 0);
   }
+
+  protocol.send_u8(static_cast<uint8_t>(state.sets.size()));
+  for (const SetStateDto &set : state.sets) {
+    protocol.send_u8(static_cast<uint8_t>(set.type));
+    protocol.send_u8(set.completed ? 1 : 0);
+    protocol.send_u8(static_cast<uint8_t>(set.goals.size()));
+    for (const SetGoalDto &goal : set.goals) {
+      protocol.send_u8(static_cast<uint8_t>(goal.goalId));
+      protocol.send_u16(static_cast<uint16_t>(goal.current));
+      protocol.send_u16(static_cast<uint16_t>(goal.target));
+    }
+  }
 }
 
 void ServerProtocol::send_world_map(const WorldMapDto &map) {
@@ -239,6 +251,14 @@ ChestMoveDto ServerProtocol::receive_chest_move() {
   ChestMoveDto dto;
   dto.slotIndex = protocol.receive_u8();
   dto.toChest = protocol.receive_u8() == 1;
+  return dto;
+}
+
+RedeemSetDto ServerProtocol::receive_redeem_set() {
+  RedeemSetDto dto;
+  dto.setIndex = protocol.receive_u8();
+  dto.slotIndex = protocol.receive_u8();
+  dto.amount = protocol.receive_u16();
   return dto;
 }
 
